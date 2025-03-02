@@ -1,0 +1,16 @@
+services:
+  laravel_backend:
+    container_name: laravel_backend
+    build: . #Dockerfile build path
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8000:80"
+
+  mysql:
+    image: mysql:9.2.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: order_panel
+    ports:
+      - "3306:3306"
