@@ -13,4 +13,4 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: order_panel
     ports:
-      - "3306:3306"
+      - "8889:3306"
