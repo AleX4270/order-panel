@@ -28,6 +28,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('language_id');
             $table->text('description');
+            $table->timestamps();
 
             $table->foreign('client_id')->references('id')->on('client');
             $table->foreign('language_id')->references('id')->on('language');

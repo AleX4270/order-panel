@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->string('symbol', 32);
             $table->string('name', 64);
             $table->tinyInteger('is_active');
+            $table->timestamps();
         });
     }
 

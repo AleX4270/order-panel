@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class Language extends Model {
-    protected $table = 'language';
+class Priority extends Model {
+    protected $table = 'priority';
 
     protected $attributes = [
         'is_active' => 1
@@ -14,7 +14,6 @@ class Language extends Model {
 
     protected $fillable = [
         'symbol', 
-        'name', 
         'is_active'
     ];
 

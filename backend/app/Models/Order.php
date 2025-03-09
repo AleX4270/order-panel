@@ -5,17 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class Language extends Model {
-    protected $table = 'language';
+class Order extends Model {
+    protected $table = 'order';
 
     protected $attributes = [
         'is_active' => 1
     ];
 
     protected $fillable = [
-        'symbol', 
-        'name', 
-        'is_active'
+        'date_deadline',
+        'date_completed',
+        'user_creation_id',
+        'user_modification_id',
+        'priority_id',
+        'client_id',
+        'order_status_id',
+        'is_active',
     ];
 
     protected $casts = [
