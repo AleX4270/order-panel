@@ -13,8 +13,8 @@ return new class extends Migration {
             $table->id();
             $table->string('first_name', 128);
             $table->string('last_name', 128);
-            $table->string('email', 255);
-            $table->string('phone_number', 32);
+            $table->string('email', 255)->nullable();
+            $table->string('phone_number', 32)->nullable();
             $table->unsignedBigInteger('address_id');
             $table->tinyInteger('is_blocked');
             $table->tinyInteger('is_active');

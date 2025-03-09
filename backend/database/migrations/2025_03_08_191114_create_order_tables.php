@@ -12,11 +12,11 @@ return new class extends Migration {
         Schema::create('order', function (Blueprint $table) {
             $table->id();
             $table->string('symbol', 32);
-            $table->dateTime('date_deadline');
-            $table->dateTime('date_completed');
+            $table->dateTime('date_deadline')->nullable();
+            $table->dateTime('date_completed')->nullable();
             $table->unsignedBigInteger('user_creation_id');
             $table->unsignedBigInteger('user_modification_id');
-            $table->unsignedBigInteger('priority_id');
+            $table->unsignedBigInteger('priority_id')->nullable();
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('order_status_id');
             $table->tinyInteger('is_active');
