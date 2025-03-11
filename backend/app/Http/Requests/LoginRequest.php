@@ -20,7 +20,7 @@ class LoginRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', 'string', 'lowercase', 'max:255'],
             'password' => ['required', 'string', Password::defaults()]
         ];
     }
@@ -34,6 +34,9 @@ class LoginRequest extends FormRequest {
         return [
             'email.required' => __('auth.emailRequired'),
             'email.email' => __('auth.emailFormatEmail'),
+            'email.string' => __('auth.emailString'),
+            'email.lowercase' => __('auth.emailLowercase'),
+            'email.max' => __('auth.emailMax'),
             'password.required' => __('auth.passwordRequired'),
             'password.string' => __('auth.passwordString'),
         ];
