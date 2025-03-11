@@ -17,26 +17,36 @@ class AuthController extends Controller {
     ) {}
 
     public function login(LoginRequest $request): ApiResponse {
-        $result = $this->authService->login($request->validated());
+        $result = $this->authService->login($request, $request->validated());
 
         if(!$result) {
             return new ApiResponse(
-                statusCode: HttpStatus::UNAUTHORIZED,
-                message: !empty($result['message']) ? $result['message'] : __('auth.failed')
+                status: HttpStatus::UNAUTHORIZED,
+                message: __('auth.failed')
             );
         }
 
         return new ApiResponse(
-            statusCode: HttpStatus::OK,
+            status: HttpStatus::OK,
             message: __('basic.success')
         );
     }
 
-    // public function register(RegisterRequest $request): ApiResponse {
-    //     $result = $this->authService->register($request->validated());
-    // }
+    public function register(RegisterRequest $request): ApiResponse {
+        $this->authService->register($request->validated());
 
-    // public function logout(Request $request): ApiResponse {
-    //     $result = $this->authService->logout();
-    // }
+        return new ApiResponse(
+            status: HttpStatus::OK,
+            message: __('basic.success')
+        );
+    }
+
+    public function logout(Request $request): ApiResponse {
+        $this->authService->logout($request);
+
+        return new ApiResponse(
+            status: HttpStatus::OK,
+            message: __('basic.success')
+        );
+    }
 }

@@ -24,4 +24,18 @@ class LoginRequest extends FormRequest {
             'password' => ['required', 'string', Password::defaults()]
         ];
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array {
+        return [
+            'email.required' => __('auth.emailRequired'),
+            'email.email' => __('auth.emailFormatEmail'),
+            'password.required' => __('auth.passwordRequired'),
+            'password.string' => __('auth.passwordString'),
+        ];
+    }
 }

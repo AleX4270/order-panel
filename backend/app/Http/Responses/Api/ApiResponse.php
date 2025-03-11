@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 class ApiResponse extends JsonResponse {
     public function __construct(
         mixed $data = null,
-        HttpStatus $statusCode = HttpStatus::OK,
+        HttpStatus $status = HttpStatus::OK,
         ?string $message = ''
     ) {
         $response = [
@@ -17,6 +17,6 @@ class ApiResponse extends JsonResponse {
             'message' => $message,
             'timestamp' => date('Y-m-d H:i:s'),
         ];
-        parent::__construct($response, $statusCode->value);
+        parent::__construct($response, $status->value);
     }
 }
