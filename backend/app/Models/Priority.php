@@ -5,6 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Priority extends Model {
     protected $table = 'priority';
@@ -24,5 +25,9 @@ class Priority extends Model {
 
     public function scopeActive(Builder $query): void {
         $query->where('is_active', 1);
+    }
+
+    public function orders(): HasMany {
+        return $this->hasMany(Order::class, 'priority_id');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrderStatus extends Model {
     protected $table = 'order_status';
@@ -30,6 +31,10 @@ class OrderStatus extends Model {
     }
 
     public function showInternal(Builder $query): void {
-        $query->where('is_internal, 1');
+        $query->where('is_internal', 1);
+    }
+
+    public function orders(): HasMany {
+        return $this->hasMany(Order::class, 'order_status_id');
     }
 }

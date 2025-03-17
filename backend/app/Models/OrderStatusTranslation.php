@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OrderStatusTranslation extends Model {
     protected $table = 'order_translation';
@@ -15,4 +16,8 @@ class OrderStatusTranslation extends Model {
         'remarks',
         'description'
     ];
+
+    public function language(): BelongsTo {
+        return $this->belongsTo(Language::class, 'language_id');
+    }
 }

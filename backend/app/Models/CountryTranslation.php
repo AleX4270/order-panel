@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CountryTranslation extends Model {
     protected $table = 'country_translation';
@@ -13,4 +14,8 @@ class CountryTranslation extends Model {
         'language_id', 
         'name'
     ];
+
+    public function language(): BelongsTo {
+        return $this->belongsTo(Language::class, 'language_id');
+    }
 }

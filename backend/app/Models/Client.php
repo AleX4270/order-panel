@@ -5,6 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Client extends Model {
     protected $table = 'client';
@@ -39,5 +40,9 @@ class Client extends Model {
 
     public function scopeAllowed(Builder $query): void {
         $query->where('is_blocked', 0);
+    }
+
+    public function orders(): HasMany {
+        return $this->hasMany(Order::class, 'client_id');
     }
 }

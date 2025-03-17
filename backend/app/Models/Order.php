@@ -5,6 +5,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model {
     protected $table = 'order';
@@ -30,5 +32,29 @@ class Order extends Model {
 
     public function scopeActive(Builder $query): void {
         $query->where('is_active', 1);
+    }
+
+    public function translations(): HasMany {
+        return $this->hasMany(OrderTranslation::class, 'order_id');
+    }
+
+    public function creator(): BelongsTo {
+        return $this->belongsTo(User::class, 'user_creation_id');
+    }
+
+    public function modifier(): BelongsTo {
+        return $this->belongsTo(User::class, 'user_modification_id');
+    }
+
+    public function priority(): BelongsTo {
+        return $this->belongsTo(Priority::class, 'priority_id');
+    }
+
+    public function client(): BelongsTo {
+        return $this->belongsTo(Client::class, 'client_id');
+    }
+
+    public function status(): BelongsTo {
+        return $this->belongsTo(OrderStatus::class, 'order_status_id');
     }
 }
