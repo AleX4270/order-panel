@@ -1,14 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Services\Api;
+namespace App\Services\Api\Auth;
 
 use App\Exceptions\UserAlreadyExistsException;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use Exception;
 use Illuminate\Support\Facades\Hash;
 
 class AuthService {
@@ -40,7 +39,9 @@ class AuthService {
     }
 
     public function logout(Request $request): bool {
+        Auth::logout();
         $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return true;
     }
 }
