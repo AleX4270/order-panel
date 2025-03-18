@@ -37,4 +37,8 @@ class OrderStatus extends Model {
     public function orders(): HasMany {
         return $this->hasMany(Order::class, 'order_status_id');
     }
+
+    public function translations(): HasMany {
+        return $this->hasMany(OrderStatusTranslation::class, 'order_status_id');
+    }
 }

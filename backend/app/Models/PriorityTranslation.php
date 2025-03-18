@@ -19,4 +19,8 @@ class PriorityTranslation extends Model {
     public function language(): BelongsTo {
         return $this->belongsTo(Language::class, 'language_id');
     }
+
+    public function priority(): BelongsTo {
+        return $this->belongsTo(Priority::class, 'priority_id');
+    }
 }

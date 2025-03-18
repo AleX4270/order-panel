@@ -18,4 +18,8 @@ class ClientTranslation extends Model {
     public function language(): BelongsTo {
         return $this->belongsTo(Language::class, 'language_id');
     }
+
+    public function client(): BelongsTo {
+        return $this->belongsTo(Client::class, 'client_id');
+    }
 }

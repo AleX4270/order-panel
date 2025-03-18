@@ -30,4 +30,8 @@ class Priority extends Model {
     public function orders(): HasMany {
         return $this->hasMany(Order::class, 'priority_id');
     }
+
+    public function translations(): HasMany {
+        return $this->hasMany(PriorityTranslation::class, 'priority_id');
+    }
 }

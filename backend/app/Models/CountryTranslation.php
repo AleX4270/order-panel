@@ -18,4 +18,8 @@ class CountryTranslation extends Model {
     public function language(): BelongsTo {
         return $this->belongsTo(Language::class, 'language_id');
     }
+
+    public function country(): BelongsTo {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
 }

@@ -10,7 +10,7 @@ class OrderStatusTranslation extends Model {
     protected $table = 'order_translation';
 
     protected $fillable = [
-        'order_id',
+        'order_status_id',
         'language_id',
         'name',
         'remarks',
@@ -19,5 +19,9 @@ class OrderStatusTranslation extends Model {
 
     public function language(): BelongsTo {
         return $this->belongsTo(Language::class, 'language_id');
+    }
+
+    public function orderStatus(): BelongsTo {
+        return $this->belongsTo(OrderStatus::class, 'order_status_id');
     }
 }
