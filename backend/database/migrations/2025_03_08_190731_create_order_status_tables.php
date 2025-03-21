@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('order_status_id');
             $table->unsignedBigInteger('language_id');
             $table->string('name', 255);
-            $table->text('description');
+            $table->text('description')->nullable(true);
             $table->timestamps();
 
             $table->foreign('order_status_id')->references('id')->on('order_status');

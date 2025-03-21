@@ -25,7 +25,6 @@ class CountrySeeder extends Seeder {
     
                     $newCountry->translations()->updateOrCreate(
                         [
-                            'country_id' => $newCountry->id,
                             'language_id' => $languageId,
                         ],
                         [
