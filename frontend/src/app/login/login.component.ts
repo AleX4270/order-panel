@@ -1,46 +1,75 @@
 import { WelcomeHeaderComponent } from "../shared/components/welcome-header/welcome-header.component";
 import { Component } from '@angular/core';
+import { ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { SmallFooterComponent } from "../shared/components/small-footer/small-footer.component";
 
 @Component({
     selector: 'app-login',
-    imports: [WelcomeHeaderComponent, SmallFooterComponent],
+    imports: [
+    WelcomeHeaderComponent,
+    ReactiveFormsModule,
+    SmallFooterComponent
+],
     template: `
-        <div class="row">
-            <div class="col-12 d-flex flex-column justify-content-center align-items-center">
+        <div class="row vh-100 d-flex justify-content-center align-items-center">
+            <div class="col-3">
                 <app-welcome-header/>
 
-                <div class="row w-25">
-                    <div class="col-12" style="background-color: yellow;">
-                        <div class="row">
-                            <div class="col-12 text-center">
-                                <h5>System User Login</h5>
-                                <p>Enter your credentials to access the management panel</p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <form class="col-12">
-                                <!-- TODO: Email -->
-                                <!-- TODO: Password -->
-                            </form>
-                        </div>
-
-                        <div class="row d-flex justify-content-center">
-                            <button class="col-10 btn btn-primary fw-semibold">
-                                Sign in
-                            </button>
-                        </div>
-
-                        <hr>
-                        <app-small-footer/>
+                <div class="login-card shadow-sm p-4 mt-3 bg-white">
+                    <div class="login-card-header">
+                        <h5>Login</h5>
+                        <p class="text-muted small mt-1">Enter your credentials to access your account</p>
                     </div>
-                </div>    
+                    <div class="login-card-body">
+                        <form [formGroup]="form">
+                            <div class="form-group mt-4">
+                                <label for="email">Email</label>
+                                <input
+                                    id="email"
+                                    type="text"
+                                    class="form-control mt-2"
+                                    formControlName="email"
+                                    placeholder="user@example.com"
+                                />
+                            </div>
+
+                            <div class="form-group mt-4">
+                                <div class="d-flex justify-content-between">
+                                    <label for="password">Password</label>
+                                    <a class="small text-decoration-none">Forgot password?</a>
+                                </div>
+                                <input
+                                    id="password"
+                                    type="password"
+                                    class="form-control mt-2"
+                                    formControlName="password"
+                                    placeholder="&bull;&bull;&bull;&bull;"
+                                />
+                                <!-- TODO: Password toggle button -->
+                            </div>
+                            <div>
+                                <button class="btn btn-primary w-100 mt-4">
+                                    Sign in
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="login-card-footer text-center mt-4">
+                        <small>Don't have an account? <a routerLink="/signup" class="text-decoration-none">Sign up</a></small>
+                    </div>
+                </div>
+
+                <app-small-footer/>
             </div>
         </div>
     `,
-    styles: ``
+    styles: [`
+        .login-card {
+            border: 1px solid #cce5ff;
+            border-radius: 10px;
+        }
+    `]
 })
 export class LoginComponent {
-
+    protected form!: FormGroup;
 }

@@ -12,7 +12,7 @@ import { RouterOutlet } from '@angular/router';
     styles: [`
         main {
           min-height: 100vh;
-          background: linear-gradient(135deg, #ffffff 0%, #e0f0ff 100%);
+          background: linear-gradient(135deg, #f8fafc, #e9f0f7);
         }
       `]
   })
