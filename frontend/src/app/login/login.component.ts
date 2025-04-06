@@ -1,15 +1,21 @@
+import { Component, OnInit, inject } from '@angular/core';
 import { WelcomeHeaderComponent } from "../shared/components/welcome-header/welcome-header.component";
-import { Component } from '@angular/core';
-import { ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SmallFooterComponent } from "../shared/components/small-footer/small-footer.component";
+import { NgIconComponent, provideIcons } from "@ng-icons/core";
+import { faEye, faEyeSlash } from "@ng-icons/font-awesome/regular";
 
 @Component({
     selector: 'app-login',
     imports: [
-    WelcomeHeaderComponent,
-    ReactiveFormsModule,
-    SmallFooterComponent
-],
+        WelcomeHeaderComponent,
+        ReactiveFormsModule,
+        SmallFooterComponent,
+        NgIconComponent,
+    ],
+    providers: [
+        provideIcons({ faEye, faEyeSlash }),
+    ],
     template: `
         <div class="row vh-100 d-flex justify-content-center align-items-center">
             <div class="col-3">
@@ -38,15 +44,23 @@ import { SmallFooterComponent } from "../shared/components/small-footer/small-fo
                                     <label for="password">Password</label>
                                     <a class="small text-decoration-none">Forgot password?</a>
                                 </div>
-                                <input
-                                    id="password"
-                                    type="password"
-                                    class="form-control mt-2"
-                                    formControlName="password"
-                                    placeholder="&bull;&bull;&bull;&bull;"
-                                />
-                                <!-- TODO: Password toggle button -->
+                                <div class="position-relative">
+                                    <input
+                                        id="password"
+                                        type="{{ showPassword ? 'text' : 'password' }}"
+                                        class="form-control mt-2"
+                                        formControlName="password"
+                                        placeholder="&bull;&bull;&bull;&bull;"
+                                    >
+                                    <ng-icon 
+                                        class="password-toggle-icon" 
+                                        name="{{ showPassword ? 'faEyeSlash' : 'faEye' }}"
+                                        size="20px"
+                                        (click)="togglePassword()"
+                                    ></ng-icon>
+                                </div>
                             </div>
+
                             <div>
                                 <button class="btn btn-primary w-100 mt-4">
                                     Sign in
@@ -68,8 +82,34 @@ import { SmallFooterComponent } from "../shared/components/small-footer/small-fo
             border: 1px solid #cce5ff;
             border-radius: 10px;
         }
+
+        .password-toggle-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 15px;
+            cursor: pointer;
+        }
     `]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+    protected formBuilder: FormBuilder = inject(FormBuilder);
+
     protected form!: FormGroup;
+    protected showPassword: boolean = false;
+
+    ngOnInit(): void {
+        this.initForm();
+    }
+
+    protected togglePassword(): void {
+        this.showPassword = !this.showPassword;
+    }
+
+    protected initForm(): void {
+        this.form = this.formBuilder.group({
+            email: ['', Validators.required],
+            password: ['', Validators.required],
+        });
+    }
 }
