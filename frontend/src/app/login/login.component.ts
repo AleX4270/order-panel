@@ -42,7 +42,8 @@ import { faEye, faEyeSlash } from "@ng-icons/font-awesome/regular";
                             <div class="form-group mt-4">
                                 <div class="d-flex justify-content-between">
                                     <label for="password">Password</label>
-                                    <a class="small text-decoration-none">Forgot password?</a>
+                                    <!-- TODO -->
+                                    <!-- <a class="small text-decoration-none">Forgot password?</a> -->
                                 </div>
                                 <div class="position-relative">
                                     <input
@@ -52,12 +53,13 @@ import { faEye, faEyeSlash } from "@ng-icons/font-awesome/regular";
                                         formControlName="password"
                                         placeholder="&bull;&bull;&bull;&bull;"
                                     >
-                                    <ng-icon 
-                                        class="password-toggle-icon" 
-                                        name="{{ showPassword ? 'faEyeSlash' : 'faEye' }}"
-                                        size="20px"
-                                        (click)="togglePassword()"
-                                    ></ng-icon>
+                                    <div class="password-toggle-icon">
+                                        <ng-icon 
+                                            name="{{ showPassword ? 'faEyeSlash' : 'faEye' }}"
+                                            size="20px"
+                                            (click)="togglePassword()"
+                                        ></ng-icon>
+                                    </div>
                                 </div>
                             </div>
 
@@ -69,7 +71,7 @@ import { faEye, faEyeSlash } from "@ng-icons/font-awesome/regular";
                         </form>
                     </div>
                     <div class="login-card-footer text-center mt-4">
-                        <small>Don't have an account? <a routerLink="/signup" class="text-decoration-none">Sign up</a></small>
+                        <small>Forgot your password? <a routerLink="/register" class="text-decoration-none">Recover it!</a></small>
                     </div>
                 </div>
 
@@ -84,10 +86,12 @@ import { faEye, faEyeSlash } from "@ng-icons/font-awesome/regular";
         }
 
         .password-toggle-icon {
+            background-color: white;
+            padding-left: 6px;
             position: absolute;
-            top: 50%;
+            top: 59%;
             transform: translateY(-50%);
-            right: 15px;
+            right: 10px;
             cursor: pointer;
         }
     `]
