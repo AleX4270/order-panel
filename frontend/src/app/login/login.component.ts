@@ -4,6 +4,9 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angula
 import { SmallFooterComponent } from "../shared/components/small-footer/small-footer.component";
 import { NgIconComponent, provideIcons } from "@ng-icons/core";
 import { faEye, faEyeSlash } from "@ng-icons/font-awesome/regular";
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-login',
@@ -12,6 +15,8 @@ import { faEye, faEyeSlash } from "@ng-icons/font-awesome/regular";
         ReactiveFormsModule,
         SmallFooterComponent,
         NgIconComponent,
+        CommonModule,
+        RouterModule,
     ],
     providers: [
         provideIcons({ faEye, faEyeSlash }),
@@ -42,8 +47,6 @@ import { faEye, faEyeSlash } from "@ng-icons/font-awesome/regular";
                             <div class="form-group mt-4">
                                 <div class="d-flex justify-content-between">
                                     <label for="password">Password</label>
-                                    <!-- TODO -->
-                                    <!-- <a class="small text-decoration-none">Forgot password?</a> -->
                                 </div>
                                 <div class="position-relative">
                                     <input
@@ -70,8 +73,8 @@ import { faEye, faEyeSlash } from "@ng-icons/font-awesome/regular";
                             </div>
                         </form>
                     </div>
-                    <div class="login-card-footer text-center mt-4">
-                        <small>Forgot your password? <a routerLink="/register" class="text-decoration-none">Recover it!</a></small>
+                    <div class="login-card-footer text-center mt-4 d-flex justify-content-center align-items-center">
+                        <small>Forgot your password?</small> <button routerLink="/password-recovery" class="btn btn-sm btn-link">Recover it!</button>
                     </div>
                 </div>
 
@@ -97,6 +100,7 @@ import { faEye, faEyeSlash } from "@ng-icons/font-awesome/regular";
     `]
 })
 export class LoginComponent implements OnInit {
+    private readonly translate: TranslateService = inject(TranslateService);
     protected formBuilder: FormBuilder = inject(FormBuilder);
 
     protected form!: FormGroup;

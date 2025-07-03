@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-welcome-header',
-    imports: [],
+    imports: [
+        TranslatePipe
+    ],
     template: `
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="fw-bold text-primary">Witaj ponownie!</h2>
+                <h2 class="fw-bold text-primary">{{"welcomeHeader.welcomeBack" | translate}}</h2>
                 <p class="text-primary">Zaloguj się, aby kontynuować</p>
             </div>
         </div>
@@ -14,5 +17,5 @@ import { Component } from '@angular/core';
     styles: ``
 })
 export class WelcomeHeaderComponent {
-
+    private readonly translate = inject(TranslateService);
 }
