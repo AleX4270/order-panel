@@ -6,7 +6,7 @@ import { NgIconComponent, provideIcons } from "@ng-icons/core";
 import { faEye, faEyeSlash } from "@ng-icons/font-awesome/regular";
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-login',
@@ -17,6 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
         NgIconComponent,
         CommonModule,
         RouterModule,
+        TranslatePipe
     ],
     providers: [
         provideIcons({ faEye, faEyeSlash }),
@@ -28,25 +29,25 @@ import { TranslateService } from '@ngx-translate/core';
 
                 <div class="login-card shadow-sm p-4 mt-3 bg-white">
                     <div class="login-card-header">
-                        <h5>Login</h5>
-                        <p class="text-muted small mt-1">Enter your credentials to access your account</p>
+                        <h5>{{"login.title" | translate}}</h5>
+                        <p class="text-muted small mt-1">{{"login.description" | translate}}</p>
                     </div>
                     <div class="login-card-body">
                         <form [formGroup]="form">
                             <div class="form-group mt-4">
-                                <label for="email">Email</label>
+                                <label for="email">{{"login.email" | translate}}</label>
                                 <input
                                     id="email"
                                     type="text"
                                     class="form-control mt-2"
                                     formControlName="email"
-                                    placeholder="user@example.com"
+                                    placeholder="{{'login.emailPlaceholder' | translate }}"
                                 />
                             </div>
 
                             <div class="form-group mt-4">
                                 <div class="d-flex justify-content-between">
-                                    <label for="password">Password</label>
+                                    <label for="password">{{"login.password" | translate}}</label>
                                 </div>
                                 <div class="position-relative">
                                     <input
@@ -68,13 +69,13 @@ import { TranslateService } from '@ngx-translate/core';
 
                             <div>
                                 <button class="btn btn-primary w-100 mt-4">
-                                    Sign in
+                                    {{"login.submit" | translate}}
                                 </button>
                             </div>
                         </form>
                     </div>
                     <div class="login-card-footer text-center mt-4 d-flex justify-content-center align-items-center">
-                        <small>Forgot your password?</small> <button routerLink="/password-recovery" class="btn btn-sm btn-link">Recover it!</button>
+                        <small>{{"login.forgotPassword" | translate}}</small> <button routerLink="/password-recovery" class="btn btn-sm btn-link">{{"login.passwordRecovery" | translate}}</button>
                     </div>
                 </div>
 
