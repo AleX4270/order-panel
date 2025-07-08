@@ -1,0 +1,25 @@
+{
+  "basic": {
+    "copyright": "AleX4270. All rights reserved"
+  },
+  "auth": {
+    "header": "Welcome back!"
+  },
+  "login": {
+    "title": "Log in",
+    "description": "Enter your credentials to access your account",
+    "email": "E-mail",
+    "emailPlaceholder": "user@domain.com",
+    "password": "Password",
+    "submit": "Log in",
+    "forgotPassword": "Forgot your password?",
+    "passwordRecovery": "Recover it!"
+  },
+  "passwordRecovery": {
+    "title": "Password Recovery",
+    "description": "Enter the email address associated with your account and we'll send you a link to reset your password",
+    "email": "E-mail",
+    "emailPlaceholder": "user@domain.com",
+    "submit": "Send link"
+  }
+}

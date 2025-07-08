@@ -1,0 +1,25 @@
+{
+    "basic": {
+        "copyright": "AleX4270. Wszelkie prawa zastrzeżone"
+    },
+    "auth": {
+        "header": "Witaj ponownie!"
+    },
+    "login": {
+        "title": "Zaloguj się",
+        "description": "Podaj swoje dane, aby uzyskać dostęp do konta",
+        "email": "E-mail",
+        "emailPlaceholder": "uzytkownik@domena.pl",
+        "password": "Hasło",
+        "submit": "Zaloguj się",
+        "forgotPassword": "Zapomniałeś hasła?",
+        "passwordRecovery": "Odzyskaj je!"
+    },
+    "passwordRecovery": {
+        "title": "Odzyskiwanie hasła",
+        "description": "Podaj adres e-mail powiązany z Twoim kontem, a my wyślemy na niego link resetujący Twoje hasło",
+        "email": "E-mail",
+        "emailPlaceholder": "uzytkownik@domena.pl",
+        "submit": "Wyślij link"
+    }
+}
