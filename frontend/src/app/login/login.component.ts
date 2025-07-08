@@ -7,6 +7,8 @@ import { faEye, faEyeSlash } from "@ng-icons/font-awesome/regular";
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../shared/services/auth/auth.service';
+import { UserLoginCredentials } from '../shared/types/auth.types';
 
 @Component({
     selector: 'app-login',
@@ -17,7 +19,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
         NgIconComponent,
         CommonModule,
         RouterModule,
-        TranslatePipe
+        TranslatePipe,
     ],
     providers: [
         provideIcons({ faEye, faEyeSlash }),
@@ -68,7 +70,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
                             </div>
 
                             <div>
-                                <button class="btn btn-primary w-100 mt-4">
+                                <button class="btn btn-primary w-100 mt-4" (click)="onSubmit()">
                                     {{"login.submit" | translate}}
                                 </button>
                             </div>
@@ -102,10 +104,13 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 })
 export class LoginComponent implements OnInit {
     private readonly translate: TranslateService = inject(TranslateService);
-    protected formBuilder: FormBuilder = inject(FormBuilder);
+    private readonly authService: AuthService = inject(AuthService);
 
+    protected formBuilder: FormBuilder = inject(FormBuilder);
     protected form!: FormGroup;
     protected showPassword: boolean = false;
+
+    private isFormSubmitted: boolean = false;
 
     ngOnInit(): void {
         this.initForm();
@@ -120,5 +125,33 @@ export class LoginComponent implements OnInit {
             email: ['', Validators.required],
             password: ['', Validators.required],
         });
+    }
+
+    protected onSubmit(): void {
+        if(this.isFormSubmitted) {
+            return;
+        }
+
+        if(!this.form.valid) {
+            //TODO: Implement the notification popup
+            console.error('The form is not valid');
+            return;
+        }
+
+        console.log('test');
+
+        const userCredentials: UserLoginCredentials = {
+            email: this.form.get('email')?.value,
+            password: this.form.get('password')?.value,
+        };
+
+        this.authService.login(userCredentials).subscribe({
+            next: (res: Response) => {
+                console.log(res);
+            },
+            error: (err) => {
+                console.error(err);
+            }
+        })
     }
 }
