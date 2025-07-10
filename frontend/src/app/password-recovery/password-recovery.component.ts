@@ -3,6 +3,8 @@ import { WelcomeHeaderComponent } from "../shared/components/welcome-header/welc
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SmallFooterComponent } from "../shared/components/small-footer/small-footer.component";
 import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-login',
@@ -10,7 +12,9 @@ import { TranslatePipe } from '@ngx-translate/core';
         WelcomeHeaderComponent,
         ReactiveFormsModule,
         SmallFooterComponent,
-        TranslatePipe
+        TranslatePipe,
+        CommonModule,
+        RouterModule
     ],
     template: `
         <div class="row vh-100 d-flex justify-content-center align-items-center">
@@ -35,10 +39,18 @@ import { TranslatePipe } from '@ngx-translate/core';
                                 />
                             </div>
 
-                            <div>
-                                <button class="btn btn-primary w-100 mt-4">
-                                    {{"passwordRecovery.submit" | translate}}
-                                </button>
+                            <div class="row">
+                                <div class="col-4">
+                                    <button class="btn btn-danger w-100 mt-4" [routerLink]="'/'">
+                                        {{"basic.return" | translate}}
+                                    </button>
+                                </div>
+
+                                <div class="col-8">
+                                    <button class="btn btn-primary w-100 mt-4">
+                                        {{"passwordRecovery.submit" | translate}}
+                                    </button>
+                                </div>
                             </div>
                         </form>
                     </div>

@@ -1,6 +1,8 @@
 {
     "basic": {
-        "copyright": "AleX4270. Wszelkie prawa zastrzeżone"
+        "copyright": "AleX4270. Wszelkie prawa zastrzeżone",
+        "cancel": "Anuluj",
+        "return": "Powrót"
     },
     "auth": {
         "header": "Witaj ponownie!"
