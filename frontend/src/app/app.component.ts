@@ -1,14 +1,19 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageType } from './shared/enums/enums';
+import { ToastDisplayerComponent } from './shared/components/toast-displayer/toast-displayer.component';
 
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet],
+    imports: [
+        RouterOutlet,
+        ToastDisplayerComponent,
+    ],
     template: `
         <main class="app-container container-fluid">
-        <router-outlet></router-outlet>
+            <app-toast-displayer/>
+            <router-outlet></router-outlet>
         </main>
     `,
     styles: [`

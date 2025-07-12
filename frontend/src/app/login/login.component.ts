@@ -9,6 +9,8 @@ import { RouterModule } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../shared/services/auth/auth.service';
 import { UserLoginCredentials } from '../shared/types/auth.types';
+import { ToastService } from '../shared/services/toast/toast.service';
+import { ToastType } from '../shared/enums/enums';
 
 @Component({
     selector: 'app-login',
@@ -19,7 +21,7 @@ import { UserLoginCredentials } from '../shared/types/auth.types';
         NgIconComponent,
         CommonModule,
         RouterModule,
-        TranslatePipe,
+        TranslatePipe
     ],
     providers: [
         provideIcons({ faEye, faEyeSlash }),
@@ -105,6 +107,7 @@ import { UserLoginCredentials } from '../shared/types/auth.types';
 export class LoginComponent implements OnInit {
     private readonly translate: TranslateService = inject(TranslateService);
     private readonly authService: AuthService = inject(AuthService);
+    private readonly toast: ToastService = inject(ToastService);
 
     protected formBuilder: FormBuilder = inject(FormBuilder);
     protected form!: FormGroup;
@@ -128,30 +131,32 @@ export class LoginComponent implements OnInit {
     }
 
     protected onSubmit(): void {
-        if(this.isFormSubmitted) {
-            return;
-        }
+        this.toast.show('Testowa wiadomosc', ToastType.danger);
 
-        if(!this.form.valid) {
-            //TODO: Implement the notification popup
-            console.error('The form is not valid');
-            return;
-        }
+        // if(this.isFormSubmitted) {
+        //     return;
+        // }
 
-        console.log('test');
+        // if(!this.form.valid) {
+        //     //TODO: Implement the notification popup
+        //     console.error('The form is not valid');
+        //     return;
+        // }
 
-        const userCredentials: UserLoginCredentials = {
-            email: this.form.get('email')?.value,
-            password: this.form.get('password')?.value,
-        };
+        // console.log('test');
 
-        this.authService.login(userCredentials).subscribe({
-            next: (res: Response) => {
-                console.log(res);
-            },
-            error: (err) => {
-                console.error(err);
-            }
-        })
+        // const userCredentials: UserLoginCredentials = {
+        //     email: this.form.get('email')?.value,
+        //     password: this.form.get('password')?.value,
+        // };
+
+        // this.authService.login(userCredentials).subscribe({
+        //     next: (res: Response) => {
+        //         console.log(res);
+        //     },
+        //     error: (err) => {
+        //         console.error(err);
+        //     }
+        // })
     }
 }
