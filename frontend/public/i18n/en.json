@@ -1,25 +1,33 @@
 {
-  "basic": {
-    "copyright": "AleX4270. All rights reserved"
-  },
-  "auth": {
-    "header": "Welcome back!"
-  },
-  "login": {
-    "title": "Log in",
-    "description": "Enter your credentials to access your account",
-    "email": "E-mail",
-    "emailPlaceholder": "user@domain.com",
-    "password": "Password",
-    "submit": "Log in",
-    "forgotPassword": "Forgot your password?",
-    "passwordRecovery": "Recover it!"
-  },
-  "passwordRecovery": {
-    "title": "Password Recovery",
-    "description": "Enter the email address associated with your account and we'll send you a link to reset your password",
-    "email": "E-mail",
-    "emailPlaceholder": "user@domain.com",
-    "submit": "Send link"
-  }
+    "basic": {
+        "copyright": "AleX4270. All rights reserved",
+        "cancel": "Cancel",
+        "return": "Return",
+        "notFound": "Resource not found",
+        "notFoundDescription": "Oops! It looks like the resource you were looking for does not exist. It may have been moved, deleted, or simply never existed."
+    },
+    "form": {
+        "error": "The form contains invalid data"
+    },
+    "auth": {
+        "header": "Welcome back!"
+    },
+    "login": {
+        "title": "Log in",
+        "description": "Enter your credentials to access your account",
+        "email": "E-mail",
+        "emailPlaceholder": "user@domain.com",
+        "password": "Password",
+        "submit": "Log in",
+        "forgotPassword": "Forgot your password?",
+        "passwordRecovery": "Recover it!",
+        "error": "Failed to log in the user or incorrect data provided"
+    },
+    "passwordRecovery": {
+        "title": "Password Recovery",
+        "description": "Enter the email address associated with your account and we'll send you a link to reset your password",
+        "email": "E-mail",
+        "emailPlaceholder": "user@domain.com",
+        "submit": "Send link"
+    }
 }

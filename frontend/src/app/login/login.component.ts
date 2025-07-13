@@ -9,6 +9,8 @@ import { RouterModule } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../shared/services/auth/auth.service';
 import { UserLoginCredentials } from '../shared/types/auth.types';
+import { ToastService } from '../shared/services/toast/toast.service';
+import { ToastType } from '../shared/enums/enums';
 
 @Component({
     selector: 'app-login',
@@ -19,7 +21,7 @@ import { UserLoginCredentials } from '../shared/types/auth.types';
         NgIconComponent,
         CommonModule,
         RouterModule,
-        TranslatePipe,
+        TranslatePipe
     ],
     providers: [
         provideIcons({ faEye, faEyeSlash }),
@@ -105,6 +107,7 @@ import { UserLoginCredentials } from '../shared/types/auth.types';
 export class LoginComponent implements OnInit {
     private readonly translate: TranslateService = inject(TranslateService);
     private readonly authService: AuthService = inject(AuthService);
+    private readonly toast: ToastService = inject(ToastService);
 
     protected formBuilder: FormBuilder = inject(FormBuilder);
     protected form!: FormGroup;
@@ -133,12 +136,12 @@ export class LoginComponent implements OnInit {
         }
 
         if(!this.form.valid) {
-            //TODO: Implement the notification popup
-            console.error('The form is not valid');
+            this.toast.show(
+                this.translate.instant('form.error'),
+                ToastType.danger
+            );
             return;
         }
-
-        console.log('test');
 
         const userCredentials: UserLoginCredentials = {
             email: this.form.get('email')?.value,
@@ -151,6 +154,10 @@ export class LoginComponent implements OnInit {
             },
             error: (err) => {
                 console.error(err);
+                this.toast.show(
+                    this.translate.instant('login.error'),
+                    ToastType.danger
+                );
             }
         })
     }
