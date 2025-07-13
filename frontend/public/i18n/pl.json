@@ -6,6 +6,9 @@
         "notFound": "Nie znaleziono zasobu",
         "notFoundDescription": "Ups! Wygląda na to, że zasób, którego szukałeś, nie istnieje. Być może został przeniesiony, usunięty lub po prostu nigdy nie istniał."
     },
+    "form": {
+        "error": "Formularz zawiera nieprawidłowe dane"
+    },
     "auth": {
         "header": "Witaj ponownie!"
     },
@@ -17,7 +20,8 @@
         "password": "Hasło",
         "submit": "Zaloguj się",
         "forgotPassword": "Zapomniałeś hasła?",
-        "passwordRecovery": "Odzyskaj je!"
+        "passwordRecovery": "Odzyskaj je!",
+        "error": "Nie udało się zalogować użytkownika lub podano błędne dane"
     },
     "passwordRecovery": {
         "title": "Odzyskiwanie hasła",

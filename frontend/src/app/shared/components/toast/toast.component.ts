@@ -1,18 +1,20 @@
-import { Component, effect, input, output } from '@angular/core';
+import { Component, effect, input, output, signal } from '@angular/core';
 import { Toast } from '../../types/toast.types';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-toast',
-    imports: [],
+    imports: [
+        CommonModule
+    ],
     template: `
         <div>
-            <div class="toast-card shadow-sm mt-1 bg-white">
-                <div class="toast-card-header pb-1 d-flex justify-content-end">
-                    <!-- <h6>{{toastData().title}}</h6> -->
-                    <button type="button" class="btn btn-close" (click)="onDismiss(toastData().id)"></button>
-                </div>
-                <div class="toast-card-body pt-2">
-                    <p class="text-muted small">{{toastData().message + toastData().id}}</p>
+            <div 
+                class="toast-card toast-danger shadow-sm mt-1"
+                [ngClass]="{'fade-out': isFadingOut()}"
+            >
+                <div class="toast-card-body pt-3">
+                    <p class="small">{{toastData().message}}</p>
                 </div>
             </div>
         </div>
@@ -21,28 +23,83 @@ import { Toast } from '../../types/toast.types';
         .toast-card {
             border: 1px solid #cce5ff;
             border-radius: 10px;
-            min-width: 350px;
+            width: 350px;
             padding: 12px;
+            display: flex;
+            justify-content: center;
+
+            animation: fade-in 0.5s ease-in;
+
+            .toast-card-header {
+                border-bottom: 2px solid lightgray;
+            }
+
+            &.fade-out {
+                animation: fade-out 0.5s ease-in forwards;
+            }
+
+            &.toast-info {
+                background-color: var(--toast-info-bg);
+                color: var(--toast-info-text);
+                .toast-card-header {
+                    border-bottom: 2px solid var(--toast-info-separator);
+                }   
+            }
+
+            &.toast-success {
+                background-color: var(--toast-success-bg);
+                color: var(--toast-success-text);
+                .toast-card-header {
+                    border-bottom: 2px solid var(--toast-success-separator);
+                }
+            }
+
+            &.toast-warning {
+                background-color: var(--toast-warning-bg);
+                color: var(--toast-warning-text);
+                .toast-card-header {
+                    border-bottom: 2px solid var(--toast-warning-separator);
+                }
+            }
+
+            &.toast-danger {
+                background-color: var(--toast-danger-bg);
+                color: var(--toast-danger-text);
+                .toast-card-header {
+                    border-bottom: 2px solid var(--toast-danger-separator);
+                }
+            }
         }
 
-        .toast-card-header {
-            border-bottom: 2px solid red;
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fade-out {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(100%); }
         }
     `
 })
 export class ToastComponent {
+    protected isFadingOut = signal<boolean>(false);
+
     public toastData = input.required<Toast>();
     public dismiss = output<number>();
 
     constructor() {
         effect(() => {
             setTimeout(() => {
-                this.dismiss.emit(this.toastData().id);
+                this.onDismiss(this.toastData().id);
             }, this.toastData().duration);
         });
     }
 
     public onDismiss(toastId: number) {
-        this.dismiss.emit(toastId);
+        this.isFadingOut.set(true);
+        setTimeout(() => {
+            this.dismiss.emit(toastId);
+        }, 500);
     }
 }

@@ -131,32 +131,34 @@ export class LoginComponent implements OnInit {
     }
 
     protected onSubmit(): void {
-        this.toast.show('Testowa wiadomosc', ToastType.danger);
+        if(this.isFormSubmitted) {
+            return;
+        }
 
-        // if(this.isFormSubmitted) {
-        //     return;
-        // }
+        if(!this.form.valid) {
+            this.toast.show(
+                this.translate.instant('form.error'),
+                ToastType.danger
+            );
+            return;
+        }
 
-        // if(!this.form.valid) {
-        //     //TODO: Implement the notification popup
-        //     console.error('The form is not valid');
-        //     return;
-        // }
+        const userCredentials: UserLoginCredentials = {
+            email: this.form.get('email')?.value,
+            password: this.form.get('password')?.value,
+        };
 
-        // console.log('test');
-
-        // const userCredentials: UserLoginCredentials = {
-        //     email: this.form.get('email')?.value,
-        //     password: this.form.get('password')?.value,
-        // };
-
-        // this.authService.login(userCredentials).subscribe({
-        //     next: (res: Response) => {
-        //         console.log(res);
-        //     },
-        //     error: (err) => {
-        //         console.error(err);
-        //     }
-        // })
+        this.authService.login(userCredentials).subscribe({
+            next: (res: Response) => {
+                console.log(res);
+            },
+            error: (err) => {
+                console.error(err);
+                this.toast.show(
+                    this.translate.instant('login.error'),
+                    ToastType.danger
+                );
+            }
+        })
     }
 }
