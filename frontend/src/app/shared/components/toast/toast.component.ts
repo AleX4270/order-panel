@@ -91,6 +91,7 @@ export class ToastComponent {
 
     constructor() {
         effect(() => {
+            // TODO: Add the not auto dismissable toast option
             setTimeout(() => {
                 this.onDismiss(this.toastData().id);
             }, this.toastData().duration);
