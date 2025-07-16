@@ -16,6 +16,16 @@ class AuthController extends Controller {
         private readonly AuthService $authService,
     ) {}
 
+    public function user(Request $request): ApiResponse {
+        $currentUser = $request->user();
+
+        return new ApiResponse(
+            status: HttpStatus::OK,
+            data: $currentUser,
+            message: __('basic.success'),
+        );
+    }
+
     public function login(LoginRequest $request): ApiResponse {
         $result = $this->authService->login($request, $request->validated());
 

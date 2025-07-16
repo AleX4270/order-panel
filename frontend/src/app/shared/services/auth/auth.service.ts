@@ -20,4 +20,8 @@ export class AuthService {
             })
         );
     }
+
+    public user(): Observable<Response> {
+        return this.http.get<Response>(`${environment.apiUrl}/user`);
+    }
 }
