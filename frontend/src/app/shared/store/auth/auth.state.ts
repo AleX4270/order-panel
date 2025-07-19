@@ -28,7 +28,7 @@ export class AuthState {
         });
     }
 
-    @Selector()
+    @Selector([AuthState])
     static isAuthenticated(state: AuthStateModel): boolean {
         return state.isAuthenticated;
     }

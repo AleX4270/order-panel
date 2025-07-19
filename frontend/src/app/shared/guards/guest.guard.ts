@@ -1,20 +1,20 @@
 import { inject } from '@angular/core';
-import { CanActivateFn } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { AuthState } from '../store/auth/auth.state';
-import { Router } from '@angular/router';
 import { map, tap } from 'rxjs';
 
-export const authGuard: CanActivateFn = (route, state) => {
+export const guestGuard: CanActivateFn = (route, state) => {
     const store = inject(Store);
     const router = inject(Router);
 
     return store.select(AuthState.isAuthenticated).pipe(
-        tap(isAuthenticated => {
-            if (!isAuthenticated) {
-                router.navigate(['/']);
+        map(isAuthenticated => {
+            if (isAuthenticated) {
+                router.navigate(['/dashboard']);
             }
+
+            return true;
         }),
-        map(isAuthenticated => isAuthenticated)
     );
 };

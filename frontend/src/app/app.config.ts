@@ -8,13 +8,15 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { csrfInterceptor } from './shared/interceptors/csrf.interceptor';
 import { provideStore } from '@ngxs/store';
+import { AuthState } from './shared/store/auth/auth.state';
+import { withNgxsStoragePlugin } from '@ngxs/storage-plugin';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
     new TranslateHttpLoader(http, './i18n/', '.json');
 
 export const appConfig: ApplicationConfig = {
     providers: [
-        provideZoneChangeDetection({ eventCoalescing: true }), 
+        provideZoneChangeDetection({ eventCoalescing: true }),
         provideRouter(routes),
         provideTranslateService({
             defaultLanguage: LanguageType.english
@@ -29,6 +31,10 @@ export const appConfig: ApplicationConfig = {
                 deps: [HttpClient],
             },
         }),
-        provideStore()
+        provideStore([
+            AuthState
+        ], withNgxsStoragePlugin({
+            keys: ['auth']
+        })),
     ]
 };
