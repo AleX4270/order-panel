@@ -4,6 +4,9 @@ import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { UserLoginCredentials } from '../../types/auth.types';
+import { ApiResponse } from '../../types/http.types';
+import { UserDetailsResponse } from '../../types/auth.types';
+
 
 @Injectable({
     providedIn: 'root'
@@ -25,7 +28,7 @@ export class AuthService {
         return this.http.post<Response>(`${environment.apiUrl}/logout`, {});
     }
 
-    public user(): Observable<Response> {
-        return this.http.get<Response>(`${environment.apiUrl}/user`);
+    public user(): Observable<ApiResponse<UserDetailsResponse>> {
+        return this.http.get<ApiResponse<UserDetailsResponse>>(`${environment.apiUrl}/user`);
     }
 }

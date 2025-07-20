@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageType } from './shared/enums/enums';
@@ -23,10 +23,10 @@ import { ToastDisplayerComponent } from './shared/components/toast-displayer/toa
         }
     `]
 })
-export class AppComponent {
-    constructor(
-        private readonly translate: TranslateService
-    ) {
+export class AppComponent implements OnInit {
+    private readonly translate = inject(TranslateService);
+
+    ngOnInit(): void {
         this.translate.addLangs([
             LanguageType.polish,
             LanguageType.english,

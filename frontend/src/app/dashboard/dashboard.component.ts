@@ -1,5 +1,8 @@
 import { Component, inject  } from '@angular/core';
+import { Store } from '@ngxs/store';
 import { AuthService } from '../shared/services/auth/auth.service';
+import { LogoutUser } from '../shared/store/auth/auth.actions';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-dashboard',
@@ -13,11 +16,17 @@ import { AuthService } from '../shared/services/auth/auth.service';
     `]
 })
 export class DashboardComponent {
-    constructor(private readonly authService: AuthService) {
-        console.log('im here!');
-    }
+    private readonly authService = inject(AuthService);
+    private readonly store = inject(Store);
+    private readonly router = inject(Router);
+
 
     logout() {
-        this.authService.logout().subscribe({});
+        this.authService.logout().subscribe({
+            next: (res: any) => {
+                this.store.dispatch(new LogoutUser());
+                this.router.navigate(['/']);
+            }
+        });
     }
 }

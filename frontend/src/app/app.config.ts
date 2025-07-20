@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { LanguageType } from './shared/enums/enums';
@@ -10,6 +10,7 @@ import { csrfInterceptor } from './shared/interceptors/csrf.interceptor';
 import { provideStore } from '@ngxs/store';
 import { AuthState } from './shared/store/auth/auth.state';
 import { withNgxsStoragePlugin } from '@ngxs/storage-plugin';
+import { initializeAuth } from './shared/initializers/auth.initializer';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
     new TranslateHttpLoader(http, './i18n/', '.json');
@@ -36,5 +37,6 @@ export const appConfig: ApplicationConfig = {
         ], withNgxsStoragePlugin({
             keys: ['auth']
         })),
+        provideAppInitializer(initializeAuth)
     ]
 };
