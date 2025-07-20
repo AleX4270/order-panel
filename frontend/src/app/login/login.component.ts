@@ -170,12 +170,6 @@ export class LoginComponent implements OnInit {
                     this.store.dispatch(new LoginUser({username: res.data.name}));
                     this.router.navigate(['/dashboard']);
                 }
-                else {
-                    this.toast.show(
-                        this.translate.instant("login.error"),
-                        ToastType.danger,
-                    );
-                }
             },
             error: (err) => {
                 console.error(err);

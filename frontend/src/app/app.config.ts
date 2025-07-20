@@ -11,6 +11,7 @@ import { provideStore } from '@ngxs/store';
 import { AuthState } from './shared/store/auth/auth.state';
 import { withNgxsStoragePlugin } from '@ngxs/storage-plugin';
 import { initializeAuth } from './shared/initializers/auth.initializer';
+import { authErrorInterceptor } from './shared/interceptors/auth-error.interceptor';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
     new TranslateHttpLoader(http, './i18n/', '.json');
@@ -23,7 +24,8 @@ export const appConfig: ApplicationConfig = {
             defaultLanguage: LanguageType.english
         }),
         provideHttpClient(withInterceptors([
-            csrfInterceptor
+            csrfInterceptor,
+            authErrorInterceptor
         ])),
         provideTranslateService({
             loader: {
