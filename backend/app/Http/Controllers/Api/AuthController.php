@@ -38,6 +38,7 @@ class AuthController extends Controller {
 
         return new ApiResponse(
             status: HttpStatus::OK,
+            data: $result,
             message: __('basic.success')
         );
     }

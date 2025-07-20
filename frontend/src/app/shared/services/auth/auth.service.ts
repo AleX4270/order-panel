@@ -7,7 +7,6 @@ import { UserLoginCredentials } from '../../types/auth.types';
 import { ApiResponse } from '../../types/http.types';
 import { UserDetailsResponse } from '../../types/auth.types';
 
-
 @Injectable({
     providedIn: 'root'
 })
@@ -16,16 +15,16 @@ export class AuthService {
         private readonly http: HttpClient
     ) {}
 
-    public login(userCredentials: UserLoginCredentials): Observable<Response> {
+    public login(userCredentials: UserLoginCredentials): Observable<ApiResponse<UserDetailsResponse>> {
         return this.http.get<Response>(`${environment.apiUrl}/sanctum/csrf-cookie`, { withCredentials: true }).pipe(
             switchMap(() => {
-                return this.http.post<Response>(`${environment.apiUrl}/login`, userCredentials, { withCredentials: true });
+                return this.http.post<ApiResponse<UserDetailsResponse>>(`${environment.apiUrl}/login`, userCredentials, { withCredentials: true });
             })
         );
     }
 
-    public logout(): Observable<Response> {
-        return this.http.post<Response>(`${environment.apiUrl}/logout`, {});
+    public logout(): Observable<ApiResponse<void>> {
+        return this.http.post<ApiResponse<void>>(`${environment.apiUrl}/logout`, {});
     }
 
     public user(): Observable<ApiResponse<UserDetailsResponse>> {

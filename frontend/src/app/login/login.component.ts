@@ -165,13 +165,17 @@ export class LoginComponent implements OnInit {
         };
 
         this.authService.login(userCredentials).subscribe({
-            next: (res: any) => { //TODO: Improve
-                const user: User = {
-                    username: res.name
+            next: (res) => {
+                if(res.data) {
+                    this.store.dispatch(new LoginUser({username: res.data.name}));
+                    this.router.navigate(['/dashboard']);
                 }
-
-                this.store.dispatch(new LoginUser(user));
-                this.router.navigate(['/dashboard']);
+                else {
+                    this.toast.show(
+                        this.translate.instant("login.error"),
+                        ToastType.danger,
+                    );
+                }
             },
             error: (err) => {
                 console.error(err);
