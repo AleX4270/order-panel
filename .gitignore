@@ -52,4 +52,4 @@ phpunit.phar
 /.vagrant
 .vscode
 
-.zed
+.zed/*
