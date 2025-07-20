@@ -3,15 +3,22 @@ import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageType } from './shared/enums/enums';
 import { ToastDisplayerComponent } from './shared/components/toast-displayer/toast-displayer.component';
+import { NavbarComponent } from "./shared/components/navbar/navbar.component";
+import { Store } from '@ngxs/store';
+import { AuthState } from './shared/store/auth/auth.state';
 
 @Component({
     selector: 'app-root',
     imports: [
-        RouterOutlet,
-        ToastDisplayerComponent,
-    ],
+    RouterOutlet,
+    ToastDisplayerComponent,
+    NavbarComponent
+],
     template: `
         <main class="app-container container-fluid">
+            @if(isUserAuthenticated()) {
+                <app-navbar/>
+            }
             <app-toast-displayer/>
             <router-outlet></router-outlet>
         </main>
@@ -25,6 +32,9 @@ import { ToastDisplayerComponent } from './shared/components/toast-displayer/toa
 })
 export class AppComponent implements OnInit {
     private readonly translate = inject(TranslateService);
+    private readonly store = inject(Store);
+
+    protected isUserAuthenticated = this.store.selectSignal(AuthState.isAuthenticated);
 
     ngOnInit(): void {
         this.translate.addLangs([
