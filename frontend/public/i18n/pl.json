@@ -6,6 +6,10 @@
         "notFound": "Nie znaleziono zasobu",
         "notFoundDescription": "Ups! Wygląda na to, że zasób, którego szukałeś, nie istnieje. Być może został przeniesiony, usunięty lub po prostu nigdy nie istniał."
     },
+    "navbar": {
+        "dashboard": "Panel",
+        "orders": "Zamówienia"
+    },
     "form": {
         "error": "Formularz zawiera nieprawidłowe dane"
     },

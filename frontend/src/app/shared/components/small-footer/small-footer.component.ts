@@ -7,9 +7,9 @@ import { TranslatePipe } from '@ngx-translate/core';
         TranslatePipe
     ],
     template: `
-        <div class="row text-center mt-3 small text-secondary">
+        <div class="row text-center small text-secondary">
             <div class="col-12">
-                <p>&copy; {{ currentYear + ' ' + ('basic.copyright' | translate)}}</p>
+                <span>&copy; {{ currentYear + ' ' + ('basic.copyright' | translate)}}</span>
             </div>
         </div>
     `,

@@ -56,7 +56,9 @@ import { RouterModule } from '@angular/router';
                     </div>
                 </div>
 
-                <app-small-footer/>
+                <div class="mt-3">
+                    <app-small-footer />
+                </div>
             </div>
         </div>
     `,

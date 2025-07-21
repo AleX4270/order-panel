@@ -16,9 +16,7 @@ import { AuthState } from './shared/store/auth/auth.state';
 ],
     template: `
         <main class="app-container container-fluid">
-            @if(isUserAuthenticated()) {
-                <app-navbar/>
-            }
+            <app-navbar/>
             <app-toast-displayer/>
             <router-outlet></router-outlet>
         </main>
@@ -26,7 +24,7 @@ import { AuthState } from './shared/store/auth/auth.state';
     styles: [`
         main {
             min-height: 100vh;
-            background: linear-gradient(135deg, #f8fafc, #e9f0f7);
+            //background: linear-gradient(135deg, #f8fafc, #e9f0f7);
         }
     `]
 })

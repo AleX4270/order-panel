@@ -1,3 +1,37 @@
 @use './styles/themes/light-theme.scss';
 @use './styles/themes/dark-theme.scss';
 @use './styles/variables.scss';
+
+@font-face {
+    font-family: 'mainFont';
+    src: url('../public/fonts/Poppins-Light.ttf');
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: 'mainFont';
+    src: url('../public/fonts/Poppins-Regular.ttf');
+    font-weight: 400
+}
+
+@font-face {
+    font-family: 'mainFont';
+    src: url('../public/fonts/Poppins-Medium.ttf');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'mainFont';
+    src: url('../public/fonts/Poppins-SemiBold.ttf');
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: 'mainFont';
+    src: url('../public/fonts/Poppins-Bold.ttf');
+    font-weight: 700;
+}
+
+* {
+    font-family: 'mainFont';
+}

@@ -98,7 +98,9 @@ import { LoginUser } from "../shared/store/auth/auth.actions";
                     </div>
                 </div>
 
-                <app-small-footer />
+                <div class="mt-3">
+                    <app-small-footer />
+                </div>
             </div>
         </div>
     `,
