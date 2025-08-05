@@ -1,6 +1,6 @@
 {
     "basic": {
-        "copyright": "AleX4270. All rights reserved",
+        "copyright": "OrderPanel - AleX4270. All rights reserved",
         "cancel": "Cancel",
         "return": "Return",
         "notFound": "Resource not found",
@@ -8,7 +8,9 @@
     },
     "navbar": {
         "dashboard": "Dashboard",
-        "orders": "Orders"
+        "orders": "Orders",
+        "settings": "Settings",
+        "logout": "Logout"
     },
     "form": {
         "error": "The form contains invalid data"
@@ -26,6 +28,10 @@
         "forgotPassword": "Forgot your password?",
         "passwordRecovery": "Recover it!",
         "error": "Failed to log in the user or incorrect data provided"
+    },
+    "logout": {
+        "success": "User successfully logged out",
+        "error": "Could not logout the user"
     },
     "passwordRecovery": {
         "title": "Password Recovery",

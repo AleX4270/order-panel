@@ -29,7 +29,7 @@ import { Subscription } from 'rxjs';
 export class ToastDisplayerComponent implements OnDestroy, OnInit {
     private readonly toastService: ToastService = inject(ToastService);
     private toastServiceSubscription!: Subscription;
-    
+
     protected toastStack: Toast[] = [];
 
     ngOnInit(): void {

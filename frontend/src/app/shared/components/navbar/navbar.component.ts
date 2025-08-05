@@ -2,36 +2,47 @@ import { Component, inject, OnInit } from '@angular/core';
 import { SmallFooterComponent } from "../small-footer/small-footer.component";
 import { NavbarElementComponent } from "../navbar-element/navbar-element.component";
 import { Store } from '@ngxs/store';
-import { AuthState } from '../../store/auth/auth.state';
+import { UserState } from '../../store/user/user.state';
 import { LocalDataService } from '../../services/local-data/local-data.service';
 import { NavbarElement } from '../../types/navbar.types';
+import { UserProfileNavbarComponent } from '../user-image/user-profile-navbar.component';
+import { LanguageSelectorComponent } from '../language-selector/language-selector.component';
 
 @Component({
     selector: 'app-navbar',
-    imports: [SmallFooterComponent, NavbarElementComponent],
+    imports: [SmallFooterComponent, NavbarElementComponent, UserProfileNavbarComponent, LanguageSelectorComponent],
     template: `
         @if(isUserAuthenticated()) {
-            <nav class="row">
-                <div class="navbar d-flex align-items-center justify-content-center">
-                    <div class="col-2 user-profile">
-                        User profile
-                    </div>
+            <nav class="navbar navbar-expand-lg m-0 p-0">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse align-items-center justify-content-lg-between" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0">
+                            <li class="nav-item me-4">
+                                <app-user-profile-navbar />
+                            </li>
 
-                    <div class="col-7 navbar-option d-flex gap-5">
-                        @for(navElement of navbarElementList; track navElement) {
-                            <app-navbar-element
-                                [label]="navElement.label"
-                                [url]="navElement.url"
-                            />
-                        }
-                    </div>
+                            @for(navElement of navbarElementList; track navElement) {
+                                <li class="nav-item">
+                                    <app-navbar-element
+                                        [label]="navElement.label"
+                                        [url]="navElement.url"
+                                    />
+                                    <!-- <a class="nav-link" href="#">Link</a> -->
+                                </li>
+                            }
+                        </ul>
 
-                    <div class="col-1 language-selector">
-                        PL
-                    </div>
-
-                    <div class="col-2 copyright-info">
-                        <app-small-footer/>
+                        <ul class="navbar-nav mb-2 mb-lg-0">
+                            <li class="nav-item me-3">
+                                <app-language-selector/>
+                            </li>
+                            <li class="nav-item">
+                                <app-small-footer/>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </nav>
@@ -49,14 +60,13 @@ export class NavbarComponent implements OnInit {
     private readonly store = inject(Store);
     private readonly localDataService = inject(LocalDataService);
 
-    protected isUserAuthenticated = this.store.selectSignal(AuthState.isAuthenticated);
+    protected isUserAuthenticated = this.store.selectSignal(UserState.isAuthenticated);
     protected navbarElementList: NavbarElement[] = [];
 
     ngOnInit(): void {
         this.localDataService.getNavbarData().subscribe({
             next: (res) => {
                 this.navbarElementList = res;
-                console.log(this.navbarElementList);
             },
             error: (err) => {
                 console.error(err);

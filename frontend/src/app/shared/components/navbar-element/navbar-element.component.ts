@@ -6,35 +6,13 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
     imports: [TranslatePipe],
     template: `
         <div class="navbar-element">
-            {{"navbar." + label() | translate}}
+            <button class="btn bg-transparent border-0 p-0 m-0">
+                {{"navbar." + label() | translate}}
+            </button>
         </div>
     `,
     styles: [`
-        .navbar-element {
-            font-weight: 500;
-            color: var(--navbar-element-text);
-            padding: 0.5rem 0.75rem 0.5rem 0.75rem;
-            border-radius: var(--navbar-element-radius);
-            transition: color 200ms, background-color 200ms;
-            cursor: pointer;
-            border: none;
-            background-color: transparent;
 
-            &:hover {
-                color: var(--navbar-element-text-active);
-                background-color: var(--navbar-element-background-hover);
-            }
-
-            &.active {
-                color: var(--navbar-element-text-active);
-                background-color: var(--navbar-element-background-active);
-
-                &:hover {
-                    color: var(--navbar-element-text-active);
-                    background-color: var(--navbar-element-background-active);
-                }
-            }
-        }
     `]
 })
 export class NavbarElementComponent {
