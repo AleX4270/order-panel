@@ -12,14 +12,14 @@ import { LanguageSelectorComponent } from '../language-selector/language-selecto
     selector: 'app-navbar',
     imports: [SmallFooterComponent, NavbarElementComponent, UserProfileNavbarComponent, LanguageSelectorComponent],
     template: `
-        @if(isUserAuthenticated()) {
-            <nav class="navbar navbar-expand-lg m-0 p-0">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse align-items-center justify-content-lg-between" id="navbarSupportedContent">
-                        <ul class="navbar-nav mb-2 mb-lg-0">
+        <nav class="navbar navbar-expand-lg m-0 p-0">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse align-items-center justify-content-lg-between" id="navbarSupportedContent">
+                    <ul class="navbar-nav mb-2 mb-lg-0">
+                        @if(isUserAuthenticated()) {
                             <li class="nav-item me-4">
                                 <app-user-profile-navbar />
                             </li>
@@ -30,23 +30,32 @@ import { LanguageSelectorComponent } from '../language-selector/language-selecto
                                         [label]="navElement.label"
                                         [url]="navElement.url"
                                     />
-                                    <!-- <a class="nav-link" href="#">Link</a> -->
                                 </li>
                             }
-                        </ul>
+                        }
+                        @else {
+                            <li class="navbar-brand me-4">
+                                OrderPanel
+                            </li>
+                        }
+                    </ul>
 
-                        <ul class="navbar-nav mb-2 mb-lg-0">
-                            <li class="nav-item me-3">
-                                <app-language-selector/>
+                    <ul class="navbar-nav mb-2 mb-lg-0">
+                        <li class="nav-item me-3">
+                            <app-language-selector/>
+                        </li>
+
+                        @if(isUserAuthenticated()) {
+                            <li>
+                                <span class="navbar-text">
+                                    <app-small-footer/>
+                                </span>
                             </li>
-                            <li class="nav-item">
-                                <app-small-footer/>
-                            </li>
-                        </ul>
-                    </div>
+                        }
+                    </ul>
                 </div>
-            </nav>
-        }
+            </div>
+        </nav>
     `,
     styles: [`
         .navbar {

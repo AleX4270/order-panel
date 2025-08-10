@@ -15,20 +15,13 @@ import { UserState } from './shared/store/user/user.state';
     NavbarComponent
 ],
     template: `
+        <app-navbar/>
         <main class="app-container container-fluid">
-            <app-navbar/>
             <app-toast-displayer/>
             <router-outlet></router-outlet>
         </main>
     `,
-    styles: [`
-        main {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            //background: linear-gradient(135deg, #f8fafc, #e9f0f7);
-        }
-    `]
+    styles: [``]
 })
 export class AppComponent implements OnInit {
     private readonly translate = inject(TranslateService);
@@ -54,12 +47,5 @@ export class AppComponent implements OnInit {
             LanguageType.english,
         ]);
         this.translate.setDefaultLang(LanguageType.polish);
-
-        if(this.selectedLanguage()) {
-            this.translate.use(this.selectedLanguage() as string);
-        }
-        else {
-            this.translate.use(LanguageType.polish);
-        }
     }
 }

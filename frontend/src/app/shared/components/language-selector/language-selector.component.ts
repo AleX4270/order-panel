@@ -10,9 +10,7 @@ import { UserState } from '../../store/user/user.state';
   imports: [],
   template: `
     <div class="dropdown">
-        <div class="dropdown-toggle" data-bs-toggle="dropdown">
-            <button class="btn bg-transparent border-0 p-0 text-uppercase">{{currentLanguage()}}</button>
-        </div>
+        <button class="btn bg-transparent border-0 p-0 text-uppercase dropdown-toggle" data-bs-toggle="dropdown">{{currentLanguage()}}</button>
         <ul class="dropdown-menu mt-1">
             @for(language of languageList(); track language) {
                 <li><button class="dropdown-item text-uppercase" type="button" (click)="setLanguage(language)">{{language}}</button></li>
@@ -30,7 +28,6 @@ export class LanguageSelectorComponent {
     protected currentLanguage = this.store.selectSignal(UserState.userLanguage);
 
     constructor() {
-        console.log(this.translate.getLangs());
         effect(() => {
             this.languageList.set(this.translate.getLangs());
         });
@@ -38,6 +35,5 @@ export class LanguageSelectorComponent {
 
     protected setLanguage(languageSymbol: string): void {
         this.store.dispatch(new SetUserLanguage(languageSymbol as LanguageType));
-        this.translate.use(languageSymbol);
     }
 }
