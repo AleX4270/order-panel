@@ -3,7 +3,7 @@ import { catchError, throwError } from 'rxjs';
 import { HttpStatus } from '../enums/enums';
 import { inject } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { LogoutUser } from '../store/auth/auth.actions';
+import { LogoutUser } from '../store/user/user.actions';
 
 export const authErrorInterceptor: HttpInterceptorFn = (req, next) => {
     const store = inject(Store);

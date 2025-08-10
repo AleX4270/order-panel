@@ -1,10 +1,16 @@
 {
     "basic": {
-        "copyright": "AleX4270. Wszelkie prawa zastrzeżone",
+        "copyright": "OrderPanel - AleX4270. Wszelkie prawa zastrzeżone",
         "cancel": "Anuluj",
         "return": "Powrót",
         "notFound": "Nie znaleziono zasobu",
         "notFoundDescription": "Ups! Wygląda na to, że zasób, którego szukałeś, nie istnieje. Być może został przeniesiony, usunięty lub po prostu nigdy nie istniał."
+    },
+    "navbar": {
+        "dashboard": "Panel",
+        "orders": "Zamówienia",
+        "settings": "Ustawienia",
+        "logout": "Wyloguj"
     },
     "form": {
         "error": "Formularz zawiera nieprawidłowe dane"
@@ -22,6 +28,10 @@
         "forgotPassword": "Zapomniałeś hasła?",
         "passwordRecovery": "Odzyskaj je!",
         "error": "Nie udało się zalogować użytkownika lub podano błędne dane"
+    },
+    "logout": {
+        "success": "Wylogowano użytkownika",
+        "error": "Nie udało się wylogować użytkownika"
     },
     "passwordRecovery": {
         "title": "Odzyskiwanie hasła",

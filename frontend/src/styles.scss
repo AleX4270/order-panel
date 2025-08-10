@@ -1,3 +1,63 @@
 @use './styles/themes/light-theme.scss';
 @use './styles/themes/dark-theme.scss';
 @use './styles/variables.scss';
+
+@font-face {
+    font-family: 'mainFont';
+    src: url('../public/fonts/Poppins-Light.ttf');
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: 'mainFont';
+    src: url('../public/fonts/Poppins-Regular.ttf');
+    font-weight: 400
+}
+
+@font-face {
+    font-family: 'mainFont';
+    src: url('../public/fonts/Poppins-Medium.ttf');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'mainFont';
+    src: url('../public/fonts/Poppins-SemiBold.ttf');
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: 'mainFont';
+    src: url('../public/fonts/Poppins-Bold.ttf');
+    font-weight: 700;
+}
+
+* {
+    font-family: 'mainFont';
+}
+
+.navbar-element {
+    font-weight: 500;
+    color: var(--navbar-element-text);
+    padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+    border-radius: var(--navbar-element-radius);
+    transition: color 200ms, background-color 200ms;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+
+    &:hover {
+        color: var(--navbar-element-text-active);
+        background-color: var(--navbar-element-background-hover);
+    }
+
+    &.active {
+        color: var(--navbar-element-text-active);
+        background-color: var(--navbar-element-background-active);
+
+        &:hover {
+            color: var(--navbar-element-text-active);
+            background-color: var(--navbar-element-background-active);
+        }
+    }
+}

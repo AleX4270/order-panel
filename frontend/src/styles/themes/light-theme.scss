@@ -1,4 +1,6 @@
 :root {
+  --background-color: #ffffff;
+
   --toast-info-bg:          #d6eaf8;
   --toast-info-separator:   #aed6f1;
   --toast-info-text:        #2c3e50;
@@ -18,4 +20,11 @@
   --toast-danger-separator: #f5b7b1;
   --toast-danger-text:      #b03a2e;
   --toast-danger-close:     #b03a2e;
+
+  --navbar-element-text: #374151;
+  --navbar-element-text-active: #2563eb;
+  --navbar-element-background-hover: #f8f9fa;
+  --navbar-element-background-active: #eff6ff;
+
+  --navbar-element-radius: 6px;
 }

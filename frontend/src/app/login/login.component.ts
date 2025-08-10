@@ -15,10 +15,10 @@ import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 import { AuthService } from "../shared/services/auth/auth.service";
 import { UserLoginCredentials } from "../shared/types/auth.types";
 import { ToastService } from "../shared/services/toast/toast.service";
-import { ToastType } from "../shared/enums/enums";
+import { LanguageType, ToastType } from "../shared/enums/enums";
 import { Store } from "@ngxs/store";
 import { User } from "../shared/types/user.types";
-import { LoginUser } from "../shared/store/auth/auth.actions";
+import { LoginUser } from "../shared/store/user/user.actions";
 
 @Component({
     selector: "app-login",
@@ -98,7 +98,9 @@ import { LoginUser } from "../shared/store/auth/auth.actions";
                     </div>
                 </div>
 
-                <app-small-footer />
+                <div class="mt-3">
+                    <app-small-footer />
+                </div>
             </div>
         </div>
     `,
@@ -167,7 +169,12 @@ export class LoginComponent implements OnInit {
         this.authService.login(userCredentials).subscribe({
             next: (res) => {
                 if(res.data) {
-                    this.store.dispatch(new LoginUser({username: res.data.name}));
+                    const userData: User = {
+                        username: res.data.name,
+                        isAuthenticated: true,
+                    };
+
+                    this.store.dispatch(new LoginUser(userData));
                     this.router.navigate(['/dashboard']);
                 }
             },

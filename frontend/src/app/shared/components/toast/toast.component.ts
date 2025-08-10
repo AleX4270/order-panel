@@ -9,8 +9,9 @@ import { CommonModule } from '@angular/common';
     ],
     template: `
         <div>
-            <div 
-                class="toast-card toast-danger shadow-sm mt-1"
+            <!-- TODO! -->
+            <div
+                class="toast-card toast-success shadow-sm mt-1"
                 [ngClass]="{'fade-out': isFadingOut()}"
             >
                 <div class="toast-card-body pt-3">
@@ -43,7 +44,7 @@ import { CommonModule } from '@angular/common';
                 color: var(--toast-info-text);
                 .toast-card-header {
                     border-bottom: 2px solid var(--toast-info-separator);
-                }   
+                }
             }
 
             &.toast-success {
