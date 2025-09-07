@@ -15,13 +15,19 @@ import { UserState } from './shared/store/user/user.state';
     NavbarComponent
 ],
     template: `
-        <app-navbar/>
+        @if(isUserAuthenticated()) {
+            <app-navbar class="sticky-top"/>
+        }
         <main class="app-container container-fluid">
             <app-toast-displayer/>
             <router-outlet></router-outlet>
         </main>
     `,
-    styles: [``]
+    styles: [`
+        .app-container {
+            min-height: calc(100vh - 500px);
+        }
+    `]
 })
 export class AppComponent implements OnInit {
     private readonly translate = inject(TranslateService);

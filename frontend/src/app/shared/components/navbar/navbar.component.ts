@@ -69,7 +69,7 @@ export class NavbarComponent implements OnInit {
     private readonly store = inject(Store);
     private readonly localDataService = inject(LocalDataService);
 
-    protected isUserAuthenticated = this.store.selectSignal(UserState.isAuthenticated);
+    protected isUserAuthenticated = this.store.selectSignal(UserState.isAuthenticated); //TODO: Maybe this won't be needed
     protected navbarElementList: NavbarElement[] = [];
 
     ngOnInit(): void {
