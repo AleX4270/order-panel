@@ -31,7 +31,7 @@ import { Router } from '@angular/router';
                 <button class="btn bg-transparent border-0 p-0 ms-2 dropdown-toggle" data-bs-toggle="dropdown">{{user()?.username}}</button>
                 <ul class="dropdown-menu mt-1">
                     <li><button class="dropdown-item" type="button">{{"navbar.settings" | translate}}</button></li>
-                    <li><button class="dropdown-item" type="button" (click)="logout()">{{"navbar.logout" | translate}}</button></li>
+                    <li><button class="dropdown-item navbar-logout-item" type="button" (click)="logout()">{{"navbar.logout" | translate}}</button></li>
                 </ul>
             </div>
         </div>
@@ -46,6 +46,15 @@ import { Router } from '@angular/router';
             width: 39px;
             height: 39px;
             border-radius: 100%;
+        }
+
+        .navbar-logout-item {
+            color: var(--text-danger-color);
+
+            &:active {
+                color: var(--text-secondary-color);
+                background-color: var(--text-danger-color);
+            }
         }
     `]
 })
