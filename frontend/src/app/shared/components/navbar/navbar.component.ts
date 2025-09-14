@@ -19,7 +19,7 @@ import { UserProfileNavbarComponent } from '../user-image/user-profile-navbar.co
                 <div class="collapse navbar-collapse align-items-center justify-content-lg-between" id="navbarSupportedContent">
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         @if(isUserAuthenticated()) {
-                            <li class="nav-item me-4">
+                            <li class="nav-item me-4 d-flex align-items-center">
                                 <app-user-profile-navbar />
                             </li>
 

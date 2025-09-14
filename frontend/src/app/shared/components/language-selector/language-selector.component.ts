@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
             'dropstart': dropDirection() === 'start',
         }"
     >
-        <button class="btn bg-transparent border border-1 border-primary-subtle text-primary p-2 text-uppercase dropdown-toggle" data-bs-toggle="dropdown">{{currentLanguage()}}</button>
+        <button class="btn bg-transparent border border-1 border-primary-subtle text-primary p-2 text-uppercase" data-bs-toggle="dropdown">{{currentLanguage()}}</button>
         <ul class="dropdown-menu mt-1">
             @for(language of languageList(); track language) {
                 <li><button class="dropdown-item text-uppercase text-primary" type="button" (click)="setLanguage(language)">{{language}}</button></li>
