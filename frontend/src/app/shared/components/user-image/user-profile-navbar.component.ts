@@ -23,10 +23,6 @@ import { Router } from '@angular/router';
                     <li>
                         <button class="dropdown-item" type="button">
                             <div class="d-flex align-items-center justify-content-start gap-2">
-                                <ng-icon
-                                    name="faSolidGear"
-                                    size="20px"
-                                ></ng-icon>    
                                 <span>{{"navbar.settings" | translate}}</span>
                             </div>
                         </button>
@@ -34,10 +30,6 @@ import { Router } from '@angular/router';
                     <li>
                         <button class="dropdown-item navbar-logout-item" type="button" (click)="logout()">
                             <div class="d-flex align-items-center justify-content-start gap-2">
-                                <ng-icon
-                                    name="faSolidRightFromBracket"
-                                    size="20px"
-                                ></ng-icon>    
                                 <span>{{"navbar.logout" | translate}}</span>
                             </div>
                         </button>
