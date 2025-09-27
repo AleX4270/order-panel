@@ -6,19 +6,26 @@ import { ToastDisplayerComponent } from './shared/components/toast-displayer/toa
 import { NavbarComponent } from "./shared/components/navbar/navbar.component";
 import { Store } from '@ngxs/store';
 import { UserState } from './shared/store/user/user.state';
+import { LanguageSelectorComponent } from "./shared/components/language-selector/language-selector.component";
 
 @Component({
     selector: 'app-root',
     imports: [
     RouterOutlet,
     ToastDisplayerComponent,
-    NavbarComponent
+    NavbarComponent,
+    LanguageSelectorComponent
 ],
     template: `
-        <app-navbar/>
+        @if(isUserAuthenticated()) {
+            <app-navbar class="sticky-top"/>
+        }
         <main class="app-container container-fluid">
             <app-toast-displayer/>
             <router-outlet></router-outlet>
+            @if(!isUserAuthenticated()) {
+                <app-language-selector class="fixed-bottom px-3 py-2" [dropDirection]="'up'" />
+            }
         </main>
     `,
     styles: [``]

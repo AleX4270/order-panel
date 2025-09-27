@@ -6,11 +6,10 @@ import { UserState } from '../../store/user/user.state';
 import { LocalDataService } from '../../services/local-data/local-data.service';
 import { NavbarElement } from '../../types/navbar.types';
 import { UserProfileNavbarComponent } from '../user-image/user-profile-navbar.component';
-import { LanguageSelectorComponent } from '../language-selector/language-selector.component';
 
 @Component({
     selector: 'app-navbar',
-    imports: [SmallFooterComponent, NavbarElementComponent, UserProfileNavbarComponent, LanguageSelectorComponent],
+    imports: [SmallFooterComponent, NavbarElementComponent, UserProfileNavbarComponent],
     template: `
         <nav class="navbar navbar-expand-lg m-0 p-0">
             <div class="container-fluid">
@@ -20,7 +19,7 @@ import { LanguageSelectorComponent } from '../language-selector/language-selecto
                 <div class="collapse navbar-collapse align-items-center justify-content-lg-between" id="navbarSupportedContent">
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         @if(isUserAuthenticated()) {
-                            <li class="nav-item me-4">
+                            <li class="nav-item me-4 d-flex align-items-center">
                                 <app-user-profile-navbar />
                             </li>
 
@@ -41,10 +40,6 @@ import { LanguageSelectorComponent } from '../language-selector/language-selecto
                     </ul>
 
                     <ul class="navbar-nav mb-2 mb-lg-0">
-                        <li class="nav-item me-3">
-                            <app-language-selector/>
-                        </li>
-
                         @if(isUserAuthenticated()) {
                             <li>
                                 <span class="navbar-text">
@@ -69,7 +64,7 @@ export class NavbarComponent implements OnInit {
     private readonly store = inject(Store);
     private readonly localDataService = inject(LocalDataService);
 
-    protected isUserAuthenticated = this.store.selectSignal(UserState.isAuthenticated);
+    protected isUserAuthenticated = this.store.selectSignal(UserState.isAuthenticated); //TODO: Maybe this won't be needed
     protected navbarElementList: NavbarElement[] = [];
 
     ngOnInit(): void {

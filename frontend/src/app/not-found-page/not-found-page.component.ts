@@ -11,13 +11,13 @@ import { TranslatePipe } from '@ngx-translate/core';
     template: `
         <div class="row vh-100 d-flex justify-content-center align-items-center">
             <div class="col-3">
-                <div class="resource-not-found-card shadow-sm p-4 mt-3 bg-white">
+                <div class="resource-not-found-card shadow-sm p-4 mt-3 mb-3 bg-white">
                     <div class="resource-not-found-card-header">
                         <h2 class="text-danger">{{"basic.notFound" | translate}}</h2>
                         <p class="text-muted mt-2">{{"basic.notFoundDescription" | translate}}</p>
                     </div>
                 </div>
-                <app-small-footer/>
+                <app-small-footer />
             </div>
         </div>
     `,
