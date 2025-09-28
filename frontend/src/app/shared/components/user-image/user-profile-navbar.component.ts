@@ -1,7 +1,7 @@
 import { Component, inject, Signal } from '@angular/core';
-import { NgIcon, provideIcons } from '@ng-icons/core';
+import { NgIcon, NgIconComponent, provideIcons } from '@ng-icons/core';
 import { faUser } from '@ng-icons/font-awesome/regular';
-import { faSolidChevronDown } from '@ng-icons/font-awesome/solid';
+import { faSolidChevronDown, faSolidGear, faSolidRightFromBracket } from '@ng-icons/font-awesome/solid';
 import { Store } from '@ngxs/store';
 import { UserState } from '../../store/user/user.state';
 import { User } from '../../types/user.types';
@@ -14,38 +14,37 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-user-profile-navbar',
-    imports: [NgIcon, TranslatePipe],
-    providers: [provideIcons({faUser, faSolidChevronDown})],
+    imports: [NgIcon, TranslatePipe, NgIconComponent],
+    providers: [provideIcons({faUser, faSolidChevronDown, faSolidGear, faSolidRightFromBracket})],
     template: `
-        <!-- TODO: Implement a real user image loading mechanism -->
-        <!-- TODO: To musi być zbudowane inaczej, nie da się tak ustawić calej szerokosci dropdowna i ten placeholder zdjecia przeszkadza -->
-        <div class="user-data-container d-flex justify-content-start align-items-center">
-            <div class="user-image-container d-flex justify-content-center align-items-center">
-                <ng-icon
-                    name="fa-user"
-                    size="21px"
-                ></ng-icon>
-            </div>
-
-            <div class="dropdown">
-                <button class="btn bg-transparent border-0 p-0 ms-2 dropdown-toggle" data-bs-toggle="dropdown">{{user()?.username}}</button>
+        <div class="dropdown">
+                <button class="btn bg-transparent border-0 p-0 ms-2 dropdown-toggle text-primary" data-bs-toggle="dropdown">{{user()?.username}}</button>
                 <ul class="dropdown-menu mt-1">
-                    <li><button class="dropdown-item" type="button">{{"navbar.settings" | translate}}</button></li>
-                    <li><button class="dropdown-item" type="button" (click)="logout()">{{"navbar.logout" | translate}}</button></li>
+                    <li>
+                        <button class="dropdown-item" type="button">
+                            <div class="d-flex align-items-center justify-content-start gap-2">
+                                <span>{{"navbar.settings" | translate}}</span>
+                            </div>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item navbar-logout-item" type="button" (click)="logout()">
+                            <div class="d-flex align-items-center justify-content-start gap-2">
+                                <span>{{"navbar.logout" | translate}}</span>
+                            </div>
+                        </button>
+                    </li>
                 </ul>
             </div>
-        </div>
     `,
     styles: [`
-        .user-data-container {
-            cursor: pointer;
-        }
+        .navbar-logout-item {
+            color: var(--text-danger-color);
 
-        .user-image-container {
-            border: 2px solid black;
-            width: 39px;
-            height: 39px;
-            border-radius: 100%;
+            &:active {
+                color: var(--text-secondary-color);
+                background-color: var(--text-danger-color);
+            }
         }
     `]
 })

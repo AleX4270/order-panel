@@ -73,6 +73,7 @@ import { LoginUser } from "../shared/store/user/user.actions";
                                     />
                                     <div class="password-toggle-icon">
                                         <ng-icon
+                                            class="item-pressable"
                                             name="{{ showPassword ? 'faEyeSlash' : 'faEye' }}"
                                             size="20px"
                                             (click)="togglePassword()"

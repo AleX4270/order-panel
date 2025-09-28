@@ -61,3 +61,16 @@
         }
     }
 }
+
+.item-pressable {
+    cursor: pointer;
+    transition: transform ease 0.15s;
+
+    &:hover {
+        transform: scale(1.21);
+    }
+
+    &:active {
+        transform: scale(1.05);
+    }
+}
