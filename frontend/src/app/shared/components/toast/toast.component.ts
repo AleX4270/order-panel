@@ -1,6 +1,7 @@
 import { Component, effect, input, output, signal } from '@angular/core';
 import { Toast } from '../../types/toast.types';
 import { CommonModule } from '@angular/common';
+import { ToastType } from '../../enums/enums';
 
 @Component({
     selector: 'app-toast',
@@ -9,10 +10,15 @@ import { CommonModule } from '@angular/common';
     ],
     template: `
         <div>
-            <!-- TODO! -->
             <div
                 class="toast-card toast-success shadow-sm mt-1"
-                [ngClass]="{'fade-out': isFadingOut()}"
+                [ngClass]="{
+                    'fade-out': isFadingOut(),
+                    'toast-info': toastData().type === toastType.info,
+                    'toast-success': toastData().type === toastType.success,
+                    'toast-warning': toastData().type === toastType.warning,
+                    'toast-danger': toastData().type === toastType.danger
+                }"
             >
                 <div class="toast-card-body pt-3">
                     <p class="small">{{toastData().message}}</p>
@@ -29,14 +35,14 @@ import { CommonModule } from '@angular/common';
             display: flex;
             justify-content: center;
 
-            animation: fade-in 0.5s ease-in;
+            animation: fade-in 0.3s ease-in;
 
             .toast-card-header {
                 border-bottom: 2px solid lightgray;
             }
 
             &.fade-out {
-                animation: fade-out 0.5s ease-in forwards;
+                animation: fade-out 0.3s ease-in forwards;
             }
 
             &.toast-info {
@@ -85,12 +91,14 @@ import { CommonModule } from '@angular/common';
 })
 export class ToastComponent {
     protected isFadingOut = signal<boolean>(false);
+    protected toastType = ToastType;
 
     public toastData = input.required<Toast>();
     public dismiss = output<number>();
 
     constructor() {
         effect(() => {
+            // TODO: Add the not auto dismissable toast option
             setTimeout(() => {
                 this.onDismiss(this.toastData().id);
             }, this.toastData().duration);
