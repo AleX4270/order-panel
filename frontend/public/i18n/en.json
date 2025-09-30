@@ -39,5 +39,8 @@
         "email": "E-mail",
         "emailPlaceholder": "user@domain.com",
         "submit": "Send link"
+    },
+    "orderList": {
+        "header": "Order List"
     }
 }

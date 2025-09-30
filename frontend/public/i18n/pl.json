@@ -39,5 +39,8 @@
         "email": "E-mail",
         "emailPlaceholder": "uzytkownik@domena.pl",
         "submit": "Wyślij link"
+    },
+    "orderList": {
+        "header": "Lista Zleceń"
     }
 }
