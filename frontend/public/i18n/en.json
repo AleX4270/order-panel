@@ -42,5 +42,17 @@
     },
     "orderList": {
         "header": "Order List"
+    },
+    "orderListTable": {
+        "orderNo": "Order No",
+        "address": "Address",
+        "priority": "Priority",
+        "dateCreated": "Created At",
+        "dateDeadline": "Deadline",
+        "remarks": "Notes",
+        "actions": "Actions",
+        "details": "Details",
+        "edit": "Edit",
+        "delete": "Delete"
     }
 }

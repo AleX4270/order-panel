@@ -42,5 +42,17 @@
     },
     "orderList": {
         "header": "Lista Zleceń"
+    },
+    "orderListTable": {
+        "orderNo": "Numer zlecenia",
+        "address": "Adres",
+        "priority": "Priorytet",
+        "dateCreated": "Data utworzenia",
+        "dateDeadline": "Termin",
+        "remarks": "Uwagi",
+        "actions": "Akcje",
+        "details": "Szczegóły",
+        "edit": "Edytuj",
+        "delete": "Usuń"
     }
 }

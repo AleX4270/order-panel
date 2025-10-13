@@ -15,7 +15,7 @@ import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 import { AuthService } from "../shared/services/auth/auth.service";
 import { UserLoginCredentials } from "../shared/types/auth.types";
 import { ToastService } from "../shared/services/toast/toast.service";
-import { LanguageType, ToastType } from "../shared/enums/enums";
+import { ToastType } from "../shared/enums/enums";
 import { Store } from "@ngxs/store";
 import { User } from "../shared/types/user.types";
 import { LoginUser } from "../shared/store/user/user.actions";
