@@ -5,6 +5,7 @@ import { ExpansionState, TileType, PriorityType } from '../../shared/enums/enums
 import { TileComponent } from "../../shared/components/tile/tile.component";
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { faEye, faPenToSquare, faTrashCan } from '@ng-icons/font-awesome/regular';
+import { ColorLabelComponent } from '../../shared/components/color-label/color-label.component';
 
 @Component({
     selector: 'app-order-list',
@@ -13,6 +14,7 @@ import { faEye, faPenToSquare, faTrashCan } from '@ng-icons/font-awesome/regular
         ListTableComponent,
         TileComponent,
         NgIcon,
+        ColorLabelComponent,
     ],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan})],
     template: `
@@ -29,12 +31,21 @@ import { faEye, faPenToSquare, faTrashCan } from '@ng-icons/font-awesome/regular
             </div> 
         </div>
 
-        <div class="row order-list-info">
-            <div class="col-8">Legenda</div>
-            <div class="col-4 text-end">Przycisk dodaj zlecenie</div>
+        <div class="row order-list-info mt-3">
+            <div class="col-8">
+                <h5>Zlecenia: W trakcie (5)</h5>
+                <div class="d-flex gap-3 mt-3">
+                    <app-color-label color="var(--order-list-default-row-background-color)" [label]="'orderList.inProgress' | translate"></app-color-label>
+                    <app-color-label color="var(--order-list-overdue-row-background-color)" [label]="'orderList.overdue' | translate"></app-color-label>
+                    <app-color-label color="var(--order-list-completed-row-background-color)" [label]="'orderList.completed' | translate"></app-color-label>
+                </div>
+            </div>
+            <div class="col-4 text-end">
+                <button class="btn btn-primary">+ {{'orderList.addNewOrder' | translate}}</button>
+            </div>
         </div>
 
-        <div class="row order-list-table">
+        <div class="row order-list-table mt-2">
             <div class="col-12">
                 <app-list-table
                     [defineTableRowsExternally]="true"
@@ -131,6 +142,13 @@ import { faEye, faPenToSquare, faTrashCan } from '@ng-icons/font-awesome/regular
     `,
     styles: [`
         .list-row {
+            background-color: var(--order-list-default-row-background-color);
+            border-bottom: 1px solid var(--border-color);
+
+            &:hover {
+                background-color: var(--order-list-hovered-row-background-color);
+            }
+
             td {
                 font-size: var(--order-list-secondary-font-size);
                 padding: 1.5rem 0 1.5rem 0.75rem;

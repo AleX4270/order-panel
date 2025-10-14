@@ -41,7 +41,11 @@
         "submit": "Send link"
     },
     "orderList": {
-        "header": "Order List"
+        "header": "Order List",
+        "addNewOrder": "Add New Order",
+        "inProgress": "In Progress",
+        "overdue": "Overdue",
+        "completed": "Completed"
     },
     "orderListTable": {
         "orderNo": "Order No",

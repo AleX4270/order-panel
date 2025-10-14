@@ -41,7 +41,11 @@
         "submit": "Wyślij link"
     },
     "orderList": {
-        "header": "Lista Zleceń"
+        "header": "Lista Zleceń",
+        "addNewOrder": "Dodaj Nowe Zlecenie",
+        "inProgress": "W trakcie",
+        "overdue": "Po terminie",
+        "completed": "Zrealizowane"
     },
     "orderListTable": {
         "orderNo": "Numer zlecenia",

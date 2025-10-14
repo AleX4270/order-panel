@@ -6,7 +6,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { authGuard } from './shared/guards/auth.guard';
 import { guestGuard } from './shared/guards/guest.guard';
 import { OrderListComponent } from './orders/order-list/order-list.component';
-import { OrderDetailsComponent } from './orders/order-details/order-details.component';
 import { OrderFormComponent } from './orders/order-form/order-form.component';
 
 export const routes: Routes = [
@@ -37,11 +36,6 @@ export const routes: Routes = [
     {
         path: 'orders/form/:id',
         component: OrderFormComponent,
-        canActivate: [authGuard],
-    },
-    {
-        path: 'orders/:id',
-        component: OrderDetailsComponent,
         canActivate: [authGuard],
     },
     {

@@ -1,5 +1,6 @@
 :root {
   --background-color: #ffffff;
+  --border-color: #d1d5db;
 
   --toast-info-bg:          #d6eaf8;
   --toast-info-separator:   #aed6f1;
@@ -39,8 +40,11 @@
   --order-list-header-background-color: #E9F2FF;
   --order-list-secondary-font-size: 0.9rem;
 
+  --order-list-default-row-background-color: #ffffff;
+  --order-list-hovered-row-background-color: #f3f4f6;
   --order-list-overdue-row-background-color: #fee2e2;
   --order-list-completed-row-background-color: #e5e7eb;
 
   --border-radius: 10px;
+  --small-border-radius: 5px;
 }
