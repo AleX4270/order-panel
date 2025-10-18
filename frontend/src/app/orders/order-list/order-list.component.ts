@@ -6,16 +6,20 @@ import { TileComponent } from "../../shared/components/tile/tile.component";
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { faEye, faPenToSquare, faTrashCan } from '@ng-icons/font-awesome/regular';
 import { ColorLabelComponent } from '../../shared/components/color-label/color-label.component';
+import { CardComponent } from "../../shared/components/card/card.component";
+import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 
 @Component({
     selector: 'app-order-list',
     imports: [
-        TranslatePipe,
-        ListTableComponent,
-        TileComponent,
-        NgIcon,
-        ColorLabelComponent,
-    ],
+    TranslatePipe,
+    ListTableComponent,
+    TileComponent,
+    NgIcon,
+    ColorLabelComponent,
+    CardComponent,
+    PaginationComponent
+],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan})],
     template: `
         <div class="row order-list-header">
@@ -34,10 +38,13 @@ import { ColorLabelComponent } from '../../shared/components/color-label/color-l
         <div class="row order-list-info mt-3">
             <div class="col-8">
                 <h5>Zlecenia: W trakcie (5)</h5>
-                <div class="d-flex gap-3 mt-3">
-                    <app-color-label color="var(--order-list-default-row-background-color)" [label]="'orderList.inProgress' | translate"></app-color-label>
-                    <app-color-label color="var(--order-list-overdue-row-background-color)" [label]="'orderList.overdue' | translate"></app-color-label>
-                    <app-color-label color="var(--order-list-completed-row-background-color)" [label]="'orderList.completed' | translate"></app-color-label>
+                <div class="d-flex align-items-center gap-3 mt-3">
+                    <span class="text-muted">{{'orderList.legend' | translate}}:</span>
+                    <div class="d-flex gap-3">
+                        <app-color-label color="var(--order-list-default-row-background-color)" [label]="'orderList.inProgress' | translate"></app-color-label>
+                        <app-color-label color="var(--order-list-overdue-row-background-color)" [label]="'orderList.overdue' | translate"></app-color-label>
+                        <app-color-label color="var(--order-list-completed-row-background-color)" [label]="'orderList.completed' | translate"></app-color-label>
+                    </div>
                 </div>
             </div>
             <div class="col-4 text-end">
@@ -136,8 +143,12 @@ import { ColorLabelComponent } from '../../shared/components/color-label/color-l
             </div>
         </div>
 
-        <div class="row order-list-pagination">
-            <div class="col-12">Paginacja</div>
+        <div class="row order-list-pagination mt-4">
+            <div class="col-12">
+                <app-card [isContentCentered]="true" color="var(--background-color)">
+                    <app-pagination></app-pagination>
+                </app-card>
+            </div>
         </div>
     `,
     styles: [`

@@ -45,7 +45,8 @@
         "addNewOrder": "Dodaj Nowe Zlecenie",
         "inProgress": "W trakcie",
         "overdue": "Po terminie",
-        "completed": "Zrealizowane"
+        "completed": "Zrealizowane",
+        "legend": "Legenda"
     },
     "orderListTable": {
         "orderNo": "Numer zlecenia",

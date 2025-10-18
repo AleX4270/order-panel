@@ -45,7 +45,8 @@
         "addNewOrder": "Add New Order",
         "inProgress": "In Progress",
         "overdue": "Overdue",
-        "completed": "Completed"
+        "completed": "Completed",
+        "legend": "Legend"
     },
     "orderListTable": {
         "orderNo": "Order No",
