@@ -1,4 +1,4 @@
-import { Component, computed, effect, input, output, signal, WritableSignal } from '@angular/core';
+import { Component, computed, input, output, signal, WritableSignal } from '@angular/core';
 import { PAGINATION_START_PAGE } from '../../../app.constants';
 
 @Component({
@@ -10,15 +10,17 @@ import { PAGINATION_START_PAGE } from '../../../app.constants';
                 <!-- TODO: Page jump -->
             </div>
             <div>
-                <ul class="pagination-list d-flex justify-content-center align-items-center">
-                    <li 
-                        class="pagination-item"
-                        [class.disabled]="isPreviousDisabled()"
-                    >
-                        <a (click)="!isPreviousDisabled() && changePage(page() - 1)">&lt;</a>
+                <ul class="pagination-list d-flex justify-content-center align-items-center gap-2">
+                    <li class="pagination-item" [class.disabled]="isPreviousDisabled()">
+                        <button class="btn btn-sm btn-link pagination-link" (click)="!isPreviousDisabled() && changePage(page() - 1)">&lt;</button>
                     </li>
 
-                    @for(position of [1,2,3,4,5]; track position;) {
+                    <li class="pagination-item" [class.active]="page() === 1"><button class="btn btn-sm btn-link pagination-link" (click)="changePage(1)">{{1}}</button></li>
+                    @if(page() >= 4 && totalPages() > 5) {
+                        <li class="pagination-item disabled"><span>&hellip;</span></li>
+                    }
+
+                    @for(position of middlePositions; track position;) {
                         @let itemValue = getPaginationItemValue(position);
 
                         <li 
@@ -26,21 +28,22 @@ import { PAGINATION_START_PAGE } from '../../../app.constants';
                             [class.active]="page() === itemValue"
                             [class.disabled]="itemValue === null"
                         >
-                            <a (click)="itemValue && changePage(itemValue)">
-                                {{ itemValue ?? '...' }}
-                            </a>
+                            <button class="btn btn-sm btn-link pagination-link" (click)="itemValue && changePage(itemValue)">{{ itemValue }}</button>
                         </li>
                     }
-                    
-                    @if(totalPages() > 5) {
-                        <li class="pagination-item" [class.active]="page() === totalPages()"><a (click)="changePage(totalPages())">{{ totalPages() }}</a></li>
+
+                    @if(totalPages() > 5 && page() <= totalPages() - 3) {
+                        <li class="pagination-item disabled"><span>&hellip;</span></li>
                     }
+                    <li class="pagination-item" [class.active]="page() === totalPages()">
+                        <button class="btn btn-sm btn-link pagination-link" (click)="changePage(totalPages())">{{ totalPages() }}</button>    
+                    </li>
 
                     <li 
                         class="pagination-item"
                         [class.disabled]="isNextDisabled()"
                     >
-                        <a (click)="!isNextDisabled() && changePage(page() + 1)">&gt;</a>
+                        <button class="btn btn-sm btn-link pagination-link" (click)="!isNextDisabled() && changePage(page() + 1)">&gt;</button>
                     </li>                 
                 </ul>
             </div>
@@ -55,16 +58,21 @@ import { PAGINATION_START_PAGE } from '../../../app.constants';
             list-style-type: none;
         }
 
+        .pagination-link {
+            color: var(--text-primary-color);
+            text-decoration: none;
+        }
+
         .pagination-item {
-            padding: 8px 12px;
             border-radius: var(--small-border-radius);
             cursor: pointer;
+            color: var(--text-primary-color);
 
             &.disabled {
                 pointer-events: none;
                 cursor: default;
 
-                a {
+                .pagination-link {
                     color: var(--text-muted-color);
                 }
             }
@@ -74,19 +82,17 @@ import { PAGINATION_START_PAGE } from '../../../app.constants';
             }
 
             &.active {
-                background-color: #dce9ff
-            }
-
-            a {
-                text-decoration: none;
+                background-color: #dce9ff;
             }
         }
     `],
 })
 export class PaginationComponent {
+    protected readonly middlePositions = [2,3,4] as const;
+
     public pageSize = input<number>(10);
     // public totalItems = input.required<number>();
-    public totalItems = input<number>(70);
+    public totalItems = input<number>(200);
 
     public pageChange = output<number>();
     public pageSizeChange = output<number>();
@@ -119,22 +125,26 @@ export class PaginationComponent {
             return position;
         }
 
-        let pageValue = this.totalPages() - (this.totalPages() - position);
-        const isMiddle = this.page() >= 4 && this.page() <= this.totalPages() - 3;
+        const isLeftBoundVisible = this.page() < 4;
+        const isRightBoundVisible = this.page() > this.totalPages() - 3;
 
-        switch(position) {
-            case 1:
-                return pageValue;
-            case 2:
-                return (this.page() >= 4) ? null : pageValue;
-            case 3:
-                return isMiddle ? this.page() - 1 : pageValue;
-            case 4:
-                return isMiddle ? this.page() : pageValue;
-            case 5:
-                return (this.page() <= this.totalPages() - 3) ? null : isMiddle ? this.page() + 1 : pageValue;
-            default:
-                return pageValue;
+        if(!isLeftBoundVisible && !isRightBoundVisible) {
+            switch(position) {
+                case 2:
+                    return this.page() - 1;
+                case 3:
+                    return this.page();
+                case 4:
+                    return this.page() + 1;
+            }
         }
+        else if(isLeftBoundVisible && !isRightBoundVisible) {
+            return position;
+        }
+        else if(!isLeftBoundVisible && isRightBoundVisible) {
+            return this.totalPages() - (5 - position);
+        }
+
+        return null;
     }
 }
