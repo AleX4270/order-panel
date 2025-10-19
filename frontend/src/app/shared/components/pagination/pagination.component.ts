@@ -1,4 +1,4 @@
-import { Component, computed, input, output, signal, WritableSignal } from '@angular/core';
+import { Component, computed, effect, input, output, signal, WritableSignal } from '@angular/core';
 import { PAGINATION_START_PAGE } from '../../../app.constants';
 
 @Component({
@@ -12,15 +12,15 @@ import { PAGINATION_START_PAGE } from '../../../app.constants';
             <div>
                 <ul class="pagination-list d-flex justify-content-center align-items-center gap-2">
                     <li class="pagination-item" [class.disabled]="isPreviousDisabled()">
-                        <button class="btn btn-sm btn-link pagination-link" (click)="!isPreviousDisabled() && changePage(page() - 1)">&lt;</button>
+                        <button type="button" class="btn btn-sm btn-link pagination-link" (click)="!isPreviousDisabled() && changePage(page() - 1)">&lt;</button>
                     </li>
 
-                    <li class="pagination-item" [class.active]="page() === 1"><button class="btn btn-sm btn-link pagination-link" (click)="changePage(1)">{{1}}</button></li>
+                    <li class="pagination-item" [class.active]="page() === 1"><button type="button" class="btn btn-sm btn-link pagination-link" (click)="changePage(1)">{{1}}</button></li>
                     @if(page() >= 4 && totalPages() > 5) {
                         <li class="pagination-item disabled"><span>&hellip;</span></li>
                     }
 
-                    @for(position of middlePositions; track position;) {
+                    @for(position of middlePositions(); track position;) {
                         @let itemValue = getPaginationItemValue(position);
 
                         <li 
@@ -28,23 +28,26 @@ import { PAGINATION_START_PAGE } from '../../../app.constants';
                             [class.active]="page() === itemValue"
                             [class.disabled]="itemValue === null"
                         >
-                            <button class="btn btn-sm btn-link pagination-link" (click)="itemValue && changePage(itemValue)">{{ itemValue }}</button>
+                            <button type="button" class="btn btn-sm btn-link pagination-link" (click)="itemValue && changePage(itemValue)">{{ itemValue }}</button>
                         </li>
                     }
 
-                    @if(totalPages() > 5 && page() <= totalPages() - 3) {
-                        <li class="pagination-item disabled"><span>&hellip;</span></li>
+                    @if(totalPages() >= 5) {
+                        @if(totalPages() > 5 && page() <= totalPages() - 3) {
+                            <li class="pagination-item disabled"><span>&hellip;</span></li>
+                        }
+
+                        <li class="pagination-item" [class.active]="page() === totalPages()">
+                            <button type="button" class="btn btn-sm btn-link pagination-link" (click)="changePage(totalPages())">{{ totalPages() }}</button>    
+                        </li>    
                     }
-                    <li class="pagination-item" [class.active]="page() === totalPages()">
-                        <button class="btn btn-sm btn-link pagination-link" (click)="changePage(totalPages())">{{ totalPages() }}</button>    
-                    </li>
 
                     <li 
                         class="pagination-item"
                         [class.disabled]="isNextDisabled()"
                     >
-                        <button class="btn btn-sm btn-link pagination-link" (click)="!isNextDisabled() && changePage(page() + 1)">&gt;</button>
-                    </li>                 
+                        <button type="button" class="btn btn-sm btn-link pagination-link" (click)="!isNextDisabled() && changePage(page() + 1)">&gt;</button>
+                    </li>             
                 </ul>
             </div>
             <div>
@@ -88,19 +91,36 @@ import { PAGINATION_START_PAGE } from '../../../app.constants';
     `],
 })
 export class PaginationComponent {
-    protected readonly middlePositions = [2,3,4] as const;
-
     public pageSize = input<number>(10);
-    // public totalItems = input.required<number>();
-    public totalItems = input<number>(200);
+    public totalItems = input<number>(0);
 
     public pageChange = output<number>();
     public pageSizeChange = output<number>();
 
     protected page: WritableSignal<number> = signal<number>(PAGINATION_START_PAGE);
 
+    constructor() {
+        effect(() => {
+            let newPageValue = this.page();
+            const totalPages = this.totalPages();
+            const page = this.page();
+
+            if(page > totalPages) newPageValue = totalPages;
+            if(page < 1) newPageValue = 1;
+
+            if(newPageValue !== page) {
+                this.page.set(newPageValue);
+                queueMicrotask(() => this.pageChange.emit(this.page()));
+            }
+        });
+    }
+
     protected totalPages = computed(() => {
-        return Math.ceil(this.totalItems() / this.pageSize());
+        if(this.totalItems() > 0) {
+            return Math.ceil(this.totalItems() / this.pageSize());
+        }
+
+        return 1;
     });
 
     protected isPreviousDisabled = computed(() => {
@@ -108,8 +128,20 @@ export class PaginationComponent {
     });
 
     protected isNextDisabled = computed(() => {
-        return this.page() >= this.totalPages();
+        return (this.page() >= this.totalPages());
     })
+
+    protected middlePositions = computed(() => {
+        if(this.totalPages() < 4) {
+            let positions = [];
+            for(let i = 2; i <= this.totalPages(); i++) {
+                positions.push(i);
+            }
+            return positions;
+        }
+
+        return [2,3,4];
+    });
 
     protected changePage(newPage: number): void {
         if(newPage < 1 || newPage > this.totalPages()) {
