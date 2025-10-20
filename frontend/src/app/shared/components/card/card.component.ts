@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 
 @Component({
     selector: 'app-card',
@@ -10,7 +10,10 @@ import { Component, input } from '@angular/core';
             [class.d-flex]="isContentCentered()"
             [class.align-items-center]="isContentCentered()"
             [class.justify-content-center]="isContentCentered()"
-            [ngStyle]="{'background-color': color() ?? 'var(--card-background-color)'}"
+            [ngStyle]="{
+                'background-color': color() ?? 'var(--card-background-color)',
+                'overflow': overflowType(),
+            }"
         >
             <ng-content/>
         </div>
@@ -20,7 +23,6 @@ import { Component, input } from '@angular/core';
             background-color: var(--card-background-color);
             border: 1px solid var(--card-border-color);
             border-radius: var(--border-radius);
-            overflow: hidden;
             padding: 0;
             box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
         }
@@ -28,5 +30,6 @@ import { Component, input } from '@angular/core';
 })
 export class CardComponent {
     public isContentCentered = input<boolean>(false);
+    public overflowType = input<'hidden' | 'visible' | 'scroll'>('hidden');
     public color = input<string | null>(null);
 }

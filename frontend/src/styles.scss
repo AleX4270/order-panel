@@ -1,6 +1,7 @@
 @use './styles/themes/light-theme.scss';
 @use './styles/themes/dark-theme.scss';
 @use './styles/variables.scss';
+@use '@ng-select/ng-select/themes/default.theme.css';
 
 @font-face {
     font-family: 'mainFont';

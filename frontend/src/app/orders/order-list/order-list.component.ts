@@ -145,7 +145,7 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
 
         <div class="row order-list-pagination mt-4">
             <div class="col-12">
-                <app-card [isContentCentered]="true" color="var(--background-color)">
+                <app-card [isContentCentered]="true" color="var(--background-color)" overflowType="visible">
                     <app-pagination></app-pagination>
                 </app-card>
             </div>

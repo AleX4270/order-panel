@@ -1,21 +1,23 @@
 import { Component, computed, effect, input, output, signal, WritableSignal } from '@angular/core';
-import { PAGINATION_START_PAGE } from '../../../app.constants';
+import { PAGINATION_PAGE_SIZE, PAGINATION_START_PAGE } from '../../../app.constants';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-pagination',
-    imports: [],
+    imports: [
+        NgSelectModule,
+        FormsModule      
+    ],
     template: `
-        <div class="d-flex justify-content-center align-items-center">
-            <div>
-                <!-- TODO: Page jump -->
-            </div>
+        <div class="d-flex justify-content-center align-items-center gap-2">
             <div>
                 <ul class="pagination-list d-flex justify-content-center align-items-center gap-2">
                     <li class="pagination-item" [class.disabled]="isPreviousDisabled()">
-                        <button type="button" class="btn btn-sm btn-link pagination-link" (click)="!isPreviousDisabled() && changePage(page() - 1)">&lt;</button>
+                        <button type="button" class="btn btn-link pagination-link" (click)="!isPreviousDisabled() && changePage(page() - 1)">&lt;</button>
                     </li>
 
-                    <li class="pagination-item" [class.active]="page() === 1"><button type="button" class="btn btn-sm btn-link pagination-link" (click)="changePage(1)">{{1}}</button></li>
+                    <li class="pagination-item" [class.active]="page() === 1"><button type="button" class="btn btn-link pagination-link" (click)="changePage(1)">{{1}}</button></li>
                     @if(page() >= 4 && totalPages() > 5) {
                         <li class="pagination-item disabled"><span>&hellip;</span></li>
                     }
@@ -28,7 +30,7 @@ import { PAGINATION_START_PAGE } from '../../../app.constants';
                             [class.active]="page() === itemValue"
                             [class.disabled]="itemValue === null"
                         >
-                            <button type="button" class="btn btn-sm btn-link pagination-link" (click)="itemValue && changePage(itemValue)">{{ itemValue }}</button>
+                            <button type="button" class="btn btn-link pagination-link" (click)="itemValue && changePage(itemValue)">{{ itemValue }}</button>
                         </li>
                     }
 
@@ -38,7 +40,7 @@ import { PAGINATION_START_PAGE } from '../../../app.constants';
                         }
 
                         <li class="pagination-item" [class.active]="page() === totalPages()">
-                            <button type="button" class="btn btn-sm btn-link pagination-link" (click)="changePage(totalPages())">{{ totalPages() }}</button>    
+                            <button type="button" class="btn btn-link pagination-link" (click)="changePage(totalPages())">{{ totalPages() }}</button>
                         </li>    
                     }
 
@@ -46,16 +48,28 @@ import { PAGINATION_START_PAGE } from '../../../app.constants';
                         class="pagination-item"
                         [class.disabled]="isNextDisabled()"
                     >
-                        <button type="button" class="btn btn-sm btn-link pagination-link" (click)="!isNextDisabled() && changePage(page() + 1)">&gt;</button>
+                        <button type="button" class="btn btn-link pagination-link" (click)="!isNextDisabled() && changePage(page() + 1)">&gt;</button>
                     </li>             
                 </ul>
             </div>
             <div>
-                <!-- TODO: Page Size Dropdown -->
+                <ng-select 
+                    class="page-size-select" 
+                    [items]="pageSizeOptions"
+                    [searchable]="false"
+                    [clearable]="false"
+                    [multiple]="false"
+                    [ngModel]="pageSize()"
+                    (change)="changePageSize($event)"
+                />
             </div>
         </div>
     `,
     styles: [`
+        .page-size-select {
+            width: 65px;
+        }
+
         .pagination-list {
             margin: 12px 0;
             list-style-type: none;
@@ -91,13 +105,15 @@ import { PAGINATION_START_PAGE } from '../../../app.constants';
     `],
 })
 export class PaginationComponent {
-    public pageSize = input<number>(10);
+    protected pageSizeOptions = [10,20,50,100] as const;
+
     public totalItems = input<number>(0);
 
     public pageChange = output<number>();
     public pageSizeChange = output<number>();
 
     protected page: WritableSignal<number> = signal<number>(PAGINATION_START_PAGE);
+    protected pageSize: WritableSignal<number> = signal<number>(PAGINATION_PAGE_SIZE);
 
     constructor() {
         effect(() => {
@@ -150,6 +166,12 @@ export class PaginationComponent {
 
         this.page.set(newPage);
         this.pageChange.emit(newPage);
+    }
+
+    protected changePageSize(newPageSize: number): void {
+        if(this.pageSize() === newPageSize) return;
+        this.pageSize.set(newPageSize);
+        this.pageSizeChange.emit(this.pageSize());
     }
 
     protected getPaginationItemValue(position: number): number | null {
