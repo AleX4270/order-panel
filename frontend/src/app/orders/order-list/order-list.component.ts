@@ -30,7 +30,11 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">Filtry</div>
+                    <div class="col-12">
+                        <app-card [isContentCentered]="true" overflowType="visible">
+                            
+                        </app-card>
+                    </div>
                 </div>
             </div> 
         </div>
@@ -72,6 +76,19 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
                         },
                         {
                             id: 2,
+                            number: '2/2025',
+                            address: 'Nałęczów 22/24',
+                            priority: {
+                                id: 1,
+                                symbol: 'high',
+                                label: 'Wysoki',
+                            },
+                            dateCreation: '2024-01-05',
+                            dateDeadline: '2024-01-20',
+                            remarks: 'Proszę o nie dzwonienie',
+                        },
+                        {
+                            id: 3,
                             number: '2/2025',
                             address: 'Nałęczów 22/24',
                             priority: {
@@ -145,7 +162,7 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
 
         <div class="row order-list-pagination mt-4">
             <div class="col-12">
-                <app-card [isContentCentered]="true" color="var(--background-color)" overflowType="visible">
+                <app-card [isContentCentered]="true" overflowType="visible">
                     <app-pagination></app-pagination>
                 </app-card>
             </div>
