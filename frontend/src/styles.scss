@@ -75,3 +75,13 @@
         transform: scale(1.05);
     }
 }
+
+.form-control.ng-select {
+    border: none;
+    padding: 0;
+
+    .ng-select-container {
+        height: 39px;
+        border-color: var(--bs-border-color);
+    }
+}

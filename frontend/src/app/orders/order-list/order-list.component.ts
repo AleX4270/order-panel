@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ListTableComponent } from '../../shared/components/list-table/list-table.component';
 import { ExpansionState, TileType, PriorityType } from '../../shared/enums/enums';
@@ -8,6 +8,8 @@ import { faEye, faPenToSquare, faTrashCan } from '@ng-icons/font-awesome/regular
 import { ColorLabelComponent } from '../../shared/components/color-label/color-label.component';
 import { CardComponent } from "../../shared/components/card/card.component";
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
+import { FilterModel } from '../../shared/types/filters.types';
+import { FiltersComponent } from '../../shared/components/filters/filters.component';
 
 @Component({
     selector: 'app-order-list',
@@ -18,7 +20,8 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
     NgIcon,
     ColorLabelComponent,
     CardComponent,
-    PaginationComponent
+    PaginationComponent,
+    FiltersComponent
 ],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan})],
     template: `
@@ -29,17 +32,20 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
                         <h3>{{'orderList.header' | translate}}</h3>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mt-3">
                     <div class="col-12">
-                        <app-card [isContentCentered]="true" overflowType="visible">
-                            
+                        <app-card overflowType="visible">
+                            <app-filters 
+                                [filters]="filters()"
+                                (filtersChange)="null"
+                            />        
                         </app-card>
                     </div>
                 </div>
             </div> 
         </div>
 
-        <div class="row order-list-info mt-3">
+        <div class="row order-list-info mt-5">
             <div class="col-8">
                 <h5>Zlecenia: W trakcie (5)</h5>
                 <div class="d-flex align-items-center gap-3 mt-3">
@@ -160,7 +166,7 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
             </div>
         </div>
 
-        <div class="row order-list-pagination mt-4">
+        <div class="row order-list-pagination mt-5">
             <div class="col-12">
                 <app-card [isContentCentered]="true" overflowType="visible">
                     <app-pagination></app-pagination>
@@ -192,9 +198,36 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
         }
     `]
 })
-export class OrderListComponent {
+export class OrderListComponent implements OnInit {
     protected expansionState = ExpansionState;
     protected itemDetailsExpansionState: Partial<Record<number, ExpansionState>> = {};
+
+    protected filters: WritableSignal<FilterModel[]> = signal<FilterModel[]>([]);
+
+    ngOnInit(): void {
+        this.initListFilters();
+    }
+
+    private initListFilters(): void {
+        this.filters.set([
+            {
+                key: 'allFields',
+                label: 'Wyszukaj po wszystkich polach',
+                type: 'text',
+                placeholder: 'Podaj frazę, aby filtrować'
+            },
+            {
+                key: 'priority',
+                label: 'Priorytet',
+                type: 'multi-select',
+            },
+            {
+                key: 'dateCreation',
+                label: 'Data utworzenia',
+                type: 'date',
+            }
+        ]);
+    }
 
     protected hasVisibleDetails(itemId: number): boolean {
         return (this.itemDetailsExpansionState[itemId] === ExpansionState.expanded) || false;
