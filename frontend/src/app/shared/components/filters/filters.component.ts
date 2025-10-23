@@ -1,6 +1,9 @@
-import { Component, input, InputSignal, output } from '@angular/core';
+import { Component, effect, inject, input, InputSignal, output, signal, WritableSignal } from '@angular/core';
 import { FilterModel } from '../../types/filters.types';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import { IFiltersStrategy } from '../../interfaces/filters/filters-strategy.interface';
+import { FilterType } from '../../enums/filter-type.enum';
+import { FiltersStrategyFactory } from '../../factories/filters-strategy.factory';
 
 @Component({
     selector: 'app-filters',
@@ -19,6 +22,7 @@ import { NgSelectComponent } from '@ng-select/ng-select';
                                 type="text"
                                 [id]="filter.key"
                                 [name]="filter.key"
+                                [placeholder]="filter.placeholder"
                             />
                         </div>
                     }
@@ -30,6 +34,7 @@ import { NgSelectComponent } from '@ng-select/ng-select';
                                 [items]="[1,2,3]"
                                 [searchable]="false"
                                 [multiple]="true"
+                                [placeholder]="filter.placeholder ?? ''"
                             />
                         </div>
                     }
@@ -58,6 +63,7 @@ import { NgSelectComponent } from '@ng-select/ng-select';
         .filter-control {
             display: flex;
             flex-direction: column;
+            margin-top: 10px;
 
             input, ng-select {
                 margin-top: 5px;
@@ -66,6 +72,23 @@ import { NgSelectComponent } from '@ng-select/ng-select';
     `]
 })
 export class FiltersComponent {
-    public filters: InputSignal<FilterModel[]> = input.required<FilterModel[]>();
+    private readonly strategyFactory: FiltersStrategyFactory = inject(FiltersStrategyFactory);
+
+    public type: InputSignal<FilterType> = input.required<FilterType>();
     public filtersChange = output<Map<string, string>>();
+
+    private strategy!: IFiltersStrategy | null;
+    protected readonly filters: WritableSignal<FilterModel[]> = signal<FilterModel[]>([]);
+
+    constructor() {
+        effect(() => {
+            if(this.type()) {
+                this.strategy = this.strategyFactory.create(this.type());
+
+                if(this.strategy != null) {
+                    // TODO
+                }
+            }
+        });
+    }
 }

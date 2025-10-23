@@ -10,6 +10,7 @@ import { CardComponent } from "../../shared/components/card/card.component";
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 import { FilterModel } from '../../shared/types/filters.types';
 import { FiltersComponent } from '../../shared/components/filters/filters.component';
+import { FilterType } from '../../shared/enums/filter-type.enum';
 
 @Component({
     selector: 'app-order-list',
@@ -36,7 +37,7 @@ import { FiltersComponent } from '../../shared/components/filters/filters.compon
                     <div class="col-12">
                         <app-card overflowType="visible">
                             <app-filters 
-                                [filters]="filters()"
+                                [type]="filterType.orderListFilters"
                                 (filtersChange)="null"
                             />        
                         </app-card>
@@ -198,36 +199,10 @@ import { FiltersComponent } from '../../shared/components/filters/filters.compon
         }
     `]
 })
-export class OrderListComponent implements OnInit {
+export class OrderListComponent {
+    protected readonly filterType = FilterType;
     protected expansionState = ExpansionState;
     protected itemDetailsExpansionState: Partial<Record<number, ExpansionState>> = {};
-
-    protected filters: WritableSignal<FilterModel[]> = signal<FilterModel[]>([]);
-
-    ngOnInit(): void {
-        this.initListFilters();
-    }
-
-    private initListFilters(): void {
-        this.filters.set([
-            {
-                key: 'allFields',
-                label: 'Wyszukaj po wszystkich polach',
-                type: 'text',
-                placeholder: 'Podaj frazę, aby filtrować'
-            },
-            {
-                key: 'priority',
-                label: 'Priorytet',
-                type: 'multi-select',
-            },
-            {
-                key: 'dateCreation',
-                label: 'Data utworzenia',
-                type: 'date',
-            }
-        ]);
-    }
 
     protected hasVisibleDetails(itemId: number): boolean {
         return (this.itemDetailsExpansionState[itemId] === ExpansionState.expanded) || false;

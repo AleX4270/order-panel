@@ -1,8 +1,16 @@
-export type FilterType = 'text' | 'select' | 'multi-select' | 'date';
+import { Observable } from "rxjs";
 
-export interface FilterModel<T = any> {
+export type FilterFieldType = 'text' | 'select' | 'multi-select' | 'date';
+
+export interface FilterOption {
+    id: number;
+    label: string;
+}
+
+export interface FilterModel {
     key: string;
     label: string;
-    type: FilterType;
+    type: FilterFieldType;
     placeholder?: string;
+    loader?: Observable<FilterOption[]>;
 }
