@@ -39,5 +39,25 @@
         "email": "E-mail",
         "emailPlaceholder": "user@domain.com",
         "submit": "Send link"
+    },
+    "orderList": {
+        "header": "Order List",
+        "addNewOrder": "Add New Order",
+        "inProgress": "In Progress",
+        "overdue": "Overdue",
+        "completed": "Completed",
+        "legend": "Legend"
+    },
+    "orderListTable": {
+        "orderNo": "Order No",
+        "address": "Address",
+        "priority": "Priority",
+        "dateCreated": "Created At",
+        "dateDeadline": "Deadline",
+        "remarks": "Notes",
+        "actions": "Actions",
+        "details": "Details",
+        "edit": "Edit",
+        "delete": "Delete"
     }
 }

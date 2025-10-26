@@ -62,7 +62,7 @@ export class UserProfileNavbarComponent {
             next: () => {
                 this.store.dispatch(new LogoutUser);
                 this.router.navigate(['/']).then(() => {
-                    this.toast.show(this.translate.instant('logout.success'), ToastType.success);
+                    this.toast.show(this.translate.instant('logout.success'), ToastType.warning);
                 });
             },
             error: () => {

@@ -11,11 +11,11 @@ import { LanguageSelectorComponent } from "./shared/components/language-selector
 @Component({
     selector: 'app-root',
     imports: [
-    RouterOutlet,
-    ToastDisplayerComponent,
-    NavbarComponent,
-    LanguageSelectorComponent
-],
+        RouterOutlet,
+        ToastDisplayerComponent,
+        NavbarComponent,
+        LanguageSelectorComponent
+    ],
     template: `
         @if(isUserAuthenticated()) {
             <app-navbar class="sticky-top"/>
@@ -28,7 +28,12 @@ import { LanguageSelectorComponent } from "./shared/components/language-selector
             }
         </main>
     `,
-    styles: [``]
+    styles: [`
+        .app-container {
+            padding-inline: 2rem;
+            padding-block-start: 1.5rem;
+        }    
+    `]
 })
 export class AppComponent implements OnInit {
     private readonly translate = inject(TranslateService);

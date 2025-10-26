@@ -8,7 +8,7 @@
     },
     "navbar": {
         "dashboard": "Panel",
-        "orders": "Zamówienia",
+        "orders": "Zlecenia",
         "settings": "Ustawienia",
         "logout": "Wyloguj"
     },
@@ -39,5 +39,35 @@
         "email": "E-mail",
         "emailPlaceholder": "uzytkownik@domena.pl",
         "submit": "Wyślij link"
+    },
+    "orderList": {
+        "header": "Lista Zleceń",
+        "addNewOrder": "Dodaj Nowe Zlecenie",
+        "inProgress": "W trakcie",
+        "overdue": "Po terminie",
+        "completed": "Zrealizowane",
+        "legend": "Legenda"
+    },
+    "orderListTable": {
+        "orderNo": "Numer zlecenia",
+        "address": "Adres",
+        "priority": "Priorytet",
+        "dateCreated": "Data utworzenia",
+        "dateDeadline": "Termin",
+        "remarks": "Uwagi",
+        "actions": "Akcje",
+        "details": "Szczegóły",
+        "edit": "Edytuj",
+        "delete": "Usuń"
+    },
+    "orderListFilters": {
+        "allFields": "Wszystkie pola",
+        "allFieldsPlaceholder": "Podaj frazę",
+        "priority": "Priorytet",
+        "priorityPlaceholder": "Wybierz priorytet",
+        "status": "Status",
+        "statusPlaceholder": "Wybierz status",
+        "dateCreation": "Data dodania",
+        "dateDeadline": "Termin realizacji"
     }
 }

@@ -1,6 +1,7 @@
 @use './styles/themes/light-theme.scss';
 @use './styles/themes/dark-theme.scss';
 @use './styles/variables.scss';
+@use '@ng-select/ng-select/themes/default.theme.css';
 
 @font-face {
     font-family: 'mainFont';
@@ -72,5 +73,15 @@
 
     &:active {
         transform: scale(1.05);
+    }
+}
+
+.form-control.ng-select {
+    border: none;
+    padding: 0;
+
+    .ng-select-container {
+        height: 39px;
+        border-color: var(--bs-border-color);
     }
 }
