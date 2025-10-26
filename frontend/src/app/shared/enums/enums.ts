@@ -62,3 +62,24 @@ export enum HttpStatus {
     GATEWAY_TIMEOUT = 504,
     HTTP_VERSION_NOT_SUPPORTED = 505,
 }
+
+export enum ExpansionState {
+    collapsed,
+    expanded,
+}
+
+export enum PriorityType {
+    normal = 'normal',
+    high = 'high',
+}
+
+export enum TileType {
+    primary,
+    secondary,
+    success,
+    danger,
+    warning,
+    info,
+    light,
+    dark
+}
