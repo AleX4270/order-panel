@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, OnInit, signal, TemplateRef, ViewChild, WritableSignal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ListTableComponent } from '../../shared/components/list-table/list-table.component';
 import { ExpansionState, TileType, PriorityType } from '../../shared/enums/enums';
@@ -11,6 +11,7 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
 import { FilterModel } from '../../shared/types/filters.types';
 import { FiltersComponent } from '../../shared/components/filters/filters.component';
 import { FilterType } from '../../shared/enums/filter-type.enum';
+import { OrderFormModalComponent } from "../order-form-modal/order-form-modal.component";
 
 @Component({
     selector: 'app-order-list',
@@ -22,7 +23,8 @@ import { FilterType } from '../../shared/enums/filter-type.enum';
     ColorLabelComponent,
     CardComponent,
     PaginationComponent,
-    FiltersComponent
+    FiltersComponent,
+    OrderFormModalComponent
 ],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan})],
     template: `
@@ -174,6 +176,8 @@ import { FilterType } from '../../shared/enums/filter-type.enum';
                 </app-card>
             </div>
         </div>
+
+        <app-order-form-modal #orderFormModal />
     `,
     styles: [`
         .list-row {
@@ -200,9 +204,15 @@ import { FilterType } from '../../shared/enums/filter-type.enum';
     `]
 })
 export class OrderListComponent {
+    @ViewChild('orderFormModal') orderFormModal!: OrderFormModalComponent;
+
     protected readonly filterType = FilterType;
     protected expansionState = ExpansionState;
     protected itemDetailsExpansionState: Partial<Record<number, ExpansionState>> = {};
+
+    constructor() {
+        setTimeout(() => {this.orderFormModal.openModal();}, 3000)
+    }
 
     protected hasVisibleDetails(itemId: number): boolean {
         return (this.itemDetailsExpansionState[itemId] === ExpansionState.expanded) || false;
