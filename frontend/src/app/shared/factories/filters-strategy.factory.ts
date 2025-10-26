@@ -1,4 +1,4 @@
-import { inject, Injectable, Type } from "@angular/core";
+import { inject, Injectable, Injector } from "@angular/core";
 import { FilterType } from "../enums/filter-type.enum";
 import { IFiltersStrategy } from "../interfaces/filters/filters-strategy.interface";
 import { IStrategyFactory } from "../interfaces/strategy-factory.interface";
@@ -6,10 +6,12 @@ import { OrderListFiltersStrategy } from "../strategies/filters/order-list-filte
 
 @Injectable({ providedIn: 'root' })
 export class FiltersStrategyFactory implements IStrategyFactory<IFiltersStrategy | null> {
+    private readonly injector = inject(Injector);
+
     create(type: FilterType): IFiltersStrategy | null {
         switch(type) {
             case FilterType.orderListFilters:
-                return inject(OrderListFiltersStrategy);
+                return this.injector.get(OrderListFiltersStrategy);
             default:
                 return null;
         }

@@ -1,19 +1,40 @@
-import { inject } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { IFiltersStrategy } from "../../interfaces/filters/filters-strategy.interface";
 import { FilterModel } from "../../types/filters.types";
-import { TranslateService } from "@ngx-translate/core";
 
+@Injectable({ providedIn: 'root' })
 export class OrderListFiltersStrategy implements IFiltersStrategy {
-    private readonly translate = inject(TranslateService);
     private filters: FilterModel[] = [];
 
     private initSchema(): void {
         this.filters = [
             {
                 key: 'allFields',
-                label: this.translate.instant('orderListFilters.allFields'),
+                label: 'orderListFilters.allFields',
                 type: 'text',
-                placeholder: this.translate.instant('orderListFilters.allFields'),
+                placeholder: 'orderListFilters.allFieldsPlaceholder',
+            },
+            {
+                key: 'priority',
+                label: 'orderListFilters.priority',
+                type: 'multi-select',
+                placeholder: 'orderListFilters.priorityPlaceholder',
+            },
+            {
+                key: 'status',
+                label: 'orderListFilters.status',
+                type: 'multi-select',
+                placeholder: 'orderListFilters.statusPlaceholder',
+            },
+            {
+                key: 'dateCreation',
+                label: 'orderListFilters.dateCreation',
+                type: 'date',
+            },
+            {
+                key: 'dateDeadline',
+                label: 'orderListFilters.dateDeadline',
+                type: 'date',
             },
         ];
     }

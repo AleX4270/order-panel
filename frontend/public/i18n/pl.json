@@ -59,5 +59,15 @@
         "details": "Szczegóły",
         "edit": "Edytuj",
         "delete": "Usuń"
+    },
+    "orderListFilters": {
+        "allFields": "Wszystkie pola",
+        "allFieldsPlaceholder": "Podaj frazę",
+        "priority": "Priorytet",
+        "priorityPlaceholder": "Wybierz priorytet",
+        "status": "Status",
+        "statusPlaceholder": "Wybierz status",
+        "dateCreation": "Data dodania",
+        "dateDeadline": "Termin realizacji"
     }
 }
