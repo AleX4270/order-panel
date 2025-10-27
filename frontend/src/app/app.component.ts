@@ -30,7 +30,7 @@ import { LanguageSelectorComponent } from "./shared/components/language-selector
     `,
     styles: [`
         .app-container {
-            padding-inline: 2rem;
+            padding-inline: 5rem;
             padding-block-start: 1.5rem;
         }    
     `]

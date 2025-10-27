@@ -8,7 +8,6 @@ import { faEye, faPenToSquare, faTrashCan } from '@ng-icons/font-awesome/regular
 import { ColorLabelComponent } from '../../shared/components/color-label/color-label.component';
 import { CardComponent } from "../../shared/components/card/card.component";
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
-import { FilterModel } from '../../shared/types/filters.types';
 import { FiltersComponent } from '../../shared/components/filters/filters.component';
 import { FilterType } from '../../shared/enums/filter-type.enum';
 import { OrderFormModalComponent } from "../order-form-modal/order-form-modal.component";
@@ -61,7 +60,7 @@ import { OrderFormModalComponent } from "../order-form-modal/order-form-modal.co
                 </div>
             </div>
             <div class="col-4 text-end">
-                <button class="btn btn-primary">+ {{'orderList.addNewOrder' | translate}}</button>
+                <button class="btn btn-primary" (click)="showOrderFormModal()" >+ {{'orderList.addNewOrder' | translate}}</button>
             </div>
         </div>
 
@@ -210,10 +209,6 @@ export class OrderListComponent {
     protected expansionState = ExpansionState;
     protected itemDetailsExpansionState: Partial<Record<number, ExpansionState>> = {};
 
-    constructor() {
-        setTimeout(() => {this.orderFormModal.openModal();}, 3000)
-    }
-
     protected hasVisibleDetails(itemId: number): boolean {
         return (this.itemDetailsExpansionState[itemId] === ExpansionState.expanded) || false;
     }
@@ -230,5 +225,9 @@ export class OrderListComponent {
         return type === PriorityType.high
             ? TileType.danger
             : TileType.secondary;
+    }
+
+    protected showOrderFormModal(id?: number): void {
+        this.orderFormModal.showForm(id);
     }
 }

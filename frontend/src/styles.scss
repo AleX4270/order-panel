@@ -85,3 +85,18 @@
         border-color: var(--bs-border-color);
     }
 }
+
+.form-field {
+    appearance: none;
+    display: block;
+    width: 100%;
+    min-height: 2.5rem;
+    padding: .5rem .75rem;
+    // background: var(--_bg);
+    // color: var(--_text);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--_shadow-sm);
+    outline: none;
+    transition: border-color .15s, box-shadow .15s, background-color .15s, color .15s;
+}
