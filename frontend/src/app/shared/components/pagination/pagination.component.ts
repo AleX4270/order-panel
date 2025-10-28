@@ -54,7 +54,7 @@ import { FormsModule } from '@angular/forms';
             </div>
             <div>
                 <ng-select 
-                    class="page-size-select" 
+                    class="form-field dropdown"
                     [items]="pageSizeOptions"
                     [searchable]="false"
                     [clearable]="false"
@@ -66,10 +66,6 @@ import { FormsModule } from '@angular/forms';
         </div>
     `,
     styles: [`
-        .page-size-select {
-            width: 65px;
-        }
-
         .pagination-list {
             margin: 12px 0;
             list-style-type: none;
@@ -81,7 +77,7 @@ import { FormsModule } from '@angular/forms';
         }
 
         .pagination-item {
-            border-radius: var(--small-border-radius);
+            border-radius: var(--border-radius-sm);
             cursor: pointer;
             color: var(--text-primary-color);
 

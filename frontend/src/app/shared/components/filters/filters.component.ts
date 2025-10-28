@@ -20,7 +20,7 @@ import { TranslatePipe } from '@ngx-translate/core';
                         <div class="form-group filter-control col-3">
                             <label [for]="filter.key">{{ filter.label | translate}}</label>
                             <input
-                                class="form-control"
+                                class="form-field input"
                                 type="text"
                                 [id]="filter.key"
                                 [name]="filter.key"
@@ -29,10 +29,10 @@ import { TranslatePipe } from '@ngx-translate/core';
                         </div>
                     }
                     @case ('multi-select') {
-                        <div class="form-group filter-control col-3">
+                        <div class="form-group filter-control col-2">
                             <label [for]="filter.key">{{ filter.label | translate}}</label>
                             <ng-select 
-                                class="form-control"
+                                class="form-field dropdown"
                                 [items]="[1,2,3]"
                                 [searchable]="false"
                                 [multiple]="true"
@@ -42,11 +42,11 @@ import { TranslatePipe } from '@ngx-translate/core';
                     }
                     
                     @case ('date') {
-                        <div class="form-group filter-control col-3">
+                        <div class="form-group filter-control col-2">
                             <label [for]="filter.key">{{ filter.label | translate}}</label>
                             <!-- TODO Max date cap -->
                             <input
-                                class="form-control"
+                                class="form-field input"
                                 type="date"
                                 [id]="filter.key"
                                 [name]="filter.key"

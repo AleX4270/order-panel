@@ -16,7 +16,7 @@ import { Component, input, InputSignal } from '@angular/core';
         .color-label-box {
             width: $box-width;
             height: $box-width;
-            border-radius: var(--small-border-radius);
+            border-radius: var(--border-radius-sm);
             border: 1px solid var(--border-color);
         }
 

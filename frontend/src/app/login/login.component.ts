@@ -51,7 +51,7 @@ import { LoginUser } from "../shared/store/user/user.actions";
                                 <input
                                     id="email"
                                     type="text"
-                                    class="form-control mt-2"
+                                    class="form-field input mt-2"
                                     formControlName="email"
                                     placeholder="{{ 'login.emailPlaceholder' | translate }}"
                                 />
@@ -67,7 +67,7 @@ import { LoginUser } from "../shared/store/user/user.actions";
                                     <input
                                         id="password"
                                         type="{{ showPassword ? 'text' : 'password' }}"
-                                        class="form-control mt-2"
+                                        class="form-field input mt-2"
                                         formControlName="password"
                                         placeholder="&bull;&bull;&bull;&bull;"
                                     />

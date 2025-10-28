@@ -10,95 +10,97 @@ import { NgSelectComponent } from '@ng-select/ng-select';
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Formularz zlecenia</h5>
+                        <h5 class="modal-title text-primary">Formularz zlecenia</h5>
                     </div>
                     <div class="modal-body">
                         @if(!isLoading() && form) {
                             <form [formGroup]="form" class="p-3">
                                 <div class="row">
                                     <div class="form-group col-12">
-                                        <label for="orderNumber" class="fw-semibold">Numer zlecenia</label>
+                                        <label for="orderNumber">Numer zlecenia</label>
                                         <input
-                                            [disabled]="true"
                                             type="text"
                                             formControlName="orderNumber"
                                             id="orderNumber"
                                             name="orderNumber"
-                                            class="form-control form-control-sm"
+                                            class="form-field input"
+                                            [placeholder]="'Podaj numer zamówienia'"
                                         />
                                     </div>
 
-                                    <div class="form-group col-6 mt-2">
-                                        <label for="priorityId" class="fw-semibold">Priorytet</label>
+                                    <div class="form-group col-6 mt-3">
+                                        <label for="priorityId">Priorytet</label>
                                         <ng-select 
                                             formControlName="priorityId"
-                                            [items]="[]"
+                                            [items]="[1, 2, 3]"
                                             [multiple]="false"
                                             [placeholder]="'Wybierz priorytet'"
-                                            class="form-control"
+                                            class="form-field dropdown"
                                         />
                                     </div>
                                 </div>
 
                                 <div class="row mt-3 pt-2">
                                     <div class="form-group col-6">
-                                        <label for="countryId" class="fw-semibold">Kraj</label>
+                                        <label for="countryId">Kraj</label>
                                         <ng-select
                                             formControlName="countryId"
                                             [items]="[]"
                                             [multiple]="false"
                                             [placeholder]="'Wybierz kraj'"
-                                            class="form-control"
+                                            class="form-field dropdown"
                                         />
                                     </div>
 
                                     <div class="form-group col-6">
-                                        <label for="provinceId" class="fw-semibold">Województwo</label>
+                                        <label for="provinceId">Województwo</label>
                                         <ng-select
                                             formControlName="provinceId"
                                             [items]="[]"
                                             [multiple]="false"
                                             [placeholder]="'Wybierz województwo'"
-                                            class="form-control"
+                                            class="form-field dropdown"
                                         />
                                     </div>
                                 </div>
 
-                                <div class="row mt-2">
+                                <div class="row mt-4">
                                     <div class="form-group col-6">
-                                        <label for="cityId" class="fw-semibold">Miasto</label>
+                                        <label for="cityId">Miasto</label>
                                         <ng-select 
                                             formControlName="cityId"
                                             [items]="[]"
                                             [multiple]="false"
                                             [placeholder]="'Wybierz miasto'"
-                                            class="form-control"
+                                            class="form-field dropdown"
                                         />
                                     </div>
 
                                     <div class="form-group col-6">
-                                        <label for="address" class="fw-semibold">Adres</label>
+                                        <label for="address">Adres</label>
                                         <input
                                             [disabled]="true"
                                             type="text"
                                             formControlName="address"
                                             id="address"
                                             name="address"
-                                            class="form-control form-control-sm"
+                                            class="form-field input"
+                                            [placeholder]="'Podaj adres'"
                                         />
                                     </div>
                                 </div>
 
                                 <div class="row mt-3 pt-2">
                                     <div class="form-group col-6">
-                                        <label for="phoneNumber" class="fw-semibold">Numer telefonu</label>
+                                        <label for="phoneNumber">Numer telefonu</label>
                                         <input
                                             [disabled]="true"
                                             type="tel"
                                             formControlName="phoneNumber"
                                             id="phoneNumber"
                                             name="phoneNumber"
-                                            class="form-control form-control-sm"
+                                            class="form-field input"
+                                            [placeholder]="'Podaj numer telefonu'"
                                         />
                                     </div>
                                 </div>
