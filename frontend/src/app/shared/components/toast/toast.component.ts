@@ -28,18 +28,13 @@ import { ToastType } from '../../enums/enums';
     `,
     styles: `
         .toast-card {
-            border: 1px solid #cce5ff;
-            border-radius: 10px;
-            width: 350px;
+            border-radius: var(--radius-lg);
+            width: 350px;   
             padding: 12px;
             display: flex;
             justify-content: center;
 
             animation: fade-in 0.3s ease-in;
-
-            .toast-card-header {
-                border-bottom: 2px solid lightgray;
-            }
 
             &.fade-out {
                 animation: fade-out 0.3s ease-in forwards;
@@ -48,33 +43,21 @@ import { ToastType } from '../../enums/enums';
             &.toast-info {
                 background-color: var(--toast-info-bg);
                 color: var(--toast-info-text);
-                .toast-card-header {
-                    border-bottom: 2px solid var(--toast-info-separator);
-                }
             }
 
             &.toast-success {
                 background-color: var(--toast-success-bg);
                 color: var(--toast-success-text);
-                .toast-card-header {
-                    border-bottom: 2px solid var(--toast-success-separator);
-                }
             }
 
             &.toast-warning {
                 background-color: var(--toast-warning-bg);
                 color: var(--toast-warning-text);
-                .toast-card-header {
-                    border-bottom: 2px solid var(--toast-warning-separator);
-                }
             }
 
             &.toast-danger {
                 background-color: var(--toast-danger-bg);
                 color: var(--toast-danger-text);
-                .toast-card-header {
-                    border-bottom: 2px solid var(--toast-danger-separator);
-                }
             }
         }
 

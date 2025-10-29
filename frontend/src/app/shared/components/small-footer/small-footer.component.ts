@@ -13,7 +13,7 @@ import { TranslatePipe } from '@ngx-translate/core';
             </div>
         </div>
     `,
-    styles: ``
+    styles: [``]
 })
 export class SmallFooterComponent {
     protected currentYear!: number;

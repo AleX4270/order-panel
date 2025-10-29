@@ -23,8 +23,8 @@ import { TranslatePipe } from '@ngx-translate/core';
     `,
     styles: [`
         .resource-not-found-card {
-            border: 1px solid #cce5ff;
-            border-radius: 10px;
+            border: 1px solid var(--resource-not-found-card-background-color);
+            border-radius: var(--radius-lg);
         }
     `]
 })

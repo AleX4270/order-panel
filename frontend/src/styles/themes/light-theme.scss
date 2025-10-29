@@ -1,29 +1,105 @@
 :root {
+  --blue-100: #dce9ff;
+  --blue-200: #d6eaf8;
+  --blue-300: #cce5ff;
+  --blue-400: #aed6f1;
+  --blue-500: #0d6efd;
+  --blue-600: #2c3e50;
+  
+  --green-300: #d4efdf;
+  --green-400: #a9dfbf;
+  --green-500: #1e8449;
+
+  --orange-300: #fdebd0;
+  --orange-400: #fad7a0;
+  --orange-500: #af691a;
+
+  --red-200: #fee2e2;
+  --red-300: #fadbd8;
+  --red-400: #f5b7b1;
+  --red-500: #b03a2e;
+  
+  --white-100: #ffffff;
+  --white-200: #fafafa;
+  --white-300: #f3f4f6;
+  --white-350: #eaf3ff;
+  --white-400: #e5e7eb;
+
+  --gray-100: #e6e6e6;
+  --gray-200: #d1d5db;
+  --gray-500: #6c757d;
+  --gray-600: #374151;
+  
+  --dark-500: #111827;
+}
+
+:root {
+  //App
   --background-color: #ffffff;
   --border-color: #d1d5db;
 
-  --toast-info-bg:          #d6eaf8;
-  --toast-info-separator:   #aed6f1;
-  --toast-info-text:        #2c3e50;
-  --toast-info-close:       #2c3e50;
+  //Toasts
+  --toast-card-header-color: 
 
-  --toast-success-bg:       #d4efdf;
-  --toast-success-separator:#a9dfbf;
-  --toast-success-text:     #1e8449;
-  --toast-success-close:    #1e8449;
+  --toast-info-bg:          var(--blue-200);
+  --toast-info-separator:   var(--blue-400);
+  --toast-info-text:        var(--blue-600);
+  --toast-info-close:       var(--blue-600);
 
-  --toast-warning-bg:       #fdebd0;
-  --toast-warning-separator:#fad7a0;
-  --toast-warning-text:     #af691a;
-  --toast-warning-close:    #af691a;
+  --toast-success-bg:       var(--green-300);
+  --toast-success-separator:var(--green-400);
+  --toast-success-text:     var(--green-500);
+  --toast-success-close:    var(--green-500);
 
-  --toast-danger-bg:        #fadbd8;
-  --toast-danger-separator: #f5b7b1;
-  --toast-danger-text:      #b03a2e;
-  --toast-danger-close:     #b03a2e;
+  --toast-warning-bg:       var(--orange-300);
+  --toast-warning-separator:var(--orange-400);
+  --toast-warning-text:     var(--orange-500);
+  --toast-warning-close:    var(--orange-500);
 
-  --navbar-element-text: #374151;
-  --navbar-element-text-active: #2563eb;
+  --toast-danger-bg:        var(--red-300);
+  --toast-danger-separator: var(--red-400);
+  --toast-danger-text:      var(--red-500);
+  --toast-danger-close:     var(--red-500);
+
+  //Login page
+  --login-card-border-color: var(--blue-300);
+  --password-toggle-background-color: var(--white-100);
+
+  //Resource not found page
+  --resource-not-found-card-background-color: var(--blue-300);
+
+  //Orders List
+  --order-list-default-row-background-color: var(--white-100);
+  --order-list-hovered-row-background-color: var(--white-300);
+  --order-list-overdue-row-background-color: var(--red-200);
+  --order-list-completed-row-background-color: var(--gray-200);
+  --order-list-row-border-color: var(--gray-200);
+  
+  //Password recovery page
+  --password-recovery-card-border-color: var(--blue-300);
+
+  //Card component
+  --card-background-color: var(--white-200);
+  --card-border-color: var(--gray-100);
+
+  //Color label component
+  --color-label-border-color: var(--gray-200);
+
+  //Pagination component
+  --pagination-link-color: var(--blue-500);
+  --pagination-link-muted-color: var(--gray-500);
+  --pagination-item-color: var(--blue-500);
+  --pagination-item-hover-color: var(--white-350);
+  --pagination-item-active-color: var(--blue-100);
+
+  //User profile navbar component
+  --navbar-logout-item-color: var(--red-500);
+  --navbar-logout-item-active-color: var(--white-100);
+  --navbar-logout-item-active-background-color: var(--red-500);
+
+  //Navbar component
+  --navbar-element-text-active-color: #2563eb;
+  --navbar-element-text-active-color: #2563eb;
   --navbar-element-background-hover: #f8f9fa;
   --navbar-element-background-active: #eff6ff;
 
@@ -32,23 +108,14 @@
   --text-danger-color: #dc3545;
   --text-muted-color: #6c757d;
 
-  --navbar-element-radius: 6px;
-
-  --card-background-color: #fafafa;
-  --card-border-color: #e6e6e6;
+  
 
   --order-list-header-text-color: #116ef8;
   --order-list-header-background-color: #E9F2FF;
-  --order-list-secondary-font-size: 0.9rem;
 
-  --order-list-default-row-background-color: #ffffff;
-  --order-list-hovered-row-background-color: #f3f4f6;
-  --order-list-overdue-row-background-color: #fee2e2;
-  --order-list-completed-row-background-color: #e5e7eb;
-
-  --border-radius: 10px;
-  --border-radius-sm: 5px;
   
+  
+
   --form-field-box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --form-control-border-color: #ced4da;
 }

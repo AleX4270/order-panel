@@ -16,12 +16,12 @@ import { Component, input, InputSignal } from '@angular/core';
         .color-label-box {
             width: $box-width;
             height: $box-width;
-            border-radius: var(--border-radius-sm);
-            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-label-border-color);
         }
 
         .color-label {
-            font-size: 0.8rem;
+            font-size: var(--font-size-xs);
         }
     `],
 })

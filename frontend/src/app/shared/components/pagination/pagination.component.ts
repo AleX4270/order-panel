@@ -72,30 +72,30 @@ import { FormsModule } from '@angular/forms';
         }
 
         .pagination-link {
-            color: var(--text-primary-color);
+            color: var(--pagination-link-color);
             text-decoration: none;
         }
 
         .pagination-item {
-            border-radius: var(--border-radius-sm);
+            border-radius: var(--radius-sm);
             cursor: pointer;
-            color: var(--text-primary-color);
+            color: var(--pagination-item-color);
 
             &.disabled {
                 pointer-events: none;
                 cursor: default;
 
                 .pagination-link {
-                    color: var(--text-muted-color);
+                    color: var(--pagination-link-muted-color);
                 }
             }
 
             &:hover {
-                background-color: #eaf3ff;
+                background-color: var(--pagination-item-hover-color);
             }
 
             &.active {
-                background-color: #dce9ff;
+                background-color: var(--pagination-item-active-color);
             }
         }
     `],

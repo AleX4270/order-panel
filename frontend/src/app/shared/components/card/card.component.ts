@@ -22,9 +22,9 @@ import { Component, computed, input } from '@angular/core';
         .card-container {
             background-color: var(--card-background-color);
             border: 1px solid var(--card-border-color);
-            border-radius: var(--border-radius);
+            border-radius: var(--radius-lg);
             padding: 0;
-            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            box-shadow: var(--shadow-xs);
         }
     `],
 })

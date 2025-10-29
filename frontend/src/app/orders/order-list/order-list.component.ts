@@ -181,14 +181,14 @@ import { OrderFormModalComponent } from "../order-form-modal/order-form-modal.co
     styles: [`
         .list-row {
             background-color: var(--order-list-default-row-background-color);
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--order-list-row-border-color);
 
             &:hover {
                 background-color: var(--order-list-hovered-row-background-color);
             }
 
             td {
-                font-size: var(--order-list-secondary-font-size);
+                font-size: var(--font-size-sm);
                 padding: 1.5rem 0 1.5rem 0.75rem;
             }
         }

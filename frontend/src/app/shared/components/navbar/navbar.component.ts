@@ -56,7 +56,7 @@ import { UserProfileNavbarComponent } from '../user-image/user-profile-navbar.co
         .navbar {
             padding: 0 2% 0 2%;
             min-height: 55px;
-            box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+            box-shadow: var(--shadow-sm);
         }
     `]
 })

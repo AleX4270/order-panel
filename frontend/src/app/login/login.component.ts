@@ -108,12 +108,12 @@ import { LoginUser } from "../shared/store/user/user.actions";
     styles: [
         `
             .login-card {
-                border: 1px solid #cce5ff;
-                border-radius: 10px;
+                border: 1px solid var(--login-card-border-color);
+                border-radius: var(--radius-lg);
             }
 
             .password-toggle-icon {
-                background-color: white;
+                background-color: var(--password-toggle-background-color);
                 padding-left: 6px;
                 position: absolute;
                 top: 59%;

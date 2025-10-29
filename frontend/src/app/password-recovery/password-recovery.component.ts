@@ -64,8 +64,8 @@ import { RouterModule } from '@angular/router';
     `,
     styles: [`
         .password-recovery-card {
-            border: 1px solid #cce5ff;
-            border-radius: 10px;
+            border: 1px solid var(--password-recovery-card-border-color);
+            border-radius: var(--radius-lg);
         }
 
         .password-toggle-icon {

@@ -1,6 +1,6 @@
 @use './styles/themes/light-theme.scss';
 @use './styles/themes/dark-theme.scss';
-@use './styles/variables.scss';
+@use './styles/constants.scss';
 @use '@ng-select/ng-select/themes/default.theme.css';
 
 @font-face {
@@ -38,26 +38,24 @@
 }
 
 .navbar-element {
-    font-weight: 500;
-    color: var(--navbar-element-text);
     padding: 0.5rem 0.75rem 0.5rem 0.75rem;
-    border-radius: var(--navbar-element-radius);
+    border-radius: var(--radius-sm);
     transition: color 200ms, background-color 200ms;
     cursor: pointer;
     border: none;
     background-color: transparent;
 
     &:hover {
-        color: var(--navbar-element-text-active);
+        color: var(--navbar-element-text-active-color);
         background-color: var(--navbar-element-background-hover);
     }
 
     &.active {
-        color: var(--navbar-element-text-active);
+        color: var(--navbar-element-text-active-color);
         background-color: var(--navbar-element-background-active);
 
         &:hover {
-            color: var(--navbar-element-text-active);
+            color: var(--navbar-element-text-active-color);
             background-color: var(--navbar-element-background-active);
         }
     }
@@ -76,16 +74,15 @@
     }
 }
 
-// TODO: Extract the values
 .form-field {
     appearance: none;
-    font-size: 0.83rem;
+    font-size: var(--font-size-xs);
     display: block;
     width: 100%;
     min-height: 36px;
-    background: #ffffff;
+    background: var(--background-color);
     color: #111827;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     outline: none;
     transition: border-color .15s ease, box-shadow .15s ease,
@@ -96,7 +93,7 @@
             background: #ffffff;
             color: #111827;
             border: 1px solid #e5e7eb;
-            border-radius: 8px;
+            border-radius: var(--radius-md);
             transition: border-color .15s ease, box-shadow .15s ease,
                         background-color .15s ease, color .15s ease;
         }

@@ -13,9 +13,7 @@ import { TranslatePipe } from '@ngx-translate/core';
             </button>
         </div>
     `,
-    styles: [`
-
-    `]
+    styles: [``]
 })
 export class NavbarElementComponent {
     private router = inject(Router);

@@ -41,7 +41,7 @@ import { CardComponent } from '../card/card.component';
             background-color: var(--order-list-header-background-color);
             
             ::ng-deep th {
-                font-weight: 500;
+                font-weight: var(--font-weight-medium);
                 padding: 1rem 0 1rem 0.75rem;
             }
         }   

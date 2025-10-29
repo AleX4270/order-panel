@@ -39,11 +39,11 @@ import { Router } from '@angular/router';
     `,
     styles: [`
         .navbar-logout-item {
-            color: var(--text-danger-color);
+            color: var(--navbar-logout-item-color);
 
             &:active {
-                color: var(--text-secondary-color);
-                background-color: var(--text-danger-color);
+                color: var(--navbar-logout-item-active-color);
+                background-color: var(--navbar-logout-item-active-background-color)
             }
         }
     `]

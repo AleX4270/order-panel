@@ -59,7 +59,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     `,
     styles: [`
         label {
-            font-size: 0.9rem;
+            font-size: var(--font-size-sm);
         }
 
         .filter-control {
