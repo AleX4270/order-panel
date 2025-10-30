@@ -9,21 +9,23 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('country', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
             $table->id();
-            $table->string('symbol', 32);
+            $table->string('symbol', 32)->nullable(false);
             $table->timestamps();
         });
 
-        Schema::create('country_translation', function(Blueprint $table) {
+        Schema::create('country_translations', function(Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('country_id');
-            $table->unsignedBigInteger('language_id');
-            $table->string('name', 255);
+            $table->unsignedBigInteger('country_id')->nullable(false);
+            $table->unsignedBigInteger('language_id')->nullable(false);
+            $table->string('name', 255)->nullable(false);
             $table->timestamps();
 
-            $table->foreign('country_id')->references('id')->on('country');
-            $table->foreign('language_id')->references('id')->on('language');
+            $table->foreign('country_id')->references('id')->on('countries');
+            $table->foreign('language_id')->references('id')->on('languages');
+
+            $table->unique(['country_id', 'language_id']);
         });
     }
 
@@ -31,7 +33,7 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('country_translation');
-        Schema::dropIfExists('country');
+        Schema::dropIfExists('country_translations');
+        Schema::dropIfExists('countries');
     }
 };
