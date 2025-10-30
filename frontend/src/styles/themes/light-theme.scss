@@ -1,9 +1,12 @@
 :root {
+  //TODO: Sort the color pallete out
+
   --blue-100: #dce9ff;
   --blue-200: #d6eaf8;
   --blue-300: #cce5ff;
   --blue-400: #aed6f1;
   --blue-500: #0d6efd;
+  --blue-550: #2563eb;
   --blue-600: #2c3e50;
   
   --green-300: #d4efdf;
@@ -20,7 +23,9 @@
   --red-500: #b03a2e;
   
   --white-100: #ffffff;
+  --white-150: #f8f9fa;
   --white-200: #fafafa;
+  --white-250: #eff6ff;
   --white-300: #f3f4f6;
   --white-350: #eaf3ff;
   --white-400: #e5e7eb;
@@ -98,24 +103,29 @@
   --navbar-logout-item-active-background-color: var(--red-500);
 
   //Navbar component
-  --navbar-element-text-active-color: #2563eb;
-  --navbar-element-text-active-color: #2563eb;
-  --navbar-element-background-hover: #f8f9fa;
-  --navbar-element-background-active: #eff6ff;
+  --navbar-element-text-hover-color: var(--blue-550);
+  --navbar-element-hover-background-color: var(--white-150);
+  --navbar-element-text-active-color: var(--blue-550);
+  --navbar-element-active-background-color: var(--white-250);
 
-  --text-primary-color: #0d6efd;
-  --text-secondary-color: #ffffff;
-  --text-danger-color: #dc3545;
-  --text-muted-color: #6c757d;
-
+  //Form field
+  --form-field-text-primary-color: var(--dark-500);
   
+  //Form field input
+  --form-input-border-color: var(--white-400);
+  --form-input-placeholder-color: #6b7280;
+  --form-input-focus-color: #aec9ef;
+  --form-input-focus-shadow-color: #d5e4fa;
 
+  //Ng Select (form field dropdown)
+  --ng-select-background-color: var(--white-100);
+  --ng-select-text-primary-color: var(--dark-500);
+  --ng-select-border-color: var(--white-400);
+  --ng-select-input-placeholder-color: #6b7280;
+  --ng-select-placeholder-color: #6b7280;
+  --ng-select-invalid-border-color: #ef4444;
+
+  //Order list
   --order-list-header-text-color: #116ef8;
   --order-list-header-background-color: #E9F2FF;
-
-  
-  
-
-  --form-field-box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --form-control-border-color: #ced4da;
 }

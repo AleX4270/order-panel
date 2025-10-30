@@ -46,17 +46,17 @@
     background-color: transparent;
 
     &:hover {
-        color: var(--navbar-element-text-active-color);
-        background-color: var(--navbar-element-background-hover);
+        color: var(--navbar-element-text-hover-color);
+        background-color: var(--navbar-element-hover-background-color);
     }
 
     &.active {
         color: var(--navbar-element-text-active-color);
-        background-color: var(--navbar-element-background-active);
+        background-color: var(--navbar-element-active-background-color);
 
         &:hover {
             color: var(--navbar-element-text-active-color);
-            background-color: var(--navbar-element-background-active);
+            background-color: var(--navbar-element-active-background-color);
         }
     }
 }
@@ -81,18 +81,18 @@
     width: 100%;
     min-height: 36px;
     background: var(--background-color);
-    color: #111827;
+    color: var(--form-field-text-primary-color);
     border-radius: var(--radius-md);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-xs);
     outline: none;
     transition: border-color .15s ease, box-shadow .15s ease,
                 background-color .15s ease, color .15s ease;
 
     &.dropdown {
         .ng-select-container {
-            background: #ffffff;
-            color: #111827;
-            border: 1px solid #e5e7eb;
+            background: var(--ng-select-background-color);
+            color: var(--ng-select-text-primary-color);
+            border: 1px solid var(--ng-select-border-color);
             border-radius: var(--radius-md);
             transition: border-color .15s ease, box-shadow .15s ease,
                         background-color .15s ease, color .15s ease;
@@ -107,13 +107,13 @@
         .ng-input > input {
             padding: 0;
                 &::placeholder {
-                    color: #6b7280;
+                    color: var(--ng-select-input-placeholder-color);
                     opacity: .7;
                 }
         }
 
         .ng-placeholder {
-            color: #6b7280;
+            color: var(--ng-select-placeholder-color);
             opacity: .9;
         }
 
@@ -139,23 +139,23 @@
 
         &.is-invalid .ng-select-container,
         &[aria-invalid="true"] .ng-select-container {
-            border-color: #ef4444;
-            box-shadow: 0 0 0 4px rgba(239,68,68,.25);
+            border-color: var(--ng-select-invalid-border-color);
+            box-shadow: var(--shadow-xs);
         }
     }
 
     &.input {
         padding: 4px 12px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--form-input-border-color);
 
         &::placeholder {
-            color: #6b7280;
+            color: var(--form-input-placeholder-color);
             opacity: .7;
         }
 
         &:focus {
-            border-color: #aec9ef;
-            box-shadow: 0 0 0 4px #d5e4fa;
+            border-color: var(--form-input-focus-color);
+            box-shadow: 0 0 0 4px var(--form-input-focus-shadow-color);
         }
 
         &:disabled {
