@@ -44,19 +44,11 @@ class PrioritySeeder extends Seeder {
     public function getPriorityLevels(): array {
         return [
             [
-                'symbol' => 'low',
+                'symbol' => 'standard',
                 'is_active' => 1,
                 'translations' => [
-                    'pl' => 'Niski',
-                    'en' => 'Low',
-                ]
-            ],
-            [
-                'symbol' => 'medium',
-                'is_active' => 1,
-                'translations' => [
-                    'pl' => 'Średni',
-                    'en' => 'Medium',
+                    'pl' => 'Normalny',
+                    'en' => 'Standard',
                 ]
             ],
             [

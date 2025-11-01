@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PriorityTranslation extends Model {
-    protected $table = 'priority_translation';
-
     protected $fillable = [
         'priority_id', 
         'language_id', 

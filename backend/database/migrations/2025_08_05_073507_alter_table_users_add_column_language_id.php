@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::table('users', function(Blueprint $table) {
             $table->unsignedBigInteger('language_id')->nullable(true)->after('remember_token');
-            $table->foreign('language_id')->references('id')->on('language');
+            $table->foreign('language_id')->references('id')->on('languages');
         });
     }
 

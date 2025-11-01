@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrderStatus extends Model {
-    protected $table = 'order_status';
-
     protected $attributes = [
         'is_internal' => 0,
         'is_active' => 1

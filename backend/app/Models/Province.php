@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Province extends Model {
-    protected $table = 'province';
-
     protected $fillable = [
         'country_id', 
         'name', 

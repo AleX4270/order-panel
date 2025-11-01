@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model {
-    protected $table = 'order';
-
     protected $attributes = [
         'is_active' => 1
     ];

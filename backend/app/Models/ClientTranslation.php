@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ClientTranslation extends Model {
-    protected $table = 'client_translation';
-
     protected $fillable = [
         'client_id', 
         'language_id', 

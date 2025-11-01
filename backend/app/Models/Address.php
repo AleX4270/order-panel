@@ -8,11 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Address extends Model {
-    protected $table = 'address';
-
     protected $fillable = [
         'city_id', 
-        'address'
+        'address',
+        'postal_code',
     ];
 
     public function clients(): HasMany {

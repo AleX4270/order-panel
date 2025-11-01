@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CountryTranslation extends Model {
-    protected $table = 'country_translation';
-
     protected $fillable = [
         'country_id', 
         'language_id', 

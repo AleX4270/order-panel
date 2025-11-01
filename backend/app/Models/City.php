@@ -8,11 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class City extends Model {
-    protected $table = 'city';
-
     protected $fillable = [
         'province_id', 
-        'postal_code', 
         'name'
     ];
 

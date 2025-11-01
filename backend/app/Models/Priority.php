@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Priority extends Model {
-    protected $table = 'priority';
-
     protected $attributes = [
         'is_active' => 1
     ];
