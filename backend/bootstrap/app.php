@@ -14,6 +14,4 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->statefulApi();
     })
-    ->withExceptions(function (Exceptions $exceptions) {
-        //TODO: Implement if needed.
-    })->create();
+    ->withExceptions(function (Exceptions $exceptions) {})->create();

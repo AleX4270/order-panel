@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Auth;
 
 use App\Enums\HttpStatus;
 use App\Http\Controllers\Controller;
@@ -10,7 +10,7 @@ use App\Services\Api\Auth\AuthService;
 use Illuminate\Http\Request;
 use App\Http\Responses\Api\ApiResponse;
 
-class AuthController extends Controller {
+class AuthController {
     public function __construct(
         private readonly AuthService $authService,
     ) {}
@@ -21,7 +21,7 @@ class AuthController extends Controller {
         return new ApiResponse(
             status: HttpStatus::OK,
             data: $currentUser,
-            message: __('basic.success'),
+            message: __('response.success'),
         );
     }
 
@@ -38,7 +38,7 @@ class AuthController extends Controller {
         return new ApiResponse(
             status: HttpStatus::OK,
             data: $result,
-            message: __('basic.success')
+            message: __('response.success')
         );
     }
 
@@ -47,7 +47,7 @@ class AuthController extends Controller {
 
         return new ApiResponse(
             status: HttpStatus::OK,
-            message: __('basic.success')
+            message: __('response.success')
         );
     }
 
@@ -56,7 +56,7 @@ class AuthController extends Controller {
 
         return new ApiResponse(
             status: HttpStatus::OK,
-            message: __('basic.success')
+            message: __('response.success')
         );
     }
 }
