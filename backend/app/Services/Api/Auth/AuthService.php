@@ -5,7 +5,7 @@ namespace App\Services\Api\Auth;
 
 use App\Exceptions\UserAlreadyExistsException;
 use Illuminate\Http\Request;
-use App\Http\Requests\LoginRequest;
+use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;

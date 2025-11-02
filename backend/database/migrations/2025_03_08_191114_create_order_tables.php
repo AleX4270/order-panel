@@ -13,9 +13,9 @@ return new class extends Migration {
             $table->id();
             $table->string('symbol', 32)->nullable(false);
             $table->dateTime('date_deadline')->nullable(false);
-            $table->dateTime('date_completed')->nullable(false);
+            $table->dateTime('date_completed')->nullable(true);
             $table->unsignedBigInteger('user_creation_id')->nullable(false);
-            $table->unsignedBigInteger('user_modification_id');
+            $table->unsignedBigInteger('user_modification_id')->nullable(true);
             $table->unsignedBigInteger('priority_id')->nullable(false);
             $table->unsignedBigInteger('client_id')->nullable(false);
             $table->unsignedBigInteger('order_status_id')->nullable(false);
