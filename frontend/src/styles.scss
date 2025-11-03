@@ -165,3 +165,12 @@
         }
     }
 }
+
+.required {
+    &::after {
+        content: '*';
+        color: var(--required-symbol-color);
+        position: relative;
+        left: 2px;
+    }
+}

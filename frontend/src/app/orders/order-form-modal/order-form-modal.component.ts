@@ -2,110 +2,134 @@ import { DatePipe } from '@angular/common';
 import { Component, computed, ElementRef, inject, OnDestroy, Signal, signal, ViewChild, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import { InputErrorLabelComponent } from '../../shared/components/input-error-label/input-error-label.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-order-form-modal',
-    imports: [ReactiveFormsModule, NgSelectComponent, DatePipe],
+    imports: [ReactiveFormsModule, NgSelectComponent, DatePipe, InputErrorLabelComponent, TranslatePipe],
     providers: [DatePipe],
     template: `
-        <div #modalRef class="modal fade" tabindex="-1">
+        <div #modalRef class="modal modal-lg fade" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title text-primary">Formularz zlecenia</h5>
+                        <h5 class="modal-title text-primary">{{ "orderForm.title" | translate }}</h5>
                     </div>
                     <div class="modal-body">
                         @if(!isLoading() && form) {
                             <form [formGroup]="form" class="p-3">
                                 <div class="row">
                                     <div class="form-group col-12">
-                                        <label for="orderNumber">Numer zlecenia</label>
+                                        <label for="orderNumber" class="required">{{ "orderForm.orderNumber" | translate }}</label>
                                         <input
                                             type="text"
                                             formControlName="orderNumber"
                                             id="orderNumber"
                                             name="orderNumber"
-                                            class="form-field input"
-                                            [placeholder]="'Podaj numer zamówienia'"
+                                            class="form-field input required"
+                                            [placeholder]="'orderForm.orderNumberPlaceholder' | translate"
                                         />
                                     </div>
-
-                                    <div class="form-group col-6 mt-3">
-                                        <label for="priorityId">Priorytet</label>
-                                        <ng-select 
-                                            formControlName="priorityId"
-                                            [items]="[1, 2, 3]"
-                                            [multiple]="false"
-                                            [placeholder]="'Wybierz priorytet'"
-                                            class="form-field dropdown"
-                                        />
-                                    </div>
-
-                                    <div class="form-group col-6 mt-3">
-                                        <label for="phoneNumber">Numer telefonu</label>
-                                        <input
-                                            type="tel"
-                                            formControlName="phoneNumber"
-                                            id="phoneNumber"
-                                            name="phoneNumber"
-                                            class="form-field input"
-                                            [placeholder]="'Podaj numer telefonu'"
-                                        />
-                                    </div>
+                                    <app-input-error-label [control]="form.get('orderNumber')" />
                                 </div>
 
-                                <div class="row mt-3 pt-2">
-                                    <div class="form-group col-6">
-                                        <label for="countryId">Kraj</label>
+                                <div class="row mt-4">
+                                    <div class="form-group col-3">
+                                        <label for="countryId" class="required">{{ "orderForm.country" | translate }}</label>
                                         <ng-select
                                             formControlName="countryId"
                                             [items]="[]"
                                             [multiple]="false"
-                                            [placeholder]="'Wybierz kraj'"
+                                            [placeholder]="'orderForm.countryPlaceholder' | translate"
                                             class="form-field dropdown"
                                         />
+                                        <app-input-error-label [control]="form.get('countryId')" />
                                     </div>
 
-                                    <div class="form-group col-6">
-                                        <label for="provinceId">Województwo</label>
+                                    <div class="form-group col-5">
+                                        <label for="provinceId" class="required">{{ "orderForm.province" | translate }}</label>
                                         <ng-select
                                             formControlName="provinceId"
                                             [items]="[]"
                                             [multiple]="false"
-                                            [placeholder]="'Wybierz województwo'"
+                                            [placeholder]="'orderForm.provincePlaceholder' | translate"
                                             class="form-field dropdown"
                                         />
+                                        <app-input-error-label [control]="form.get('provinceId')" />
                                     </div>
-                                </div>
 
-                                <div class="row mt-4">
-                                    <div class="form-group col-6">
-                                        <label for="cityId">Miasto</label>
+                                    <div class="form-group col-4">
+                                        <label for="cityId" class="required">{{ "orderForm.city" | translate }}</label>
                                         <ng-select 
                                             formControlName="cityId"
                                             [items]="[]"
                                             [multiple]="false"
-                                            [placeholder]="'Wybierz miasto'"
+                                            [placeholder]="'orderForm.cityPlaceholder' | translate"
                                             class="form-field dropdown"
                                         />
+                                        <app-input-error-label [control]="form.get('cityId')" />
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="form-group col-3">
+                                        <label for="postalCode">{{ "orderForm.postalCode" | translate }}</label>
+                                        <input
+                                            type="text"
+                                            formControlName="postalCode"
+                                            id="postalCode"
+                                            name="postalCode"
+                                            class="form-field input"
+                                            [placeholder]="'orderForm.postalCodePlaceholder' | translate"
+                                        />
+                                        <app-input-error-label [control]="form.get('postalCode')" />
                                     </div>
 
-                                    <div class="form-group col-6">
-                                        <label for="address">Adres</label>
+                                    <div class="form-group col-9">
+                                        <label for="address" class="required">{{ "orderForm.address" | translate }}</label>
                                         <input
                                             type="text"
                                             formControlName="address"
                                             id="address"
                                             name="address"
                                             class="form-field input"
-                                            [placeholder]="'Podaj adres'"
+                                            [placeholder]="'orderForm.addressPlaceholder' | translate"
                                         />
+                                        <app-input-error-label [control]="form.get('address')" />
                                     </div>
                                 </div>
 
                                 <div class="row mt-4">
                                     <div class="form-group col-6">
-                                        <label for="dateCreation">Data utworzenia</label>
+                                        <label for="priorityId" class="required">{{ "orderForm.priority" | translate }}</label>
+                                        <ng-select 
+                                            formControlName="priorityId"
+                                            [items]="[1, 2, 3]"
+                                            [multiple]="false"
+                                            [placeholder]="'orderForm.priorityPlaceholder' | translate"
+                                            class="form-field dropdown"
+                                        />
+                                        <app-input-error-label [control]="form.get('priorityId')" />
+                                    </div>
+
+                                    <div class="form-group col-6">
+                                        <label for="phoneNumber" class="required">{{ "orderForm.phoneNumber" | translate }}</label>
+                                        <input
+                                            type="tel"
+                                            formControlName="phoneNumber"
+                                            id="phoneNumber"
+                                            name="phoneNumber"
+                                            class="form-field input"
+                                            [placeholder]="'orderForm.phoneNumberPlaceholder' | translate"
+                                        />
+                                        <app-input-error-label [control]="form.get('phoneNumber')" />
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="form-group col-4">
+                                        <label for="dateCreation" class="required">{{ "orderForm.dateCreation" | translate }}</label>
                                         <input
                                             type="date"
                                             formControlName="dateCreation"
@@ -115,10 +139,11 @@ import { NgSelectComponent } from '@ng-select/ng-select';
                                             [min]="currentDate()"
                                             (change)="onChangeDateCreation()"
                                         />
+                                        <app-input-error-label [control]="form.get('dateCreation')" />
                                     </div>
 
-                                    <div class="form-group col-6">
-                                        <label for="dateDeadline">Termin realizacji</label>
+                                    <div class="form-group col-4">
+                                        <label for="dateDeadline" class="required">{{ "orderForm.dateDeadline" | translate }}</label>
                                         <input
                                             type="date"
                                             formControlName="dateDeadline"
@@ -127,11 +152,12 @@ import { NgSelectComponent } from '@ng-select/ng-select';
                                             class="form-field input"
                                             [min]="form.get('dateCreation')?.value"
                                         />
+                                        <app-input-error-label [control]="form.get('dateDeadline')" />
                                     </div>
 
                                     @if(isEditScenario()) {
-                                        <div class="form-group col-6 mt-3">
-                                            <label for="dateCompleted">Data ukończenia</label>
+                                        <div class="form-group col-4">
+                                            <label for="dateCompleted">{{ "orderForm.dateCompleted" | translate }}</label>
                                             <input
                                                 type="date"
                                                 formControlName="dateCompleted"
@@ -140,21 +166,23 @@ import { NgSelectComponent } from '@ng-select/ng-select';
                                                 class="form-field input"
                                                 [min]="form.get('dateCreation')?.value"
                                             />
+                                            <app-input-error-label [control]="form.get('dateCompleted')" />
                                         </div>
                                     }
                                 </div>
 
-                                <div class="row mt-3 pt-2">
+                                <div class="row mt-4">
                                     <div class="form-group col-12">
-                                        <label for="remarks">Uwagi</label>
+                                        <label for="remarks">{{ "orderForm.remarks" | translate }}</label>
                                         <textarea
                                             id="remarks"
                                             name="remarks"
                                             rows="4"
                                             formControlName="remarks"
                                             class="form-field input mt-2"
-                                            [placeholder]="'Uwagi dla zlecenia...'"
+                                            [placeholder]="'orderForm.remarksPlaceholder' | translate"
                                         ></textarea>
+                                        <app-input-error-label [control]="form.get('remarks')" />
                                     </div>
                                 </div>
                             </form>
@@ -208,6 +236,7 @@ export class OrderFormModalComponent implements OnDestroy {
             countryId: [null, Validators.required],
             provinceId: [null, Validators.required],
             cityId: [null, Validators.required],
+            postalCode: [null, Validators.maxLength(32)],
             address: [null, [Validators.required, Validators.maxLength(255)]],
             phoneNumber: [null, [Validators.required, Validators.maxLength(32), Validators.pattern(/^(?:\+?\d{1,3}|\(?\d{2,4}\)?)?[\s-]?\d{3}(?:[\s-]?\d{2,3}){2,3}$/)]],
             priorityId: [null, Validators.required],
@@ -230,11 +259,11 @@ export class OrderFormModalComponent implements OnDestroy {
         const dateDeadline = dateDeadlineField?.value ? new Date(dateDeadlineField.value) : null;
         const dateCompleted = dateCompletedField?.value ? new Date(dateCompletedField.value) : null;
 
-        if(dateDeadline && dateDeadline < dateCreation) { 
+        if(dateDeadline && dateDeadline < dateCreation) {
             dateDeadlineField?.reset();
         }
 
-        if(dateCompleted && dateCompleted < dateCreation) { 
+        if(dateCompleted && dateCompleted < dateCreation) {
             dateCompletedField?.reset();
         }
     }

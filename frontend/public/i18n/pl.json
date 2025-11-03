@@ -6,6 +6,16 @@
         "notFound": "Nie znaleziono zasobu",
         "notFoundDescription": "Ups! Wygląda na to, że zasób, którego szukałeś, nie istnieje. Być może został przeniesiony, usunięty lub po prostu nigdy nie istniał."
     },
+    "error": {
+        "incorrect": "Dane nieprawidłowe",
+        "required": "Wartość jest wymagana",
+        "email": "Podana wartość musi być adresem e-mail",
+        "min": "Wymagana minimalna wartość: {{min}}",
+        "max": "Wymagana maksymalna wartość: {{max}}",
+        "maxLength": "Przekroczono maksymalną długość",
+        "minLength": "Podana wartość jest za krótka",
+        "pattern": "Podana wartość ma zły format"
+    },
     "navbar": {
         "dashboard": "Panel",
         "orders": "Zlecenia",
@@ -69,5 +79,29 @@
         "statusPlaceholder": "Wybierz status",
         "dateCreation": "Data dodania",
         "dateDeadline": "Termin realizacji"
+    },
+    "orderForm": {
+        "title": "Formularz zlecenia",
+        "orderNumber": "Numer zlecenia",
+        "orderNumberPlaceholder": "Wprowadź numer zlecenia",
+        "priority": "Priorytet",
+        "priorityPlaceholder": "Wybierz priorytet",
+        "phoneNumber": "Numer telefonu",
+        "phoneNumberPlaceholder": "Wprowadź numer telefonu",
+        "country": "Kraj",
+        "countryPlaceholder": "Wybierz kraj",
+        "province": "Województwo",
+        "provincePlaceholder": "Wybierz województwo",
+        "city": "Miasto",
+        "cityPlaceholder": "Wybierz miasto",
+        "postalCode": "Kod pocztowy",
+        "postalCodePlaceholder": "12-345",
+        "address": "Adres",
+        "addressPlaceholder": "Wprowadź adres",
+        "dateCreation": "Data utworzenia",
+        "dateDeadline": "Termin realizacji",
+        "dateCompleted": "Data ukończenia",
+        "remarks": "Uwagi",
+        "remarksPlaceholder": "Wprowadź uwagi"
     }
 }

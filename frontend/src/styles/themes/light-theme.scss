@@ -20,6 +20,7 @@
   --red-200: #fee2e2;
   --red-300: #fadbd8;
   --red-400: #f5b7b1;
+  --red-450: #dc3545;
   --red-500: #b03a2e;
   
   --white-100: #ffffff;
@@ -128,4 +129,9 @@
   //Order list
   --order-list-header-text-color: #116ef8;
   --order-list-header-background-color: #E9F2FF;
+
+  //Input error label
+  --error-label-text-color: var(--red-450);
+
+  --required-symbol-color: var(--red-450);
 }

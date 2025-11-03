@@ -6,6 +6,16 @@
         "notFound": "Resource not found",
         "notFoundDescription": "Oops! It looks like the resource you were looking for does not exist. It may have been moved, deleted, or simply never existed."
     },
+    "error": {
+        "incorrect": "Invalid data",
+        "required": "This value is required",
+        "email": "The value must be a valid email address",
+        "min": "Minimum required value: {{min}}",
+        "max": "Maximum allowed value: {{max}}",
+        "maxLength": "Maximum length exceeded",
+        "minLength": "The value is too short",
+        "pattern": "The value has an invalid format"
+    },
     "navbar": {
         "dashboard": "Dashboard",
         "orders": "Orders",
