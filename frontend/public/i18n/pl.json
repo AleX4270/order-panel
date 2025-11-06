@@ -14,7 +14,9 @@
         "max": "Wymagana maksymalna wartość: {{max}}",
         "maxLength": "Przekroczono maksymalną długość",
         "minLength": "Podana wartość jest za krótka",
-        "pattern": "Podana wartość ma zły format"
+        "pattern": "Podana wartość ma zły format",
+        "deadlineBeforeCreation": "Termin jest wcześniejszy niż data utworzenia",
+        "completedBeforeCreation": "Data ukończenia jest wcześniejsza niż data utworzenia"
     },
     "navbar": {
         "dashboard": "Panel",

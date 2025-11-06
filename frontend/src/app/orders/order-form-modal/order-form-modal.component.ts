@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { InputErrorLabelComponent } from '../../shared/components/input-error-label/input-error-label.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { validateOrderDateRange } from '../../shared/validators/order-date-range.validator';
 
 @Component({
     selector: 'app-order-form-modal',
@@ -137,7 +138,6 @@ import { TranslatePipe } from '@ngx-translate/core';
                                             name="dateCreation"
                                             class="form-field input"
                                             [min]="currentDate()"
-                                            (change)="onChangeDateCreation()"
                                         />
                                         <app-input-error-label [control]="form.get('dateCreation')" />
                                     </div>
@@ -232,40 +232,21 @@ export class OrderFormModalComponent implements OnDestroy {
 
     private initForm(): void {
         this.form = this.formBuilder.group({
-            orderNumber: [null, [Validators.required, Validators.maxLength(32)]],
+            orderNumber: [null, [Validators.required, Validators.maxLength(32), Validators.pattern(/^[0-9]+\/[0-9]{4}$/)]],
             countryId: [null, Validators.required],
             provinceId: [null, Validators.required],
             cityId: [null, Validators.required],
             postalCode: [null, Validators.maxLength(32)],
             address: [null, [Validators.required, Validators.maxLength(255)]],
-            phoneNumber: [null, [Validators.required, Validators.maxLength(32), Validators.pattern(/^(?:\+?\d{1,3}|\(?\d{2,4}\)?)?[\s-]?\d{3}(?:[\s-]?\d{2,3}){2,3}$/)]],
+            phoneNumber: [null, [Validators.required, Validators.maxLength(32), Validators.pattern(/^[0-9\s()+-]{6,20}$/)]],
             priorityId: [null, Validators.required],
             dateCreation: [this.currentDate(), Validators.required],
             dateDeadline: [this.initialDateDeadline(), Validators.required],
             dateCompleted: [null],
             remarks: [null, [Validators.maxLength(2000)]]
+        },{
+            validators: [validateOrderDateRange()],
         });
-    }
-
-    protected onChangeDateCreation(): void {
-        let dateCreation = this.form.get('dateCreation')?.value;
-
-        if(!dateCreation) return;
-
-        const dateDeadlineField = this.form.get('dateDeadline');
-        const dateCompletedField = this.form.get('dateCompleted');
-
-        dateCreation = new Date(dateCreation);
-        const dateDeadline = dateDeadlineField?.value ? new Date(dateDeadlineField.value) : null;
-        const dateCompleted = dateCompletedField?.value ? new Date(dateCompletedField.value) : null;
-
-        if(dateDeadline && dateDeadline < dateCreation) {
-            dateDeadlineField?.reset();
-        }
-
-        if(dateCompleted && dateCompleted < dateCreation) {
-            dateCompletedField?.reset();
-        }
     }
 
     public showForm(id?: number): void {
