@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Api\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
-class LoginRequest extends FormRequest {
+class RegisterRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -20,8 +20,9 @@ class LoginRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'email' => ['required', 'email', 'string', 'lowercase', 'max:255'],
-            'password' => ['required', 'string', Password::defaults()]
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'confirmed', Password::defaults()],
         ];
     }
 
@@ -32,12 +33,17 @@ class LoginRequest extends FormRequest {
      */
     public function messages(): array {
         return [
+            'name.required' => __('auth.nameRequired'),
+            'name.string' => __('auth.nameString'),
+            'name.max' => __('auth.nameMax'),
             'email.required' => __('auth.emailRequired'),
-            'email.email' => __('auth.emailFormatEmail'),
             'email.string' => __('auth.emailString'),
             'email.lowercase' => __('auth.emailLowercase'),
+            'email.email' => __('auth.emailFormatEmail'),
             'email.max' => __('auth.emailMax'),
+            'email.unique' => __('auth.emailUnique'),
             'password.required' => __('auth.passwordRequired'),
+            'password.confirmed' => __('auth.passwordConfirmed'),
             'password.string' => __('auth.passwordString'),
         ];
     }

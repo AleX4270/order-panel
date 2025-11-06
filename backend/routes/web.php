@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Order\OrderController;
+use App\Http\Controllers\Api\Priority\PriorityController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -17,5 +18,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [OrderController::class, 'store']);
         Route::patch('/{id}', [OrderController::class, 'update']);
         Route::delete('/{id}', [OrderController::class, 'destroy']);
+    });
+
+    Route::prefix('priorities')->group(function() {
+        Route::get('/', [PriorityController::class, 'index']);
     });
 });
