@@ -1,33 +1,28 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 import { UserLoginCredentials } from '../../types/auth.types';
 import { ApiResponse } from '../../types/http.types';
 import { UserDetailsResponse } from '../../types/auth.types';
+import { RestService } from '../rest/rest.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class AuthService {
-    constructor(
-        private readonly http: HttpClient
-    ) {}
-
+export class AuthService extends RestService {
     public login(userCredentials: UserLoginCredentials): Observable<ApiResponse<UserDetailsResponse>> {
-        return this.http.get<Response>(`${environment.apiUrl}/sanctum/csrf-cookie`, { withCredentials: true }).pipe(
+        return this.http.get<Response>(`${this.apiUrl}/sanctum/csrf-cookie`, { withCredentials: true }).pipe(
             switchMap(() => {
-                return this.http.post<ApiResponse<UserDetailsResponse>>(`${environment.apiUrl}/login`, userCredentials, { withCredentials: true });
+                return this.http.post<ApiResponse<UserDetailsResponse>>(`${this.apiUrl}/login`, userCredentials, { withCredentials: true });
             })
         );
     }
 
     public logout(): Observable<ApiResponse<void>> {
-        return this.http.post<ApiResponse<void>>(`${environment.apiUrl}/logout`, {});
+        return this.http.post<ApiResponse<void>>(`${this.apiUrl}/logout`, {});
     }
 
     public user(): Observable<ApiResponse<UserDetailsResponse>> {
-        return this.http.get<ApiResponse<UserDetailsResponse>>(`${environment.apiUrl}/user`);
+        return this.http.get<ApiResponse<UserDetailsResponse>>(`${this.apiUrl}/user`);
     }
 }
