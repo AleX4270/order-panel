@@ -41,7 +41,7 @@ class PriorityService {
         }
 
         return collect([
-            'items' => $items,
+            'items' => $items->map->toCamelCaseKeys(),
             'count' => $totalItems
         ]);
     }

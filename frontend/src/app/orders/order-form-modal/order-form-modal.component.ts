@@ -102,7 +102,7 @@ import { validateOrderDateRange } from '../../shared/validators/order-date-range
                                 </div>
 
                                 <div class="row mt-4">
-                                    <div class="form-group col-6">
+                                    <div class="form-group col-3">
                                         <label for="priorityId" class="required">{{ "orderForm.priority" | translate }}</label>
                                         <ng-select 
                                             formControlName="priorityId"
@@ -112,6 +112,18 @@ import { validateOrderDateRange } from '../../shared/validators/order-date-range
                                             class="form-field dropdown"
                                         />
                                         <app-input-error-label [control]="form.get('priorityId')" />
+                                    </div>
+
+                                    <div class="form-group col-3">
+                                        <label for="statusId" class="required">{{ "orderForm.status" | translate }}</label>
+                                        <ng-select 
+                                            formControlName="statusId"
+                                            [items]="[1, 2, 3]"
+                                            [multiple]="false"
+                                            [placeholder]="'orderForm.statusPlaceholder' | translate"
+                                            class="form-field dropdown"
+                                        />
+                                        <app-input-error-label [control]="form.get('statusId')" />
                                     </div>
 
                                     <div class="form-group col-6">
@@ -217,7 +229,7 @@ export class OrderFormModalComponent implements OnDestroy {
 
     protected form!: FormGroup;
     protected orderId: WritableSignal<number | null> = signal<number | null>(null);
-    protected isEditScenario: WritableSignal<boolean> = signal<boolean>(true);
+    protected isEditScenario: WritableSignal<boolean> = signal<boolean>(false);
     protected isLoading: WritableSignal<boolean> = signal<boolean>(false);
 
     protected currentDate: Signal<string | null> = computed(() => {
@@ -233,13 +245,14 @@ export class OrderFormModalComponent implements OnDestroy {
     private initForm(): void {
         this.form = this.formBuilder.group({
             orderNumber: [null, [Validators.required, Validators.maxLength(32), Validators.pattern(/^[0-9]+\/[0-9]{4}$/)]],
-            countryId: [null, Validators.required],
+            countryId: [null, Validators.required], //TODO: Auto filled at create scenario
             provinceId: [null, Validators.required],
             cityId: [null, Validators.required],
             postalCode: [null, Validators.maxLength(32)],
             address: [null, [Validators.required, Validators.maxLength(255)]],
             phoneNumber: [null, [Validators.required, Validators.maxLength(32), Validators.pattern(/^[0-9\s()+-]{6,20}$/)]],
-            priorityId: [null, Validators.required],
+            priorityId: [null, Validators.required], //TODO: Auto filled at create scenario
+            statusId: [null, Validators.required], //TODO: Auto filled at create scenario
             dateCreation: [this.currentDate(), Validators.required],
             dateDeadline: [this.initialDateDeadline(), Validators.required],
             dateCompleted: [null],
@@ -247,6 +260,11 @@ export class OrderFormModalComponent implements OnDestroy {
         },{
             validators: [validateOrderDateRange()],
         });
+    }
+
+    private initFormData(): void {
+        // Load the form data first
+        // Then if it's an edit scenario load the order data
     }
 
     public showForm(id?: number): void {

@@ -14,6 +14,7 @@ class OrderRequest extends FormRequest {
             'id' => ['sometimes', 'required', 'integer'],
             'orderNumber' => ['required', 'string', 'max:32'],
             'priorityId' => ['required', 'integer'],
+            'statusId' => ['required', 'integer'],
             'countryId' => ['required', 'integer'],
             'provinceId' => ['required', 'integer'],
             'cityId' => ['required', 'integer'],

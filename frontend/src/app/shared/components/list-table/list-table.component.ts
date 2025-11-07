@@ -42,7 +42,8 @@ import { CardComponent } from '../card/card.component';
             
             ::ng-deep th {
                 font-weight: var(--font-weight-medium);
-                padding: 1rem 0 1rem 0.75rem;
+                padding: 0.8rem 0 0.8rem 0.75rem;
+                font-size: var(--font-size-sm);
             }
         }   
     `]

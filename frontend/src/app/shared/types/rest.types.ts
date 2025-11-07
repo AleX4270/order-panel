@@ -4,3 +4,8 @@ export interface BaseFilterParams {
     sortColumn?: string;
     sortDir?: string;
 }
+
+export interface IndexResponse<T> {
+    items: T[];
+    count: number;
+}

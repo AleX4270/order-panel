@@ -5,6 +5,7 @@ export interface PriorityFilterParams extends BaseFilterParams {}
 
 export interface PriorityItem {
     id: number;
-    type: PriorityType;
-    label: string;
+    symbol: PriorityType;
+    isActive: boolean;
+    name: string;
 }

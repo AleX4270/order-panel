@@ -88,6 +88,8 @@
         "orderNumberPlaceholder": "Wprowadź numer zlecenia",
         "priority": "Priorytet",
         "priorityPlaceholder": "Wybierz priorytet",
+        "status": "Status",
+        "statusPlaceholder": "Wybierz status",
         "phoneNumber": "Numer telefonu",
         "phoneNumberPlaceholder": "Wprowadź numer telefonu",
         "country": "Kraj",

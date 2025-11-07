@@ -60,7 +60,7 @@ import { OrderFormModalComponent } from "../order-form-modal/order-form-modal.co
                 </div>
             </div>
             <div class="col-4 text-end">
-                <button class="btn btn-primary" (click)="showOrderFormModal()" >+ {{'orderList.addNewOrder' | translate}}</button>
+                <button class="btn btn-sm btn-primary" (click)="showOrderFormModal()" >+ {{'orderList.addNewOrder' | translate}}</button>
             </div>
         </div>
 
@@ -188,8 +188,8 @@ import { OrderFormModalComponent } from "../order-form-modal/order-form-modal.co
             }
 
             td {
-                font-size: var(--font-size-sm);
-                padding: 1.5rem 0 1.5rem 0.75rem;
+                font-size: var(--font-size-xs);
+                padding: 1.2rem 0 1.2rem 0.75rem;
             }
         }
 
