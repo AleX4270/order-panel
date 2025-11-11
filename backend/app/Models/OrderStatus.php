@@ -3,11 +3,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\ConvertsModelKeysToCamelCase;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrderStatus extends Model {
+    use ConvertsModelKeysToCamelCase;
+
     protected $attributes = [
         'is_internal' => 0,
         'is_active' => 1
