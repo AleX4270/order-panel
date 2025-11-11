@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Country\CountryController;
 use App\Http\Controllers\Api\Order\OrderController;
 use App\Http\Controllers\Api\Priority\PriorityController;
+use App\Http\Controllers\Api\Province\ProvinceController;
 use App\Http\Controllers\Api\Status\StatusController;
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -32,5 +33,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::prefix('countries')->group(function() {
         Route::get('/', [CountryController::class, 'index']);
+    });
+
+    Route::prefix('provinces')->group(function() {
+        Route::get('/', [ProvinceController::class, 'index']);
     });
 });
