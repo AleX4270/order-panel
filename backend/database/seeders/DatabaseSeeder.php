@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder {
             CountrySeeder::class,
             OrderStatusSeeder::class,
             PrioritySeeder::class,
+            PolishProvinceSeeder::class,
         ]);
     }
 }
