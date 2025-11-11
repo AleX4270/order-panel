@@ -1,6 +1,6 @@
 import { inject } from "@angular/core";
 import { Store } from "@ngxs/store";
-import { AuthService } from "../services/auth/auth.service";
+import { AuthService } from "../services/api/auth/auth.service";
 import { catchError, Observable, of, tap } from "rxjs";
 import { LoginUser, LogoutUser } from "../store/user/user.actions";
 import { ApiResponse } from "../types/http.types";

@@ -1,6 +1,6 @@
 import { Component, inject  } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { AuthService } from '../shared/services/auth/auth.service';
+import { AuthService } from '../shared/services/api/auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({

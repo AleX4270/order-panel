@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiResponse } from '../../types/http.types';
-import { PriorityFilterParams, PriorityItem } from '../../types/priority.types';
+import { ApiResponse } from '../../../types/http.types';
+import { PriorityFilterParams, PriorityItem } from '../../../types/priority.types';
 import { RestService } from '../rest/rest.service';
-import { IndexResponse } from '../../types/rest.types';
+import { IndexResponse } from '../../../types/rest.types';
 
 @Injectable({
     providedIn: 'root'

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs';
-import { UserLoginCredentials } from '../../types/auth.types';
-import { ApiResponse } from '../../types/http.types';
-import { UserDetailsResponse } from '../../types/auth.types';
+import { UserLoginCredentials } from '../../../types/auth.types';
+import { ApiResponse } from '../../../types/http.types';
+import { UserDetailsResponse } from '../../../types/auth.types';
 import { RestService } from '../rest/rest.service';
 
 @Injectable({

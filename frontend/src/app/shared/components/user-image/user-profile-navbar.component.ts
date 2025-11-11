@@ -6,7 +6,7 @@ import { Store } from '@ngxs/store';
 import { UserState } from '../../store/user/user.state';
 import { User } from '../../types/user.types';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { AuthService } from '../../services/auth/auth.service';
+import { AuthService } from '../../services/api/auth/auth.service';
 import { ToastService } from '../../services/toast/toast.service';
 import { ToastType } from '../../enums/enums';
 import { LogoutUser } from '../../store/user/user.actions';

@@ -12,7 +12,7 @@ import { faEye, faEyeSlash } from "@ng-icons/font-awesome/regular";
 import { CommonModule } from "@angular/common";
 import { Router, RouterModule } from "@angular/router";
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
-import { AuthService } from "../shared/services/auth/auth.service";
+import { AuthService } from "../shared/services/api/auth/auth.service";
 import { UserLoginCredentials } from "../shared/types/auth.types";
 import { ToastService } from "../shared/services/toast/toast.service";
 import { ToastType } from "../shared/enums/enums";
