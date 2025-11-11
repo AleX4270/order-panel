@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Country\CountryController;
 use App\Http\Controllers\Api\Order\OrderController;
 use App\Http\Controllers\Api\Priority\PriorityController;
 use App\Http\Controllers\Api\Status\StatusController;
@@ -27,5 +28,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('statuses')->group(function() {
         Route::get('/', [StatusController::class, 'index']);
+    });
+    
+    Route::prefix('countries')->group(function() {
+        Route::get('/', [CountryController::class, 'index']);
     });
 });
