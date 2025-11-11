@@ -10,6 +10,6 @@ import { IndexResponse } from '../../../types/rest.types';
 })
 export class PriorityService extends RestService {
     public index(params?: PriorityFilterParams): Observable<ApiResponse<IndexResponse<PriorityItem>>> {
-        return this.http.get<ApiResponse<IndexResponse<PriorityItem>>>(`${this.apiUrl}/priorities?=${this.getQueryParams(params)}`);
+        return this.http.get<ApiResponse<IndexResponse<PriorityItem>>>(`${this.apiUrl}/priorities${this.getQueryParams(params)}`);
     }
 }

@@ -10,6 +10,6 @@ import { StatusFilterParams, StatusItem } from '../../../types/status.types';
 })
 export class StatusService extends RestService {
     public index(params?: StatusFilterParams): Observable<ApiResponse<IndexResponse<StatusItem>>> {
-        return this.http.get<ApiResponse<IndexResponse<StatusItem>>>(`${this.apiUrl}/statuses?=${this.getQueryParams(params)}`);
+        return this.http.get<ApiResponse<IndexResponse<StatusItem>>>(`${this.apiUrl}/statuses${this.getQueryParams(params)}`);
     }
 }

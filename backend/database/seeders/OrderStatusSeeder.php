@@ -49,7 +49,7 @@ class OrderStatusSeeder extends Seeder {
                 'is_internal' => 1,
                 'is_active' => 1,
                 'translations' => [
-                    'pl' => 'W trakcie realizacji',
+                    'pl' => 'W trakcie',
                     'en' => 'In progress',
                 ]
             ],

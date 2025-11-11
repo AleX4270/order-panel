@@ -68,11 +68,6 @@ export enum ExpansionState {
     expanded,
 }
 
-export enum PriorityType {
-    normal = 'normal',
-    high = 'high',
-}
-
 export enum TileType {
     primary,
     secondary,

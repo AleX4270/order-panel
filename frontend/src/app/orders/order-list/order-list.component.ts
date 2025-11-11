@@ -1,7 +1,8 @@
 import { Component, OnInit, signal, TemplateRef, ViewChild, WritableSignal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ListTableComponent } from '../../shared/components/list-table/list-table.component';
-import { ExpansionState, TileType, PriorityType } from '../../shared/enums/enums';
+import { ExpansionState, TileType } from '../../shared/enums/enums';
+import { Priority } from '../../shared/enums/priority.enum';
 import { TileComponent } from "../../shared/components/tile/tile.component";
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { faEye, faPenToSquare, faTrashCan } from '@ng-icons/font-awesome/regular';
@@ -221,8 +222,8 @@ export class OrderListComponent {
         }
     }
 
-    protected getPriorityTileType(type: PriorityType): TileType {
-        return type === PriorityType.high
+    protected getPriorityTileType(type: Priority): TileType {
+        return type === Priority.high
             ? TileType.danger
             : TileType.secondary;
     }

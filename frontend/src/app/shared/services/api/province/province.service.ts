@@ -10,6 +10,6 @@ import { ProvinceFilterParams, ProvinceItem } from '../../../types/province.type
 })
 export class ProvinceService extends RestService {
     public index(params?: ProvinceFilterParams): Observable<ApiResponse<IndexResponse<ProvinceItem>>> {
-        return this.http.get<ApiResponse<IndexResponse<ProvinceItem>>>(`${this.apiUrl}/provinces?=${this.getQueryParams(params)}`);
+        return this.http.get<ApiResponse<IndexResponse<ProvinceItem>>>(`${this.apiUrl}/provinces${this.getQueryParams(params)}`);
     }
 }

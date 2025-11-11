@@ -10,6 +10,6 @@ import { CityFilterParams, CityItem } from '../../../types/city.types';
 })
 export class CityService extends RestService {
     public index(params?: CityFilterParams): Observable<ApiResponse<IndexResponse<CityItem>>> {
-        return this.http.get<ApiResponse<IndexResponse<CityItem>>>(`${this.apiUrl}/cities?=${this.getQueryParams(params)}`);
+        return this.http.get<ApiResponse<IndexResponse<CityItem>>>(`${this.apiUrl}/cities${this.getQueryParams(params)}`);
     }
 }

@@ -1,10 +1,22 @@
 import { DatePipe } from '@angular/common';
-import { Component, computed, ElementRef, inject, OnDestroy, Signal, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, computed, DestroyRef, ElementRef, inject, OnDestroy, Signal, signal, ViewChild, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { InputErrorLabelComponent } from '../../shared/components/input-error-label/input-error-label.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { validateOrderDateRange } from '../../shared/validators/order-date-range.validator';
+import { PriorityItem } from '../../shared/types/priority.types';
+import { StatusItem } from '../../shared/types/status.types';
+import { CountryItem } from '../../shared/types/country.types';
+import { ProvinceItem } from '../../shared/types/province.types';
+import { CityItem } from '../../shared/types/city.types';
+import { PriorityService } from '../../shared/services/api/priority/priority.service';
+import { StatusService } from '../../shared/services/api/status/status.service';
+import { CountryService } from '../../shared/services/api/country/country.service';
+import { catchError, count, forkJoin, map, of, takeUntil, tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { DEFAULT_COUNTRY_SYMBOL, DEFAULT_PRIORITY_SYMBOL, DEFAULT_STATUS_SYMBOL } from '../../app.constants';
+import { ProvinceService } from '../../shared/services/api/province/province.service';
 
 @Component({
     selector: 'app-order-form-modal',
@@ -40,10 +52,13 @@ import { validateOrderDateRange } from '../../shared/validators/order-date-range
                                         <label for="countryId" class="required">{{ "orderForm.country" | translate }}</label>
                                         <ng-select
                                             formControlName="countryId"
-                                            [items]="[]"
+                                            [items]="countries()"
+                                            bindValue="id"
+                                            bindLabel="name"
                                             [multiple]="false"
                                             [placeholder]="'orderForm.countryPlaceholder' | translate"
                                             class="form-field dropdown"
+                                            (change)="onCountryChange($event)"
                                         />
                                         <app-input-error-label [control]="form.get('countryId')" />
                                     </div>
@@ -52,7 +67,9 @@ import { validateOrderDateRange } from '../../shared/validators/order-date-range
                                         <label for="provinceId" class="required">{{ "orderForm.province" | translate }}</label>
                                         <ng-select
                                             formControlName="provinceId"
-                                            [items]="[]"
+                                            [items]="provinces()"
+                                            bindValue="id"
+                                            bindLabel="name"
                                             [multiple]="false"
                                             [placeholder]="'orderForm.provincePlaceholder' | translate"
                                             class="form-field dropdown"
@@ -106,7 +123,9 @@ import { validateOrderDateRange } from '../../shared/validators/order-date-range
                                         <label for="priorityId" class="required">{{ "orderForm.priority" | translate }}</label>
                                         <ng-select 
                                             formControlName="priorityId"
-                                            [items]="[1, 2, 3]"
+                                            [items]="priorities()"
+                                            bindValue="id"
+                                            bindLabel="name"
                                             [multiple]="false"
                                             [placeholder]="'orderForm.priorityPlaceholder' | translate"
                                             class="form-field dropdown"
@@ -118,7 +137,9 @@ import { validateOrderDateRange } from '../../shared/validators/order-date-range
                                         <label for="statusId" class="required">{{ "orderForm.status" | translate }}</label>
                                         <ng-select 
                                             formControlName="statusId"
-                                            [items]="[1, 2, 3]"
+                                            [items]="statuses()"
+                                            bindValue="id"
+                                            bindLabel="name"
                                             [multiple]="false"
                                             [placeholder]="'orderForm.statusPlaceholder' | translate"
                                             class="form-field dropdown"
@@ -222,8 +243,13 @@ import { validateOrderDateRange } from '../../shared/validators/order-date-range
 export class OrderFormModalComponent implements OnDestroy {
     @ViewChild('modalRef') orderFormModal!: ElementRef;
 
+    private readonly destroyRef: DestroyRef = inject(DestroyRef);
     private readonly formBuilder: FormBuilder = inject(FormBuilder);
     private readonly datePipe: DatePipe = inject(DatePipe);
+    private readonly priorityService: PriorityService = inject(PriorityService);
+    private readonly statusService: StatusService = inject(StatusService);
+    private readonly countryService: CountryService = inject(CountryService);
+    private readonly provinceService: ProvinceService = inject(ProvinceService);
 
     private modal?: any;
 
@@ -231,6 +257,12 @@ export class OrderFormModalComponent implements OnDestroy {
     protected orderId: WritableSignal<number | null> = signal<number | null>(null);
     protected isEditScenario: WritableSignal<boolean> = signal<boolean>(false);
     protected isLoading: WritableSignal<boolean> = signal<boolean>(false);
+
+    protected priorities: WritableSignal<PriorityItem[]> = signal<PriorityItem[]>([]);
+    protected statuses: WritableSignal<StatusItem[]> = signal<StatusItem[]>([]);
+    protected countries: WritableSignal<CountryItem[]> = signal<CountryItem[]>([]);
+    protected provinces: WritableSignal<ProvinceItem[]> = signal<ProvinceItem[]>([]);
+    // protected cities: WritableSignal<CityItem[]> = signal<CityItem[]>([]);
 
     protected currentDate: Signal<string | null> = computed(() => {
         return this.datePipe.transform(new Date().toString(), 'yyyy-MM-dd');
@@ -242,31 +274,6 @@ export class OrderFormModalComponent implements OnDestroy {
         return this.datePipe.transform(date.toString(), 'yyyy-MM-dd');
     });
 
-    private initForm(): void {
-        this.form = this.formBuilder.group({
-            orderNumber: [null, [Validators.required, Validators.maxLength(32), Validators.pattern(/^[0-9]+\/[0-9]{4}$/)]],
-            countryId: [null, Validators.required], //TODO: Auto filled at create scenario
-            provinceId: [null, Validators.required],
-            cityId: [null, Validators.required],
-            postalCode: [null, Validators.maxLength(32)],
-            address: [null, [Validators.required, Validators.maxLength(255)]],
-            phoneNumber: [null, [Validators.required, Validators.maxLength(32), Validators.pattern(/^[0-9\s()+-]{6,20}$/)]],
-            priorityId: [null, Validators.required], //TODO: Auto filled at create scenario
-            statusId: [null, Validators.required], //TODO: Auto filled at create scenario
-            dateCreation: [this.currentDate(), Validators.required],
-            dateDeadline: [this.initialDateDeadline(), Validators.required],
-            dateCompleted: [null],
-            remarks: [null, [Validators.maxLength(2000)]]
-        },{
-            validators: [validateOrderDateRange()],
-        });
-    }
-
-    private initFormData(): void {
-        // Load the form data first
-        // Then if it's an edit scenario load the order data
-    }
-
     public showForm(id?: number): void {
         this.isLoading.set(true);
 
@@ -276,6 +283,7 @@ export class OrderFormModalComponent implements OnDestroy {
         }
 
         this.initForm();
+        this.loadFormData();
         this.openModal();        
     }
     
@@ -298,6 +306,92 @@ export class OrderFormModalComponent implements OnDestroy {
     protected closeModal(): void {
         this.form.reset();
         this.modal?.hide();
+    }
+
+    private initForm(): void {
+        this.form = this.formBuilder.group({
+            orderNumber: [null, [Validators.required, Validators.maxLength(32), Validators.pattern(/^[0-9]+\/[0-9]{4}$/)]], //TODO: Auto loaded
+            countryId: [null, Validators.required],
+            provinceId: [null, Validators.required],
+            cityId: [null, Validators.required],
+            postalCode: [null, Validators.maxLength(32)],
+            address: [null, [Validators.required, Validators.maxLength(255)]],
+            phoneNumber: [null, [Validators.required, Validators.maxLength(32), Validators.pattern(/^[0-9\s()+-]{6,20}$/)]],
+            priorityId: [null, Validators.required],
+            statusId: [null, Validators.required],
+            dateCreation: [this.currentDate(), Validators.required],
+            dateDeadline: [this.initialDateDeadline(), Validators.required],
+            dateCompleted: [null],
+            remarks: [null, [Validators.maxLength(2000)]]
+        },{
+            validators: [validateOrderDateRange()],
+        });
+    }
+
+    private loadFormData(): void {
+        forkJoin({
+            priorities: this.priorityService.index(),
+            statuses: this.statusService.index(),
+            countries: this.countryService.index(),
+        })
+        .pipe(
+            map(({priorities, statuses, countries}) => ({
+                priorities: priorities.data?.items ?? [],
+                statuses: statuses.data?.items ?? [],
+                countries: countries.data?.items ?? [],
+            })),
+            tap(({priorities, statuses, countries}) => {
+                this.priorities.set(priorities);
+                this.statuses.set(statuses);
+                this.countries.set(countries);
+                
+                if(this.priorities()) {
+                    const defaultPriority = this.priorities().find((priority) => priority.symbol == DEFAULT_PRIORITY_SYMBOL);
+                    if(defaultPriority?.id) {
+                        this.form.get('priorityId')?.setValue(defaultPriority.id);
+                    }
+                }
+
+                if(this.statuses()) {
+                    const defaultStatus = this.statuses().find((status) => status.symbol == DEFAULT_STATUS_SYMBOL);
+                    if(defaultStatus?.id) {
+                        this.form.get('statusId')?.setValue(defaultStatus?.id);
+                    }
+                }
+
+                if(this.countries()) {
+                    const defaultCountry = this.countries().find((country) => country.symbol == DEFAULT_COUNTRY_SYMBOL);
+                    if(defaultCountry?.id) {
+                        // this.form.get('countryId')?.setValue(defaultCountry?.id);
+                        // this.loadProvinces(defaultCountry?.id);
+                    }
+                }
+            }),
+            takeUntilDestroyed(this.destroyRef),
+        )
+        .subscribe({
+            error: (err) => {
+                console.error(err);
+            }
+        });
+    }
+
+    // TODO: This is an event that's coming from the select not the final value
+
+    protected loadProvinces(countryId?: number): void {
+        this.provinceService.index(countryId ? { countryId: countryId } : undefined).subscribe({
+            next: (res) => {
+                this.provinces.set(res.data?.items ?? []);
+            },
+        });
+    }
+
+    protected onCountryChange(countryId?: number): void {
+        if(countryId == null || countryId == undefined) {
+            this.provinces.set([]);
+        }
+
+        this.loadProvinces(countryId);
     }
 
     ngOnDestroy(): void {

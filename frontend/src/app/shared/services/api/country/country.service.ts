@@ -10,6 +10,6 @@ import { CountryFilterParams, CountryItem } from '../../../types/country.types';
 })
 export class CountryService extends RestService {
     public index(params?: CountryFilterParams): Observable<ApiResponse<IndexResponse<CountryItem>>> {
-        return this.http.get<ApiResponse<IndexResponse<CountryItem>>>(`${this.apiUrl}/countries?=${this.getQueryParams(params)}`);
+        return this.http.get<ApiResponse<IndexResponse<CountryItem>>>(`${this.apiUrl}/countries${this.getQueryParams(params)}`);
     }
 }
