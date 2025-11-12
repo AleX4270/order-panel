@@ -17,6 +17,7 @@ import { catchError, count, forkJoin, map, of, takeUntil, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DEFAULT_COUNTRY_SYMBOL, DEFAULT_PRIORITY_SYMBOL, DEFAULT_STATUS_SYMBOL } from '../../app.constants';
 import { ProvinceService } from '../../shared/services/api/province/province.service';
+import { CityService } from '../../shared/services/api/city/city.service';
 
 @Component({
     selector: 'app-order-form-modal',
@@ -73,6 +74,7 @@ import { ProvinceService } from '../../shared/services/api/province/province.ser
                                             [multiple]="false"
                                             [placeholder]="'orderForm.provincePlaceholder' | translate"
                                             class="form-field dropdown"
+                                            (change)="onProvinceChange($event)"
                                         />
                                         <app-input-error-label [control]="form.get('provinceId')" />
                                     </div>
@@ -81,10 +83,15 @@ import { ProvinceService } from '../../shared/services/api/province/province.ser
                                         <label for="cityId" class="required">{{ "orderForm.city" | translate }}</label>
                                         <ng-select 
                                             formControlName="cityId"
-                                            [items]="[]"
+                                            [items]="cities()"
+                                            bindValue="id"
+                                            bindLabel="name"
                                             [multiple]="false"
                                             [placeholder]="'orderForm.cityPlaceholder' | translate"
                                             class="form-field dropdown"
+                                            addTagText="Dodaj miasto"
+                                            [addTag]="addNewCity"
+                                            (change)="onCityChange($event)"
                                         />
                                         <app-input-error-label [control]="form.get('cityId')" />
                                     </div>
@@ -250,6 +257,7 @@ export class OrderFormModalComponent implements OnDestroy {
     private readonly statusService: StatusService = inject(StatusService);
     private readonly countryService: CountryService = inject(CountryService);
     private readonly provinceService: ProvinceService = inject(ProvinceService);
+    private readonly cityService: CityService = inject(CityService);
 
     private modal?: any;
 
@@ -262,7 +270,29 @@ export class OrderFormModalComponent implements OnDestroy {
     protected statuses: WritableSignal<StatusItem[]> = signal<StatusItem[]>([]);
     protected countries: WritableSignal<CountryItem[]> = signal<CountryItem[]>([]);
     protected provinces: WritableSignal<ProvinceItem[]> = signal<ProvinceItem[]>([]);
-    // protected cities: WritableSignal<CityItem[]> = signal<CityItem[]>([]);
+    protected cities: WritableSignal<CityItem[]> = signal<CityItem[]>([]);
+
+    protected onCityChange(event : any): void {
+        console.log(event);
+        console.log(this.cities());
+    }
+
+    protected addNewCity = (name: string): CityItem | null => {
+        const cityName = name.trim();
+        if(!cityName) {
+            return null;
+        }
+
+        const isCityExisting = this.cities().some((city) => city.name.toLowerCase() == cityName.toLowerCase());
+        if(isCityExisting) {
+            return null;
+        }
+
+        const newCity = { id: 0, name: cityName} as CityItem;
+        this.cities.set([...this.cities(), newCity]);
+
+        return newCity;
+    };
 
     protected currentDate: Signal<string | null> = computed(() => {
         return this.datePipe.transform(new Date().toString(), 'yyyy-MM-dd');
@@ -310,7 +340,7 @@ export class OrderFormModalComponent implements OnDestroy {
 
     private initForm(): void {
         this.form = this.formBuilder.group({
-            orderNumber: [null, [Validators.required, Validators.maxLength(32), Validators.pattern(/^[0-9]+\/[0-9]{4}$/)]], //TODO: Auto loaded
+            orderNumber: [{ value: null, disabled: true }, [Validators.required, Validators.maxLength(32), Validators.pattern(/^[0-9]+\/[0-9]{4}$/)]], //TODO: Auto loaded
             countryId: [null, Validators.required],
             provinceId: [null, Validators.required],
             cityId: [null, Validators.required],
@@ -362,8 +392,8 @@ export class OrderFormModalComponent implements OnDestroy {
                 if(this.countries()) {
                     const defaultCountry = this.countries().find((country) => country.symbol == DEFAULT_COUNTRY_SYMBOL);
                     if(defaultCountry?.id) {
-                        // this.form.get('countryId')?.setValue(defaultCountry?.id);
-                        // this.loadProvinces(defaultCountry?.id);
+                        this.form.get('countryId')?.setValue(defaultCountry?.id);
+                        this.loadProvinces(defaultCountry?.id);
                     }
                 }
             }),
@@ -376,8 +406,6 @@ export class OrderFormModalComponent implements OnDestroy {
         });
     }
 
-    // TODO: This is an event that's coming from the select not the final value
-
     protected loadProvinces(countryId?: number): void {
         this.provinceService.index(countryId ? { countryId: countryId } : undefined).subscribe({
             next: (res) => {
@@ -386,12 +414,38 @@ export class OrderFormModalComponent implements OnDestroy {
         });
     }
 
-    protected onCountryChange(countryId?: number): void {
-        if(countryId == null || countryId == undefined) {
+    protected loadCities(provinceId?: number): void {
+        this.cityService.index(provinceId ? { provinceId: provinceId } : undefined).subscribe({
+            next: (res) => {
+                this.cities.set(res.data?.items ?? []);
+            },
+        });
+    }
+
+    protected onCountryChange(event?: any): void {
+        const countryId = event?.id
+
+        if(!countryId || countryId == null || countryId == undefined) {
             this.provinces.set([]);
+            this.cities.set([]);
+            this.form.get('provinceId')?.reset();
+            this.form.get('cityId')?.reset();
+            return;
         }
 
         this.loadProvinces(countryId);
+    }
+
+    protected onProvinceChange(event?: any): void {
+        const provinceId = event?.id
+
+        if(!provinceId || provinceId == null || provinceId == undefined) {
+            this.cities.set([]);
+            this.form.get('cityId')?.reset();
+            return;
+        }
+
+        this.loadCities(provinceId);
     }
 
     ngOnDestroy(): void {
