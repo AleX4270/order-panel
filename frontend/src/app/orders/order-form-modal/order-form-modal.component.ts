@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { Component, computed, DestroyRef, ElementRef, inject, OnDestroy, Signal, signal, ViewChild, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
@@ -21,34 +21,41 @@ import { CityService } from '../../shared/services/api/city/city.service';
 
 @Component({
     selector: 'app-order-form-modal',
-    imports: [ReactiveFormsModule, NgSelectComponent, DatePipe, InputErrorLabelComponent, TranslatePipe],
+    imports: [ReactiveFormsModule, NgSelectComponent, DatePipe, InputErrorLabelComponent, TranslatePipe, NgClass],
     providers: [DatePipe],
     template: `
         <div #modalRef class="modal modal-lg fade" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title text-primary">{{ "orderForm.title" | translate }}</h5>
+                        <h5 class="modal-title text-primary">{{ "orderForm." + (isEditScenario() ? "updateTitle" : "createTitle") | translate }}</h5>
                     </div>
                     <div class="modal-body">
                         @if(!isLoading() && form) {
                             <form [formGroup]="form" class="p-3">
-                                <div class="row">
-                                    <div class="form-group col-12">
-                                        <label for="orderNumber" class="required">{{ "orderForm.orderNumber" | translate }}</label>
-                                        <input
-                                            type="text"
-                                            formControlName="orderNumber"
-                                            id="orderNumber"
-                                            name="orderNumber"
-                                            class="form-field input required"
-                                            [placeholder]="'orderForm.orderNumberPlaceholder' | translate"
-                                        />
+                                @if(isEditScenario()) {
+                                    <div class="row">
+                                        <div class="form-group col-12">
+                                            <label for="orderNumber" class="required">{{ "orderForm.orderNumber" | translate }}</label>
+                                            <input
+                                                type="text"
+                                                formControlName="orderNumber"
+                                                id="orderNumber"
+                                                name="orderNumber"
+                                                class="form-field input required"
+                                                [placeholder]="'orderForm.orderNumberPlaceholder' | translate"
+                                            />
+                                        </div>
+                                        <app-input-error-label [control]="form.get('orderNumber')" />
                                     </div>
-                                    <app-input-error-label [control]="form.get('orderNumber')" />
-                                </div>
-
-                                <div class="row mt-4">
+                                }
+                                
+                                <div
+                                    [ngClass]="{
+                                        'row': true,
+                                        'mt-4': isEditScenario()
+                                    }"
+                                >
                                     <div class="form-group col-3">
                                         <label for="countryId" class="required">{{ "orderForm.country" | translate }}</label>
                                         <ng-select
@@ -340,7 +347,7 @@ export class OrderFormModalComponent implements OnDestroy {
 
     private initForm(): void {
         this.form = this.formBuilder.group({
-            orderNumber: [{ value: null, disabled: true }, [Validators.required, Validators.maxLength(32), Validators.pattern(/^[0-9]+\/[0-9]{4}$/)]], //TODO: Auto loaded
+            orderNumber: [{ value: null, disabled: true }, [Validators.required, Validators.maxLength(32), Validators.pattern(/^[0-9]+\/[0-9]{4}$/)]],
             countryId: [null, Validators.required],
             provinceId: [null, Validators.required],
             cityId: [null, Validators.required],

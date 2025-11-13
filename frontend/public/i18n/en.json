@@ -69,5 +69,42 @@
         "details": "Details",
         "edit": "Edit",
         "delete": "Delete"
+    },
+    "orderListFilters": {
+        "allFields": "All fields",
+        "allFieldsPlaceholder": "Enter a phrase",
+        "priority": "Priority",
+        "priorityPlaceholder": "Select priority",
+        "status": "Status",
+        "statusPlaceholder": "Select status",
+        "dateCreation": "Creation date",
+        "dateDeadline": "Deadline"
+    },
+    "orderForm": {
+        "createTitle": "Create new order",
+        "updateTitle": "Order form",
+        "orderNumber": "Order number",
+        "orderNumberPlaceholder": "Enter order number",
+        "priority": "Priority",
+        "priorityPlaceholder": "Select priority",
+        "status": "Status",
+        "statusPlaceholder": "Select status",
+        "phoneNumber": "Phone number",
+        "phoneNumberPlaceholder": "Enter phone number",
+        "country": "Country",
+        "countryPlaceholder": "Select country",
+        "province": "Province",
+        "provincePlaceholder": "Select province",
+        "city": "City",
+        "cityPlaceholder": "Select city",
+        "postalCode": "Postal code",
+        "postalCodePlaceholder": "12-345",
+        "address": "Address",
+        "addressPlaceholder": "Enter address",
+        "dateCreation": "Creation date",
+        "dateDeadline": "Deadline",
+        "dateCompleted": "Date completed",
+        "remarks": "Remarks",
+        "remarksPlaceholder": "Enter remarks"
     }
 }

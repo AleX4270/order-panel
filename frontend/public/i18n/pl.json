@@ -83,7 +83,8 @@
         "dateDeadline": "Termin realizacji"
     },
     "orderForm": {
-        "title": "Formularz zlecenia",
+        "createTitle": "Formularz tworzenia nowego zlecenia",
+        "updateTitle": "Formularz zlecenia",
         "orderNumber": "Numer zlecenia",
         "orderNumberPlaceholder": "Wprowadź numer zlecenia",
         "priority": "Priorytet",
