@@ -22,7 +22,7 @@ import { Subscription } from 'rxjs';
             position: fixed;
             bottom: 1rem;
             right: 1rem;
-            z-index: 1050;
+            z-index: 1070;
         }
     `
 })

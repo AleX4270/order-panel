@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\Order;
 
 use App\Enums\HttpStatus;
+use App\Http\Requests\Api\Order\OrderRequest;
 use App\Http\Responses\Api\ApiResponse;
 use App\Services\Api\Order\OrderService;
 
@@ -14,21 +15,31 @@ class OrderController {
 
     // TODO: Add the FormRequest
     public function index(): ApiResponse {
-        $data = $this->orderService->index();
+        $result = $this->orderService->index();
 
         return new ApiResponse(
-            data: $data,
+            data: $result,
             status: HttpStatus::OK,
             message: __('response.success'),
         );
     }
 
-    public function store() {
-        //
+    public function store(OrderRequest $request): ApiResponse {
+        $this->orderService->save($request->toDto());
+
+        return new ApiResponse(
+            status: HttpStatus::CREATED,
+            message: __('response.created'),
+        );
     }
 
-    public function update() {
-        //
+    public function update(OrderRequest $request): ApiResponse {
+        $this->orderService->save($request->toDto());
+
+        return new ApiResponse(
+            status: HttpStatus::NO_CONTENT,
+            message: __('response.success'),
+        );
     }
 
     public function destroy() {

@@ -4,7 +4,8 @@
         "cancel": "Anuluj",
         "return": "Powrót",
         "notFound": "Nie znaleziono zasobu",
-        "notFoundDescription": "Ups! Wygląda na to, że zasób, którego szukałeś, nie istnieje. Być może został przeniesiony, usunięty lub po prostu nigdy nie istniał."
+        "notFoundDescription": "Ups! Wygląda na to, że zasób, którego szukałeś, nie istnieje. Być może został przeniesiony, usunięty lub po prostu nigdy nie istniał.",
+        "save": "Zapisz"
     },
     "error": {
         "incorrect": "Dane nieprawidłowe",

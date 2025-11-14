@@ -3,7 +3,7 @@ import { Component, computed, DestroyRef, ElementRef, inject, OnDestroy, Signal,
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { InputErrorLabelComponent } from '../../shared/components/input-error-label/input-error-label.component';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { validateOrderDateRange } from '../../shared/validators/order-date-range.validator';
 import { PriorityItem } from '../../shared/types/priority.types';
 import { StatusItem } from '../../shared/types/status.types';
@@ -18,6 +18,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DEFAULT_COUNTRY_SYMBOL, DEFAULT_PRIORITY_SYMBOL, DEFAULT_STATUS_SYMBOL } from '../../app.constants';
 import { ProvinceService } from '../../shared/services/api/province/province.service';
 import { CityService } from '../../shared/services/api/city/city.service';
+import { ToastService } from '../../shared/services/toast/toast.service';
+import { ToastType } from '../../shared/enums/enums';
 
 @Component({
     selector: 'app-order-form-modal',
@@ -236,8 +238,8 @@ import { CityService } from '../../shared/services/api/city/city.service';
                         }
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-dismiss="modal">Anuluj</button>
-                        <button type="button" class="btn btn-sm btn-primary">Zapisz</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-dismiss="modal">{{"basic.cancel" | translate}}</button>
+                        <button type="button" class="btn btn-sm btn-primary" (click)="saveOrder()">{{"basic.save" | translate}}</button>
                     </div>
                 </div>
             </div>
@@ -257,6 +259,8 @@ import { CityService } from '../../shared/services/api/city/city.service';
 export class OrderFormModalComponent implements OnDestroy {
     @ViewChild('modalRef') orderFormModal!: ElementRef;
 
+    private readonly translateService: TranslateService = inject(TranslateService);
+    private readonly toastService: ToastService = inject(ToastService);
     private readonly destroyRef: DestroyRef = inject(DestroyRef);
     private readonly formBuilder: FormBuilder = inject(FormBuilder);
     private readonly datePipe: DatePipe = inject(DatePipe);
@@ -347,7 +351,7 @@ export class OrderFormModalComponent implements OnDestroy {
 
     private initForm(): void {
         this.form = this.formBuilder.group({
-            orderNumber: [{ value: null, disabled: true }, [Validators.required, Validators.maxLength(32), Validators.pattern(/^[0-9]+\/[0-9]{4}$/)]],
+            orderNumber: [{ value: null, disabled: true }],
             countryId: [null, Validators.required],
             provinceId: [null, Validators.required],
             cityId: [null, Validators.required],
@@ -427,6 +431,16 @@ export class OrderFormModalComponent implements OnDestroy {
                 this.cities.set(res.data?.items ?? []);
             },
         });
+    }
+
+    protected saveOrder(): void {
+        if(this.form.invalid) {
+            this.form.markAllAsDirty();
+            this.toastService.show(this.translateService.instant('form.error'), ToastType.danger);
+            return;
+        }
+
+        // TODO: send the data
     }
 
     protected onCountryChange(event?: any): void {
