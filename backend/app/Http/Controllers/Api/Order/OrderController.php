@@ -25,7 +25,7 @@ class OrderController {
     }
 
     public function store(OrderRequest $request): ApiResponse {
-        $this->orderService->save($request->toDto());
+        $this->orderService->store($request->toDto());
 
         return new ApiResponse(
             status: HttpStatus::CREATED,
@@ -34,7 +34,7 @@ class OrderController {
     }
 
     public function update(OrderRequest $request): ApiResponse {
-        $this->orderService->save($request->toDto());
+        $this->orderService->update($request->toDto());
 
         return new ApiResponse(
             status: HttpStatus::NO_CONTENT,

@@ -283,11 +283,6 @@ export class OrderFormModalComponent implements OnDestroy {
     protected provinces: WritableSignal<ProvinceItem[]> = signal<ProvinceItem[]>([]);
     protected cities: WritableSignal<CityItem[]> = signal<CityItem[]>([]);
 
-    protected onCityChange(event : any): void {
-        console.log(event);
-        console.log(this.cities());
-    }
-
     protected addNewCity = (name: string): CityItem | null => {
         const cityName = name.trim();
         if(!cityName) {
@@ -355,6 +350,7 @@ export class OrderFormModalComponent implements OnDestroy {
             countryId: [null, Validators.required],
             provinceId: [null, Validators.required],
             cityId: [null, Validators.required],
+            cityName: [null],
             postalCode: [null, Validators.maxLength(32)],
             address: [null, [Validators.required, Validators.maxLength(255)]],
             phoneNumber: [null, [Validators.required, Validators.maxLength(32), Validators.pattern(/^[0-9\s()+-]{6,20}$/)]],
@@ -440,6 +436,8 @@ export class OrderFormModalComponent implements OnDestroy {
             return;
         }
 
+        console.log(this.form.value);
+
         // TODO: send the data
     }
 
@@ -467,6 +465,15 @@ export class OrderFormModalComponent implements OnDestroy {
         }
 
         this.loadCities(provinceId);
+    }
+
+    protected onCityChange(event: any): void {
+        if(event && !event.id && event.name) {
+            this.form.get('cityName')?.setValue(event.name);
+            return;
+        }
+
+        this.form.get('cityName')?.reset();
     }
 
     ngOnDestroy(): void {
