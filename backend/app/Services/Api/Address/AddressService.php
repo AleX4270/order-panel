@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace App\Services\Api\Address;
 
 use App\Dtos\Api\Address\AddressDto;
+use App\Dtos\Api\Address\AddressResolveDto;
 use App\Dtos\Api\City\CityDto;
+use App\Dtos\Api\City\CityResolveDto;
 use App\Models\Address;
 use App\Services\Api\City\CityService;
 
@@ -23,33 +25,28 @@ class AddressService {
         return $result;
     }
 
-    public function findOrCreate(AddressDto $dto): Address {
-        if(!empty($dto->cityId)) {
-            $address = Address::whereLike('address', $dto->address)
-            ->whereLike('postal_code', $dto->postalCode)
-            ->where('city_id', $dto->cityId)
-            ->first();
-
-            if(!empty($address)) {
-                return $address;
-            }
-        }
-
-        //Get or make city id
-        $cityDto = CityDto::fromArray([
+    public function findOrCreate(AddressResolveDto $dto): Address {
+        $city = $this->cityService->findOrCreate(CityResolveDto::fromArray([
             'cityId' => $dto->cityId,
             'cityName' => $dto->cityName,
             'provinceId' => $dto->provinceId,
-        ]);
-        $city = $this->cityService->findOrCreate($cityDto);
-        
-        $newAddressDto = AddressDto::fromArray([
+        ]));
+
+        $address = Address::whereLike('address', $dto->address)
+        ->whereLike('postal_code', $dto->postalCode)
+        ->where('city_id', $city->id)
+        ->first();
+
+        if(!empty($address)) {
+            return $address;
+        }
+
+        return $this->store(AddressDto::fromArray([
             'address' => $dto->address,
             'postalCode' => $dto->postalCode,
             'cityId' => $city->id,
             'cityName' => $dto->cityName,
             'provinceId' => $dto->provinceId,
-        ]);
-        return $this->store($newAddressDto);
+        ]));
     }
 }

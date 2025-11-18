@@ -1,22 +1,16 @@
 <?php
 
-namespace App\Dtos\Api\Address;
+namespace App\Dtos\Api\City;
 
-final readonly class AddressDto {
+final readonly class CityResolveDto {
     public function __construct(
-        public ?int $id,
-        public string $address,
-        public ?string $postalCode,
         public int $cityId,
         public ?string $cityName,
         public int $provinceId,
     ) {}
 
     public static function fromArray(array $data): self {
-        return new AddressDto(
-            id: $data['id'] ?? null,
-            address: $data['address'],
-            postalCode: $data['postalCode'] ?? null,
+        return new CityResolveDto(
             cityId: $data['cityId'],
             cityName: $data['cityName'] ?? null,
             provinceId: $data['provinceId'],

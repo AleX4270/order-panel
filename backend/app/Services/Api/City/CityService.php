@@ -5,6 +5,7 @@ namespace App\Services\Api\City;
 
 use App\Dtos\Api\City\CityDto;
 use App\Dtos\Api\City\CityFilterDto;
+use App\Dtos\Api\City\CityResolveDto;
 use App\Enums\SortDir;
 use App\Models\City;
 use Exception;
@@ -57,16 +58,12 @@ class CityService {
         return $result;
     }
 
-    public function findOrCreate(CityDto $dto): City {
-        if(empty($dto->cityId) && empty($dto->cityName)) {
-            // TODO: Add a dedicated exception class
-            throw new Exception('CityDto params are missing');
-        }
-
+    public function findOrCreate(CityResolveDto $dto): City {
         if(!empty($dto->cityId)) {
             return City::where('id', $dto->cityId)->firstOrFail();
         }
-        else if(!empty($dto->cityName) && !empty($dto->provinceId)) {
+
+        if(empty($dto->cityId) && !empty($dto->cityName) && !empty($dto->provinceId)) {
             $existingCity = City::whereRaw('LOWER(name) = LOWER(?)', [$dto->cityName])
                 ->where('province_id', $dto->provinceId)
                 ->first();
@@ -75,11 +72,12 @@ class CityService {
                 return $existingCity;
             }
             
-            return $this->store($dto);
+            return $this->store(CityDto::fromArray([
+                'cityName' => $dto->cityName,
+                'provinceId' => $dto->provinceId,
+            ]));
         }
-        else {
-            // TODO: Add a dedicated exception class
-            throw new Exception('Could not find or create a city by provided params');
-        }
+
+        throw new Exception('Could not find or create a city by provided params');
     }
 }

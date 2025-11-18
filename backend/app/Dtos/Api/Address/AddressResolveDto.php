@@ -2,22 +2,20 @@
 
 namespace App\Dtos\Api\Address;
 
-final readonly class AddressDto {
+final readonly class AddressResolveDto {
     public function __construct(
-        public ?int $id,
         public string $address,
         public ?string $postalCode,
-        public int $cityId,
+        public ?int $cityId,
         public ?string $cityName,
         public int $provinceId,
     ) {}
 
     public static function fromArray(array $data): self {
-        return new AddressDto(
-            id: $data['id'] ?? null,
+        return new AddressResolveDto(
             address: $data['address'],
             postalCode: $data['postalCode'] ?? null,
-            cityId: $data['cityId'],
+            cityId: $data['cityId'] ?? null,
             cityName: $data['cityName'] ?? null,
             provinceId: $data['provinceId'],
         );

@@ -20,6 +20,8 @@ import { ProvinceService } from '../../shared/services/api/province/province.ser
 import { CityService } from '../../shared/services/api/city/city.service';
 import { ToastService } from '../../shared/services/toast/toast.service';
 import { ToastType } from '../../shared/enums/enums';
+import { OrderService } from '../../shared/services/api/order/order.service';
+import { OrderParams } from '../../shared/services/api/order/order.types';
 
 @Component({
     selector: 'app-order-form-modal',
@@ -269,6 +271,7 @@ export class OrderFormModalComponent implements OnDestroy {
     private readonly countryService: CountryService = inject(CountryService);
     private readonly provinceService: ProvinceService = inject(ProvinceService);
     private readonly cityService: CityService = inject(CityService);
+    private readonly orderService: OrderService = inject(OrderService);
 
     private modal?: any;
 
@@ -346,6 +349,7 @@ export class OrderFormModalComponent implements OnDestroy {
 
     private initForm(): void {
         this.form = this.formBuilder.group({
+            id: [null],
             orderNumber: [{ value: null, disabled: true }],
             countryId: [null, Validators.required],
             provinceId: [null, Validators.required],
@@ -436,9 +440,52 @@ export class OrderFormModalComponent implements OnDestroy {
             return;
         }
 
-        console.log(this.form.value);
+        const formValues = this.form.value;
 
-        // TODO: send the data
+        let orderParams = {
+            countryId: formValues.countryId,
+            provinceId: formValues.provinceId,
+            cityId: formValues.cityId,
+            address: formValues.address,
+            phoneNumber: formValues.phoneNumber,
+            priorityId: formValues.priorityId,
+            statusId: formValues.statusId,
+            dateCreation: formValues.dateCreation,
+            dateDeadline: formValues.dateDeadline,
+        } as OrderParams;
+
+        if(formValues.id) {
+            orderParams.id = formValues.id;
+        }
+
+        if(formValues.cityName) {
+            orderParams.cityName = formValues.cityName;
+        }
+
+        if(formValues.postalCode) {
+            orderParams.postalCode = formValues.postalCode;
+        }
+
+        if(formValues.dateCompleted) {
+            orderParams.dateCompleted = formValues.dateCompleted;
+        }
+
+        if(formValues.remarks) {
+            orderParams.remarks = formValues.remarks;
+        }
+
+        const method = this.isEditScenario()
+            ? this.orderService.store //TODO: Add the update method
+            : this.orderService.store;
+
+        method(orderParams).subscribe({
+            next: (res) => {
+                //TODO
+            },  
+            error: (err) => {
+
+            },
+        });
     }
 
     protected onCountryChange(event?: any): void {
