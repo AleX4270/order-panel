@@ -475,15 +475,22 @@ export class OrderFormModalComponent implements OnDestroy {
         }
 
         const method = this.isEditScenario()
-            ? this.orderService.store //TODO: Add the update method
-            : this.orderService.store;
+            ? this.orderService.store(orderParams) //TODO: Add the update method
+            : this.orderService.store(orderParams);
 
-        method(orderParams).subscribe({
+        method.subscribe({
             next: (res) => {
-                //TODO
+                this.toastService.show(
+                    this.translateService.instant('orderForm.creationSuccessMessage'),
+                    ToastType.success,
+                );
             },  
             error: (err) => {
-
+                console.log(err);
+                this.toastService.show(
+                    this.translateService.instant('orderForm.creationErrorMessage'),
+                    ToastType.danger,
+                );
             },
         });
     }

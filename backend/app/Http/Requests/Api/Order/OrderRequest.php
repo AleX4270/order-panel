@@ -19,7 +19,7 @@ class OrderRequest extends FormRequest {
             'cityName' => ['sometimes', 'string'],
             'postalCode' => ['nullable', 'string', 'max:32'],
             'address' => ['required', 'string', 'max:255'],
-            'phoneNumber' => ['required', 'regex:/^[0-9]+\/[0-9]{4}$/', 'max:32'],
+            'phoneNumber' => ['required', 'string'],
             'priorityId' => ['required', 'integer'],
             'statusId' => ['required', 'integer'],
             'dateCreation' => ['required', 'date'],

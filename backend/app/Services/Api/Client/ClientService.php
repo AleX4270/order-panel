@@ -11,13 +11,13 @@ class ClientService {
     public function store(ClientDto $dto): Client {
         $result = Client::create([ 
             'alias' => $dto->alias,
-            'firstName' => $dto->firstName,
-            'lastName' => $dto->lastName,
+            'first_name' => $dto->firstName,
+            'last_name' => $dto->lastName,
             'email' => $dto->email,
-            'phoneNumber' => $dto->phoneNumber,
-            'addressId' => $dto->addressId,
-            'isBlocked' => $dto->isBlocked,
-            'isActive' => $dto->isActive,
+            'phone_number' => $dto->phoneNumber,
+            'address_id' => $dto->addressId,
+            'is_blocked' => $dto->isBlocked,
+            'is_active' => $dto->isActive,
         ]);
 
         return $result;

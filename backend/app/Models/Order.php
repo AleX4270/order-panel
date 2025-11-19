@@ -14,14 +14,16 @@ class Order extends Model {
     ];
 
     protected $fillable = [
+        'symbol',
         'date_deadline',
         'date_completed',
         'user_creation_id',
         'user_modification_id',
         'priority_id',
         'client_id',
-        'order_status_id',
+        'status_id',
         'is_active',
+        'created_at',
     ];
 
     protected $casts = [
@@ -53,6 +55,6 @@ class Order extends Model {
     }
 
     public function status(): BelongsTo {
-        return $this->belongsTo(OrderStatus::class, 'order_status_id');
+        return $this->belongsTo(OrderStatus::class, 'status_id');
     }
 }

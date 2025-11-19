@@ -27,7 +27,7 @@ final readonly class OrderDto {
                 'address' => $data['address'],
                 'postalCode' => $data['postalCode'] ?? null,
                 'cityId' => $data['cityId'],
-                'cityName' => $data['cityName'],
+                'cityName' => $data['cityName'] ?? null,
                 'provinceId' => $data['provinceId'],
                 'countryId' => $data['countryId'],
             ]),

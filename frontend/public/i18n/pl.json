@@ -108,6 +108,8 @@
         "dateDeadline": "Termin realizacji",
         "dateCompleted": "Data ukończenia",
         "remarks": "Uwagi",
-        "remarksPlaceholder": "Wprowadź uwagi"
+        "remarksPlaceholder": "Wprowadź uwagi",
+        "creationErrorMessage": "Nie udało się utworzyć zlecenia",
+        "creationSuccessMessage": "Pomyślnie utworzono zlecenie"
     }
 }

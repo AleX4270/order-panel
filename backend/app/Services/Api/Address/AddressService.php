@@ -33,9 +33,14 @@ class AddressService {
         ]));
 
         $address = Address::whereLike('address', $dto->address)
-        ->whereLike('postal_code', $dto->postalCode)
-        ->where('city_id', $city->id)
-        ->first();
+        
+        ->where('city_id', $city->id);
+
+        if(!empty($dto->postalCode)) {
+            $address->whereLike('postal_code', $dto->postalCode);
+        }
+
+        $address = $address->first();
 
         if(!empty($address)) {
             return $address;
