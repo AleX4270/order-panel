@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\Order;
 
 use App\Enums\HttpStatus;
+use App\Http\Requests\Api\Order\OrderFilterRequest;
 use App\Http\Requests\Api\Order\OrderRequest;
 use App\Http\Responses\Api\ApiResponse;
 use App\Services\Api\Order\OrderService;
@@ -13,9 +14,8 @@ class OrderController {
         private readonly OrderService $orderService,
     ) {}
 
-    // TODO: Add the FormRequest
-    public function index(): ApiResponse {
-        $result = $this->orderService->index();
+    public function index(OrderFilterRequest $request): ApiResponse {
+        $result = $this->orderService->index($request->toDto());
 
         return new ApiResponse(
             data: $result,

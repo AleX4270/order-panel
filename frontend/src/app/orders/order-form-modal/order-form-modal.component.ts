@@ -21,7 +21,7 @@ import { CityService } from '../../shared/services/api/city/city.service';
 import { ToastService } from '../../shared/services/toast/toast.service';
 import { ToastType } from '../../shared/enums/enums';
 import { OrderService } from '../../shared/services/api/order/order.service';
-import { OrderParams } from '../../shared/services/api/order/order.types';
+import { OrderParams } from '../../shared/types/order.types';
 
 @Component({
     selector: 'app-order-form-modal',

@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, TemplateRef, ViewChild, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit, signal, TemplateRef, ViewChild, WritableSignal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ListTableComponent } from '../../shared/components/list-table/list-table.component';
 import { ExpansionState, TileType } from '../../shared/enums/enums';
@@ -12,6 +12,7 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
 import { FiltersComponent } from '../../shared/components/filters/filters.component';
 import { FilterType } from '../../shared/enums/filter-type.enum';
 import { OrderFormModalComponent } from "../order-form-modal/order-form-modal.component";
+import { OrderService } from '../../shared/services/api/order/order.service';
 
 @Component({
     selector: 'app-order-list',
@@ -69,7 +70,7 @@ import { OrderFormModalComponent } from "../order-form-modal/order-form-modal.co
             <div class="col-12">
                 <app-list-table
                     [defineTableRowsExternally]="true"
-                    [data]="[]"
+                    [data]="orders()"
                 >
                     <ng-template #headers>
                         <th>{{'orderListTable.orderNo' | translate}}</th>
@@ -163,12 +164,20 @@ import { OrderFormModalComponent } from "../order-form-modal/order-form-modal.co
         }
     `]
 })
-export class OrderListComponent {
+export class OrderListComponent implements OnInit {
     @ViewChild('orderFormModal') orderFormModal!: OrderFormModalComponent;
+
+    private readonly orderService = inject(OrderService);
 
     protected readonly filterType = FilterType;
     protected expansionState = ExpansionState;
     protected itemDetailsExpansionState: Partial<Record<number, ExpansionState>> = {};
+
+    protected orders: WritableSignal<any> = signal<any>(null);
+
+    ngOnInit(): void {
+        this.loadOrders();
+    }
 
     protected hasVisibleDetails(itemId: number): boolean {
         return (this.itemDetailsExpansionState[itemId] === ExpansionState.expanded) || false;
@@ -190,5 +199,16 @@ export class OrderListComponent {
 
     protected showOrderFormModal(id?: number): void {
         this.orderFormModal.showForm(id);
+    }
+
+    protected loadOrders(): void {
+        this.orderService.index({}).subscribe({
+            next: (res) => {
+
+            },
+            error: (err) => {
+
+            },
+        });
     }
 }
