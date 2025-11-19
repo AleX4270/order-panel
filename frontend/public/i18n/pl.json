@@ -111,5 +111,8 @@
         "remarksPlaceholder": "Wprowadź uwagi",
         "creationErrorMessage": "Nie udało się utworzyć zlecenia",
         "creationSuccessMessage": "Pomyślnie utworzono zlecenie"
+    },
+    "listTable": {
+        "noRecordsFound": "Brak wyników"
     }
 }

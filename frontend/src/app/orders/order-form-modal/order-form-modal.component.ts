@@ -492,6 +492,9 @@ export class OrderFormModalComponent implements OnDestroy {
                     ToastType.danger,
                 );
             },
+            complete: () => {
+                this.closeModal();
+            }
         });
     }
 

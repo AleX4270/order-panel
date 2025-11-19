@@ -69,47 +69,7 @@ import { OrderFormModalComponent } from "../order-form-modal/order-form-modal.co
             <div class="col-12">
                 <app-list-table
                     [defineTableRowsExternally]="true"
-                    [data]="[
-                        {
-                            id: 1,
-                            number: '1/2025',
-                            address: 'Wiry 22/24',
-                            priority: {
-                                id: 1,
-                                symbol: 'normal',
-                                label: 'Normalny',
-                            },
-                            dateCreation: '2024-01-01',
-                            dateDeadline: '2024-01-15',
-                            remarks: 'Proszę o kontakt przed przyjazdem',
-                        },
-                        {
-                            id: 2,
-                            number: '2/2025',
-                            address: 'Nałęczów 22/24',
-                            priority: {
-                                id: 1,
-                                symbol: 'high',
-                                label: 'Wysoki',
-                            },
-                            dateCreation: '2024-01-05',
-                            dateDeadline: '2024-01-20',
-                            remarks: 'Proszę o nie dzwonienie',
-                        },
-                        {
-                            id: 3,
-                            number: '2/2025',
-                            address: 'Nałęczów 22/24',
-                            priority: {
-                                id: 1,
-                                symbol: 'high',
-                                label: 'Wysoki',
-                            },
-                            dateCreation: '2024-01-05',
-                            dateDeadline: '2024-01-20',
-                            remarks: 'Proszę o nie dzwonienie',
-                        }
-                    ]"
+                    [data]="[]"
                 >
                     <ng-template #headers>
                         <th>{{'orderListTable.orderNo' | translate}}</th>
@@ -124,7 +84,7 @@ import { OrderFormModalComponent } from "../order-form-modal/order-form-modal.co
                     <ng-template #rows let-item>
                         <tr class="list-row">
                             <td class="fw-semibold">{{ item.number }}</td>
-                            <td >{{ item.address }}</td>
+                            <td>{{ item.address }}</td>
                             <td>
                                 <app-tile [type]="getPriorityTileType(item.priority.symbol)">
                                     {{ item.priority.label }}

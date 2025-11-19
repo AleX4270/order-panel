@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, ContentChild, input, InputSignal, TemplateRef } from '@angular/core';
 import { CardComponent } from '../card/card.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-list-table',
     imports: [
         CommonModule,
-        CardComponent
+        CardComponent,
+        TranslatePipe,
     ],
     template: `
         <div class="row">
@@ -22,11 +24,29 @@ import { CardComponent } from '../card/card.component';
                             @for (item of data(); track item) {
                                 <ng-container *ngTemplateOutlet="rows; context: { $implicit: item, row: item }"></ng-container>
                             }
+                            @empty {
+                                <tr>
+                                    <td colspan="100%">
+                                        <div class="d-flex justify-content-center align-items-center pt-3">
+                                            <small class="text-muted">{{'listTable.noRecordsFound' | translate}}</small>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
                         }
                         @else {
                             @for (item of data(); track item) {
                                 <tr>
                                     <ng-container *ngTemplateOutlet="rows; context: { $implicit: item, row: item }"></ng-container>
+                                </tr>
+                            }
+                            @empty {
+                                <tr>
+                                    <td colspan="100%">
+                                        <div class="d-flex justify-content-center align-items-center pt-3">
+                                            <small class="text-muted">{{'listTable.noRecordsFound' | translate}}</small>
+                                        </div>
+                                    </td>
                                 </tr>
                             }
                         }
