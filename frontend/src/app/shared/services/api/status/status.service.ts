@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiResponse } from '../../../types/http.types';
+import { ApiResponse } from '../../../types/rest.types';
 import { RestService } from '../rest/rest.service';
 import { IndexResponse } from '../../../types/rest.types';
 import { StatusFilterParams, StatusItem } from '../../../types/status.types';

@@ -1,5 +1,5 @@
 import { Component, effect, inject, input, InputSignal, output, signal, WritableSignal } from '@angular/core';
-import { FilterModel } from '../../types/filters.types';
+import { FilterModel, FilterOption } from '../../types/filters.types';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { IFiltersStrategy } from '../../interfaces/filters/filters-strategy.interface';
 import { FilterType } from '../../enums/filter-type.enum';
@@ -33,10 +33,10 @@ import { TranslatePipe } from '@ngx-translate/core';
                             <label [for]="filter.key">{{ filter.label | translate}}</label>
                             <ng-select 
                                 class="form-field dropdown"
-                                [items]="[1,2,3]"
-                                [searchable]="false"
+                                [items]="filtersDataMap()[filter.key] ?? []"
                                 [multiple]="true"
                                 [placeholder]="(filter.placeholder ?? '') | translate"
+                                (search)="onFilterDataSearch($event.term, filter)"
                             />
                         </div>
                     }
@@ -81,6 +81,7 @@ export class FiltersComponent {
 
     private strategy!: IFiltersStrategy | null;
     protected readonly filters: WritableSignal<FilterModel[]> = signal<FilterModel[]>([]);
+    protected filtersDataMap: WritableSignal<Partial<Record<string, FilterOption[]>>> = signal<Partial<Record<string, FilterOption[]>>>({});
 
     constructor() {
         effect(() => {
@@ -88,10 +89,27 @@ export class FiltersComponent {
                 this.strategy = this.strategyFactory.create(this.type());
 
                 if(this.strategy != null) {
-                    // TODO
                     const filters = this.strategy.getFilters();
                     this.filters.set(filters);
                 }
+            }
+        });
+    }
+
+    protected onFilterDataSearch(term: string, filter: FilterModel): void {
+        if(!filter.loader) {
+            console.error('No filter data loader found');
+            return;
+        }
+
+        filter.loader(term).subscribe({
+            next: (res) => {
+                const newData = res.filter((item) => !this.filtersDataMap()[filter.key]?.some((existingItem) => existingItem.id == item.id));
+
+                
+            },
+            error: (err) => {
+                console.error(err);
             }
         });
     }

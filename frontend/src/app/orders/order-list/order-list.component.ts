@@ -13,6 +13,8 @@ import { FiltersComponent } from '../../shared/components/filters/filters.compon
 import { FilterType } from '../../shared/enums/filter-type.enum';
 import { OrderFormModalComponent } from "../order-form-modal/order-form-modal.component";
 import { OrderService } from '../../shared/services/api/order/order.service';
+import { DatePipe } from '@angular/common';
+import { OrderItem } from '../../shared/types/order.types';
 
 @Component({
     selector: 'app-order-list',
@@ -25,7 +27,8 @@ import { OrderService } from '../../shared/services/api/order/order.service';
     CardComponent,
     PaginationComponent,
     FiltersComponent,
-    OrderFormModalComponent
+    OrderFormModalComponent,
+    DatePipe,
 ],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan})],
     template: `
@@ -84,15 +87,20 @@ import { OrderService } from '../../shared/services/api/order/order.service';
 
                     <ng-template #rows let-item>
                         <tr class="list-row">
-                            <td class="fw-semibold">{{ item.number }}</td>
-                            <td>{{ item.address }}</td>
+                            <td class="fw-semibold">{{ '#' + item.id }}</td>
                             <td>
-                                <app-tile [type]="getPriorityTileType(item.priority.symbol)">
-                                    {{ item.priority.label }}
+                                <div class="address d-flex flex-column">
+                                    <span class="city-name">{{item.cityName}}</span>
+                                    <span class="address-label text-muted">{{item.address}}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <app-tile [type]="getPriorityTileType(item.prioritySymbol)">
+                                    {{ item.priorityName }}
                                 </app-tile>
                             </td>
-                            <td>{{ item.dateCreation }}</td>
-                            <td>{{ item.dateDeadline }}</td>
+                            <td>{{ item.dateCreated | date:'dd-MM-yyyy' }}</td>
+                            <td>{{ item.dateDeadline | date:'dd-MM-yyyy'}}</td>
                             <td class="text-secondary">{{ item.remarks }}</td>
                             <td>
                                 <div class="d-flex gap-3">
@@ -130,10 +138,10 @@ import { OrderService } from '../../shared/services/api/order/order.service';
             </div>
         </div>
 
-        <div class="row order-list-pagination mt-5">
+        <div class="row order-list-pagination mt-5 pb-4">
             <div class="col-12">
                 <app-card [isContentCentered]="true" overflowType="visible">
-                    <app-pagination></app-pagination>
+                    <app-pagination [totalItems]="ordersCount()"></app-pagination>
                 </app-card>
             </div>
         </div>
@@ -151,7 +159,7 @@ import { OrderService } from '../../shared/services/api/order/order.service';
 
             td {
                 font-size: var(--font-size-xs);
-                padding: 1.2rem 0 1.2rem 0.75rem;
+                padding: 1.1rem 0 1.1rem 0.75rem;
             }
         }
 
@@ -161,6 +169,17 @@ import { OrderService } from '../../shared/services/api/order/order.service';
 
         .completed-row {
             background-color: var(--order-list-completed-row-background-color);
+        }
+
+        .address {
+            .city-name {
+                font-size: var(--font-size-sm);
+            }
+
+            .address-label {
+                font-size: var(--font-size-xs);
+                font-weight: var(--font-weight-light);
+            }
         }
     `]
 })
@@ -173,7 +192,8 @@ export class OrderListComponent implements OnInit {
     protected expansionState = ExpansionState;
     protected itemDetailsExpansionState: Partial<Record<number, ExpansionState>> = {};
 
-    protected orders: WritableSignal<any> = signal<any>(null);
+    protected orders: WritableSignal<OrderItem[]> = signal<OrderItem[]>([]);
+    protected ordersCount: WritableSignal<number> = signal<number>(0);
 
     ngOnInit(): void {
         this.loadOrders();
@@ -204,7 +224,8 @@ export class OrderListComponent implements OnInit {
     protected loadOrders(): void {
         this.orderService.index({}).subscribe({
             next: (res) => {
-
+                this.orders.set(res.data?.items ?? []);
+                this.ordersCount.set(res.data?.count ?? 0);
             },
             error: (err) => {
 

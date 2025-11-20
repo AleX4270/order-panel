@@ -1,3 +1,4 @@
+import { Priority } from "../enums/priority.enum";
 import { BaseFilterParams } from "./rest.types";
 
 export interface OrderFilterParams extends BaseFilterParams {}
@@ -8,7 +9,7 @@ export interface OrderItem {
     postalCode: string;
     cityName: string;
     provinceName: string;
-    prioritySymbol: string;
+    prioritySymbol: Priority;
     priorityName: string;
     statusSymbol: string;
     dateCreated: Date;

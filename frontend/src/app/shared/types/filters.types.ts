@@ -4,7 +4,7 @@ export type FilterFieldType = 'text' | 'select' | 'multi-select' | 'date';
 
 export interface FilterOption {
     id: number;
-    label: string;
+    name: string;
 }
 
 export interface FilterModel {
@@ -12,5 +12,5 @@ export interface FilterModel {
     label: string;
     type: FilterFieldType;
     placeholder?: string;
-    loader?: Observable<FilterOption[]>;
+    loader?: (term?: string) => Observable<FilterOption[]>;
 }

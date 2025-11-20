@@ -1,10 +1,13 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { IFiltersStrategy } from "../../interfaces/filters/filters-strategy.interface";
-import { FilterModel } from "../../types/filters.types";
+import { FilterModel, FilterOption } from "../../types/filters.types";
+import { PriorityService } from "../../services/api/priority/priority.service";
+import { map } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
 export class OrderListFiltersStrategy implements IFiltersStrategy {
     private filters: FilterModel[] = [];
+    private readonly priorityService = inject(PriorityService);
 
     private initSchema(): void {
         this.filters = [
@@ -19,6 +22,17 @@ export class OrderListFiltersStrategy implements IFiltersStrategy {
                 label: 'orderListFilters.priority',
                 type: 'multi-select',
                 placeholder: 'orderListFilters.priorityPlaceholder',
+                loader: (term?: string) => {
+                    return this.priorityService.index({term: term}).pipe(
+                        map((res) => {
+                            const items = res.data?.items ?? [];
+                            return items.map(item => ({
+                                id: item.id,
+                                name: item.name,
+                            }) as FilterOption)
+                        })
+                    );
+                },
             },
             {
                 key: 'status',

@@ -59,7 +59,10 @@ class OrderService {
                     ->where('otl.symbol', app()->getLocale());
             });
 
-        return $query->get()->map->toCamelCaseKeys();
+        return collect([
+            'items' => $query->get()->map->toCamelCaseKeys(),
+            'count' => $query->count(),
+        ]);
     }
 
     public function store(OrderDto $dto): Collection {

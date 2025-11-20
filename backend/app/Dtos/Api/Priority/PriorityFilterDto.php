@@ -10,6 +10,7 @@ final readonly class PriorityFilterDto {
         public ?int $pageSize = null,
         public ?string $sortColumn = null,
         public ?string $sortDir = null,
+        public ?string $term = null,
     ) {}
 
     public static function fromArray(array $data): self {
@@ -18,6 +19,7 @@ final readonly class PriorityFilterDto {
             pageSize: $data['pageSize'] ?? null,
             sortColumn: $data['sortColumn'] ?? null,
             sortDir: !empty($data['sortDir']) ? SortDir::tryFrom($data['sortDir']) : null,
+            term: $data['term'] ?? null,
         );
     }
 }

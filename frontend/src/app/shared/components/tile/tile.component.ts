@@ -12,12 +12,16 @@ import { TileType } from '../../enums/enums';
             <ng-content/>
         </span>
     `,
-    styles: [``]
+    styles: [`
+        .tile-label {
+            font-weight: var(--font-weight-medium);
+        }
+    `]
 })
 export class TileComponent {
     public type: InputSignal<any> = input<any>(TileType.primary);
     protected tileClassList = computed(() => {
-        let list = 'badge';
+        let list = 'badge tile-label';
 
         switch(this.type()) {
             case TileType.primary:

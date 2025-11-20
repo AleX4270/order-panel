@@ -57,6 +57,7 @@ import { UserProfileNavbarComponent } from '../user-image/user-profile-navbar.co
             padding: 0 2% 0 2%;
             min-height: 55px;
             box-shadow: var(--shadow-sm);
+            background-color: var(--navbar-background-color);
         }
     `]
 })

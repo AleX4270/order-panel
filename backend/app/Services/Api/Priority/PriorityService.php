@@ -26,6 +26,10 @@ class PriorityService {
             })
             ->where('p.is_active', 1);
 
+        if(!empty($dto->term)) {
+            $query->whereLike('pt.name', '%'.$dto->term.'%');
+        }
+
         match(true) {
             default => $query->orderBy('id', SortDir::ASC->value),
         };
