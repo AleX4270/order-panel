@@ -22,7 +22,7 @@ class PriorityService {
             ->leftJoin('priority_translations as pt', 'pt.priority_id', '=', 'p.id')
             ->join('languages as l', function($join) {
                 $join->on('l.id', '=', 'pt.language_id')
-                    ->where('l.symbol', 'pl');
+                    ->where('l.symbol', app()->getLocale());
             })
             ->where('p.is_active', 1);
 

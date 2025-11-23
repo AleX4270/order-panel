@@ -129,7 +129,6 @@ export class PaginationComponent {
 
     protected totalPages = computed(() => {
         const totalItems = this.totalItems();
-        console.log(totalItems);
         if(totalItems && totalItems > 0) {
             return Math.ceil(totalItems / this.pageSize());
         }

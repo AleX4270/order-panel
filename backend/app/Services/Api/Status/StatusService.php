@@ -21,9 +21,13 @@ class StatusService {
             ->leftJoin('order_status_translations as ost', 'ost.order_status_id', '=', 'os.id')
             ->join('languages as l', function($join) {
                 $join->on('l.id', '=', 'ost.language_id')
-                    ->where('l.symbol', 'pl');
+                    ->where('l.symbol', app()->getLocale());
             })
             ->where('os.is_active', 1);
+
+        if(!empty($dto->term)) {
+            $query->whereLike('ost.name', '%'.$dto->term.'%');
+        }
 
         match(true) {
             default => $query->orderBy('id', SortDir::ASC->value),

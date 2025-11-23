@@ -21,7 +21,7 @@ class CountryService {
             ->leftJoin('country_translations as ct', 'ct.country_id', '=', 'c.id')
             ->join('languages as l', function($join) {
                 $join->on('l.id', '=', 'ct.language_id')
-                    ->where('l.symbol', 'pl');
+                    ->where('l.symbol', app()->getLocale());
             });
 
         match(true) {

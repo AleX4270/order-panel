@@ -26,10 +26,6 @@ class PriorityFilterRequest extends FormRequest {
         ];
     }
 
-    public function messages(): array {
-        return [];
-    }
-
     public function toDto(): PriorityFilterDto {
         return PriorityFilterDto::fromArray($this->validated());
     }
