@@ -21,6 +21,7 @@ import { TranslatePipe } from '@ngx-translate/core';
                     </thead>
                     <tbody>
                         @if(defineTableRowsExternally()) {
+                            <!-- TODO: Track by id -->
                             @for (item of data(); track item) {
                                 <ng-container *ngTemplateOutlet="rows; context: { $implicit: item, row: item }"></ng-container>
                             }

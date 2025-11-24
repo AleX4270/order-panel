@@ -2,6 +2,7 @@ import { Component, computed, effect, input, output, signal, WritableSignal } fr
 import { PAGINATION_PAGE_SIZE, PAGINATION_START_PAGE } from '../../../app.constants';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
+import { PaginationItem } from '../../types/pagination.types';
 
 @Component({
     selector: 'app-pagination',
@@ -104,9 +105,7 @@ export class PaginationComponent {
     protected pageSizeOptions = [10,20,50,100] as const;
 
     public totalItems = input<number>(0);
-
-    public pageChange = output<number>();
-    public pageSizeChange = output<number>();
+    public change = output<PaginationItem>();
 
     protected page: WritableSignal<number> = signal<number>(PAGINATION_START_PAGE);
     protected pageSize: WritableSignal<number> = signal<number>(PAGINATION_PAGE_SIZE);
@@ -122,7 +121,7 @@ export class PaginationComponent {
 
             if(newPageValue !== page) {
                 this.page.set(newPageValue);
-                queueMicrotask(() => this.pageChange.emit(this.page()));
+                queueMicrotask(() => this.emitChange());
             }
         });
     }
@@ -162,13 +161,13 @@ export class PaginationComponent {
         }
 
         this.page.set(newPage);
-        this.pageChange.emit(newPage);
+        this.emitChange();
     }
 
     protected changePageSize(newPageSize: number): void {
         if(this.pageSize() === newPageSize) return;
         this.pageSize.set(newPageSize);
-        this.pageSizeChange.emit(this.pageSize());
+        this.emitChange();
     }
 
     protected getPaginationItemValue(position: number): number | null {
@@ -197,5 +196,12 @@ export class PaginationComponent {
         }
 
         return null;
+    }
+    
+    private emitChange(): void {
+        this.change.emit({
+            page: this.page(),
+            pageSize: this.pageSize(),
+        })
     }
 }

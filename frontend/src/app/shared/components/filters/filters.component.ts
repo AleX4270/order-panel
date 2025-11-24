@@ -114,7 +114,7 @@ export class FiltersComponent {
         )
         .subscribe(({value, filter}) => {
             this.filterValues[filter.key] = value;
-            this.filtersChange.emit(this.filterValues);
+            this.emitFilterValues();
         });
     }
 
@@ -138,7 +138,7 @@ export class FiltersComponent {
         });
     }
 
-    protected onFilterValueChange(value: string | FilterOption[], filter: FilterModel): void {
+    protected onFilterValueChange(value: string | FilterOption[] | null, filter: FilterModel): void {
         let selectedValue = null;
 
         if(filter.type === 'multi-select' && Array.isArray(value)) {
@@ -153,6 +153,24 @@ export class FiltersComponent {
         }
         
         this.filterValues[filter.key] = selectedValue;
+        this.emitFilterValues();
+    }
+
+    protected emitFilterValues(): void {
+        Object.keys(this.filterValues).forEach((key) => {
+            if(this.isFilterValueEmpty(this.filterValues[key])) {
+                delete this.filterValues[key];
+            }
+        })
+
         this.filtersChange.emit(this.filterValues);
+    }
+
+    private isFilterValueEmpty(value: any): boolean {
+        if(value === null) return true;
+        if(value === '') return true;
+        if(Array.isArray(value) && value.length == 0) return true;
+        
+        return false;
     }
 }

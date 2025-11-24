@@ -20,7 +20,7 @@ export class OrderListFiltersStrategy implements IFiltersStrategy {
                 placeholder: 'orderListFilters.allFieldsPlaceholder',
             },
             {
-                key: 'priority',
+                key: 'priorityIds',
                 label: 'orderListFilters.priority',
                 type: 'multi-select',
                 placeholder: 'orderListFilters.priorityPlaceholder',
@@ -37,7 +37,7 @@ export class OrderListFiltersStrategy implements IFiltersStrategy {
                 },
             },
             {
-                key: 'status',
+                key: 'statusIds',
                 label: 'orderListFilters.status',
                 type: 'multi-select',
                 placeholder: 'orderListFilters.statusPlaceholder',

@@ -59,9 +59,45 @@ class OrderService {
                     ->where('otl.symbol', app()->getLocale());
             });
 
+        if(!empty($dto->allFields)) {
+            $query->whereLike('a.address', '%'.$dto->allFields.'%')
+                ->orWhereLike('a.postal_code', '%'.$dto->allFields.'%')
+                ->orWhereLike('c.name', '%'.$dto->allFields.'%')
+                ->orWhereLike('cl.first_name', '%'.$dto->allFields.'%')
+                ->orWhereLike('cl.last_name', '%'.$dto->allFields.'%')
+                ->orWhereLike('cl.email', '%'.$dto->allFields.'%')
+                ->orWhereLike('cl.phone_number', '%'.$dto->allFields.'%')
+                ->orWhereLike('ot.remarks', '%'.$dto->allFields.'%')
+                ->orWhere('o.id', $dto->allFields);
+        }
+
+        if(!empty($dto->priorityIds)) {
+            $query->whereIn('o.priority_id', $dto->priorityIds);
+        }
+
+        if(!empty($dto->statusIds)) {
+            $query->whereIn('o.status_id', $dto->statusIds);
+        }
+
+        if(!empty($dto->dateCreation)) {
+            $query->where('o.created_at', $dto->dateCreation);
+        }
+
+        if(!empty($dto->dateCreation)) {
+            $query->where('o.date_deadline', $dto->dateDeadline);
+        }
+
+        $totalItems = $query->count();
+        if(!empty($dto->page) && !empty($dto->pageSize)) {
+            $items = $query->forPage($dto->page, $dto->pageSize)->get();
+        }
+        else {
+            $items = $query->get();
+        }
+
         return collect([
-            'items' => $query->get()->map->toCamelCaseKeys(),
-            'count' => $query->count(),
+            'items' => $items->map->toCamelCaseKeys() ?? [],
+            'count' => $totalItems,
         ]);
     }
 

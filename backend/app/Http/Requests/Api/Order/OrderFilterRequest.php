@@ -10,12 +10,27 @@ class OrderFilterRequest extends FormRequest {
         return true;
     }
 
+    public function prepareForValidation(): void {
+        $this->merge([
+           'priorityIds' => !empty($this->input('priorityIds')) ? explode(',', $this->input('priorityIds')) : null,
+           'statusIds' => !empty($this->input('statusIds')) ? explode(',', $this->input('statusIds')) : null,
+           'allFields' => trim($this->input('allFields')),
+        ]);
+    }
+
     public function rules(): array {
         return [
-            'page' => ['sometimes', 'integer'],
-            'pageSize' => ['sometimes', 'integer'],
-            'sortColumn' => ['sometimes', 'string'],
-            'sortDir' => ['sometimes', 'string'],
+            'page' => ['nullable', 'integer'],
+            'pageSize' => ['nullable', 'integer'],
+            'sortColumn' => ['nullable', 'string'],
+            'sortDir' => ['nullable', 'string'],
+            'allFields' => ['nullable', 'string'],
+            'priorityIds' => ['nullable', 'array'],
+            'priorityIds.*' => ['sometimes', 'integer'],
+            'statusIds' => ['nullable', 'array'],
+            'statusIds.*' => ['sometimes', 'integer'],
+            'dateCreation' => ['nullable', 'string'],
+            'dateDeadline' => ['nullable', 'string'],
         ];
     }
 

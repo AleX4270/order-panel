@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, TemplateRef, ViewChild, WritableSignal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ListTableComponent } from '../../shared/components/list-table/list-table.component';
 import { ExpansionState, TileType } from '../../shared/enums/enums';
@@ -14,7 +14,8 @@ import { FilterType } from '../../shared/enums/filter-type.enum';
 import { OrderFormModalComponent } from "../order-form-modal/order-form-modal.component";
 import { OrderService } from '../../shared/services/api/order/order.service';
 import { DatePipe } from '@angular/common';
-import { OrderItem } from '../../shared/types/order.types';
+import { OrderFilterParams, OrderItem } from '../../shared/types/order.types';
+import { PaginationItem } from '../../shared/types/pagination.types';
 
 @Component({
     selector: 'app-order-list',
@@ -44,7 +45,7 @@ import { OrderItem } from '../../shared/types/order.types';
                         <app-card overflowType="visible">
                             <app-filters 
                                 [type]="filterType.orderListFilters"
-                                (filtersChange)="null"
+                                (filtersChange)="onOrderFiltersChange($event)"
                             />        
                         </app-card>
                     </div>
@@ -54,7 +55,7 @@ import { OrderItem } from '../../shared/types/order.types';
 
         <div class="row order-list-info mt-5">
             <div class="col-8">
-                <h5>Zlecenia: W trakcie (5)</h5>
+                <h5>Zlecenia: W trakcie (X)</h5>
                 <div class="d-flex align-items-center gap-3 mt-3">
                     <span class="text-muted">{{'orderList.legend' | translate}}:</span>
                     <div class="d-flex gap-3">
@@ -141,7 +142,7 @@ import { OrderItem } from '../../shared/types/order.types';
         <div class="row order-list-pagination mt-5 pb-4">
             <div class="col-12">
                 <app-card [isContentCentered]="true" overflowType="visible">
-                    <app-pagination [totalItems]="ordersCount()"></app-pagination>
+                    <app-pagination [totalItems]="ordersCount()" (change)="onOrderPaginationChange($event)"></app-pagination>
                 </app-card>
             </div>
         </div>
@@ -195,6 +196,9 @@ export class OrderListComponent implements OnInit {
     protected orders: WritableSignal<OrderItem[]> = signal<OrderItem[]>([]);
     protected ordersCount: WritableSignal<number> = signal<number>(0);
 
+    protected orderFilterValues: Partial<Record<string, string | number[] | null>> = {};
+    protected orderPaginationValues: PaginationItem | null = null;
+
     ngOnInit(): void {
         this.loadOrders();
     }
@@ -222,7 +226,28 @@ export class OrderListComponent implements OnInit {
     }
 
     protected loadOrders(): void {
-        this.orderService.index({}).subscribe({
+        let params = {} as OrderFilterParams;
+
+        if(Object.keys(this.orderFilterValues).length > 0) {
+            Object.keys(this.orderFilterValues).forEach((key) => {
+                params = {
+                    ...params,
+                    [key]: this.orderFilterValues[key],
+                }
+            })
+        }
+
+        if(this.orderPaginationValues?.page) {
+            params.page = this.orderPaginationValues.page;
+        }
+
+        if(this.orderPaginationValues?.pageSize) {
+            params.pageSize = this.orderPaginationValues.pageSize;
+        }
+
+        console.log(params);
+
+        this.orderService.index(params).subscribe({
             next: (res) => {
                 this.orders.set(res.data?.items ?? []);
                 this.ordersCount.set(res.data?.count ?? 0);
@@ -231,5 +256,15 @@ export class OrderListComponent implements OnInit {
 
             },
         });
+    }
+
+    protected onOrderFiltersChange(filterValues: Partial<Record<string, string | number[] | null>>): void {
+        this.orderFilterValues = filterValues;
+        this.loadOrders();
+    }
+
+    protected onOrderPaginationChange(paginationValues: PaginationItem): void {
+        this.orderPaginationValues = paginationValues;
+        this.loadOrders();
     }
 }

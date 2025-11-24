@@ -1,7 +1,13 @@
 import { Priority } from "../enums/priority.enum";
 import { BaseFilterParams } from "./rest.types";
 
-export interface OrderFilterParams extends BaseFilterParams {}
+export interface OrderFilterParams extends BaseFilterParams {
+    allFields?: string;
+    priorityIds?: number[];
+    statusIds?: number[];
+    dateCreation?: string;
+    dateDeadline?: string;
+}
 
 export interface OrderItem {
     id: number;
