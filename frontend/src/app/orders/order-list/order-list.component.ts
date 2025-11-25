@@ -17,6 +17,7 @@ import { DatePipe, NgClass } from '@angular/common';
 import { OrderFilterParams, OrderItem } from '../../shared/types/order.types';
 import { PaginationItem } from '../../shared/types/pagination.types';
 import { Status } from '../../shared/enums/status.enum';
+import { SortItem } from '../../shared/types/sort.types';
 
 @Component({
     selector: 'app-order-list',
@@ -79,12 +80,12 @@ import { Status } from '../../shared/enums/status.enum';
                     [data]="orders()"
                 >
                     <ng-template #headers>
-                        <th>{{'orderListTable.orderNo' | translate}}</th>
-                        <th>{{'orderListTable.address' | translate}}</th>
-                        <th>{{'orderListTable.priority' | translate}}</th>
-                        <th>{{'orderListTable.dateCreated' | translate}}</th>
-                        <th>{{'orderListTable.dateDeadline' | translate}}</th>
-                        <th>{{'orderListTable.remarks' | translate}}</th>
+                        <th class="cursor-pointer" (click)="onOrderSortChange('orderNumber')">{{'orderListTable.orderNo' | translate}}</th>
+                        <th class="cursor-pointer" (click)="onOrderSortChange('address')">{{'orderListTable.address' | translate}}</th>
+                        <th class="cursor-pointer" (click)="onOrderSortChange('priority')">{{'orderListTable.priority' | translate}}</th>
+                        <th class="cursor-pointer" (click)="onOrderSortChange('dateCreated')">{{'orderListTable.dateCreated' | translate}}</th>
+                        <th class="cursor-pointer" (click)="onOrderSortChange('dateDeadline')">{{'orderListTable.dateDeadline' | translate}}</th>
+                        <th class="cursor-pointer" (click)="onOrderSortChange('remarks')">{{'orderListTable.remarks' | translate}}</th>
                         <th>{{'orderListTable.actions' | translate}}</th>
                     </ng-template>
 
@@ -206,6 +207,7 @@ export class OrderListComponent implements OnInit {
 
     protected orderFilterValues: Partial<Record<string, string | number[] | null>> = {};
     protected orderPaginationValues: PaginationItem | null = null;
+    protected orderSortValues: WritableSignal<SortItem | null> = signal<SortItem | null>(null);
 
     ngOnInit(): void {
         this.loadOrders();
@@ -253,7 +255,13 @@ export class OrderListComponent implements OnInit {
             params.pageSize = this.orderPaginationValues.pageSize;
         }
 
-        console.log(params);
+        if(this.orderSortValues()?.sortColumn) {
+            params.sortColumn = this.orderSortValues()?.sortColumn;
+        }
+
+        if(this.orderSortValues()?.sortDir) {
+            params.sortDir = this.orderSortValues()?.sortDir;
+        }
 
         this.orderService.index(params).subscribe({
             next: (res) => {
@@ -273,6 +281,30 @@ export class OrderListComponent implements OnInit {
 
     protected onOrderPaginationChange(paginationValues: PaginationItem): void {
         this.orderPaginationValues = paginationValues;
+        this.loadOrders();
+    }
+
+    protected onOrderSortChange(column: string): void {
+        if(this.orderSortValues()?.sortColumn !== column) {
+            this.orderSortValues.set({
+                sortColumn: column,
+                sortDir: 'desc',
+            });
+        }
+
+        if(this.orderSortValues()?.sortDir === 'asc') {
+            this.orderSortValues.set({
+                sortColumn: column,
+                sortDir: 'desc',
+            });
+        }
+        else {
+            this.orderSortValues.set({
+                sortColumn: column,
+                sortDir: 'asc',
+            });
+        }
+
         this.loadOrders();
     }
 }

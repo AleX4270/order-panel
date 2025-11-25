@@ -11,7 +11,7 @@ final readonly class OrderFilterDto {
         public ?int $page = null,
         public ?int $pageSize = null,
         public ?string $sortColumn = null,
-        public ?string $sortDir = null,
+        public ?SortDir $sortDir = null,
         public ?string $allFields = null,
         public ?array $priorityIds = null,
         public ?array $statusIds = null,

@@ -78,6 +78,14 @@ class OrderRepository {
         }
 
         match($dto->sortColumn) {
+            'orderNumber' => $query->orderBy('o.id', $dto->sortDir->value),
+            'address' => $query->orderBy('a.address', $dto->sortDir->value)
+                ->orderBy('a.postal_code', $dto->sortDir->value)
+                ->orderBy('c.name', $dto->sortDir->value),
+            'priority' => $query->orderBy('pr.id', $dto->sortDir->value),
+            'dateCreated' => $query->orderBy('o.created_at', $dto->sortDir->value),
+            'dateDeadline' => $query->orderBy('o.date_deadline', $dto->sortDir->value),
+            'remarks' => $query->orderBy('ot.remarks', $dto->sortDir->value),
             default => $query->orderBy('o.id', SortDir::DESC->value),
         };
 
