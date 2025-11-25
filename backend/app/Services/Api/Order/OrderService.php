@@ -16,6 +16,7 @@ use App\Services\Api\Client\ClientService;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -37,6 +38,11 @@ class OrderService {
         else {
             $items = $query->get();
         }
+
+        $items = $items->map(function($item) {
+            $item->isOverdue = Date::parse($item->date_deadline)->isPast();
+            return $item;
+        });
 
         return collect([
             'items' => $items->map->toCamelCaseKeys() ?? [],

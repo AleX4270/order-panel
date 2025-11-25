@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ListTableComponent } from '../../shared/components/list-table/list-table.component';
 import { ExpansionState, TileType } from '../../shared/enums/enums';
@@ -13,9 +13,10 @@ import { FiltersComponent } from '../../shared/components/filters/filters.compon
 import { FilterType } from '../../shared/enums/filter-type.enum';
 import { OrderFormModalComponent } from "../order-form-modal/order-form-modal.component";
 import { OrderService } from '../../shared/services/api/order/order.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { OrderFilterParams, OrderItem } from '../../shared/types/order.types';
 import { PaginationItem } from '../../shared/types/pagination.types';
+import { Status } from '../../shared/enums/status.enum';
 
 @Component({
     selector: 'app-order-list',
@@ -30,6 +31,7 @@ import { PaginationItem } from '../../shared/types/pagination.types';
     FiltersComponent,
     OrderFormModalComponent,
     DatePipe,
+    NgClass
 ],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan})],
     template: `
@@ -87,7 +89,11 @@ import { PaginationItem } from '../../shared/types/pagination.types';
                     </ng-template>
 
                     <ng-template #rows let-item>
-                        <tr class="list-row">
+                        <tr 
+                            class="list-row"
+                            [class.completed-row]="item.statusSymbol === status.completed"
+                            [class.overdue-row]="item.isOverdue"
+                        >
                             <td class="fw-semibold">{{ '#' + item.id }}</td>
                             <td>
                                 <div class="address d-flex flex-column">
@@ -190,6 +196,8 @@ export class OrderListComponent implements OnInit {
     private readonly orderService = inject(OrderService);
 
     protected readonly filterType = FilterType;
+    protected readonly status = Status;
+
     protected expansionState = ExpansionState;
     protected itemDetailsExpansionState: Partial<Record<number, ExpansionState>> = {};
 
