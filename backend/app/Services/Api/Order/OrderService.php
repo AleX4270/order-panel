@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Services\Api\Order;
 
-use App\Dtos\Api\Address\AddressDto;
 use App\Dtos\Api\Address\AddressResolveDto;
 use App\Dtos\Api\Client\ClientResolveDto;
 use App\Dtos\Api\Order\OrderDto;
@@ -11,6 +10,7 @@ use App\Dtos\Api\Order\OrderFilterDto;
 use App\Models\Language;
 use App\Models\Order;
 use App\Models\OrderTranslation;
+use App\Repositories\OrderRepository;
 use App\Services\Api\Address\AddressService;
 use App\Services\Api\Client\ClientService;
 use Exception;
@@ -24,68 +24,11 @@ class OrderService {
     public function __construct(
         private readonly AddressService $addressService,
         private readonly ClientService $clientService,
+        private readonly OrderRepository $orderRepository,
     ) {}
 
     public function index(OrderFilterDto $dto): Collection {
-        $query = Order::query()
-            ->from('orders as o')
-            ->select([
-                'o.id',
-                'a.address',
-                'a.postal_code',
-                'c.name as cityName',
-                'p.name as provinceName',
-                'pr.symbol as prioritySymbol',
-                'prt.name as priorityName',
-                'os.symbol as statusSymbol',
-                'o.created_at as dateCreated',
-                'o.date_deadline',
-                'ot.remarks',
-            ])
-            ->join('clients as cl', 'cl.id', '=', 'o.client_id')
-            ->join('addresses as a', 'a.id', '=', 'cl.address_id')
-            ->join('cities as c', 'c.id', '=', 'a.city_id')
-            ->join('provinces as p', 'p.id', '=', 'c.province_id')
-            ->join('priorities as pr', 'pr.id', '=', 'o.priority_id')
-            ->join('priority_translations as prt', 'prt.priority_id', '=', 'pr.id')
-            ->join('languages as prl', function($prlJoin) {
-                $prlJoin->on('prl.id', '=', 'prt.language_id')
-                    ->where('prl.symbol', app()->getLocale());
-            })
-            ->join('order_statuses as os', 'os.id', '=', 'o.status_id')
-            ->join('order_translations as ot', 'ot.order_id', '=', 'o.id')
-            ->join('languages as otl', function($prlJoin) {
-                $prlJoin->on('otl.id', '=', 'ot.language_id')
-                    ->where('otl.symbol', app()->getLocale());
-            });
-
-        if(!empty($dto->allFields)) {
-            $query->whereLike('a.address', '%'.$dto->allFields.'%')
-                ->orWhereLike('a.postal_code', '%'.$dto->allFields.'%')
-                ->orWhereLike('c.name', '%'.$dto->allFields.'%')
-                ->orWhereLike('cl.first_name', '%'.$dto->allFields.'%')
-                ->orWhereLike('cl.last_name', '%'.$dto->allFields.'%')
-                ->orWhereLike('cl.email', '%'.$dto->allFields.'%')
-                ->orWhereLike('cl.phone_number', '%'.$dto->allFields.'%')
-                ->orWhereLike('ot.remarks', '%'.$dto->allFields.'%')
-                ->orWhere('o.id', $dto->allFields);
-        }
-
-        if(!empty($dto->priorityIds)) {
-            $query->whereIn('o.priority_id', $dto->priorityIds);
-        }
-
-        if(!empty($dto->statusIds)) {
-            $query->whereIn('o.status_id', $dto->statusIds);
-        }
-
-        if(!empty($dto->dateCreation)) {
-            $query->where('o.created_at', $dto->dateCreation);
-        }
-
-        if(!empty($dto->dateCreation)) {
-            $query->where('o.date_deadline', $dto->dateDeadline);
-        }
+        $query = $this->orderRepository->getAll($dto);
 
         $totalItems = $query->count();
         if(!empty($dto->page) && !empty($dto->pageSize)) {
