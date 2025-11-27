@@ -123,6 +123,7 @@ import { SortItem } from '../../shared/types/sort.types';
                                         class="item-pressable text-primary"
                                         name="faPenToSquare"
                                         size="20px"
+                                        (click)="showOrderFormModal(item.id)"
                                     ></ng-icon>
 
                                     <ng-icon
@@ -154,7 +155,7 @@ import { SortItem } from '../../shared/types/sort.types';
             </div>
         </div>
 
-        <app-order-form-modal #orderFormModal />
+        <app-order-form-modal #orderFormModal (orderSaved)="loadOrders()" />
     `,
     styles: [`
         .list-row {

@@ -8,6 +8,7 @@ use App\Http\Requests\Api\Order\OrderFilterRequest;
 use App\Http\Requests\Api\Order\OrderRequest;
 use App\Http\Responses\Api\ApiResponse;
 use App\Services\Api\Order\OrderService;
+use Illuminate\Http\Request;
 
 class OrderController {
     public function __construct(
@@ -21,6 +22,25 @@ class OrderController {
             data: $result,
             status: HttpStatus::OK,
             message: __('response.success'),
+        );
+    }
+
+    public function show(Request $request): ApiResponse {
+        $orderId = (int)$request->route('orderId');
+
+        if(empty($orderId)) {
+            return new ApiResponse(
+                status: HttpStatus::BAD_REQUEST,
+                message: __('response.badRequest'),
+            );    
+        }
+
+        $result = $this->orderService->show($orderId);
+
+        return new ApiResponse(
+            data: $result,
+            status: HttpStatus::OK,
+            message: __('response.created'),
         );
     }
 

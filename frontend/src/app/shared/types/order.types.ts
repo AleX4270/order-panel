@@ -14,13 +14,20 @@ export interface OrderItem {
     id: number;
     address: string;
     postalCode: string;
+    cityId: number;
     cityName: string;
+    provinceId: number;
     provinceName: string;
+    countryId: number;
+    priorityId: number;
     prioritySymbol: Priority;
     priorityName: string;
+    statusId: number;
     statusSymbol: Status;
-    dateCreated: Date;
-    dateDeadline: Date;
+    dateCreated: string;
+    dateDeadline: string;
+    dateCompleted: string;
+    phoneNumber: string;
     remarks: string;
     isOverdue: boolean;
 }

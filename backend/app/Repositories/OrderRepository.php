@@ -10,26 +10,34 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
 class OrderRepository {
-    public function getAll(OrderFilterDto $dto): Builder {
-        $query = Order::query()
+    private function getBaseQuery(): Builder {
+        return Order::query()
             ->from('orders as o')
             ->select([
                 'o.id',
                 'a.address',
-                'a.postal_code',
+                'a.postal_code as postalCode',
+                'c.id as cityId',
                 'c.name as cityName',
+                'p.id as provinceId',
                 'p.name as provinceName',
+                'co.id as countryId',
+                'pr.id as priorityId',
                 'pr.symbol as prioritySymbol',
                 'prt.name as priorityName',
+                'os.id as statusId',
                 'os.symbol as statusSymbol',
                 'o.created_at as dateCreated',
-                'o.date_deadline',
+                'o.date_deadline as dateDeadline',
+                'cl.phone_number as phoneNumber',
                 'ot.remarks',
+                'o.date_completed as dateCompleted'
             ])
             ->join('clients as cl', 'cl.id', '=', 'o.client_id')
             ->join('addresses as a', 'a.id', '=', 'cl.address_id')
             ->join('cities as c', 'c.id', '=', 'a.city_id')
             ->join('provinces as p', 'p.id', '=', 'c.province_id')
+            ->join('countries as co', 'co.id', '=', 'p.country_id')
             ->join('priorities as pr', 'pr.id', '=', 'o.priority_id')
             ->join('priority_translations as prt', 'prt.priority_id', '=', 'pr.id')
             ->join('languages as prl', function($prlJoin) {
@@ -42,6 +50,10 @@ class OrderRepository {
                 $prlJoin->on('otl.id', '=', 'ot.language_id')
                     ->where('otl.symbol', app()->getLocale());
             });
+    }
+
+    public function getAll(OrderFilterDto $dto): Builder {
+        $query = $this->getBaseQuery();
 
         if(!empty($dto->allFields)) {
             $query->whereLike('a.address', '%'.$dto->allFields.'%')
@@ -88,6 +100,14 @@ class OrderRepository {
             'remarks' => $query->orderBy('ot.remarks', $dto->sortDir->value),
             default => $query->orderBy('o.id', SortDir::DESC->value),
         };
+
+        return $query;
+    }
+
+    public function getOne(int $orderId): Builder {
+        $query = $this->getBaseQuery();
+
+        $query->where('o.id', $orderId);
 
         return $query;
     }

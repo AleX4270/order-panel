@@ -40,14 +40,24 @@ class OrderService {
         }
 
         $items = $items->map(function($item) {
-            $item->isOverdue = Date::parse($item->date_deadline)->isPast();
+            $item->isOverdue = Date::parse($item->dateDeadline)->isPast();
             return $item;
         });
 
         return collect([
-            'items' => $items->map->toCamelCaseKeys() ?? [],
+            'items' => $items ?? [],
             'count' => $totalItems,
         ]);
+    }
+
+    public function show(int $orderId): Order {
+        $data = $this->orderRepository->getOne($orderId)->first();
+
+        $data->dateCreated = Date::parse($data->dateCreated)->format('Y-m-d');
+        $data->dateDeadline = Date::parse($data->dateDeadline)->format('Y-m-d');
+        $data->dateCompleted = !empty($data->dateCompleted) ? Date::parse($data->dateCompleted)->format('Y-m-d') : null;
+
+        return $data;
     }
 
     public function store(OrderDto $dto): Collection {

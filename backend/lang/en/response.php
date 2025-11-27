@@ -2,5 +2,6 @@
 
 return [
     'success' => 'Success',
-    'created' => 'Resource created'
+    'created' => 'Resource created',
+    'badRequest' => 'Bad request',
 ];

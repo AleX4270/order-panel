@@ -23,7 +23,15 @@ export class OrderService extends RestService {
         return this.http.get<ApiResponse<IndexResponse<OrderItem>>>(`${this.apiUrl}/orders${this.getQueryParams(paramsCopy)}`);
     }
 
+    public show(orderId: number): Observable<ApiResponse<OrderItem>> {
+        return this.http.get<ApiResponse<OrderItem>>(`${this.apiUrl}/orders/${orderId}`);
+    }
+
     public store(params: OrderParams): Observable<ApiResponse<void>> {
         return this.http.post<ApiResponse<void>>(`${this.apiUrl}/orders`, params);
+    }
+
+    public update(params: OrderParams): Observable<ApiResponse<void>> {
+        return this.http.put<ApiResponse<void>>(`${this.apiUrl}/orders`, params);
     }
 }

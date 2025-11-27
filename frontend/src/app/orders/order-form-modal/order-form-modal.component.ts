@@ -1,5 +1,5 @@
 import { DatePipe, NgClass } from '@angular/common';
-import { Component, computed, DestroyRef, ElementRef, inject, OnDestroy, Signal, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, computed, DestroyRef, ElementRef, inject, OnDestroy, output, Signal, signal, ViewChild, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { InputErrorLabelComponent } from '../../shared/components/input-error-label/input-error-label.component';
@@ -21,7 +21,7 @@ import { CityService } from '../../shared/services/api/city/city.service';
 import { ToastService } from '../../shared/services/toast/toast.service';
 import { ToastType } from '../../shared/enums/enums';
 import { OrderService } from '../../shared/services/api/order/order.service';
-import { OrderParams } from '../../shared/types/order.types';
+import { OrderItem, OrderParams } from '../../shared/types/order.types';
 
 @Component({
     selector: 'app-order-form-modal',
@@ -32,7 +32,7 @@ import { OrderParams } from '../../shared/types/order.types';
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title text-primary">{{ "orderForm." + (isEditScenario() ? "updateTitle" : "createTitle") | translate }}</h5>
+                        <h5 class="modal-title text-primary">{{ ("orderForm." + (isEditScenario() ? "updateTitle" : "createTitle") | translate) + (isEditScenario() ? ' - #' + this.orderId() : '') }}</h5>
                     </div>
                     <div class="modal-body">
                         @if(!isLoading() && form) {
@@ -240,7 +240,7 @@ import { OrderParams } from '../../shared/types/order.types';
                         }
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-dismiss="modal">{{"basic.cancel" | translate}}</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" (click)="closeModal()">{{"basic.cancel" | translate}}</button>
                         <button type="button" class="btn btn-sm btn-primary" (click)="saveOrder()">{{"basic.save" | translate}}</button>
                     </div>
                 </div>
@@ -286,6 +286,8 @@ export class OrderFormModalComponent implements OnDestroy {
     protected provinces: WritableSignal<ProvinceItem[]> = signal<ProvinceItem[]>([]);
     protected cities: WritableSignal<CityItem[]> = signal<CityItem[]>([]);
 
+    protected orderSaved = output<void>();
+
     protected addNewCity = (name: string): CityItem | null => {
         const cityName = name.trim();
         if(!cityName) {
@@ -313,16 +315,17 @@ export class OrderFormModalComponent implements OnDestroy {
         return this.datePipe.transform(date.toString(), 'yyyy-MM-dd');
     });
 
-    public showForm(id?: number): void {
+    public showForm(orderId?: number): void {
         this.isLoading.set(true);
 
-        if(id) {
-            this.orderId.set(id);
+        if(orderId) {
+            this.orderId.set(orderId);
             this.isEditScenario.set(true);
+            this.loadDetails(orderId);
         }
 
         this.initForm();
-        this.loadFormData();
+        this.loadFormOptionsData();
         this.openModal();        
     }
     
@@ -343,6 +346,8 @@ export class OrderFormModalComponent implements OnDestroy {
     }
 
     protected closeModal(): void {
+        this.isEditScenario.set(false);
+        this.orderId.set(null);
         this.form.reset();
         this.modal?.hide();
     }
@@ -369,7 +374,39 @@ export class OrderFormModalComponent implements OnDestroy {
         });
     }
 
-    private loadFormData(): void {
+    private loadDetails(orderId: number): void {
+        this.orderService.show(orderId).subscribe({
+            next: (res) => {
+                const order: OrderItem | null = res.data;
+                
+                if(!order) {
+                    return;
+                }
+
+                this.form.patchValue({
+                    id: order.id,
+                    orderNumber: order.id,
+                    countryId: order.countryId,
+                    provinceId: order.provinceId,
+                    cityId: order.cityId,
+                    postalCode: order.postalCode,
+                    address: order.address,
+                    phoneNumber: order.phoneNumber,
+                    priorityId: order.priorityId,
+                    statusId: order.statusId,
+                    dateCreation: order.dateCreated,
+                    dateDeadline: order.dateDeadline,
+                    dateCompleted: order.dateCompleted ?? null,
+                    remarks: order.remarks
+                });
+            },
+            error: (err) => {
+                console.error(err);
+            }
+        });
+    }
+
+    private loadFormOptionsData(): void {
         forkJoin({
             priorities: this.priorityService.index(),
             statuses: this.statusService.index(),
@@ -411,6 +448,11 @@ export class OrderFormModalComponent implements OnDestroy {
             takeUntilDestroyed(this.destroyRef),
         )
         .subscribe({
+            next: () => {
+                if(this.form.get('provinceId')?.value) {
+                    this.loadCities(this.form.get('provinceId')?.value);
+                }
+            }, 
             error: (err) => {
                 console.error(err);
             }
@@ -475,7 +517,7 @@ export class OrderFormModalComponent implements OnDestroy {
         }
 
         const method = this.isEditScenario()
-            ? this.orderService.store(orderParams) //TODO: Add the update method
+            ? this.orderService.update(orderParams)
             : this.orderService.store(orderParams);
 
         method.subscribe({
@@ -484,7 +526,8 @@ export class OrderFormModalComponent implements OnDestroy {
                     this.translateService.instant('orderForm.creationSuccessMessage'),
                     ToastType.success,
                 );
-            },  
+                this.orderSaved.emit();
+            },
             error: (err) => {
                 console.log(err);
                 this.toastService.show(
