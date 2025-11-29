@@ -5,7 +5,8 @@
         "return": "Powrót",
         "notFound": "Nie znaleziono zasobu",
         "notFoundDescription": "Ups! Wygląda na to, że zasób, którego szukałeś, nie istnieje. Być może został przeniesiony, usunięty lub po prostu nigdy nie istniał.",
-        "save": "Zapisz"
+        "save": "Zapisz",
+        "noResults": "Brak pozycji"
     },
     "error": {
         "incorrect": "Dane nieprawidłowe",
@@ -109,8 +110,9 @@
         "dateCompleted": "Data ukończenia",
         "remarks": "Uwagi",
         "remarksPlaceholder": "Wprowadź uwagi",
-        "creationErrorMessage": "Nie udało się utworzyć zlecenia",
-        "creationSuccessMessage": "Pomyślnie utworzono zlecenie"
+        "saveErrorMessage": "Nie udało się zapisać zlecenia",
+        "saveSuccessMessage": "Pomyślnie zapisano zlecenie",
+        "addCity": "Dodaj miasto"
     },
     "listTable": {
         "noRecordsFound": "Brak wyników"

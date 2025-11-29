@@ -7,6 +7,7 @@ import { NavbarComponent } from "./shared/components/navbar/navbar.component";
 import { Store } from '@ngxs/store';
 import { UserState } from './shared/store/user/user.state';
 import { LanguageSelectorComponent } from "./shared/components/language-selector/language-selector.component";
+import { NgSelectConfig } from '@ng-select/ng-select';
 
 @Component({
     selector: 'app-root',
@@ -38,6 +39,7 @@ import { LanguageSelectorComponent } from "./shared/components/language-selector
 export class AppComponent implements OnInit {
     private readonly translate = inject(TranslateService);
     private readonly store = inject(Store);
+    private readonly ngSelectConfig = inject(NgSelectConfig);
 
     protected isUserAuthenticated = this.store.selectSignal(UserState.isAuthenticated);
     protected selectedLanguage = this.store.selectSignal(UserState.userLanguage);
@@ -59,5 +61,11 @@ export class AppComponent implements OnInit {
             LanguageType.english,
         ]);
         this.translate.setDefaultLang(LanguageType.polish);
+
+        this.translate.get('basic.noResults').subscribe({
+            next: (result) => {
+                this.ngSelectConfig.notFoundText = result;
+            }
+        })
     }
 }

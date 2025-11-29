@@ -13,7 +13,7 @@ import { CityItem } from '../../shared/types/city.types';
 import { PriorityService } from '../../shared/services/api/priority/priority.service';
 import { StatusService } from '../../shared/services/api/status/status.service';
 import { CountryService } from '../../shared/services/api/country/country.service';
-import { catchError, count, forkJoin, map, of, takeUntil, tap } from 'rxjs';
+import { catchError, count, distinctUntilChanged, forkJoin, map, of, takeUntil, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DEFAULT_COUNTRY_SYMBOL, DEFAULT_PRIORITY_SYMBOL, DEFAULT_STATUS_SYMBOL } from '../../app.constants';
 import { ProvinceService } from '../../shared/services/api/province/province.service';
@@ -70,7 +70,6 @@ import { OrderItem, OrderParams } from '../../shared/types/order.types';
                                             [multiple]="false"
                                             [placeholder]="'orderForm.countryPlaceholder' | translate"
                                             class="form-field dropdown"
-                                            (change)="onCountryChange($event)"
                                         />
                                         <app-input-error-label [control]="form.get('countryId')" />
                                     </div>
@@ -85,7 +84,6 @@ import { OrderItem, OrderParams } from '../../shared/types/order.types';
                                             [multiple]="false"
                                             [placeholder]="'orderForm.provincePlaceholder' | translate"
                                             class="form-field dropdown"
-                                            (change)="onProvinceChange($event)"
                                         />
                                         <app-input-error-label [control]="form.get('provinceId')" />
                                     </div>
@@ -100,7 +98,7 @@ import { OrderItem, OrderParams } from '../../shared/types/order.types';
                                             [multiple]="false"
                                             [placeholder]="'orderForm.cityPlaceholder' | translate"
                                             class="form-field dropdown"
-                                            addTagText="Dodaj miasto"
+                                            [addTagText]="'orderForm.addCity' | translate"
                                             [addTag]="addNewCity"
                                             (change)="onCityChange($event)"
                                         />
@@ -372,6 +370,49 @@ export class OrderFormModalComponent implements OnDestroy {
         },{
             validators: [validateOrderDateRange()],
         });
+
+        this.registerFormChanges();
+    }
+
+    private registerFormChanges(): void {
+        const countryField = this.form.get('countryId');
+        const provinceField = this.form.get('provinceId');
+
+        if(!countryField || !provinceField) {
+            return;
+        }
+
+        countryField.valueChanges.pipe(
+            distinctUntilChanged(),
+            takeUntilDestroyed(this.destroyRef),
+        )
+        .subscribe({
+            next: (countryId: number | null) => {
+                this.provinces.set([]);
+                this.cities.set([]);
+                provinceField.reset();
+                this.form.get('cityId')?.reset();
+
+                if(countryId) {
+                    this.loadProvinces(countryId);
+                }
+            }
+        });
+
+        provinceField.valueChanges.pipe(
+            distinctUntilChanged(),
+            takeUntilDestroyed(this.destroyRef),
+        )
+        .subscribe({
+            next: (provinceId: number | null) => {
+                this.cities.set([]);
+                this.form.get('cityId')?.reset();
+
+                if(provinceId) {
+                    this.loadCities(provinceId);
+                }
+            }
+        });
     }
 
     private loadDetails(orderId: number): void {
@@ -382,6 +423,9 @@ export class OrderFormModalComponent implements OnDestroy {
                 if(!order) {
                     return;
                 }
+
+                console.log(this.priorities());
+                console.log(this.statuses());
 
                 this.form.patchValue({
                     id: order.id,
@@ -425,34 +469,28 @@ export class OrderFormModalComponent implements OnDestroy {
                 
                 if(this.priorities()) {
                     const defaultPriority = this.priorities().find((priority) => priority.symbol == DEFAULT_PRIORITY_SYMBOL);
-                    if(defaultPriority?.id) {
+                    if(!this.isEditScenario() && defaultPriority?.id) {
                         this.form.get('priorityId')?.setValue(defaultPriority.id);
                     }
                 }
 
                 if(this.statuses()) {
                     const defaultStatus = this.statuses().find((status) => status.symbol == DEFAULT_STATUS_SYMBOL);
-                    if(defaultStatus?.id) {
+                    if(!this.isEditScenario() && defaultStatus?.id) {
                         this.form.get('statusId')?.setValue(defaultStatus?.id);
                     }
                 }
 
                 if(this.countries()) {
                     const defaultCountry = this.countries().find((country) => country.symbol == DEFAULT_COUNTRY_SYMBOL);
-                    if(defaultCountry?.id) {
+                    if(!this.isEditScenario() && defaultCountry?.id) {
                         this.form.get('countryId')?.setValue(defaultCountry?.id);
-                        this.loadProvinces(defaultCountry?.id);
                     }
                 }
             }),
             takeUntilDestroyed(this.destroyRef),
         )
         .subscribe({
-            next: () => {
-                if(this.form.get('provinceId')?.value) {
-                    this.loadCities(this.form.get('provinceId')?.value);
-                }
-            }, 
             error: (err) => {
                 console.error(err);
             }
@@ -523,7 +561,7 @@ export class OrderFormModalComponent implements OnDestroy {
         method.subscribe({
             next: (res) => {
                 this.toastService.show(
-                    this.translateService.instant('orderForm.creationSuccessMessage'),
+                    this.translateService.instant('orderForm.saveSuccessMessage'),
                     ToastType.success,
                 );
                 this.orderSaved.emit();
@@ -531,7 +569,7 @@ export class OrderFormModalComponent implements OnDestroy {
             error: (err) => {
                 console.log(err);
                 this.toastService.show(
-                    this.translateService.instant('orderForm.creationErrorMessage'),
+                    this.translateService.instant('orderForm.saveErrorMessage'),
                     ToastType.danger,
                 );
             },
@@ -539,32 +577,6 @@ export class OrderFormModalComponent implements OnDestroy {
                 this.closeModal();
             }
         });
-    }
-
-    protected onCountryChange(event?: any): void {
-        const countryId = event?.id
-
-        if(!countryId || countryId == null || countryId == undefined) {
-            this.provinces.set([]);
-            this.cities.set([]);
-            this.form.get('provinceId')?.reset();
-            this.form.get('cityId')?.reset();
-            return;
-        }
-
-        this.loadProvinces(countryId);
-    }
-
-    protected onProvinceChange(event?: any): void {
-        const provinceId = event?.id
-
-        if(!provinceId || provinceId == null || provinceId == undefined) {
-            this.cities.set([]);
-            this.form.get('cityId')?.reset();
-            return;
-        }
-
-        this.loadCities(provinceId);
     }
 
     protected onCityChange(event: any): void {

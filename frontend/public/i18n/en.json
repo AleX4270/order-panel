@@ -5,7 +5,8 @@
         "return": "Return",
         "notFound": "Resource not found",
         "notFoundDescription": "Oops! It looks like the resource you were looking for does not exist. It may have been moved, deleted, or simply never existed.",
-        "save": "Save"
+        "save": "Save",
+        "noResults": "No results"
     },
     "error": {
         "incorrect": "Invalid data",

@@ -7,8 +7,10 @@ use App\Dtos\Api\Address\AddressResolveDto;
 use App\Dtos\Api\Client\ClientResolveDto;
 use App\Dtos\Api\Order\OrderDto;
 use App\Dtos\Api\Order\OrderFilterDto;
+use App\Enums\OrderStatusType;
 use App\Models\Language;
 use App\Models\Order;
+use App\Models\OrderStatus;
 use App\Models\OrderTranslation;
 use App\Repositories\OrderRepository;
 use App\Services\Api\Address\AddressService;
@@ -39,8 +41,10 @@ class OrderService {
             $items = $query->get();
         }
 
-        $items = $items->map(function($item) {
-            $item->isOverdue = Date::parse($item->dateDeadline)->isPast();
+        $statusCompletedId = OrderStatus::where('symbol', OrderStatusType::COMPLETED->value)->first()->id;
+
+        $items = $items->map(function($item) use($statusCompletedId) {
+            $item->isOverdue = Date::parse($item->dateDeadline)->isPast() && empty($item->dateCompleted) && $item->statusId !== $statusCompletedId;
             return $item;
         });
 
@@ -70,6 +74,7 @@ class OrderService {
                 'cityName' => $dto->addressDto->cityName,
                 'provinceId' => $dto->addressDto->provinceId,
             ]));
+
             $client = $this->clientService->findOrCreate(ClientResolveDto::fromArray([
                 'address' => $address,
                 'phoneNumber' => $dto->phoneNumber,
@@ -92,25 +97,57 @@ class OrderService {
                 'remarks' => $dto->remarks
             ]);
 
-            logger([$order]);
-
             DB::commit();
             return collect([
                 'id' => $order->id,
             ]);
         }
         catch(Exception $e) {
-            Log::error($e->getMessage());
+            Log::error($e);
             DB::rollBack();
             throw $e;
         }
     }
 
     public function update(OrderDto $dto): bool {
-        //Sprawdź czy adres się zmienił, stwórz nowy jeśli tak
-        //Sprawdź czy klient się zmienił, stwórz nowego jeśli tak
-        //Zaktualizuj dane zlecenia
+        DB::beginTransaction();
+        try {
+            $address = $this->addressService->findOrCreate(AddressResolveDto::fromArray([
+                'address' => $dto->addressDto->address,
+                'postalCode' => $dto->addressDto->postalCode,
+                'cityId' => $dto->addressDto->cityId,
+                'cityName' => $dto->addressDto->cityName,
+                'provinceId' => $dto->addressDto->provinceId,
+            ]));
 
-        return true;
+            $client = $this->clientService->findOrCreate(ClientResolveDto::fromArray([
+                'address' => $address,
+                'phoneNumber' => $dto->phoneNumber,
+            ]));
+
+            Order::where('id', $dto->id)
+                ->update([
+                    'date_deadline' => $dto->dateDeadline,
+                    'user_modification_id' => Auth::id(),
+                    'priority_id' => $dto->priorityId,
+                    'client_id' => $client->id,
+                    'status_id' => $dto->statusId,
+                    'created_at' => $dto->dateCreation,
+                    'date_completed' => $dto->dateCompleted,
+                ]);
+
+            OrderTranslation::where('order_id', $dto->id)
+                ->update([
+                    'remarks' => $dto->remarks,
+                ]);
+
+            DB::commit();
+            return true;
+        }
+        catch(Exception $e) {
+            Log::error($e);
+            DB::rollBack();
+            throw $e;
+        }
     }
 }
