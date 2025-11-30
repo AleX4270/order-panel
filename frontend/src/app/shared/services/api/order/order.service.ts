@@ -34,4 +34,8 @@ export class OrderService extends RestService {
     public update(params: OrderParams): Observable<ApiResponse<void>> {
         return this.http.put<ApiResponse<void>>(`${this.apiUrl}/orders`, params);
     }
+
+    public delete(orderId: number): Observable<ApiResponse<void>> {
+        return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/orders/${orderId}`);
+    }
 }

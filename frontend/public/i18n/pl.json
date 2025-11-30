@@ -6,7 +6,8 @@
         "notFound": "Nie znaleziono zasobu",
         "notFoundDescription": "Ups! Wygląda na to, że zasób, którego szukałeś, nie istnieje. Być może został przeniesiony, usunięty lub po prostu nigdy nie istniał.",
         "save": "Zapisz",
-        "noResults": "Brak pozycji"
+        "noResults": "Brak pozycji",
+        "confirm": "Potwierdź"
     },
     "error": {
         "incorrect": "Dane nieprawidłowe",
@@ -60,7 +61,9 @@
         "inProgress": "W trakcie",
         "overdue": "Po terminie",
         "completed": "Zrealizowane",
-        "legend": "Legenda"
+        "legend": "Legenda",
+        "deleteSuccess": "Pomyślnie usunięto zlecenie",
+        "deleteError": "Nie udało się usunąć zlecenia"
     },
     "orderListTable": {
         "orderNo": "Numer zlecenia",
@@ -116,5 +119,9 @@
     },
     "listTable": {
         "noRecordsFound": "Brak wyników"
+    },
+    "orderDeletePromptModal": {
+        "title": "Potwierdzenie usunięcia zlecenia",
+        "message": "Czy potwierdzasz usunięcie wybranego zlecenia?"
     }
 }

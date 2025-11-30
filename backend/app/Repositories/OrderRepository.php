@@ -53,18 +53,21 @@ class OrderRepository {
     }
 
     public function getAll(OrderFilterDto $dto): Builder {
-        $query = $this->getBaseQuery();
+        $query = $this->getBaseQuery()
+            ->where('o.is_active', 1);
 
         if(!empty($dto->allFields)) {
-            $query->whereLike('a.address', '%'.$dto->allFields.'%')
-                ->orWhereLike('a.postal_code', '%'.$dto->allFields.'%')
-                ->orWhereLike('c.name', '%'.$dto->allFields.'%')
-                ->orWhereLike('cl.first_name', '%'.$dto->allFields.'%')
-                ->orWhereLike('cl.last_name', '%'.$dto->allFields.'%')
-                ->orWhereLike('cl.email', '%'.$dto->allFields.'%')
-                ->orWhereLike('cl.phone_number', '%'.$dto->allFields.'%')
-                ->orWhereLike('ot.remarks', '%'.$dto->allFields.'%')
-                ->orWhere('o.id', $dto->allFields);
+            $query->where(function($query) use($dto) {
+                $query->whereLike('a.address', '%'.$dto->allFields.'%')
+                    ->orWhereLike('a.postal_code', '%'.$dto->allFields.'%')
+                    ->orWhereLike('c.name', '%'.$dto->allFields.'%')
+                    ->orWhereLike('cl.first_name', '%'.$dto->allFields.'%')
+                    ->orWhereLike('cl.last_name', '%'.$dto->allFields.'%')
+                    ->orWhereLike('cl.email', '%'.$dto->allFields.'%')
+                    ->orWhereLike('cl.phone_number', '%'.$dto->allFields.'%')
+                    ->orWhereLike('ot.remarks', '%'.$dto->allFields.'%')
+                    ->orWhere('o.id', $dto->allFields);
+            });
         }
 
         if(!empty($dto->priorityIds)) {

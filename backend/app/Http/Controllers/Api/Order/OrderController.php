@@ -26,7 +26,7 @@ class OrderController {
     }
 
     public function show(Request $request): ApiResponse {
-        $orderId = (int)$request->route('orderId');
+        $orderId = (int)$request->route('id');
 
         if(empty($orderId)) {
             return new ApiResponse(
@@ -62,7 +62,21 @@ class OrderController {
         );
     }
 
-    public function destroy() {
-        //
+    public function delete(Request $request) {
+        $orderId = (int)$request->route('id');
+
+        if(empty($orderId)) {
+            return new ApiResponse(
+                status: HttpStatus::BAD_REQUEST,
+                message: __('response.badRequest'),
+            );    
+        }
+
+        $result = $this->orderService->delete($orderId);
+
+        return new ApiResponse(
+            status: HttpStatus::OK,
+            message: __('response.deleted'),
+        );
     }
 }

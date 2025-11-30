@@ -8,6 +8,7 @@ import { Store } from '@ngxs/store';
 import { UserState } from './shared/store/user/user.state';
 import { LanguageSelectorComponent } from "./shared/components/language-selector/language-selector.component";
 import { NgSelectConfig } from '@ng-select/ng-select';
+import { PromptModalComponent } from './shared/components/prompt-modal/prompt-modal.component';
 
 @Component({
     selector: 'app-root',
@@ -15,7 +16,8 @@ import { NgSelectConfig } from '@ng-select/ng-select';
         RouterOutlet,
         ToastDisplayerComponent,
         NavbarComponent,
-        LanguageSelectorComponent
+        LanguageSelectorComponent,
+        PromptModalComponent,
     ],
     template: `
         @if(isUserAuthenticated()) {
@@ -23,6 +25,7 @@ import { NgSelectConfig } from '@ng-select/ng-select';
         }
         <main class="app-container container-fluid">
             <app-toast-displayer/>
+            <app-prompt-modal />
             <router-outlet></router-outlet>
             @if(!isUserAuthenticated()) {
                 <app-language-selector class="fixed-bottom px-3 py-2" [dropDirection]="'up'" />

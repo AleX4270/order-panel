@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ListTableComponent } from '../../shared/components/list-table/list-table.component';
-import { ExpansionState, TileType } from '../../shared/enums/enums';
+import { ExpansionState, TileType, ToastType } from '../../shared/enums/enums';
 import { Priority } from '../../shared/enums/priority.enum';
 import { TileComponent } from "../../shared/components/tile/tile.component";
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -18,6 +18,8 @@ import { OrderFilterParams, OrderItem } from '../../shared/types/order.types';
 import { PaginationItem } from '../../shared/types/pagination.types';
 import { Status } from '../../shared/enums/status.enum';
 import { SortItem } from '../../shared/types/sort.types';
+import { PromptModalService } from '../../shared/services/prompt-modal/prompt-modal.service';
+import { ToastService } from '../../shared/services/toast/toast.service';
 
 @Component({
     selector: 'app-order-list',
@@ -130,6 +132,7 @@ import { SortItem } from '../../shared/types/sort.types';
                                         class="item-pressable text-danger"
                                         name="faTrashCan"
                                         size="20px"
+                                        (click)="showOrderDeletePromptModal(item.id)"
                                     ></ng-icon>
                                 </div>
                             </td>
@@ -196,6 +199,9 @@ export class OrderListComponent implements OnInit {
     @ViewChild('orderFormModal') orderFormModal!: OrderFormModalComponent;
 
     private readonly orderService = inject(OrderService);
+    private readonly promptModalService = inject(PromptModalService);
+    private readonly translateService = inject(TranslateService);
+    private readonly toastService = inject(ToastService);
 
     protected readonly filterType = FilterType;
     protected readonly status = Status;
@@ -236,6 +242,35 @@ export class OrderListComponent implements OnInit {
         this.orderFormModal.showForm(id);
     }
 
+    protected showOrderDeletePromptModal(id: number): void {
+        this.promptModalService.openModal({
+            title: this.translateService.instant('orderDeletePromptModal.title'),
+            message: this.translateService.instant('orderDeletePromptModal.message'),
+            handler: () => {
+                this.deleteOrder(id);
+            }
+        });
+    }
+
+    protected deleteOrder(id: number): void {
+        this.orderService.delete(id).subscribe({
+            next: () => {
+                this.toastService.show(
+                    this.translateService.instant('orderList.deleteSuccess'),
+                    ToastType.success,
+                );
+                this.loadOrders();
+            },
+            error: (err) => {
+                console.error(err);
+                this.toastService.show(
+                    this.translateService.instant('orderList.deleteError'),
+                    ToastType.danger,
+                );
+            }
+        })
+    }
+
     protected loadOrders(): void {
         let params = {} as OrderFilterParams;
 
@@ -270,7 +305,7 @@ export class OrderListComponent implements OnInit {
                 this.ordersCount.set(res.data?.count ?? 0);
             },
             error: (err) => {
-
+                console.error(err);
             },
         });
     }

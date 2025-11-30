@@ -150,4 +150,11 @@ class OrderService {
             throw $e;
         }
     }
+
+    public function delete(int $orderId): void {
+        logger($orderId);
+        Order::where('id', $orderId)->update([
+            'is_active' => 0,
+        ]);
+    }
 }
