@@ -9,13 +9,13 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('province', function (Blueprint $table) {
+        Schema::create('provinces', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('country_id');
-            $table->string('name', 255);
+            $table->unsignedBigInteger('country_id')->nullable(false);
+            $table->string('name', 255)->nullable(false);
             $table->timestamps();
 
-            $table->foreign('country_id')->references('id')->on('country');
+            $table->foreign('country_id')->references('id')->on('countries');
         });
     }
 
@@ -23,6 +23,6 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('province');
+        Schema::dropIfExists('provinces');
     }
 };

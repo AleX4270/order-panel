@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\ConvertsModelKeysToCamelCase;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrderStatus extends Model {
-    protected $table = 'order_status';
+    use ConvertsModelKeysToCamelCase;
 
     protected $attributes = [
         'is_internal' => 0,
@@ -35,7 +36,7 @@ class OrderStatus extends Model {
     }
 
     public function orders(): HasMany {
-        return $this->hasMany(Order::class, 'order_status_id');
+        return $this->hasMany(Order::class, 'status_id');
     }
 
     public function translations(): HasMany {

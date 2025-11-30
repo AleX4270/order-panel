@@ -9,29 +9,32 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('client', function (Blueprint $table) {
+        Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name', 128);
-            $table->string('last_name', 128);
-            $table->string('email', 255)->nullable();
-            $table->string('phone_number', 32)->nullable();
-            $table->unsignedBigInteger('address_id');
-            $table->tinyInteger('is_blocked');
-            $table->tinyInteger('is_active');
+            $table->string('alias', 128)->nullable(true);
+            $table->string('first_name', 128)->nullable(true);
+            $table->string('last_name', 128)->nullable(true);
+            $table->string('email', 255)->nullable(true);
+            $table->string('phone_number', 32)->nullable(true);
+            $table->unsignedBigInteger('address_id')->nullable(false);
+            $table->boolean('is_blocked')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
 
-            $table->foreign('address_id')->references('id')->on('address');
+            $table->foreign('address_id')->references('id')->on('addresses');
         });
 
-        Schema::create('client_translation', function (Blueprint $table) {
+        Schema::create('client_translations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('client_id');
-            $table->unsignedBigInteger('language_id');
-            $table->text('description');
+            $table->unsignedBigInteger('client_id')->nullable(false);
+            $table->unsignedBigInteger('language_id')->nullable(false);
+            $table->text('description')->nullable(false);
             $table->timestamps();
 
-            $table->foreign('client_id')->references('id')->on('client');
-            $table->foreign('language_id')->references('id')->on('language');
+            $table->foreign('client_id')->references('id')->on('clients');
+            $table->foreign('language_id')->references('id')->on('languages');
+
+            $table->unique(['client_id', 'language_id']);
         });
     }
 
@@ -39,7 +42,7 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('client_translation');
-        Schema::dropIfExists('client');
+        Schema::dropIfExists('client_translations');
+        Schema::dropIfExists('clients');
     }
 };

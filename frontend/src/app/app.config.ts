@@ -1,8 +1,44 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
 import { routes } from './app.routes';
+import { LanguageType } from './shared/enums/enums';
+import { provideHttpClient, withInterceptors } from "@angular/common/http";
+import { provideTranslateService, TranslateLoader } from "@ngx-translate/core";
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient } from '@angular/common/http';
+import { csrfInterceptor } from './shared/interceptors/csrf.interceptor';
+import { provideStore } from '@ngxs/store';
+import { withNgxsStoragePlugin } from '@ngxs/storage-plugin';
+import { initializeAuth } from './shared/initializers/auth.initializer';
+import { authErrorInterceptor } from './shared/interceptors/auth-error.interceptor';
+import { UserState } from './shared/store/user/user.state';
+
+const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
+    new TranslateHttpLoader(http, './i18n/', '.json');
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes)]
+    providers: [
+        provideZoneChangeDetection({ eventCoalescing: true }),
+        provideRouter(routes),
+        provideTranslateService({
+            defaultLanguage: LanguageType.english
+        }),
+        provideHttpClient(withInterceptors([
+            csrfInterceptor,
+            authErrorInterceptor
+        ])),
+        provideTranslateService({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: httpLoaderFactory,
+                deps: [HttpClient],
+            },
+        }),
+        provideStore([
+            UserState
+        ], withNgxsStoragePlugin({
+            keys: ['user']
+        })),
+        provideAppInitializer(initializeAuth)
+    ]
 };

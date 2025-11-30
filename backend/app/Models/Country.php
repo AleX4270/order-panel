@@ -3,11 +3,12 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\ConvertsModelKeysToCamelCase;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Country extends Model {
-    protected $table = 'country';
+    use ConvertsModelKeysToCamelCase;
 
     protected $fillable = [
         'symbol', 

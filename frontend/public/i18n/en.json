@@ -1,0 +1,112 @@
+{
+    "basic": {
+        "copyright": "OrderPanel - AleX4270. All rights reserved",
+        "cancel": "Cancel",
+        "return": "Return",
+        "notFound": "Resource not found",
+        "notFoundDescription": "Oops! It looks like the resource you were looking for does not exist. It may have been moved, deleted, or simply never existed.",
+        "save": "Save",
+        "noResults": "No results"
+    },
+    "error": {
+        "incorrect": "Invalid data",
+        "required": "This value is required",
+        "email": "The value must be a valid email address",
+        "min": "Minimum required value: {{min}}",
+        "max": "Maximum allowed value: {{max}}",
+        "maxLength": "Maximum length exceeded",
+        "minLength": "The value is too short",
+        "pattern": "The value has an invalid format"
+    },
+    "navbar": {
+        "dashboard": "Dashboard",
+        "orders": "Orders",
+        "settings": "Settings",
+        "logout": "Logout"
+    },
+    "form": {
+        "error": "The form contains invalid data"
+    },
+    "auth": {
+        "header": "Welcome back!"
+    },
+    "login": {
+        "title": "Log in",
+        "description": "Enter your credentials to access your account",
+        "email": "E-mail",
+        "emailPlaceholder": "user@domain.com",
+        "password": "Password",
+        "submit": "Log in",
+        "forgotPassword": "Forgot your password?",
+        "passwordRecovery": "Recover it!",
+        "error": "Failed to log in the user or incorrect data provided"
+    },
+    "logout": {
+        "success": "User successfully logged out",
+        "error": "Could not logout the user"
+    },
+    "passwordRecovery": {
+        "title": "Password Recovery",
+        "description": "Enter the email address associated with your account and we'll send you a link to reset your password",
+        "email": "E-mail",
+        "emailPlaceholder": "user@domain.com",
+        "submit": "Send link"
+    },
+    "orderList": {
+        "header": "Order List",
+        "addNewOrder": "Add New Order",
+        "inProgress": "In Progress",
+        "overdue": "Overdue",
+        "completed": "Completed",
+        "legend": "Legend"
+    },
+    "orderListTable": {
+        "orderNo": "Order No",
+        "address": "Address",
+        "priority": "Priority",
+        "dateCreated": "Created At",
+        "dateDeadline": "Deadline",
+        "remarks": "Notes",
+        "actions": "Actions",
+        "details": "Details",
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "orderListFilters": {
+        "allFields": "All fields",
+        "allFieldsPlaceholder": "Enter a phrase",
+        "priority": "Priority",
+        "priorityPlaceholder": "Select priority",
+        "status": "Status",
+        "statusPlaceholder": "Select status",
+        "dateCreation": "Creation date",
+        "dateDeadline": "Deadline"
+    },
+    "orderForm": {
+        "createTitle": "Create new order",
+        "updateTitle": "Order form",
+        "orderNumber": "Order number",
+        "orderNumberPlaceholder": "Enter order number",
+        "priority": "Priority",
+        "priorityPlaceholder": "Select priority",
+        "status": "Status",
+        "statusPlaceholder": "Select status",
+        "phoneNumber": "Phone number",
+        "phoneNumberPlaceholder": "Enter phone number",
+        "country": "Country",
+        "countryPlaceholder": "Select country",
+        "province": "Province",
+        "provincePlaceholder": "Select province",
+        "city": "City",
+        "cityPlaceholder": "Select city",
+        "postalCode": "Postal code",
+        "postalCodePlaceholder": "12-345",
+        "address": "Address",
+        "addressPlaceholder": "Enter address",
+        "dateCreation": "Creation date",
+        "dateDeadline": "Deadline",
+        "dateCompleted": "Date completed",
+        "remarks": "Remarks",
+        "remarksPlaceholder": "Enter remarks"
+    }
+}

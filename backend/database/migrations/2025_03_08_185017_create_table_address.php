@@ -9,13 +9,14 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('address', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('city_id');
-            $table->string('address', 255);
+            $table->unsignedBigInteger('city_id')->nullable(false);
+            $table->string('address', 255)->nullable(false);
+            $table->string('postal_code', 32)->nullable(true);
             $table->timestamps();
 
-            $table->foreign('city_id')->references('id')->on('city');
+            $table->foreign('city_id')->references('id')->on('cities');
         });
     }
 
@@ -23,6 +24,6 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('address');
+        Schema::dropIfExists('addresses');
     }
 };

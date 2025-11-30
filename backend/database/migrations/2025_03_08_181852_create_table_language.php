@@ -9,11 +9,11 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('language', function (Blueprint $table) {
+        Schema::create('languages', function (Blueprint $table) {
             $table->id();
-            $table->string('symbol', 32);
-            $table->string('name', 64);
-            $table->tinyInteger('is_active');
+            $table->string('symbol', 32)->nullable(false);
+            $table->string('name', 64)->nullable(false);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
@@ -22,6 +22,6 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('language');
+        Schema::dropIfExists('languages');
     }
 };

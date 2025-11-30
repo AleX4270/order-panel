@@ -9,37 +9,39 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('order', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('symbol', 32);
-            $table->dateTime('date_deadline')->nullable();
-            $table->dateTime('date_completed')->nullable();
-            $table->unsignedBigInteger('user_creation_id');
-            $table->unsignedBigInteger('user_modification_id');
-            $table->unsignedBigInteger('priority_id')->nullable();
-            $table->unsignedBigInteger('client_id');
-            $table->unsignedBigInteger('order_status_id');
-            $table->tinyInteger('is_active');
+            $table->string('symbol', 32)->nullable(false);
+            $table->dateTime('date_deadline')->nullable(false);
+            $table->dateTime('date_completed')->nullable(true);
+            $table->unsignedBigInteger('user_creation_id')->nullable(false);
+            $table->unsignedBigInteger('user_modification_id')->nullable(true);
+            $table->unsignedBigInteger('priority_id')->nullable(false);
+            $table->unsignedBigInteger('client_id')->nullable(false);
+            $table->unsignedBigInteger('order_status_id')->nullable(false);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
 
             $table->foreign('user_creation_id')->references('id')->on('users');
             $table->foreign('user_modification_id')->references('id')->on('users');
-            $table->foreign('priority_id')->references('id')->on('priority');
-            $table->foreign('client_id')->references('id')->on('client');
-            $table->foreign('order_status_id')->references('id')->on('order_status');
+            $table->foreign('priority_id')->references('id')->on('priorities');
+            $table->foreign('client_id')->references('id')->on('clients');
+            $table->foreign('order_status_id')->references('id')->on('order_statuses');
         });
 
-        Schema::create('order_translation', function (Blueprint $table) {
+        Schema::create('order_translations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('language_id');
-            $table->string('name', 255);
+            $table->unsignedBigInteger('order_id')->nullable(false);
+            $table->unsignedBigInteger('language_id')->nullable(false);
+            $table->string('name', 255)->nullable(false);
             $table->text('remarks');
             $table->text('description');
             $table->timestamps();
 
-            $table->foreign('order_id')->references('id')->on('order');
-            $table->foreign('language_id')->references('id')->on('language');
+            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('language_id')->references('id')->on('languages');
+
+            $table->unique(['order_id', 'language_id']);
         });
     }
 
@@ -47,7 +49,7 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('order_translation');
-        Schema::dropIfExists('order');
+        Schema::dropIfExists('order_translations');
+        Schema::dropIfExists('orders');
     }
 };

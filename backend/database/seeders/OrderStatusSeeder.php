@@ -45,20 +45,11 @@ class OrderStatusSeeder extends Seeder {
     public function getStatuses(): array {
         return [
             [
-                'symbol' => 'new',
-                'is_internal' => 1,
-                'is_active' => 1,
-                'translations' => [
-                    'pl' => 'Nowy',
-                    'en' => 'New',
-                ]
-            ],
-            [
                 'symbol' => 'in_progress',
                 'is_internal' => 1,
                 'is_active' => 1,
                 'translations' => [
-                    'pl' => 'W trakcie realizacji',
+                    'pl' => 'W trakcie',
                     'en' => 'In progress',
                 ]
             ],

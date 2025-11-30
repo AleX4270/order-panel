@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Client extends Model {
-    protected $table = 'client';
-
     protected $attributes = [
         'is_blocked' => 0,
         'is_active' => 1

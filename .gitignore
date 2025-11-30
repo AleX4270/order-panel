@@ -50,3 +50,6 @@ phpunit.phar
 
 # vagrant runtime
 /.vagrant
+.vscode
+
+.zed/*

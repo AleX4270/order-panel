@@ -1,0 +1,143 @@
+{
+    "basic": {
+        "copyright": "OrderPanel - AleX4270. Wszelkie prawa zastrzeżone",
+        "cancel": "Anuluj",
+        "return": "Powrót",
+        "notFound": "Nie znaleziono zasobu",
+        "notFoundDescription": "Ups! Wygląda na to, że zasób, którego szukałeś, nie istnieje. Być może został przeniesiony, usunięty lub po prostu nigdy nie istniał.",
+        "save": "Zapisz",
+        "noResults": "Brak pozycji",
+        "confirm": "Potwierdź",
+        "yes": "Tak",
+        "no": "Nie"
+    },
+    "error": {
+        "incorrect": "Dane nieprawidłowe",
+        "required": "Wartość jest wymagana",
+        "email": "Podana wartość musi być adresem e-mail",
+        "min": "Wymagana minimalna wartość: {{min}}",
+        "max": "Wymagana maksymalna wartość: {{max}}",
+        "maxLength": "Przekroczono maksymalną długość",
+        "minLength": "Podana wartość jest za krótka",
+        "pattern": "Podana wartość ma zły format",
+        "deadlineBeforeCreation": "Termin jest wcześniejszy niż data utworzenia",
+        "completedBeforeCreation": "Data ukończenia jest wcześniejsza niż data utworzenia"
+    },
+    "navbar": {
+        "dashboard": "Panel",
+        "orders": "Zlecenia",
+        "settings": "Ustawienia",
+        "logout": "Wyloguj"
+    },
+    "form": {
+        "error": "Formularz zawiera nieprawidłowe dane"
+    },
+    "auth": {
+        "header": "Witaj ponownie!"
+    },
+    "login": {
+        "title": "Zaloguj się",
+        "description": "Podaj swoje dane, aby uzyskać dostęp do konta",
+        "email": "E-mail",
+        "emailPlaceholder": "uzytkownik@domena.pl",
+        "password": "Hasło",
+        "submit": "Zaloguj się",
+        "forgotPassword": "Zapomniałeś hasła?",
+        "passwordRecovery": "Odzyskaj je!",
+        "error": "Nie udało się zalogować użytkownika lub podano błędne dane"
+    },
+    "logout": {
+        "success": "Wylogowano użytkownika",
+        "error": "Nie udało się wylogować użytkownika"
+    },
+    "passwordRecovery": {
+        "title": "Odzyskiwanie hasła",
+        "description": "Podaj adres e-mail powiązany z Twoim kontem, a my wyślemy na niego link resetujący Twoje hasło",
+        "email": "E-mail",
+        "emailPlaceholder": "uzytkownik@domena.pl",
+        "submit": "Wyślij link"
+    },
+    "orderList": {
+        "header": "Lista Zleceń",
+        "addNewOrder": "Dodaj Nowe Zlecenie",
+        "inProgress": "W trakcie",
+        "overdue": "Po terminie",
+        "completed": "Zakończone",
+        "legend": "Legenda",
+        "deleteSuccess": "Pomyślnie usunięto zlecenie",
+        "deleteError": "Nie udało się usunąć zlecenia",
+        "orders": "Zlecenia"
+    },
+    "orderListTable": {
+        "orderNo": "Numer zlecenia",
+        "address": "Adres",
+        "priority": "Priorytet",
+        "dateCreated": "Data utworzenia",
+        "dateDeadline": "Termin",
+        "remarks": "Uwagi",
+        "actions": "Akcje",
+        "details": "Szczegóły",
+        "edit": "Edytuj",
+        "delete": "Usuń"
+    },
+    "orderListFilters": {
+        "allFields": "Wszystkie pola",
+        "allFieldsPlaceholder": "Podaj frazę",
+        "priority": "Priorytet",
+        "priorityPlaceholder": "Wybierz priorytet",
+        "status": "Status",
+        "statusPlaceholder": "Wybierz status",
+        "dateCreation": "Data dodania",
+        "dateDeadline": "Termin realizacji"
+    },
+    "orderForm": {
+        "createTitle": "Formularz tworzenia nowego zlecenia",
+        "updateTitle": "Formularz zlecenia",
+        "orderNumber": "Numer zlecenia",
+        "orderNumberPlaceholder": "Wprowadź numer zlecenia",
+        "priority": "Priorytet",
+        "priorityPlaceholder": "Wybierz priorytet",
+        "status": "Status",
+        "statusPlaceholder": "Wybierz status",
+        "phoneNumber": "Numer telefonu",
+        "phoneNumberPlaceholder": "Wprowadź numer telefonu",
+        "country": "Kraj",
+        "countryPlaceholder": "Wybierz kraj",
+        "province": "Województwo",
+        "provincePlaceholder": "Wybierz województwo",
+        "city": "Miasto",
+        "cityPlaceholder": "Wybierz miasto",
+        "postalCode": "Kod pocztowy",
+        "postalCodePlaceholder": "12-345",
+        "address": "Adres",
+        "addressPlaceholder": "Wprowadź adres",
+        "dateCreation": "Data utworzenia",
+        "dateDeadline": "Termin realizacji",
+        "dateCompleted": "Data ukończenia",
+        "remarks": "Uwagi",
+        "remarksPlaceholder": "Wprowadź uwagi",
+        "saveErrorMessage": "Nie udało się zapisać zlecenia",
+        "saveSuccessMessage": "Pomyślnie zapisano zlecenie",
+        "addCity": "Dodaj miasto"
+    },
+    "listTable": {
+        "noRecordsFound": "Brak wyników"
+    },
+    "orderDeletePromptModal": {
+        "title": "Potwierdzenie usunięcia zlecenia",
+        "message": "Czy potwierdzasz usunięcie wybranego zlecenia?"
+    },
+    "orderDetails": {
+        "header": "Szczegóły zlecenia",
+        "orderNo": "Numer zlecenia",
+        "address": "Adres",
+        "phoneNumber": "Numer telefonu",
+        "priority": "Priorytet",
+        "status": "Status",
+        "isOverdue": "Czy przekroczono termin?",
+        "dateCreated": "Data utworzenia",
+        "dateDeadline": "Termin",
+        "dateCompleted": "Data ukończenia",
+        "remarks": "Uwagi"
+    }
+}

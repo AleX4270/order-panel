@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\ConvertsModelKeysToCamelCase;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Priority extends Model {
-    protected $table = 'priority';
+    use ConvertsModelKeysToCamelCase;
 
     protected $attributes = [
         'is_active' => 1

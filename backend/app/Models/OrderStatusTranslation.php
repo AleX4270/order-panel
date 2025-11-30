@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OrderStatusTranslation extends Model {
-    protected $table = 'order_status_translation';
-
     protected $fillable = [
         'order_status_id',
         'language_id',

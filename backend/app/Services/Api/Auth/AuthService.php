@@ -5,19 +5,19 @@ namespace App\Services\Api\Auth;
 
 use App\Exceptions\UserAlreadyExistsException;
 use Illuminate\Http\Request;
-use App\Http\Requests\LoginRequest;
+use App\Http\Requests\Api\Auth\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class AuthService {
-    public function login(LoginRequest $request, array $data): bool {
+    public function login(LoginRequest $request, array $data): ?User {
         if(!Auth::attempt($data)) {
-            return false;
+            return null;
         }
 
         $request->session()->regenerate();
-        return true;
+        return Auth::guard('web')->user();
     }
 
     public function register(array $data): bool {
@@ -39,7 +39,7 @@ class AuthService {
     }
 
     public function logout(Request $request): bool {
-        Auth::logout();
+        Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return true;
