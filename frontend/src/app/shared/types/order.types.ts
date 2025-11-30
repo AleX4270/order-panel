@@ -23,6 +23,7 @@ export interface OrderItem {
     prioritySymbol: Priority;
     priorityName: string;
     statusId: number;
+    statusName: string;
     statusSymbol: Status;
     dateCreated: string;
     dateDeadline: string;

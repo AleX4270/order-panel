@@ -26,6 +26,7 @@ class OrderRepository {
                 'pr.symbol as prioritySymbol',
                 'prt.name as priorityName',
                 'os.id as statusId',
+                'ost.name as statusName',
                 'os.symbol as statusSymbol',
                 'o.created_at as dateCreated',
                 'o.date_deadline as dateDeadline',
@@ -45,6 +46,11 @@ class OrderRepository {
                     ->where('prl.symbol', app()->getLocale());
             })
             ->join('order_statuses as os', 'os.id', '=', 'o.status_id')
+            ->join('order_status_translations as ost', 'ost.order_status_id', '=', 'os.id')
+            ->join('languages as ostl', function($ostlJoin) {
+                $ostlJoin->on('ostl.id', '=', 'ost.language_id')
+                    ->where('ostl.symbol', app()->getLocale());
+            })
             ->join('order_translations as ot', 'ot.order_id', '=', 'o.id')
             ->join('languages as otl', function($prlJoin) {
                 $prlJoin->on('otl.id', '=', 'ot.language_id')

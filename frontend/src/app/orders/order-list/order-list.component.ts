@@ -60,7 +60,7 @@ import { ToastService } from '../../shared/services/toast/toast.service';
 
         <div class="row order-list-info mt-5">
             <div class="col-8">
-                <h5>Zlecenia: W trakcie (X)</h5>
+                <h5>{{ ('orderList.orders' | translate) + ' (' + ordersCount() + ')'}}</h5>
                 <div class="d-flex align-items-center gap-3 mt-3">
                     <span class="text-muted">{{'orderList.legend' | translate}}:</span>
                     <div class="d-flex gap-3">
@@ -140,8 +140,90 @@ import { ToastService } from '../../shared/services/toast/toast.service';
 
                         <tr [class.d-none]="!hasVisibleDetails(item.id)">
                             <td colspan="7" class="p-0">
-                                <div class="expandable-content">
-                                    Szczegóły zlecenia
+                                <div class="expandable-content order-details p-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="details-header text-primary">{{ 'orderDetails.header' | translate}}</h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col d-flex flex-column">
+                                            <span class="details-label text-muted">{{ 'orderDetails.orderNo' | translate}}</span>
+                                            <div class="details-value">
+                                                <span>{{ '#' + item.id }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col d-flex flex-column">
+                                            <span class="details-label text-muted">{{ 'orderDetails.address' | translate}}</span>
+                                            <div class="details-value">
+                                                <span>{{ item.address + ', ' + (item.postalCode ? (item.postalCode + ', ') : '') + item.cityName }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col d-flex flex-column">
+                                            <span class="details-label text-muted">{{ 'orderDetails.phoneNumber' | translate}}</span>
+                                            <div class="details-value">
+                                                <span>{{ item.phoneNumber }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-4">
+                                        <div class="col d-flex flex-column">
+                                            <span class="details-label text-muted">{{ 'orderDetails.priority' | translate}}</span>
+                                            <div class="details-value">
+                                                <app-tile [type]="getPriorityTileType(item.prioritySymbol)">
+                                                    {{ item.priorityName }}
+                                                </app-tile>
+                                            </div>
+                                        </div>
+                                        <div class="col d-flex flex-column">
+                                            <span class="details-label text-muted">{{ 'orderDetails.status' | translate}}</span>
+                                            <div class="details-value">
+                                                <app-tile [type]="getStatusTileType(item.statusSymbol)">
+                                                    {{ item.statusName }}
+                                                </app-tile>
+                                            </div>
+                                        </div>
+                                        <div class="col d-flex flex-column">
+                                            <span class="details-label text-muted">{{ 'orderDetails.isOverdue' | translate}}</span>
+                                            <div class="details-value">
+                                                <app-tile [type]="item.isOverdue ? tileType.danger : tileType.success">
+                                                    {{ (item.isOverdue ? 'basic.yes' : 'basic.no') | translate}}
+                                                </app-tile>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-4">
+                                        <div class="col d-flex flex-column">
+                                            <span class="details-label text-muted">{{ 'orderDetails.dateCreated' | translate}}</span>
+                                            <div class="details-value">
+                                                <span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col d-flex flex-column">
+                                            <span class="details-label text-muted">{{ 'orderDetails.dateDeadline' | translate}}</span>
+                                            <div class="details-value">
+                                                <span>{{ item.dateDeadline | date:'dd-MM-yyyy' }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col d-flex flex-column">
+                                            <span class="details-label text-muted">{{ 'orderDetails.dateCompleted' | translate}}</span>
+                                            <div class="details-value">
+                                                <span>{{ (item.dateCompleted | date:'dd-MM-yyyy') ?? '-' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-4">
+                                        <div class="col d-flex flex-column">
+                                            <span class="details-label text-muted">{{ 'orderDetails.remarks' | translate}}</span>
+                                            <div class="details-value">
+                                                <span class="text-muted">{{ item.remarks ?? '-' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -161,6 +243,21 @@ import { ToastService } from '../../shared/services/toast/toast.service';
         <app-order-form-modal #orderFormModal (orderSaved)="loadOrders()" />
     `,
     styles: [`
+        .order-details {
+            .details-header {
+                color: var(--order-list-header-text-color);
+            }
+
+            .details-label {
+                font-size: var(--font-size-xs);
+                font-weight: var(--font-weight-light);
+            }
+
+            .details-value {
+                font-size: var(--font-size-xs);
+            }
+        }
+        
         .list-row {
             background-color: var(--order-list-default-row-background-color);
             border-bottom: 1px solid var(--order-list-row-border-color);
@@ -205,6 +302,7 @@ export class OrderListComponent implements OnInit {
 
     protected readonly filterType = FilterType;
     protected readonly status = Status;
+    protected readonly tileType = TileType;
 
     protected expansionState = ExpansionState;
     protected itemDetailsExpansionState: Partial<Record<number, ExpansionState>> = {};
@@ -238,6 +336,17 @@ export class OrderListComponent implements OnInit {
             : TileType.secondary;
     }
 
+    protected getStatusTileType(type: Status): TileType {
+        switch(type) {
+            case Status.in_progress:
+                return TileType.warning;
+            case Status.completed:
+                return TileType.success;
+            default:
+                return TileType.primary;
+        }
+    }
+    
     protected showOrderFormModal(id?: number): void {
         this.orderFormModal.showForm(id);
     }

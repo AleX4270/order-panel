@@ -7,7 +7,9 @@
         "notFoundDescription": "Ups! Wygląda na to, że zasób, którego szukałeś, nie istnieje. Być może został przeniesiony, usunięty lub po prostu nigdy nie istniał.",
         "save": "Zapisz",
         "noResults": "Brak pozycji",
-        "confirm": "Potwierdź"
+        "confirm": "Potwierdź",
+        "yes": "Tak",
+        "no": "Nie"
     },
     "error": {
         "incorrect": "Dane nieprawidłowe",
@@ -60,10 +62,11 @@
         "addNewOrder": "Dodaj Nowe Zlecenie",
         "inProgress": "W trakcie",
         "overdue": "Po terminie",
-        "completed": "Zrealizowane",
+        "completed": "Zakończone",
         "legend": "Legenda",
         "deleteSuccess": "Pomyślnie usunięto zlecenie",
-        "deleteError": "Nie udało się usunąć zlecenia"
+        "deleteError": "Nie udało się usunąć zlecenia",
+        "orders": "Zlecenia"
     },
     "orderListTable": {
         "orderNo": "Numer zlecenia",
@@ -123,5 +126,18 @@
     "orderDeletePromptModal": {
         "title": "Potwierdzenie usunięcia zlecenia",
         "message": "Czy potwierdzasz usunięcie wybranego zlecenia?"
+    },
+    "orderDetails": {
+        "header": "Szczegóły zlecenia",
+        "orderNo": "Numer zlecenia",
+        "address": "Adres",
+        "phoneNumber": "Numer telefonu",
+        "priority": "Priorytet",
+        "status": "Status",
+        "isOverdue": "Czy przekroczono termin?",
+        "dateCreated": "Data utworzenia",
+        "dateDeadline": "Termin",
+        "dateCompleted": "Data ukończenia",
+        "remarks": "Uwagi"
     }
 }
