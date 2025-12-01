@@ -27,6 +27,7 @@
         "dashboard": "Panel",
         "orders": "Zlecenia",
         "settings": "Ustawienia",
+        "users": "Użytkownicy",
         "logout": "Wyloguj"
     },
     "form": {
@@ -59,7 +60,7 @@
     },
     "orderList": {
         "header": "Lista Zleceń",
-        "addNewOrder": "Dodaj Nowe Zlecenie",
+        "addNewOrder": "Dodaj Zlecenie",
         "inProgress": "W trakcie",
         "overdue": "Po terminie",
         "completed": "Zakończone",
@@ -139,5 +140,24 @@
         "dateDeadline": "Termin",
         "dateCompleted": "Data ukończenia",
         "remarks": "Uwagi"
+    },
+    "userList": {
+        "header": "Lista Użytkowników",
+        "users": "Użytkownicy",
+        "addNewUser": "Dodaj użytkownika"
+    },
+    "userListTable": {
+        "userNumber": "Numer",
+        "name": "Nazwa",
+        "email": "E-mail",
+        "dateCreated": "Data utworzenia",
+        "dateUpdated": "Data modyfikacji",
+        "actions": "Akcje"
+    },
+    "userListFilters": {
+        "allFields": "Wszystkie pola",
+        "allFieldsPlaceholder": "Podaj frazę",
+        "dateCreated": "Data utworzenia",
+        "dateUpdated": "Data modyfikacji"
     }
 }

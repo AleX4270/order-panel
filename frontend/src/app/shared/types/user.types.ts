@@ -5,3 +5,5 @@ export interface User {
     language?: LanguageType;
     isAuthenticated: boolean;
 }
+
+export interface UserItem {}
