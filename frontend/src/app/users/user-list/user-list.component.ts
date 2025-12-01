@@ -20,7 +20,7 @@ import { SortItem } from '../../shared/types/sort.types';
 import { PromptModalService } from '../../shared/services/prompt-modal/prompt-modal.service';
 import { ToastService } from '../../shared/services/toast/toast.service';
 import { UserService } from '../../shared/services/api/user/user.service';
-import { UserItem } from '../../shared/types/user.types';
+import { UserFilterParams, UserItem } from '../../shared/types/user.types';
 
 @Component({
     selector: 'app-order-list',
@@ -87,13 +87,15 @@ import { UserItem } from '../../shared/types/user.types';
                             <td class="fw-semibold">{{ '#' + item.id }}</td>
                             <td>
                                 <div class="user-name d-flex flex-column">
-                                    <span class="city-name">username</span>
-                                    <span class="address-label text-muted">imie nazwisko</span>
+                                    <span class="city-name">{{ item.name }}</span>
+                                    @if(item.firstName || item.lastName) {
+                                        <span class="address-label text-muted">{{ (item.firstName ?? '') + (item.lastName ? (' ' + item.lastName) : '') }}</span>
+                                    }
                                 </div>
                             </td>
-                            <td>email</td>
+                            <td>{{ item.email }}</td>
                             <td>{{ item.dateCreated | date:'dd-MM-yyyy' }}</td>
-                            <td>{{ item.dateDeadline | date:'dd-MM-yyyy'}}</td>
+                            <td>{{ item.dateUpdated | date:'dd-MM-yyyy'}}</td>
                             <td>
                                 <div class="d-flex gap-3">
                                     <ng-icon
@@ -123,89 +125,53 @@ import { UserItem } from '../../shared/types/user.types';
                         <tr [class.d-none]="!hasVisibleDetails(item.id)">
                             <td colspan="7" class="p-0">
                                 <div class="expandable-content details p-3">
-                                    <!-- <div class="row">
+                                    <div class="row">
                                         <div class="col">
-                                            <h6 class="details-header text-primary">{{ 'orderDetails.header' | translate}}</h6>
+                                            <h6 class="details-header text-primary">{{ 'userDetails.header' | translate}}</h6>
                                         </div>
                                     </div>
 
                                     <div class="row mt-2">
                                         <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.orderNo' | translate}}</span>
+                                            <span class="details-label text-muted">{{ 'userDetails.userNumber' | translate}}</span>
                                             <div class="details-value">
                                                 <span>{{ '#' + item.id }}</span>
                                             </div>
                                         </div>
                                         <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.address' | translate}}</span>
+                                            <span class="details-label text-muted">{{ 'userDetails.firstAndLastName' | translate}}</span>
                                             <div class="details-value">
-                                                <span>{{ item.address + ', ' + (item.postalCode ? (item.postalCode + ', ') : '') + item.cityName }}</span>
+                                                <span class="address-label text-muted">{{ (item.firstName ?? '') + (item.lastName ? (' ' + item.lastName) : '') }}</span>
                                             </div>
                                         </div>
                                         <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.phoneNumber' | translate}}</span>
+                                            <span class="details-label text-muted">{{ 'userDetails.name' | translate}}</span>
                                             <div class="details-value">
-                                                <span>{{ item.phoneNumber }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mt-4">
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.priority' | translate}}</span>
-                                            <div class="details-value">
-                                                <app-tile [type]="getPriorityTileType(item.prioritySymbol)">
-                                                    {{ item.priorityName }}
-                                                </app-tile>
-                                            </div>
-                                        </div>
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.status' | translate}}</span>
-                                            <div class="details-value">
-                                                <app-tile [type]="getStatusTileType(item.statusSymbol)">
-                                                    {{ item.statusName }}
-                                                </app-tile>
-                                            </div>
-                                        </div>
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.isOverdue' | translate}}</span>
-                                            <div class="details-value">
-                                                <app-tile [type]="item.isOverdue ? tileType.danger : tileType.success">
-                                                    {{ (item.isOverdue ? 'basic.yes' : 'basic.no') | translate}}
-                                                </app-tile>
+                                                <span>{{ item.name }}</span>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="row mt-4">
                                         <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.dateCreated' | translate}}</span>
+                                            <span class="details-label text-muted">{{ 'userDetails.email' | translate}}</span>
+                                            <div class="details-value">
+                                                <span>{{ item.email  }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col d-flex flex-column">
+                                            <span class="details-label text-muted">{{ 'userDetails.dateCreated' | translate}}</span>
                                             <div class="details-value">
                                                 <span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span>
                                             </div>
                                         </div>
                                         <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.dateDeadline' | translate}}</span>
+                                            <span class="details-label text-muted">{{ 'userDetails.dateUpdated' | translate}}</span>
                                             <div class="details-value">
-                                                <span>{{ item.dateDeadline | date:'dd-MM-yyyy' }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.dateCompleted' | translate}}</span>
-                                            <div class="details-value">
-                                                <span>{{ (item.dateCompleted | date:'dd-MM-yyyy') ?? '-' }}</span>
+                                                <span>{{ item.dateUpdated | date:'dd-MM-yyyy' }}</span>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="row mt-4">
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.remarks' | translate}}</span>
-                                            <div class="details-value">
-                                                <span class="text-muted">{{ item.remarks ?? '-' }}</span>
-                                            </div>
-                                        </div>
-                                    </div> -->
                                 </div>
                             </td>
                         </tr>
@@ -326,42 +292,42 @@ export class UserListComponent implements OnInit {
     }
 
     protected loadUsers(): void {
-        // let params = {} as OrderFilterParams;
+        let params = {} as UserFilterParams;
 
-        // if(Object.keys(this.orderFilterValues).length > 0) {
-        //     Object.keys(this.orderFilterValues).forEach((key) => {
-        //         params = {
-        //             ...params,
-        //             [key]: this.orderFilterValues[key],
-        //         }
-        //     })
-        // }
+        if(Object.keys(this.userFilterValues).length > 0) {
+            Object.keys(this.userFilterValues).forEach((key) => {
+                params = {
+                    ...params,
+                    [key]: this.userFilterValues[key],
+                }
+            })
+        }
 
-        // if(this.orderPaginationValues?.page) {
-        //     params.page = this.orderPaginationValues.page;
-        // }
+        if(this.userPaginationValues?.page) {
+            params.page = this.userPaginationValues.page;
+        }
 
-        // if(this.orderPaginationValues?.pageSize) {
-        //     params.pageSize = this.orderPaginationValues.pageSize;
-        // }
+        if(this.userPaginationValues?.pageSize) {
+            params.pageSize = this.userPaginationValues.pageSize;
+        }
 
-        // if(this.orderSortValues()?.sortColumn) {
-        //     params.sortColumn = this.orderSortValues()?.sortColumn;
-        // }
+        if(this.userSortValues()?.sortColumn) {
+            params.sortColumn = this.userSortValues()?.sortColumn;
+        }
 
-        // if(this.orderSortValues()?.sortDir) {
-        //     params.sortDir = this.orderSortValues()?.sortDir;
-        // }
+        if(this.userSortValues()?.sortDir) {
+            params.sortDir = this.userSortValues()?.sortDir;
+        }
 
-        // this.orderService.index(params).subscribe({
-        //     next: (res) => {
-        //         this.orders.set(res.data?.items ?? []);
-        //         this.usersCount.set(res.data?.count ?? 0);
-        //     },
-        //     error: (err) => {
-        //         console.error(err);
-        //     },
-        // });
+        this.userService.index(params).subscribe({
+            next: (res) => {
+                this.users.set(res.data?.items ?? []);
+                this.usersCount.set(res.data?.count ?? 0);
+            },
+            error: (err) => {
+                console.error(err);
+            },
+        });
     }
 
     protected onUserFiltersChange(filterValues: Partial<Record<string, string | number[] | null>>): void {

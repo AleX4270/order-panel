@@ -159,5 +159,14 @@
         "allFieldsPlaceholder": "Podaj frazę",
         "dateCreated": "Data utworzenia",
         "dateUpdated": "Data modyfikacji"
+    },
+    "userDetails": {
+        "header": "Szczegóły użytkownika",
+        "userNumber": "Numer",
+        "firstAndLastName": "Imię i nazwisko",
+        "name": "Nazwa użytkownika",
+        "dateCreated": "Data utworzenia",
+        "dateUpdated": "Data modyfikacji",
+        "email": "E-mail"
     }
 }
