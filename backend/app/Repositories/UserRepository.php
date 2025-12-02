@@ -59,7 +59,7 @@ class UserRepository {
             'email' => $query->orderBy('u.email', $dto->sortDir->value),
             'dateCreated' => $query->orderBy('u.created_at', $dto->sortDir->value),
             'dateUpdated' => $query->orderBy('u.updated_at', $dto->sortDir->value),
-            default => $query->orderBy('u.id', SortDir::DESC->value),
+            default => $query->orderBy('u.id', SortDir::ASC->value),
         };
 
         return $query;

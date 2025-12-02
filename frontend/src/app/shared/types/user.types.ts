@@ -22,3 +22,13 @@ export interface UserItem {
     dateCreated: string;
     dateUpdated: string;
 }
+
+export interface UserParams {
+    id?: number;
+    firstName?: string;
+    lastName?: string;
+    username: string;
+    email: string;
+    password?: string;
+    passwordConfirmed?: string;
+}

@@ -3,9 +3,15 @@ declare(strict_types=1);
 
 namespace App\Services\Api\User;
 
+use App\Dtos\Api\User\UserDto;
 use App\Dtos\Api\User\UserFilterDto;
+use App\Models\User;
 use App\Repositories\UserRepository;
+use Exception;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class UserService {
     public function __construct(
@@ -39,92 +45,39 @@ class UserService {
     //     return $data;
     // }
 
-    // public function store(OrderDto $dto): Collection {
-    //     DB::beginTransaction();
-    //     try {
-    //         $address = $this->addressService->findOrCreate(AddressResolveDto::fromArray([
-    //             'address' => $dto->addressDto->address,
-    //             'postalCode' => $dto->addressDto->postalCode,
-    //             'cityId' => $dto->addressDto->cityId,
-    //             'cityName' => $dto->addressDto->cityName,
-    //             'provinceId' => $dto->addressDto->provinceId,
-    //         ]));
+    public function save(UserDto $dto): int {
+        DB::beginTransaction();
+        try {
+            $userData = [
+                'first_name' => $dto->firstName,
+                'last_name' => $dto->lastName,
+                'name' => $dto->username,
+                'email' => $dto->email,
+            ];
 
-    //         $client = $this->clientService->findOrCreate(ClientResolveDto::fromArray([
-    //             'address' => $address,
-    //             'phoneNumber' => $dto->phoneNumber,
-    //         ]));
+            if(!empty($dto->password)) {
+                $userData['password'] = Hash::make($dto->password);
+            }
 
-    //         $order = Order::create([
-    //             'symbol' => Str::random(16),
-    //             'date_deadline' => $dto->dateDeadline,
-    //             'user_creation_id' => Auth::id(),
-    //             'user_modification_id' => Auth::id(),
-    //             'priority_id' => $dto->priorityId,
-    //             'client_id' => $client->id,
-    //             'status_id' => $dto->statusId,
-    //             'created_at' => $dto->dateCreation,
-    //         ]);
+            if($dto->isNewUser()) {
+                $user = User::create($userData);
+                $userId = $user->id;
+            }
+            else {
+                $user = User::where('id', $dto->id)
+                    ->update($userData);
+                $userId = $dto->id;
+            }
 
-    //         OrderTranslation::create([
-    //             'order_id' => $order->id,
-    //             'language_id' => Language::where('symbol', app()->getLocale())->value('id'),
-    //             'remarks' => $dto->remarks
-    //         ]);
-
-    //         DB::commit();
-    //         return collect([
-    //             'id' => $order->id,
-    //         ]);
-    //     }
-    //     catch(Exception $e) {
-    //         Log::error($e);
-    //         DB::rollBack();
-    //         throw $e;
-    //     }
-    // }
-
-    // public function update(OrderDto $dto): bool {
-    //     DB::beginTransaction();
-    //     try {
-    //         $address = $this->addressService->findOrCreate(AddressResolveDto::fromArray([
-    //             'address' => $dto->addressDto->address,
-    //             'postalCode' => $dto->addressDto->postalCode,
-    //             'cityId' => $dto->addressDto->cityId,
-    //             'cityName' => $dto->addressDto->cityName,
-    //             'provinceId' => $dto->addressDto->provinceId,
-    //         ]));
-
-    //         $client = $this->clientService->findOrCreate(ClientResolveDto::fromArray([
-    //             'address' => $address,
-    //             'phoneNumber' => $dto->phoneNumber,
-    //         ]));
-
-    //         Order::where('id', $dto->id)
-    //             ->update([
-    //                 'date_deadline' => $dto->dateDeadline,
-    //                 'user_modification_id' => Auth::id(),
-    //                 'priority_id' => $dto->priorityId,
-    //                 'client_id' => $client->id,
-    //                 'status_id' => $dto->statusId,
-    //                 'created_at' => $dto->dateCreation,
-    //                 'date_completed' => $dto->dateCompleted,
-    //             ]);
-
-    //         OrderTranslation::where('order_id', $dto->id)
-    //             ->update([
-    //                 'remarks' => $dto->remarks,
-    //             ]);
-
-    //         DB::commit();
-    //         return true;
-    //     }
-    //     catch(Exception $e) {
-    //         Log::error($e);
-    //         DB::rollBack();
-    //         throw $e;
-    //     }
-    // }
+            DB::commit();
+            return $userId;
+        }
+        catch(Exception $e) {
+            Log::error($e);
+            DB::rollBack();
+            throw $e;
+        }
+    }
 
     // public function delete(int $orderId): void {
     //     logger($orderId);

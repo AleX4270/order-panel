@@ -168,5 +168,23 @@
         "dateCreated": "Data utworzenia",
         "dateUpdated": "Data modyfikacji",
         "email": "E-mail"
+    },
+    "userForm": {
+        "createTitle": "Formularz tworzenia nowego użytkownika",
+        "updateTitle": "Formularz użytkownika",
+        "firstName": "Imię",
+        "firstNamePlaceholder": "Wprowadź imię",
+        "lastName": "Nazwisko",
+        "lastNamePlaceholder": "Wprowadź nazwisko",
+        "username": "Nazwa użytkownika",
+        "usernamePlaceholder": "Wprowadź nazwę użytkownika",
+        "email": "E-mail",
+        "emailPlaceholder": "Wprowadź adres e-mail",
+        "password": "Hasło",
+        "passwordPlaceholder": "Wprowadź hasło",
+        "passwordConfirmed": "Powtórzone hasło",
+        "passwordConfirmedPlaceholder": "Wprowadź hasło ponownie",
+        "saveErrorMessage": "Nie udało się zapisać użytkownika",
+        "saveSuccessMessage": "Pomyślnie zapisano użytkownika"
     }
 }

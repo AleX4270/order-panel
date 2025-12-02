@@ -2,7 +2,6 @@ import { Component, inject, OnInit, signal, ViewChild, WritableSignal } from '@a
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ListTableComponent } from '../../shared/components/list-table/list-table.component';
 import { ExpansionState, TileType, ToastType } from '../../shared/enums/enums';
-import { Priority } from '../../shared/enums/priority.enum';
 import { TileComponent } from "../../shared/components/tile/tile.component";
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { faEye, faPenToSquare, faTrashCan } from '@ng-icons/font-awesome/regular';
@@ -11,16 +10,14 @@ import { CardComponent } from "../../shared/components/card/card.component";
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 import { FiltersComponent } from '../../shared/components/filters/filters.component';
 import { FilterType } from '../../shared/enums/filter-type.enum';
-import { OrderService } from '../../shared/services/api/order/order.service';
 import { DatePipe, NgClass } from '@angular/common';
-import { OrderFilterParams, OrderItem } from '../../shared/types/order.types';
 import { PaginationItem } from '../../shared/types/pagination.types';
-import { Status } from '../../shared/enums/status.enum';
 import { SortItem } from '../../shared/types/sort.types';
 import { PromptModalService } from '../../shared/services/prompt-modal/prompt-modal.service';
 import { ToastService } from '../../shared/services/toast/toast.service';
 import { UserService } from '../../shared/services/api/user/user.service';
 import { UserFilterParams, UserItem } from '../../shared/types/user.types';
+import { UserFormModalComponent } from "../user-form-modal/user-form-modal.component";
 
 @Component({
     selector: 'app-order-list',
@@ -34,7 +31,8 @@ import { UserFilterParams, UserItem } from '../../shared/types/user.types';
     PaginationComponent,
     FiltersComponent,
     DatePipe,
-    NgClass
+    NgClass,
+    UserFormModalComponent
 ],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan})],
     template: `
@@ -86,10 +84,10 @@ import { UserFilterParams, UserItem } from '../../shared/types/user.types';
                         <tr class="list-row">
                             <td class="fw-semibold">{{ '#' + item.id }}</td>
                             <td>
-                                <div class="user-name d-flex flex-column">
-                                    <span class="city-name">{{ item.name }}</span>
+                                <div class="user-name-container d-flex flex-column">
+                                    <span class="user-name">{{ item.name }}</span>
                                     @if(item.firstName || item.lastName) {
-                                        <span class="address-label text-muted">{{ (item.firstName ?? '') + (item.lastName ? (' ' + item.lastName) : '') }}</span>
+                                        <span class="user-name-label text-muted">{{ (item.firstName ?? '') + (item.lastName ? (' ' + item.lastName) : '') }}</span>
                                     }
                                 </div>
                             </td>
@@ -141,7 +139,7 @@ import { UserFilterParams, UserItem } from '../../shared/types/user.types';
                                         <div class="col d-flex flex-column">
                                             <span class="details-label text-muted">{{ 'userDetails.firstAndLastName' | translate}}</span>
                                             <div class="details-value">
-                                                <span class="address-label text-muted">{{ (item.firstName ?? '') + (item.lastName ? (' ' + item.lastName) : '') }}</span>
+                                                <span class="address-label">{{ (item.firstName ?? '') + (item.lastName ? (' ' + item.lastName) : '') }}</span>
                                             </div>
                                         </div>
                                         <div class="col d-flex flex-column">
@@ -188,7 +186,7 @@ import { UserFilterParams, UserItem } from '../../shared/types/user.types';
             </div>
         </div>
 
-        <!-- <app-order-form-modal #orderFormModal (orderSaved)="loadOrders()" /> -->
+        <app-user-form-modal #userFormModal (userSaved)="loadUsers()" />
     `,
     styles: [`
         .details {
@@ -219,10 +217,17 @@ import { UserFilterParams, UserItem } from '../../shared/types/user.types';
                 padding: 0.9rem 0 0.9rem 0.75rem;
             }
         }
+
+        .user-name-container {
+            .user-name-label {
+                font-size: var(--font-size-xs);
+                font-weight: var(--font-weight-light);
+            }
+        }
     `]
 })
 export class UserListComponent implements OnInit {
-    // @ViewChild('orderFormModal') orderFormModal!: OrderFormModalComponent;
+    @ViewChild('userFormModal') userFormModal!: UserFormModalComponent;
 
     private readonly userService = inject(UserService);
     private readonly promptModalService = inject(PromptModalService);
@@ -259,7 +264,7 @@ export class UserListComponent implements OnInit {
     }
 
     protected showUserFormModal(id?: number): void {
-        // this.orderFormModal.showForm(id);
+        this.userFormModal.showForm(id);
     }
 
     protected showUserDeletePromptModal(id: number): void {

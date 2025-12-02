@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Enums\HttpStatus;
 use App\Http\Requests\Api\User\UserFilterRequest;
+use App\Http\Requests\Api\User\UserRequest;
 use App\Http\Responses\Api\ApiResponse;
 use App\Services\Api\User\UserService;
 
@@ -42,23 +43,23 @@ class UserController {
     //     );
     // }
 
-    // public function store(OrderRequest $request): ApiResponse {
-    //     $this->orderService->store($request->toDto());
+    public function store(UserRequest $request): ApiResponse {
+        $this->userService->save($request->toDto());
 
-    //     return new ApiResponse(
-    //         status: HttpStatus::CREATED,
-    //         message: __('response.created'),
-    //     );
-    // }
+        return new ApiResponse(
+            status: HttpStatus::CREATED,
+            message: __('response.created'),
+        );
+    }
 
-    // public function update(OrderRequest $request): ApiResponse {
-    //     $this->orderService->update($request->toDto());
+    public function update(UserRequest $request): ApiResponse {
+        $this->userService->save($request->toDto());
 
-    //     return new ApiResponse(
-    //         status: HttpStatus::NO_CONTENT,
-    //         message: __('response.success'),
-    //     );
-    // }
+        return new ApiResponse(
+            status: HttpStatus::NO_CONTENT,
+            message: __('response.success'),
+        );
+    }
 
     // public function delete(Request $request) {
     //     $orderId = (int)$request->route('id');

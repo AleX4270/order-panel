@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RestService } from '../rest/rest.service';
-import { UserFilterParams, UserItem } from '../../../types/user.types';
+import { UserFilterParams, UserItem, UserParams } from '../../../types/user.types';
 import { Observable } from 'rxjs';
 import { ApiResponse, IndexResponse } from '../../../types/rest.types';
 import { PAGINATION_PAGE_SIZE, PAGINATION_START_PAGE } from '../../../../app.constants';
@@ -27,13 +27,13 @@ export class UserService extends RestService {
     //     return this.http.get<ApiResponse<OrderItem>>(`${this.apiUrl}/orders/${orderId}`);
     // }
 
-    // public store(params: OrderParams): Observable<ApiResponse<void>> {
-    //     return this.http.post<ApiResponse<void>>(`${this.apiUrl}/orders`, params);
-    // }
+    public store(params: UserParams): Observable<ApiResponse<void>> {
+        return this.http.post<ApiResponse<void>>(`${this.apiUrl}/users`, params);
+    }
 
-    // public update(params: OrderParams): Observable<ApiResponse<void>> {
-    //     return this.http.put<ApiResponse<void>>(`${this.apiUrl}/orders`, params);
-    // }
+    public update(params: UserParams): Observable<ApiResponse<void>> {
+        return this.http.put<ApiResponse<void>>(`${this.apiUrl}/users`, params);
+    }
 
     // public delete(orderId: number): Observable<ApiResponse<void>> {
     //     return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/orders/${orderId}`);
