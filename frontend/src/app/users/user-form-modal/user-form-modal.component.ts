@@ -1,33 +1,17 @@
-import { DatePipe, NgClass } from '@angular/common';
-import { Component, computed, DestroyRef, ElementRef, inject, OnDestroy, output, Signal, signal, ViewChild, WritableSignal } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, ElementRef, inject, OnDestroy, output, signal, ViewChild, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgSelectComponent } from '@ng-select/ng-select';
 import { InputErrorLabelComponent } from '../../shared/components/input-error-label/input-error-label.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { validateOrderDateRange } from '../../shared/validators/order-date-range.validator';
-import { PriorityItem } from '../../shared/types/priority.types';
-import { StatusItem } from '../../shared/types/status.types';
-import { CountryItem } from '../../shared/types/country.types';
-import { ProvinceItem } from '../../shared/types/province.types';
-import { CityItem } from '../../shared/types/city.types';
-import { PriorityService } from '../../shared/services/api/priority/priority.service';
-import { StatusService } from '../../shared/services/api/status/status.service';
-import { CountryService } from '../../shared/services/api/country/country.service';
-import { catchError, count, distinctUntilChanged, forkJoin, map, tap } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DEFAULT_COUNTRY_SYMBOL, DEFAULT_PRIORITY_SYMBOL, DEFAULT_STATUS_SYMBOL } from '../../app.constants';
-import { ProvinceService } from '../../shared/services/api/province/province.service';
-import { CityService } from '../../shared/services/api/city/city.service';
 import { ToastService } from '../../shared/services/toast/toast.service';
 import { ToastType } from '../../shared/enums/enums';
-import { OrderService } from '../../shared/services/api/order/order.service';
-import { OrderItem, OrderParams } from '../../shared/types/order.types';
-import { UserParams } from '../../shared/types/user.types';
+import { UserItem, UserParams } from '../../shared/types/user.types';
 import { UserService } from '../../shared/services/api/user/user.service';
+import { validateUserPassword } from '../../shared/validators/user-password.validator';
 
 @Component({
     selector: 'app-user-form-modal',
-    imports: [ReactiveFormsModule, NgSelectComponent, DatePipe, InputErrorLabelComponent, TranslatePipe, NgClass],
+    imports: [ReactiveFormsModule, InputErrorLabelComponent, TranslatePipe],
     providers: [DatePipe],
     template: `
         <div #modalRef class="modal fade" tabindex="-1">
@@ -145,13 +129,11 @@ import { UserService } from '../../shared/services/api/user/user.service';
     `],
 })
 export class UserFormModalComponent implements OnDestroy {
-    @ViewChild('modalRef') orderFormModal!: ElementRef;
+    @ViewChild('modalRef') userFormModal!: ElementRef;
 
     private readonly translateService: TranslateService = inject(TranslateService);
     private readonly toastService: ToastService = inject(ToastService);
-    private readonly destroyRef: DestroyRef = inject(DestroyRef);
     private readonly formBuilder: FormBuilder = inject(FormBuilder);
-    private readonly datePipe: DatePipe = inject(DatePipe);
     private readonly userService: UserService = inject(UserService);
 
     private modal?: any;
@@ -178,7 +160,7 @@ export class UserFormModalComponent implements OnDestroy {
     
     protected openModal(): void {
         if(!this.modal) {
-            this.modal = new window.bootstrap.Modal(this.orderFormModal.nativeElement, {
+            this.modal = new window.bootstrap.Modal(this.userFormModal.nativeElement, {
                 focus: true,
                 keyboard: false,
                 backdrop: 'static'
@@ -205,46 +187,36 @@ export class UserFormModalComponent implements OnDestroy {
             firstName: [null],
             lastName: [null],
             username: [null, Validators.required],
-            email: [null, Validators.required], //TODO: Add the custom email validator
+            email: [null, [Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)]],
             //TODO: Add the custom password validator
             password: [null],
             passwordConfirmed: [null],
+        }, {
+            validators: [validateUserPassword()],
         });
     }
 
     private loadDetails(userId: number): void {
-        // this.orderService.show(userId).subscribe({
-        //     next: (res) => {
-        //         const order: OrderItem | null = res.data;
+        this.userService.show(userId).subscribe({
+            next: (res) => {
+                const user: UserItem | null = res.data;
                 
-        //         if(!order) {
-        //             return;
-        //         }
+                if(!user) {
+                    return;
+                }
 
-        //         console.log(this.priorities());
-        //         console.log(this.statuses());
-
-        //         this.form.patchValue({
-        //             id: order.id,
-        //             orderNumber: order.id,
-        //             countryId: order.countryId,
-        //             provinceId: order.provinceId,
-        //             cityId: order.cityId,
-        //             postalCode: order.postalCode,
-        //             address: order.address,
-        //             phoneNumber: order.phoneNumber,
-        //             priorityId: order.priorityId,
-        //             statusId: order.statusId,
-        //             dateCreation: order.dateCreated,
-        //             dateDeadline: order.dateDeadline,
-        //             dateCompleted: order.dateCompleted ?? null,
-        //             remarks: order.remarks
-        //         });
-        //     },
-        //     error: (err) => {
-        //         console.error(err);
-        //     }
-        // });
+                this.form.patchValue({
+                    id: user.id,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    username: user.name,
+                    email: user.email,
+                });
+            },
+            error: (err) => {
+                console.error(err);
+            }
+        });
     }
 
     protected saveUser(): void {

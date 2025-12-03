@@ -8,6 +8,7 @@ use App\Http\Requests\Api\User\UserFilterRequest;
 use App\Http\Requests\Api\User\UserRequest;
 use App\Http\Responses\Api\ApiResponse;
 use App\Services\Api\User\UserService;
+use Illuminate\Http\Request;
 
 class UserController {
     public function __construct(
@@ -24,24 +25,24 @@ class UserController {
         );
     }
 
-    // public function show(Request $request): ApiResponse {
-    //     $orderId = (int)$request->route('id');
+    public function show(Request $request): ApiResponse {
+        $userId = (int)$request->route('id');
 
-    //     if(empty($orderId)) {
-    //         return new ApiResponse(
-    //             status: HttpStatus::BAD_REQUEST,
-    //             message: __('response.badRequest'),
-    //         );    
-    //     }
+        if(empty($userId)) {
+            return new ApiResponse(
+                status: HttpStatus::BAD_REQUEST,
+                message: __('response.badRequest'),
+            );    
+        }
 
-    //     $result = $this->orderService->show($orderId);
+        $result = $this->userService->show($userId);
 
-    //     return new ApiResponse(
-    //         data: $result,
-    //         status: HttpStatus::OK,
-    //         message: __('response.created'),
-    //     );
-    // }
+        return new ApiResponse(
+            data: $result,
+            status: HttpStatus::OK,
+            message: __('response.success'),
+        );
+    }
 
     public function store(UserRequest $request): ApiResponse {
         $this->userService->save($request->toDto());
@@ -61,21 +62,21 @@ class UserController {
         );
     }
 
-    // public function delete(Request $request) {
-    //     $orderId = (int)$request->route('id');
+    public function delete(Request $request) {
+        $userId = (int)$request->route('id');
 
-    //     if(empty($orderId)) {
-    //         return new ApiResponse(
-    //             status: HttpStatus::BAD_REQUEST,
-    //             message: __('response.badRequest'),
-    //         );    
-    //     }
+        if(empty($userId)) {
+            return new ApiResponse(
+                status: HttpStatus::BAD_REQUEST,
+                message: __('response.badRequest'),
+            );    
+        }
 
-    //     $result = $this->orderService->delete($orderId);
+        $result = $this->userService->delete($userId);
 
-    //     return new ApiResponse(
-    //         status: HttpStatus::OK,
-    //         message: __('response.deleted'),
-    //     );
-    // }
+        return new ApiResponse(
+            status: HttpStatus::OK,
+            message: __('response.deleted'),
+        );
+    }
 }

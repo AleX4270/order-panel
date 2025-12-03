@@ -368,7 +368,7 @@ export class OrderFormModalComponent implements OnDestroy {
             dateCompleted: [null],
             remarks: [null, [Validators.maxLength(2000)]]
         },{
-            validators: [validateOrderDateRange()],
+            // validators: [validateOrderDateRange()],
         });
 
         this.registerFormChanges();
@@ -423,9 +423,6 @@ export class OrderFormModalComponent implements OnDestroy {
                 if(!order) {
                     return;
                 }
-
-                console.log(this.priorities());
-                console.log(this.statuses());
 
                 this.form.patchValue({
                     id: order.id,
@@ -567,7 +564,7 @@ export class OrderFormModalComponent implements OnDestroy {
                 this.orderSaved.emit();
             },
             error: (err) => {
-                console.log(err);
+                console.error(err);
                 this.toastService.show(
                     this.translateService.instant('orderForm.saveErrorMessage'),
                     ToastType.danger,

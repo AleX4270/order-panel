@@ -268,32 +268,32 @@ export class UserListComponent implements OnInit {
     }
 
     protected showUserDeletePromptModal(id: number): void {
-        // this.promptModalService.openModal({
-        //     title: this.translateService.instant('orderDeletePromptModal.title'),
-        //     message: this.translateService.instant('orderDeletePromptModal.message'),
-        //     handler: () => {
-        //         this.deleteOrder(id);
-        //     }
-        // });
+        this.promptModalService.openModal({
+            title: this.translateService.instant('userDeletePromptModal.title'),
+            message: this.translateService.instant('userDeletePromptModal.message'),
+            handler: () => {
+                this.deleteUser(id);
+            }
+        });
     }
 
     protected deleteUser(id: number): void {
-        // this.orderService.delete(id).subscribe({
-        //     next: () => {
-        //         this.toastService.show(
-        //             this.translateService.instant('orderList.deleteSuccess'),
-        //             ToastType.success,
-        //         );
-        //         this.loadOrders();
-        //     },
-        //     error: (err) => {
-        //         console.error(err);
-        //         this.toastService.show(
-        //             this.translateService.instant('orderList.deleteError'),
-        //             ToastType.danger,
-        //         );
-        //     }
-        // })
+        this.userService.delete(id).subscribe({
+            next: () => {
+                this.toastService.show(
+                    this.translateService.instant('userList.deleteSuccess'),
+                    ToastType.success,
+                );
+                this.loadUsers();
+            },
+            error: (err) => {
+                console.error(err);
+                this.toastService.show(
+                    this.translateService.instant('userList.deleteError'),
+                    ToastType.danger,
+                );
+            }
+        })
     }
 
     protected loadUsers(): void {

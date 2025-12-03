@@ -25,7 +25,8 @@ class UserRepository {
     }
 
     public function getAll(UserFilterDto $dto): Builder {
-        $query = $this->getBaseQuery();
+        $query = $this->getBaseQuery()
+            ->where('u.is_active', 1);
 
         if(!empty($dto->allFields)) {
             $query->where(function($query) use($dto) {
@@ -65,11 +66,10 @@ class UserRepository {
         return $query;
     }
 
-    // public function getOne(int $orderId): Builder {
-    //     $query = $this->getBaseQuery();
+    public function getOne(int $userId): Builder {
+        $query = $this->getBaseQuery();
+        $query->where('u.id', $userId);
 
-    //     $query->where('o.id', $orderId);
-
-    //     return $query;
-    // }
+        return $query;
+    }
 }

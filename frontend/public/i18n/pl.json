@@ -144,7 +144,9 @@
     "userList": {
         "header": "Lista Użytkowników",
         "users": "Użytkownicy",
-        "addNewUser": "Dodaj użytkownika"
+        "addNewUser": "Dodaj użytkownika",
+        "deleteSuccess": "Pomyślnie usunięto użytkownika",
+        "deleteError": "Nie udało się usunąć użytkownika"
     },
     "userListTable": {
         "userNumber": "Numer",
@@ -186,5 +188,9 @@
         "passwordConfirmedPlaceholder": "Wprowadź hasło ponownie",
         "saveErrorMessage": "Nie udało się zapisać użytkownika",
         "saveSuccessMessage": "Pomyślnie zapisano użytkownika"
+    },
+    "userDeletePromptModal": {
+        "title": "Potwierdzenie usunięcia użytkownika",
+        "message": "Czy potwierdzasz usunięcie wybranego użytkownika?"
     }
 }

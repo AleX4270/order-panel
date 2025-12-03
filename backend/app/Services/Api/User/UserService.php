@@ -35,15 +35,10 @@ class UserService {
         ]);
     }
 
-    // public function show(int $orderId): Order {
-    //     $data = $this->orderRepository->getOne($orderId)->first();
-
-    //     $data->dateCreated = Date::parse($data->dateCreated)->format('Y-m-d');
-    //     $data->dateDeadline = Date::parse($data->dateDeadline)->format('Y-m-d');
-    //     $data->dateCompleted = !empty($data->dateCompleted) ? Date::parse($data->dateCompleted)->format('Y-m-d') : null;
-
-    //     return $data;
-    // }
+    public function show(int $orderId): User {
+        $data = $this->userRepository->getOne($orderId)->first();
+        return $data;
+    }
 
     public function save(UserDto $dto): int {
         DB::beginTransaction();
@@ -79,10 +74,9 @@ class UserService {
         }
     }
 
-    // public function delete(int $orderId): void {
-    //     logger($orderId);
-    //     Order::where('id', $orderId)->update([
-    //         'is_active' => 0,
-    //     ]);
-    // }
+    public function delete(int $userId): void {
+        User::where('id', $userId)->update([
+            'is_active' => 0,
+        ]);
+    }
 }

@@ -40,7 +40,7 @@ class OrderController {
         return new ApiResponse(
             data: $result,
             status: HttpStatus::OK,
-            message: __('response.created'),
+            message: __('response.success'),
         );
     }
 

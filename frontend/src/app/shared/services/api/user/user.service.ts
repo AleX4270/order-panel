@@ -23,9 +23,9 @@ export class UserService extends RestService {
         return this.http.get<ApiResponse<IndexResponse<UserItem>>>(`${this.apiUrl}/users${this.getQueryParams(paramsCopy)}`);
     }
 
-    // public show(orderId: number): Observable<ApiResponse<OrderItem>> {
-    //     return this.http.get<ApiResponse<OrderItem>>(`${this.apiUrl}/orders/${orderId}`);
-    // }
+    public show(userId: number): Observable<ApiResponse<UserItem>> {
+        return this.http.get<ApiResponse<UserItem>>(`${this.apiUrl}/users/${userId}`);
+    }
 
     public store(params: UserParams): Observable<ApiResponse<void>> {
         return this.http.post<ApiResponse<void>>(`${this.apiUrl}/users`, params);
@@ -35,7 +35,7 @@ export class UserService extends RestService {
         return this.http.put<ApiResponse<void>>(`${this.apiUrl}/users`, params);
     }
 
-    // public delete(orderId: number): Observable<ApiResponse<void>> {
-    //     return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/orders/${orderId}`);
-    // }
+    public delete(userId: number): Observable<ApiResponse<void>> {
+        return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/users/${userId}`);
+    }
 }
