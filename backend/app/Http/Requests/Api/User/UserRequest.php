@@ -18,21 +18,21 @@ class UserRequest extends FormRequest {
             'lastName' => ['sometimes', 'string'],
             'username' => ['required', 'string'],
             'email' => ['required', 'email'],
-            'password' => ['sometimes', 'string', 'confirmed:passwordConfirmed'],
+            'password' => ['sometimes', 'string', 'confirmed:passwordConfirmed', 'regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[#?!@$%^&*\-.,]).{8,}$/',],
             'passwordConfirmed' => ['required_with:password', 'string'],
         ];
     }
 
-    // TODO: Validate the password fields
+    public function messages() {
+        return [
+            'password.regex' => __('validation.passwordTooWeak'),
+        ];
+    }
+
     public function withValidator($validator): void {
         $validator->after(function ($validator) {
             $this->validateUniqueness($validator);
-            $this->validatePassword($validator);
         });
-    }
-
-    private function validatePassword($validator): void {
-
     }
 
     private function validateUniqueness($validator): void {

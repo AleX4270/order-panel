@@ -162,6 +162,7 @@ return [
     'url'                  => 'Pole :attribute musi być prawidłowym adresem URL.',
     'ulid'                 => 'Pole :attribute musi być prawidłowym ULID.',
     'uuid'                 => 'Pole :attribute musi być prawidłowym UUID.',
+    'passwordTooWeak' => 'Hasło nie spełnia wymagań. Powinno ono zawierać m.in 8 znaków, jedną dużą literę, jedną małą literę, jedną cyfrę oraz znak specjalny',
 
     /*
     |--------------------------------------------------------------------------
