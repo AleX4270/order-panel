@@ -21,7 +21,9 @@
         "minLength": "Podana wartość jest za krótka",
         "pattern": "Podana wartość ma zły format",
         "deadlineBeforeCreation": "Termin jest wcześniejszy niż data utworzenia",
-        "completedBeforeCreation": "Data ukończenia jest wcześniejsza niż data utworzenia"
+        "completedBeforeCreation": "Data ukończenia jest wcześniejsza niż data utworzenia",
+        "weakPassword": "Hasło nie spełnia wymagań. Powinno ono zawierać m.in 8 znaków, jedną dużą literę, jedną małą literę, jedną cyfrę oraz znak specjalny",
+        "passwordMismatch": "Podane hasła nie są identyczne"
     },
     "navbar": {
         "dashboard": "Panel",

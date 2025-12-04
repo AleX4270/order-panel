@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, inject, OnDestroy, output, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, ElementRef, inject, OnDestroy, output, signal, ViewChild, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputErrorLabelComponent } from '../../shared/components/input-error-label/input-error-label.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -7,7 +7,9 @@ import { ToastService } from '../../shared/services/toast/toast.service';
 import { ToastType } from '../../shared/enums/enums';
 import { UserItem, UserParams } from '../../shared/types/user.types';
 import { UserService } from '../../shared/services/api/user/user.service';
-import { validateUserPassword } from '../../shared/validators/user-password.validator';
+import { validatePasswordStrength } from '../../shared/validators/password-strength.validator';
+import { validatePasswordMatch } from '../../shared/validators/password-match.validator';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-user-form-modal',
@@ -135,6 +137,7 @@ export class UserFormModalComponent implements OnDestroy {
     private readonly toastService: ToastService = inject(ToastService);
     private readonly formBuilder: FormBuilder = inject(FormBuilder);
     private readonly userService: UserService = inject(UserService);
+    private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
     private modal?: any;
 
@@ -188,11 +191,27 @@ export class UserFormModalComponent implements OnDestroy {
             lastName: [null],
             username: [null, Validators.required],
             email: [null, [Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)]],
-            //TODO: Add the custom password validator
-            password: [null],
-            passwordConfirmed: [null],
-        }, {
-            validators: [validateUserPassword()],
+            password: [null, [validatePasswordStrength()]],
+            passwordConfirmed: [null, [validatePasswordMatch()]],
+        });
+
+        this.registerFormChanges();
+    }
+
+    private registerFormChanges(): void {
+        const password = this.form.get('password');
+
+        if(!password) {
+            return;
+        }
+
+        password.valueChanges.pipe(
+            takeUntilDestroyed(this.destroyRef),
+        )
+        .subscribe({
+            next: () => {
+                this.form.get('passwordConfirmed')?.updateValueAndValidity();
+            }
         });
     }
 

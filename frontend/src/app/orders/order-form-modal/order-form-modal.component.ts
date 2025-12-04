@@ -368,7 +368,7 @@ export class OrderFormModalComponent implements OnDestroy {
             dateCompleted: [null],
             remarks: [null, [Validators.maxLength(2000)]]
         },{
-            // validators: [validateOrderDateRange()],
+            validators: [validateOrderDateRange()],
         });
 
         this.registerFormChanges();
