@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Api\Order;
+namespace App\Http\Controllers\Api\User;
 
 use App\Enums\HttpStatus;
-use App\Http\Requests\Api\Order\OrderFilterRequest;
-use App\Http\Requests\Api\Order\OrderRequest;
+use App\Http\Requests\Api\User\UserFilterRequest;
+use App\Http\Requests\Api\User\UserRequest;
 use App\Http\Responses\Api\ApiResponse;
-use App\Services\Api\Order\OrderService;
+use App\Services\Api\User\UserService;
 use Illuminate\Http\Request;
 
-class OrderController {
+class UserController {
     public function __construct(
-        private readonly OrderService $orderService,
+        private readonly UserService $userService,
     ) {}
 
-    public function index(OrderFilterRequest $request): ApiResponse {
-        $result = $this->orderService->index($request->toDto());
+    public function index(UserFilterRequest $request): ApiResponse {
+        $result = $this->userService->index($request->toDto());
 
         return new ApiResponse(
             data: $result,
@@ -26,16 +26,16 @@ class OrderController {
     }
 
     public function show(Request $request): ApiResponse {
-        $orderId = (int)$request->route('id');
+        $userId = (int)$request->route('id');
 
-        if(empty($orderId)) {
+        if(empty($userId)) {
             return new ApiResponse(
                 status: HttpStatus::BAD_REQUEST,
                 message: __('response.badRequest'),
             );    
         }
 
-        $result = $this->orderService->show($orderId);
+        $result = $this->userService->show($userId);
 
         return new ApiResponse(
             data: $result,
@@ -44,8 +44,8 @@ class OrderController {
         );
     }
 
-    public function store(OrderRequest $request): ApiResponse {
-        $this->orderService->store($request->toDto());
+    public function store(UserRequest $request): ApiResponse {
+        $this->userService->save($request->toDto());
 
         return new ApiResponse(
             status: HttpStatus::CREATED,
@@ -53,8 +53,8 @@ class OrderController {
         );
     }
 
-    public function update(OrderRequest $request): ApiResponse {
-        $this->orderService->update($request->toDto());
+    public function update(UserRequest $request): ApiResponse {
+        $this->userService->save($request->toDto());
 
         return new ApiResponse(
             status: HttpStatus::NO_CONTENT,
@@ -63,16 +63,16 @@ class OrderController {
     }
 
     public function delete(Request $request) {
-        $orderId = (int)$request->route('id');
+        $userId = (int)$request->route('id');
 
-        if(empty($orderId)) {
+        if(empty($userId)) {
             return new ApiResponse(
                 status: HttpStatus::BAD_REQUEST,
                 message: __('response.badRequest'),
             );    
         }
 
-        $result = $this->orderService->delete($orderId);
+        $result = $this->userService->delete($userId);
 
         return new ApiResponse(
             status: HttpStatus::OK,

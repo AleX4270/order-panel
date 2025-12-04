@@ -6,5 +6,9 @@
     {
         "label": "orders",
         "url": "/orders"
+    },
+    {
+        "label": "users",
+        "url": "/users"
     }
 ]

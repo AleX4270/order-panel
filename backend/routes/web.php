@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Order\OrderController;
 use App\Http\Controllers\Api\Priority\PriorityController;
 use App\Http\Controllers\Api\Province\ProvinceController;
 use App\Http\Controllers\Api\Status\StatusController;
+use App\Http\Controllers\Api\User\UserController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -43,5 +44,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('cities')->group(function() {
         Route::get('/', [CityController::class, 'index']);
+    });
+
+    Route::prefix('users')->group(function() {
+        Route::get('/', [UserController::class, 'index']);
+        Route::get('/{id}', [UserController::class, 'show']);
+        Route::post('/', [UserController::class, 'store']);
+        Route::put('/', [UserController::class, 'update']);
+        Route::delete('/{id}', [UserController::class, 'delete']);
     });
 });

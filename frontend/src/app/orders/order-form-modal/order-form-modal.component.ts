@@ -424,9 +424,6 @@ export class OrderFormModalComponent implements OnDestroy {
                     return;
                 }
 
-                console.log(this.priorities());
-                console.log(this.statuses());
-
                 this.form.patchValue({
                     id: order.id,
                     orderNumber: order.id,
@@ -567,7 +564,7 @@ export class OrderFormModalComponent implements OnDestroy {
                 this.orderSaved.emit();
             },
             error: (err) => {
-                console.log(err);
+                console.error(err);
                 this.toastService.show(
                     this.translateService.instant('orderForm.saveErrorMessage'),
                     ToastType.danger,

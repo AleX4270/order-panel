@@ -162,6 +162,7 @@ return [
     'url' => 'The :attribute field must be a valid URL.',
     'ulid' => 'The :attribute field must be a valid ULID.',
     'uuid' => 'The :attribute field must be a valid UUID.',
+    'passwordTooWeak' => 'Password does not meet requirements. It should contain at least 8 characters, one uppercase letter, one lowercase letter, one digit, and one special character.',
 
     /*
     |--------------------------------------------------------------------------

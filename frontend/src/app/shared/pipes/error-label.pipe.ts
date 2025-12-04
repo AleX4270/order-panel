@@ -21,6 +21,8 @@ export class ErrorLabelPipe implements PipeTransform {
             case 'pattern': return this.translate.instant('error.pattern');
             case 'deadlineBeforeCreation': return this.translate.instant('error.deadlineBeforeCreation');
             case 'completedBeforeCreation': return this.translate.instant('error.completedBeforeCreation');
+            case 'weakPassword': return this.translate.instant('error.weakPassword');
+            case 'passwordMismatch': return this.translate.instant('error.passwordMismatch');
             default: return this.translate.instant('error.incorrect');
         }
     }
