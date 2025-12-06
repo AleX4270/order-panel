@@ -23,10 +23,19 @@ class UserRepository {
                 'u.updated_at as dateUpdated',
             ]);
     }
+    
+    private function applyRolesQuery(Builder $query): Builder {
+        return $query->with([
+            'roles:id,name',
+            'roles.translation'
+        ]);
+    }
 
     public function getAll(UserFilterDto $dto): Builder {
         $query = $this->getBaseQuery()
             ->where('u.is_active', 1);
+
+        $this->applyRolesQuery($query);
 
         if(!empty($dto->allFields)) {
             $query->where(function($query) use($dto) {
@@ -68,6 +77,8 @@ class UserRepository {
 
     public function getOne(int $userId): Builder {
         $query = $this->getBaseQuery();
+        $this->applyRolesQuery($query);
+
         $query->where('u.id', $userId);
 
         return $query;

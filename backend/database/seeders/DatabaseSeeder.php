@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder {
             OrderStatusSeeder::class,
             PrioritySeeder::class,
             PolishProvinceSeeder::class,
+            PermissionSeeder::class,
+            RoleSeeder::class,
         ]);
     }
 }

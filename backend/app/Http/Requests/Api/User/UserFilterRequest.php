@@ -3,11 +3,12 @@
 namespace App\Http\Requests\Api\User;
 
 use App\Dtos\Api\User\UserFilterDto;
+use App\Enums\PermissionType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserFilterRequest extends FormRequest {
     public function authorize(): bool {
-        return true;
+        return $this->user()?->can(PermissionType::USERS_VIEW->value);
     }
 
     public function prepareForValidation(): void {

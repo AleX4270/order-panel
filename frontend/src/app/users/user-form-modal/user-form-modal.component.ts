@@ -10,10 +10,13 @@ import { UserService } from '../../shared/services/api/user/user.service';
 import { validatePasswordStrength } from '../../shared/validators/password-strength.validator';
 import { validatePasswordMatch } from '../../shared/validators/password-match.validator';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { RoleItem } from '../../shared/types/role.types';
+import { RoleService } from '../../shared/services/api/role/role.service';
 
 @Component({
     selector: 'app-user-form-modal',
-    imports: [ReactiveFormsModule, InputErrorLabelComponent, TranslatePipe],
+    imports: [ReactiveFormsModule, InputErrorLabelComponent, TranslatePipe, NgSelectComponent],
     providers: [DatePipe],
     template: `
         <div #modalRef class="modal fade" tabindex="-1">
@@ -82,6 +85,22 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
                                 </div>
 
                                 <div class="row mt-4">
+                                    <div class="form-group col-12">
+                                        <label for="roles">{{ "userForm.roles" | translate }}</label>
+                                        <ng-select
+                                            formControlName="roles"
+                                            [items]="roles()"
+                                            bindValue="symbol"
+                                            bindLabel="name"
+                                            [multiple]="true"
+                                            [placeholder]="'userForm.roles' | translate"
+                                            class="form-field dropdown"
+                                        />
+                                        <app-input-error-label [control]="form.get('roles')" />
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4">
                                     <div class="form-group col-6">
                                         <label for="password">{{ "userForm.password" | translate }}</label>
                                         <input
@@ -138,6 +157,7 @@ export class UserFormModalComponent implements OnDestroy {
     private readonly formBuilder: FormBuilder = inject(FormBuilder);
     private readonly userService: UserService = inject(UserService);
     private readonly destroyRef: DestroyRef = inject(DestroyRef);
+    private readonly roleService: RoleService = inject(RoleService);
 
     private modal?: any;
 
@@ -145,6 +165,7 @@ export class UserFormModalComponent implements OnDestroy {
     protected userId: WritableSignal<number | null> = signal<number | null>(null);
     protected isEditScenario: WritableSignal<boolean> = signal<boolean>(false);
     protected isLoading: WritableSignal<boolean> = signal<boolean>(false);
+    protected roles: WritableSignal<RoleItem[]> = signal<RoleItem[]>([]);
 
     protected userSaved = output<void>();
 
@@ -158,6 +179,7 @@ export class UserFormModalComponent implements OnDestroy {
         }
 
         this.initForm();
+        this.loadRoles();
         this.openModal();        
     }
     
@@ -193,6 +215,7 @@ export class UserFormModalComponent implements OnDestroy {
             email: [null, [Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)]],
             password: [null, [validatePasswordStrength()]],
             passwordConfirmed: [null, [validatePasswordMatch()]],
+            roles: [null]
         });
 
         this.registerFormChanges();
@@ -224,17 +247,31 @@ export class UserFormModalComponent implements OnDestroy {
                     return;
                 }
 
+                let roleSymbols: string[] = [];
+                if(user.roles && user.roles.length > 0) {
+                    roleSymbols = user.roles.map(role => role.symbol);
+                }
+
                 this.form.patchValue({
                     id: user.id,
                     firstName: user.firstName,
                     lastName: user.lastName,
                     username: user.name,
                     email: user.email,
+                    roles: roleSymbols ?? null,
                 });
             },
             error: (err) => {
                 console.error(err);
             }
+        });
+    }
+
+    protected loadRoles(): void {
+        this.roleService.index().subscribe({
+            next: (res) => {
+                this.roles.set(res.data?.items ?? []);
+            },
         });
     }
 
@@ -270,6 +307,10 @@ export class UserFormModalComponent implements OnDestroy {
 
         if(formValues.passwordConfirmed) {
             userParams.passwordConfirmed = formValues.passwordConfirmed;
+        }
+
+        if(formValues.roles) {
+            userParams.roles = formValues.roles;
         }
 
         const method = this.isEditScenario()

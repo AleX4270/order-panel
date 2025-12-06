@@ -18,6 +18,7 @@ import { ToastService } from '../../shared/services/toast/toast.service';
 import { UserService } from '../../shared/services/api/user/user.service';
 import { UserFilterParams, UserItem } from '../../shared/types/user.types';
 import { UserFormModalComponent } from "../user-form-modal/user-form-modal.component";
+import { Role } from '../../shared/enums/role.enum';
 
 @Component({
     selector: 'app-order-list',
@@ -75,6 +76,7 @@ import { UserFormModalComponent } from "../user-form-modal/user-form-modal.compo
                         <th class="cursor-pointer" (click)="onSortChange('userNumber')">{{'userListTable.userNumber' | translate}}</th>
                         <th class="cursor-pointer" (click)="onSortChange('name')">{{'userListTable.name' | translate}}</th>
                         <th class="cursor-pointer" (click)="onSortChange('email')">{{'userListTable.email' | translate}}</th>
+                        <th class="cursor-pointer" (click)="onSortChange('roles')">{{'userListTable.roles' | translate}}</th>
                         <th class="cursor-pointer" (click)="onSortChange('dateCreated')">{{'userListTable.dateCreated' | translate}}</th>
                         <th class="cursor-pointer" (click)="onSortChange('dateUpdated')">{{'userListTable.dateUpdated' | translate}}</th>
                         <th>{{'userListTable.actions' | translate}}</th>
@@ -92,6 +94,18 @@ import { UserFormModalComponent } from "../user-form-modal/user-form-modal.compo
                                 </div>
                             </td>
                             <td>{{ item.email }}</td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    @for(role of item.roles; track role.id) {
+                                        <app-tile [type]="getRoleTileType(role.symbol)">
+                                            {{ role.name }}
+                                        </app-tile>
+                                    }
+                                    @empty {
+                                        <span>-</span>
+                                    }
+                                </div>
+                            </td>
                             <td>{{ item.dateCreated | date:'dd-MM-yyyy' }}</td>
                             <td>{{ item.dateUpdated | date:'dd-MM-yyyy'}}</td>
                             <td>
@@ -169,6 +183,24 @@ import { UserFormModalComponent } from "../user-form-modal/user-form-modal.compo
                                                 <span>{{ item.dateUpdated | date:'dd-MM-yyyy' }}</span>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div class="row mt-4">
+                                        <div class="col d-flex flex-column">
+                                            <span class="details-label text-muted">{{ 'userDetails.roles' | translate}}</span>
+                                            <div class="details-value d-flex gap-1">
+                                                @for(role of item.roles; track role.id) {
+                                                    <app-tile [type]="getRoleTileType(role.symbol)">
+                                                        {{ role.name }}
+                                                    </app-tile>
+                                                }
+                                                @empty {
+                                                    <span>-</span>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="col d-flex flex-column"></div>
+                                        <div class="col d-flex flex-column"></div>
                                     </div>
                                 </div>
                             </td>
@@ -367,5 +399,16 @@ export class UserListComponent implements OnInit {
         }
 
         this.loadUsers();
+    }
+
+    protected getRoleTileType(roleSymbol: Role): TileType {
+        switch(roleSymbol) {
+            case Role.admin:
+                return TileType.danger;
+            case Role.manager:
+                return TileType.warning;
+            case Role.worker:
+                return TileType.primary;
+        }
     }
 }

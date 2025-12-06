@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RoleType;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Seeder;
@@ -28,10 +29,12 @@ class AdminUserSeeder extends Seeder {
             return;
         }
 
-        User::create([
+        $admin = User::create([
             'name' => $adminCredentials['name'],
             'email' => $adminCredentials['email'],
             'password' => Hash::make($adminCredentials['password']),
         ]);
+
+        $admin->assignRole(RoleType::ADMIN->value);
     }
 }

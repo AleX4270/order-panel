@@ -8,7 +8,7 @@ use App\Enums\RoleType;
 use App\Models\Language;
 use App\Models\RoleTranslation;
 use Exception;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 
 class RoleSeeder extends Seeder {
     public function run(): void {

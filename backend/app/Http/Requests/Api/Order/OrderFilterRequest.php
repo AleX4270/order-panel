@@ -3,11 +3,12 @@
 namespace App\Http\Requests\Api\Order;
 
 use App\Dtos\Api\Order\OrderFilterDto;
+use App\Enums\PermissionType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class OrderFilterRequest extends FormRequest {
     public function authorize(): bool {
-        return true;
+        return $this->user()?->can(PermissionType::ORDERS_VIEW->value);
     }
 
     public function prepareForValidation(): void {

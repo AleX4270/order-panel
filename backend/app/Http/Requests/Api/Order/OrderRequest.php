@@ -3,11 +3,14 @@
 namespace App\Http\Requests\Api\Order;
 
 use App\Dtos\Api\Order\OrderDto;
+use App\Enums\PermissionType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class OrderRequest extends FormRequest {
     public function authorize(): bool {
-        return true;
+        return !empty($this->input('id'))
+            ? $this->user()?->can(PermissionType::ORDERS_UPDATE->value)
+            : $this->user()?->can(PermissionType::ORDERS_CREATE->value);
     }
 
     public function rules(): array {
