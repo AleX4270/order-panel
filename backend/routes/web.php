@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\PermissionType;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\City\CityController;

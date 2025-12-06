@@ -3,12 +3,15 @@
 namespace App\Http\Requests\Api\User;
 
 use App\Dtos\Api\User\UserDto;
+use App\Enums\PermissionType;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest {
     public function authorize(): bool {
-        return true;
+        return !empty($this->input('id'))
+            ? $this->user()?->can(PermissionType::USERS_UPDATE->value)
+            : $this->user()?->can(PermissionType::USERS_CREATE->value);
     }
 
     public function rules(): array {

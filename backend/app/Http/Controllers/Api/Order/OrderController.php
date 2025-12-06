@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\Order;
 
 use App\Enums\HttpStatus;
+use App\Enums\PermissionType;
 use App\Http\Requests\Api\Order\OrderFilterRequest;
 use App\Http\Requests\Api\Order\OrderRequest;
 use App\Http\Responses\Api\ApiResponse;
@@ -26,6 +27,13 @@ class OrderController {
     }
 
     public function show(Request $request): ApiResponse {
+        if(!$request->user()?->can(PermissionType::ORDERS_SHOW->value)) {
+            return new ApiResponse(
+                status: HttpStatus::UNAUTHORIZED,
+                message: __('response.unauthorized'),
+            );       
+        }
+
         $orderId = (int)$request->route('id');
 
         if(empty($orderId)) {
@@ -63,6 +71,13 @@ class OrderController {
     }
 
     public function delete(Request $request) {
+        if(!$request->user()?->can(PermissionType::ORDERS_DELETE->value)) {
+            return new ApiResponse(
+                status: HttpStatus::UNAUTHORIZED,
+                message: __('response.unauthorized'),
+            );
+        }
+
         $orderId = (int)$request->route('id');
 
         if(empty($orderId)) {
@@ -72,7 +87,7 @@ class OrderController {
             );    
         }
 
-        $result = $this->orderService->delete($orderId);
+        $this->orderService->delete($orderId);
 
         return new ApiResponse(
             status: HttpStatus::OK,

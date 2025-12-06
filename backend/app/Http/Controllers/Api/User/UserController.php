@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\User;
 
 use App\Enums\HttpStatus;
+use App\Enums\PermissionType;
 use App\Http\Requests\Api\User\UserFilterRequest;
 use App\Http\Requests\Api\User\UserRequest;
 use App\Http\Responses\Api\ApiResponse;
@@ -26,6 +27,13 @@ class UserController {
     }
 
     public function show(Request $request): ApiResponse {
+        if(!$request->user()?->can(PermissionType::USERS_SHOW->value)) {
+            return new ApiResponse(
+                status: HttpStatus::UNAUTHORIZED,
+                message: __('response.unauthorized'),
+            );       
+        }
+
         $userId = (int)$request->route('id');
 
         if(empty($userId)) {
@@ -63,6 +71,13 @@ class UserController {
     }
 
     public function delete(Request $request) {
+        if(!$request->user()?->can(PermissionType::USERS_DELETE->value)) {
+            return new ApiResponse(
+                status: HttpStatus::UNAUTHORIZED,
+                message: __('response.unauthorized'),
+            );       
+        }
+
         $userId = (int)$request->route('id');
 
         if(empty($userId)) {
@@ -72,7 +87,7 @@ class UserController {
             );    
         }
 
-        $result = $this->userService->delete($userId);
+        $this->userService->delete($userId);
 
         return new ApiResponse(
             status: HttpStatus::OK,
