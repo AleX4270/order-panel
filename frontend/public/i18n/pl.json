@@ -156,7 +156,8 @@
         "email": "E-mail",
         "dateCreated": "Data utworzenia",
         "dateUpdated": "Data modyfikacji",
-        "actions": "Akcje"
+        "actions": "Akcje",
+        "roles": "Role"
     },
     "userListFilters": {
         "allFields": "Wszystkie pola",
@@ -171,7 +172,8 @@
         "name": "Nazwa użytkownika",
         "dateCreated": "Data utworzenia",
         "dateUpdated": "Data modyfikacji",
-        "email": "E-mail"
+        "email": "E-mail",
+        "roles": "Role"
     },
     "userForm": {
         "createTitle": "Formularz tworzenia nowego użytkownika",

@@ -1,5 +1,6 @@
 import { LanguageType } from "../enums/enums";
 import { BaseFilterParams } from "./rest.types";
+import { RoleItem } from "./role.types";
 
 export interface User {
     username: string;
@@ -21,6 +22,7 @@ export interface UserItem {
     email: string;
     dateCreated: string;
     dateUpdated: string;
+    roles: RoleItem[];
 }
 
 export interface UserParams {

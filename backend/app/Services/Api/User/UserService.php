@@ -8,6 +8,7 @@ use App\Dtos\Api\User\UserFilterDto;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Exception;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -29,14 +30,39 @@ class UserService {
             $items = $query->get();
         }
 
+        $items = $items->map(function (User $user) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'firstName' => $user->firstName,
+                'lastName' => $user->lastName,
+                'email' => $user->email,
+                'dateCreated' => $user->dateCreated,
+                'dateUpdated' => $user->dateUpdated,
+                'roles' => $this->mapRoles($user->roles),
+            ];
+        });
+
         return collect([
             'items' => $items ?? [],
             'count' => $totalItems,
         ]);
     }
 
-    public function show(int $orderId): User {
+    public function show(int $orderId): array {
         $data = $this->userRepository->getOne($orderId)->first();
+        
+        $data = [
+            'id' => $data->id,
+            'name' => $data->name,
+            'firstName' => $data->firstName,
+            'lastName' => $data->lastName,
+            'email' => $data->email,
+            'dateCreated' => $data->dateCreated,
+            'dateUpdated' => $data->dateUpdated,
+            'roles' => $this->mapRoles($data->roles),
+        ];
+
         return $data;
     }
 
@@ -78,5 +104,15 @@ class UserService {
         User::where('id', $userId)->update([
             'is_active' => 0,
         ]);
+    }
+
+    private function mapRoles(EloquentCollection $roles): Collection {
+        return $roles->map(function($role) {
+            return [
+                'id'     => $role->id,
+                'symbol' => $role->name,
+                'name'   => $role->translation?->name ?? null,
+            ];
+        });
     }
 }
