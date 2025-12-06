@@ -176,7 +176,7 @@ export class LoginComponent implements OnInit {
                     };
 
                     this.store.dispatch(new LoginUser(userData));
-                    this.router.navigate(['/dashboard']);
+                    this.router.navigate(['/orders']);
                 }
             },
             error: (err) => {

@@ -1,9 +1,5 @@
 [
     {
-        "label": "dashboard",
-        "url": "/dashboard"
-    },
-    {
         "label": "orders",
         "url": "/orders"
     },
