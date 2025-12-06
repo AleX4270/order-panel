@@ -95,14 +95,16 @@ import { Role } from '../../shared/enums/role.enum';
                             </td>
                             <td>{{ item.email }}</td>
                             <td>
-                                @for(role of item.roles; track role.id) {
-                                    <app-tile [type]="getRoleTileType(role.symbol)">
-                                        {{ role.name }}
-                                    </app-tile>
-                                }
-                                @empty {
-                                    <span>-</span>
-                                }
+                                <div class="d-flex gap-1">
+                                    @for(role of item.roles; track role.id) {
+                                        <app-tile [type]="getRoleTileType(role.symbol)">
+                                            {{ role.name }}
+                                        </app-tile>
+                                    }
+                                    @empty {
+                                        <span>-</span>
+                                    }
+                                </div>
                             </td>
                             <td>{{ item.dateCreated | date:'dd-MM-yyyy' }}</td>
                             <td>{{ item.dateUpdated | date:'dd-MM-yyyy'}}</td>
@@ -186,17 +188,15 @@ import { Role } from '../../shared/enums/role.enum';
                                     <div class="row mt-4">
                                         <div class="col d-flex flex-column">
                                             <span class="details-label text-muted">{{ 'userDetails.roles' | translate}}</span>
-                                            <div class="details-value">
-                                                <span>
-                                                    @for(role of item.roles; track role.id) {
-                                                        <app-tile [type]="getRoleTileType(role.symbol)">
-                                                            {{ role.name }}
-                                                        </app-tile>
-                                                    }
-                                                    @empty {
-                                                        <span>-</span>
-                                                    }
-                                                </span>
+                                            <div class="details-value d-flex gap-1">
+                                                @for(role of item.roles; track role.id) {
+                                                    <app-tile [type]="getRoleTileType(role.symbol)">
+                                                        {{ role.name }}
+                                                    </app-tile>
+                                                }
+                                                @empty {
+                                                    <span>-</span>
+                                                }
                                             </div>
                                         </div>
                                         <div class="col d-flex flex-column"></div>

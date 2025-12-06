@@ -191,7 +191,9 @@
         "passwordConfirmed": "Powtórzone hasło",
         "passwordConfirmedPlaceholder": "Wprowadź hasło ponownie",
         "saveErrorMessage": "Nie udało się zapisać użytkownika",
-        "saveSuccessMessage": "Pomyślnie zapisano użytkownika"
+        "saveSuccessMessage": "Pomyślnie zapisano użytkownika",
+        "roles": "Role",
+        "rolesPlaceholder": "Wybierz role"
     },
     "userDeletePromptModal": {
         "title": "Potwierdzenie usunięcia użytkownika",

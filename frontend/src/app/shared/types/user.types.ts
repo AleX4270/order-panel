@@ -33,4 +33,5 @@ export interface UserParams {
     email: string;
     password?: string;
     passwordConfirmed?: string;
+    roles?: string[];
 }

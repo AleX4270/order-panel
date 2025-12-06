@@ -85,9 +85,17 @@ class UserService {
                 $userId = $user->id;
             }
             else {
-                $user = User::where('id', $dto->id)
-                    ->update($userData);
+                $user = User::where('id', $dto->id)->first();
+                $user->update($userData);
                 $userId = $dto->id;
+            }
+
+            $user->syncRoles([]);
+
+            if(!empty($dto->roles)) {
+                foreach($dto->roles as $role) {
+                    $user->assignRole($role);
+                }
             }
 
             DB::commit();

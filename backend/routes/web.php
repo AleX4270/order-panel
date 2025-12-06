@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Country\CountryController;
 use App\Http\Controllers\Api\Order\OrderController;
 use App\Http\Controllers\Api\Priority\PriorityController;
 use App\Http\Controllers\Api\Province\ProvinceController;
+use App\Http\Controllers\Api\Role\RoleController;
 use App\Http\Controllers\Api\Status\StatusController;
 use App\Http\Controllers\Api\User\UserController;
 
@@ -45,6 +46,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('cities')->group(function() {
         Route::get('/', [CityController::class, 'index']);
+    });
+
+    Route::prefix('roles')->group(function() {
+        Route::get('/', [RoleController::class, 'index']);
     });
 
     Route::prefix('users')->group(function() {
