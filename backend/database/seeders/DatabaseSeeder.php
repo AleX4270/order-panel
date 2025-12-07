@@ -10,7 +10,6 @@ class DatabaseSeeder extends Seeder {
      */
     public function run(): void {
         $this->call([
-            AdminUserSeeder::class,
             LanguageSeeder::class,
             CountrySeeder::class,
             OrderStatusSeeder::class,
@@ -18,6 +17,7 @@ class DatabaseSeeder extends Seeder {
             PolishProvinceSeeder::class,
             PermissionSeeder::class,
             RoleSeeder::class,
+            AdminUserSeeder::class,
         ]);
     }
 }
