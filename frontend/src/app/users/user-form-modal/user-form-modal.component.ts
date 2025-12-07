@@ -200,9 +200,20 @@ export class UserFormModalComponent implements OnDestroy {
     }
 
     protected closeModal(): void {
-        this.isEditScenario.set(false);
-        this.userId.set(null);
-        this.form.reset();
+        if(!this.modal) {
+            return;
+        }
+
+        this.userFormModal.nativeElement.addEventListener(
+            'hidden.bs.modal',
+            () => {
+                this.isEditScenario.set(false);
+                this.userId.set(null);
+                this.form.reset();
+            },
+            {once: true},
+        );
+        
         this.modal?.hide();
     }
 
