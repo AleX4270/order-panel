@@ -242,9 +242,12 @@ export class UserFormModalComponent implements OnDestroy {
         this.userService.show(userId).subscribe({
             next: (res) => {
                 const user: UserItem | null = res.data;
-                
                 if(!user) {
                     return;
+                }
+
+                if(user.isInternal) {
+                    this.form.get('roles')?.disable();
                 }
 
                 let roleSymbols: string[] = [];

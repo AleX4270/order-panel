@@ -21,6 +21,7 @@ class UserRepository {
                 'u.email',
                 'u.created_at as dateCreated',
                 'u.updated_at as dateUpdated',
+                'u.is_internal as isInternal',
             ]);
     }
     

@@ -8,8 +8,10 @@ use App\Enums\PermissionType;
 use App\Http\Requests\Api\Order\OrderFilterRequest;
 use App\Http\Requests\Api\Order\OrderRequest;
 use App\Http\Responses\Api\ApiResponse;
+use App\Models\Order;
 use App\Services\Api\Order\OrderService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class OrderController {
     public function __construct(
@@ -27,12 +29,7 @@ class OrderController {
     }
 
     public function show(Request $request): ApiResponse {
-        if(!$request->user()?->can(PermissionType::ORDERS_SHOW->value)) {
-            return new ApiResponse(
-                status: HttpStatus::UNAUTHORIZED,
-                message: __('response.unauthorized'),
-            );       
-        }
+        Gate::authorize('show', Order::class);
 
         $orderId = (int)$request->route('id');
 
@@ -71,12 +68,7 @@ class OrderController {
     }
 
     public function delete(Request $request) {
-        if(!$request->user()?->can(PermissionType::ORDERS_DELETE->value)) {
-            return new ApiResponse(
-                status: HttpStatus::UNAUTHORIZED,
-                message: __('response.unauthorized'),
-            );
-        }
+        Gate::authorize('delete', Order::class);
 
         $orderId = (int)$request->route('id');
 
