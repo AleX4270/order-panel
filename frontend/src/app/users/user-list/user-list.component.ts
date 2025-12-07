@@ -124,12 +124,14 @@ import { Role } from '../../shared/enums/role.enum';
                                         (click)="showUserFormModal(item.id)"
                                     ></ng-icon>
 
-                                    <ng-icon
-                                        class="item-pressable text-danger"
-                                        name="faTrashCan"
-                                        size="20px"
-                                        (click)="showUserDeletePromptModal(item.id)"
-                                    ></ng-icon>
+                                    @if(!item.isInternal) {
+                                        <ng-icon
+                                            class="item-pressable text-danger"
+                                            name="faTrashCan"
+                                            size="20px"
+                                            (click)="showUserDeletePromptModal(item.id)"
+                                        ></ng-icon>
+                                    }
                                 </div>
                             </td>
                         </tr>

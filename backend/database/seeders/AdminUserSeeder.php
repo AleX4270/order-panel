@@ -33,6 +33,7 @@ class AdminUserSeeder extends Seeder {
             'name' => $adminCredentials['name'],
             'email' => $adminCredentials['email'],
             'password' => Hash::make($adminCredentials['password']),
+            'is_internal' => 1,
         ]);
 
         $admin->assignRole(RoleType::ADMIN->value);

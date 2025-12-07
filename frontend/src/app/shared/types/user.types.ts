@@ -23,6 +23,7 @@ export interface UserItem {
     dateCreated: string;
     dateUpdated: string;
     roles: RoleItem[];
+    isInternal: boolean;
 }
 
 export interface UserParams {

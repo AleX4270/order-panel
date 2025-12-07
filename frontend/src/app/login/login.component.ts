@@ -92,10 +92,10 @@ import { LoginUser } from "../shared/store/user/user.actions";
                     <div
                         class="login-card-footer text-center mt-4 d-flex justify-content-center align-items-center"
                     >
-                        <small>{{ "login.forgotPassword" | translate }}</small>
+                        <!-- <small>{{ "login.forgotPassword" | translate }}</small>
                         <button routerLink="/password-recovery" class="btn btn-sm btn-link">
                             {{ "login.passwordRecovery" | translate }}
-                        </button>
+                        </button> -->
                     </div>
                 </div>
 

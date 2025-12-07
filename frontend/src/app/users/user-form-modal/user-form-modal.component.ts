@@ -200,9 +200,20 @@ export class UserFormModalComponent implements OnDestroy {
     }
 
     protected closeModal(): void {
-        this.isEditScenario.set(false);
-        this.userId.set(null);
-        this.form.reset();
+        if(!this.modal) {
+            return;
+        }
+
+        this.userFormModal.nativeElement.addEventListener(
+            'hidden.bs.modal',
+            () => {
+                this.isEditScenario.set(false);
+                this.userId.set(null);
+                this.form.reset();
+            },
+            {once: true},
+        );
+        
         this.modal?.hide();
     }
 
@@ -242,9 +253,12 @@ export class UserFormModalComponent implements OnDestroy {
         this.userService.show(userId).subscribe({
             next: (res) => {
                 const user: UserItem | null = res.data;
-                
                 if(!user) {
                     return;
+                }
+
+                if(user.isInternal) {
+                    this.form.get('roles')?.disable();
                 }
 
                 let roleSymbols: string[] = [];

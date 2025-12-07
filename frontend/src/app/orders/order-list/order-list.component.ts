@@ -95,7 +95,7 @@ import { ToastService } from '../../shared/services/toast/toast.service';
                         <tr 
                             class="list-row"
                             [class.completed-row]="item.statusSymbol === status.completed"
-                            [class.overdue-row]="item.isOverdue"
+                            [class.overdue-row]="item.isOverdue && item.statusSymbol !== status.completed"
                         >
                             <td class="fw-semibold">{{ '#' + item.id }}</td>
                             <td>

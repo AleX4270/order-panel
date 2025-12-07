@@ -1,6 +1,9 @@
 import { Country } from "./shared/enums/country.enum";
 import { Priority } from "./shared/enums/priority.enum";
 import { Status } from "./shared/enums/status.enum";
+import packageJson from '../../package.json';
+
+export const APP_VERSION = packageJson.version as string;
 
 export const TOAST_DURATION: number = 3000;
 export const MAX_TOAST_STACK_ELEMENTS: number = 5;

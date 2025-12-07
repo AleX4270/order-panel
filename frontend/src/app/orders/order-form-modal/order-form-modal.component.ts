@@ -344,9 +344,20 @@ export class OrderFormModalComponent implements OnDestroy {
     }
 
     protected closeModal(): void {
-        this.isEditScenario.set(false);
-        this.orderId.set(null);
-        this.form.reset();
+        if(!this.modal) {
+            return;
+        }
+
+        this.orderFormModal.nativeElement.addEventListener(
+            'hidden.bs.modal',
+            () => {
+                this.isEditScenario.set(false);
+                this.orderId.set(null);
+                this.form.reset();
+            },
+            {once: true},
+        );
+        
         this.modal?.hide();
     }
 

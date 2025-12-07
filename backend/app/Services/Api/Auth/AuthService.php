@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthService {
     public function login(LoginRequest $request, array $data): ?User {
+        $user = User::where('email', $data['email'])->first();
+
+        if(empty($user) || empty($user->is_active)) {
+            return null;
+        }
+
         if(!Auth::attempt($data)) {
             return null;
         }

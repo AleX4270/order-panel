@@ -20,13 +20,13 @@ import { Router } from '@angular/router';
         <div class="dropdown">
                 <button class="btn bg-transparent border-0 p-0 ms-2 dropdown-toggle text-primary" data-bs-toggle="dropdown">{{user()?.username}}</button>
                 <ul class="dropdown-menu mt-1">
-                    <li>
+                    <!-- <li>
                         <button class="dropdown-item" type="button">
                             <div class="d-flex align-items-center justify-content-start gap-2">
                                 <span>{{"navbar.settings" | translate}}</span>
                             </div>
                         </button>
-                    </li>
+                    </li> -->
                     <li>
                         <button class="dropdown-item navbar-logout-item" type="button" (click)="logout()">
                             <div class="d-flex align-items-center justify-content-start gap-2">

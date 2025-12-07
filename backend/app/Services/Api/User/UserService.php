@@ -30,6 +30,7 @@ class UserService {
             $items = $query->get();
         }
 
+        // TODO: Think of a different solution
         $items = $items->map(function (User $user) {
             return [
                 'id' => $user->id,
@@ -40,6 +41,7 @@ class UserService {
                 'dateCreated' => $user->dateCreated,
                 'dateUpdated' => $user->dateUpdated,
                 'roles' => $this->mapRoles($user->roles),
+                'isInternal' => $user->isInternal,
             ];
         });
 
@@ -61,6 +63,7 @@ class UserService {
             'dateCreated' => $data->dateCreated,
             'dateUpdated' => $data->dateUpdated,
             'roles' => $this->mapRoles($data->roles),
+            'isInternal' => $data->isInternal,
         ];
 
         return $data;
@@ -90,11 +93,13 @@ class UserService {
                 $userId = $dto->id;
             }
 
-            $user->syncRoles([]);
+            if(!$user->is_internal) {
+                $user->syncRoles([]);
 
-            if(!empty($dto->roles)) {
-                foreach($dto->roles as $role) {
-                    $user->assignRole($role);
+                if(!empty($dto->roles)) {
+                    foreach($dto->roles as $role) {
+                        $user->assignRole($role);
+                    }
                 }
             }
 
