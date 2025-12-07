@@ -41,10 +41,8 @@ class OrderService {
             $items = $query->get();
         }
 
-        $statusCompletedId = OrderStatus::where('symbol', OrderStatusType::COMPLETED->value)->first()->id;
-
-        $items = $items->map(function($item) use($statusCompletedId) {
-            $item->isOverdue = Date::parse($item->dateDeadline)->isPast() && empty($item->dateCompleted) && $item->statusId !== $statusCompletedId;
+        $items = $items->map(function($item) {
+            $item->isOverdue = Date::parse($item->dateDeadline)->isPast();
             return $item;
         });
 
