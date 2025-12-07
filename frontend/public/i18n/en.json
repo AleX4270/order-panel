@@ -1,112 +1,202 @@
 {
-    "basic": {
-        "copyright": "OrderPanel - AleX4270. All rights reserved",
-        "cancel": "Cancel",
-        "return": "Return",
-        "notFound": "Resource not found",
-        "notFoundDescription": "Oops! It looks like the resource you were looking for does not exist. It may have been moved, deleted, or simply never existed.",
-        "save": "Save",
-        "noResults": "No results"
-    },
-    "error": {
-        "incorrect": "Invalid data",
-        "required": "This value is required",
-        "email": "The value must be a valid email address",
-        "min": "Minimum required value: {{min}}",
-        "max": "Maximum allowed value: {{max}}",
-        "maxLength": "Maximum length exceeded",
-        "minLength": "The value is too short",
-        "pattern": "The value has an invalid format"
-    },
-    "navbar": {
-        "dashboard": "Dashboard",
-        "orders": "Orders",
-        "settings": "Settings",
-        "logout": "Logout"
-    },
-    "form": {
-        "error": "The form contains invalid data"
-    },
-    "auth": {
-        "header": "Welcome back!"
-    },
-    "login": {
-        "title": "Log in",
-        "description": "Enter your credentials to access your account",
-        "email": "E-mail",
-        "emailPlaceholder": "user@domain.com",
-        "password": "Password",
-        "submit": "Log in",
-        "forgotPassword": "Forgot your password?",
-        "passwordRecovery": "Recover it!",
-        "error": "Failed to log in the user or incorrect data provided"
-    },
-    "logout": {
-        "success": "User successfully logged out",
-        "error": "Could not logout the user"
-    },
-    "passwordRecovery": {
-        "title": "Password Recovery",
-        "description": "Enter the email address associated with your account and we'll send you a link to reset your password",
-        "email": "E-mail",
-        "emailPlaceholder": "user@domain.com",
-        "submit": "Send link"
-    },
-    "orderList": {
-        "header": "Order List",
-        "addNewOrder": "Add New Order",
-        "inProgress": "In Progress",
-        "overdue": "Overdue",
-        "completed": "Completed",
-        "legend": "Legend"
-    },
-    "orderListTable": {
-        "orderNo": "Order No",
-        "address": "Address",
-        "priority": "Priority",
-        "dateCreated": "Created At",
-        "dateDeadline": "Deadline",
-        "remarks": "Notes",
-        "actions": "Actions",
-        "details": "Details",
-        "edit": "Edit",
-        "delete": "Delete"
-    },
-    "orderListFilters": {
-        "allFields": "All fields",
-        "allFieldsPlaceholder": "Enter a phrase",
-        "priority": "Priority",
-        "priorityPlaceholder": "Select priority",
-        "status": "Status",
-        "statusPlaceholder": "Select status",
-        "dateCreation": "Creation date",
-        "dateDeadline": "Deadline"
-    },
-    "orderForm": {
-        "createTitle": "Create new order",
-        "updateTitle": "Order form",
-        "orderNumber": "Order number",
-        "orderNumberPlaceholder": "Enter order number",
-        "priority": "Priority",
-        "priorityPlaceholder": "Select priority",
-        "status": "Status",
-        "statusPlaceholder": "Select status",
-        "phoneNumber": "Phone number",
-        "phoneNumberPlaceholder": "Enter phone number",
-        "country": "Country",
-        "countryPlaceholder": "Select country",
-        "province": "Province",
-        "provincePlaceholder": "Select province",
-        "city": "City",
-        "cityPlaceholder": "Select city",
-        "postalCode": "Postal code",
-        "postalCodePlaceholder": "12-345",
-        "address": "Address",
-        "addressPlaceholder": "Enter address",
-        "dateCreation": "Creation date",
-        "dateDeadline": "Deadline",
-        "dateCompleted": "Date completed",
-        "remarks": "Remarks",
-        "remarksPlaceholder": "Enter remarks"
-    }
+  "basic": {
+    "copyright": "OrderPanel - AleX4270. All rights reserved",
+    "cancel": "Cancel",
+    "return": "Return",
+    "notFound": "Resource not found",
+    "notFoundDescription": "Oops! It looks like the resource you were looking for does not exist. It may have been moved, deleted, or never existed.",
+    "save": "Save",
+    "noResults": "No results",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "error": {
+    "incorrect": "Invalid data",
+    "required": "This field is required",
+    "email": "The value must be a valid email address",
+    "min": "Minimum value required: {{min}}",
+    "max": "Maximum value allowed: {{max}}",
+    "maxLength": "Maximum length exceeded",
+    "minLength": "The value is too short",
+    "pattern": "The value has an invalid format",
+    "deadlineBeforeCreation": "The deadline is earlier than the creation date",
+    "completedBeforeCreation": "The completion date is earlier than the creation date",
+    "weakPassword": "The password does not meet the requirements. It should include at least 8 characters, one uppercase letter, one lowercase letter, one digit, and one special character.",
+    "passwordMismatch": "The passwords do not match"
+  },
+  "navbar": {
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "settings": "Settings",
+    "users": "Users",
+    "logout": "Logout"
+  },
+  "form": {
+    "error": "The form contains invalid data"
+  },
+  "auth": {
+    "header": "Welcome back!"
+  },
+  "login": {
+    "title": "Log in",
+    "description": "Enter your details to access your account",
+    "email": "Email",
+    "emailPlaceholder": "user@domain.com",
+    "password": "Password",
+    "submit": "Log in",
+    "forgotPassword": "Forgot your password?",
+    "passwordRecovery": "Recover it!",
+    "error": "Failed to log in or incorrect credentials provided"
+  },
+  "logout": {
+    "success": "User logged out successfully",
+    "error": "Failed to log out user"
+  },
+  "passwordRecovery": {
+    "title": "Password recovery",
+    "description": "Enter the email address associated with your account and we will send you a link to reset your password",
+    "email": "Email",
+    "emailPlaceholder": "user@domain.com",
+    "submit": "Send reset link"
+  },
+  "orderList": {
+    "header": "Order List",
+    "addNewOrder": "Add Order",
+    "inProgress": "In progress",
+    "overdue": "Overdue",
+    "completed": "Completed",
+    "legend": "Legend",
+    "deleteSuccess": "Order deleted successfully",
+    "deleteError": "Failed to delete order",
+    "orders": "Orders"
+  },
+  "orderListTable": {
+    "orderNo": "Order number",
+    "address": "Address",
+    "priority": "Priority",
+    "dateCreated": "Creation date",
+    "dateDeadline": "Deadline",
+    "remarks": "Remarks",
+    "actions": "Actions",
+    "details": "Details",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "orderListFilters": {
+    "allFields": "All fields",
+    "allFieldsPlaceholder": "Enter a phrase",
+    "priority": "Priority",
+    "priorityPlaceholder": "Select priority",
+    "status": "Status",
+    "statusPlaceholder": "Select status",
+    "dateCreation": "Creation date",
+    "dateDeadline": "Deadline date"
+  },
+  "orderForm": {
+    "createTitle": "New Order Form",
+    "updateTitle": "Order Form",
+    "orderNumber": "Order number",
+    "orderNumberPlaceholder": "Enter the order number",
+    "priority": "Priority",
+    "priorityPlaceholder": "Select priority",
+    "status": "Status",
+    "statusPlaceholder": "Select status",
+    "phoneNumber": "Phone number",
+    "phoneNumberPlaceholder": "Enter phone number",
+    "country": "Country",
+    "countryPlaceholder": "Select country",
+    "province": "Province",
+    "provincePlaceholder": "Select province",
+    "city": "City",
+    "cityPlaceholder": "Select city",
+    "postalCode": "Postal code",
+    "postalCodePlaceholder": "12-345",
+    "address": "Address",
+    "addressPlaceholder": "Enter address",
+    "dateCreation": "Creation date",
+    "dateDeadline": "Deadline date",
+    "dateCompleted": "Completion date",
+    "remarks": "Remarks",
+    "remarksPlaceholder": "Enter remarks",
+    "saveErrorMessage": "Failed to save order",
+    "saveSuccessMessage": "Order saved successfully",
+    "addCity": "Add city"
+  },
+  "listTable": {
+    "noRecordsFound": "No records found"
+  },
+  "orderDeletePromptModal": {
+    "title": "Order deletion confirmation",
+    "message": "Do you confirm deletion of the selected order?"
+  },
+  "orderDetails": {
+    "header": "Order details",
+    "orderNo": "Order number",
+    "address": "Address",
+    "phoneNumber": "Phone number",
+    "priority": "Priority",
+    "status": "Status",
+    "isOverdue": "Is the deadline exceeded?",
+    "dateCreated": "Creation date",
+    "dateDeadline": "Deadline",
+    "dateCompleted": "Completion date",
+    "remarks": "Remarks"
+  },
+  "userList": {
+    "header": "User List",
+    "users": "Users",
+    "addNewUser": "Add user",
+    "deleteSuccess": "User deleted successfully",
+    "deleteError": "Failed to delete user"
+  },
+  "userListTable": {
+    "userNumber": "Number",
+    "name": "Username",
+    "email": "Email",
+    "dateCreated": "Creation date",
+    "dateUpdated": "Modification date",
+    "actions": "Actions",
+    "roles": "Roles"
+  },
+  "userListFilters": {
+    "allFields": "All fields",
+    "allFieldsPlaceholder": "Enter a phrase",
+    "dateCreated": "Creation date",
+    "dateUpdated": "Modification date"
+  },
+  "userDetails": {
+    "header": "User details",
+    "userNumber": "Number",
+    "firstAndLastName": "First and last name",
+    "name": "Username",
+    "dateCreated": "Creation date",
+    "dateUpdated": "Modification date",
+    "email": "Email",
+    "roles": "Roles"
+  },
+  "userForm": {
+    "createTitle": "New User Form",
+    "updateTitle": "User Form",
+    "firstName": "First name",
+    "firstNamePlaceholder": "Enter first name",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "Enter last name",
+    "username": "Username",
+    "usernamePlaceholder": "Enter username",
+    "email": "Email",
+    "emailPlaceholder": "Enter email address",
+    "password": "Password",
+    "passwordPlaceholder": "Enter password",
+    "passwordConfirmed": "Confirm password",
+    "passwordConfirmedPlaceholder": "Re-enter password",
+    "saveErrorMessage": "Failed to save user",
+    "saveSuccessMessage": "User saved successfully",
+    "roles": "Roles",
+    "rolesPlaceholder": "Select roles"
+  },
+  "userDeletePromptModal": {
+    "title": "User deletion confirmation",
+    "message": "Do you confirm deletion of the selected user?"
+  }
 }
