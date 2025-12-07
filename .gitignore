@@ -53,3 +53,5 @@ phpunit.phar
 .vscode
 
 .zed/*
+
+/deploy
