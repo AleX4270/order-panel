@@ -7,11 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
         TranslatePipe
     ],
     template: `
-        <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="fw-bold text-primary">{{"auth.header" | translate}}</h2>
-            </div>
-        </div>
+        <h1 class="text-primary font-bold text-3xl">{{"auth.header" | translate}}</h1>
     `,
     styles: ``
 })

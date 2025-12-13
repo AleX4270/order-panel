@@ -9,10 +9,8 @@ import { APP_VERSION } from '../../../app.constants';
         TranslatePipe,
     ],
     template: `
-        <div class="row text-center small text-secondary">
-            <div class="col-12 d-flex justify-content-center align-items-center gap-2">
-                <div><small>&copy; {{ currentYear + ' ' + ('basic.copyright' | translate) + ' | v' + appVersion}}</small></div>
-            </div>
+        <div class="flex justify-center items-center">
+            <small class="text-neutral/50">&copy; {{ currentYear + ' ' + ('basic.copyright' | translate) + ' | v' + appVersion}}</small>
         </div>
     `,
     styles: [`

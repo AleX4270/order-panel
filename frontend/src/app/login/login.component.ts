@@ -33,65 +33,66 @@ import { LoginUser } from "../shared/store/user/user.actions";
     ],
     providers: [provideIcons({ faEye, faEyeSlash })],
     template: `
-        <div class="row vh-100 d-flex justify-content-center align-items-center">
-            <div class="col-3">
-                <app-welcome-header />
+        <div class="min-h-screen flex items-center justify-center px-2 sm:px-4">
+            <div class="w-full max-w-md">
+                <div class="w-full flex justify-center pb-5">
+                    <app-welcome-header />
+                </div>
 
-                <div class="login-card shadow-sm p-4 mt-3 bg-white">
-                    <div class="login-card-header">
-                        <h5>{{ "login.title" | translate }}</h5>
-                        <p class="text-muted small mt-1">
+                <div class="card card-border p-1 shadow-sm shadow-primary/10">
+                    <div class="card-body">
+                        <h5 class="card-title text-xl">{{ "login.title" | translate }}</h5>
+                        <p class="text-base-content/60 mt-1">
                             {{ "login.description" | translate }}
                         </p>
-                    </div>
-                    <div class="login-card-body">
+
                         <form [formGroup]="form">
-                            <div class="form-group mt-4">
-                                <label for="email">{{ "login.email" | translate }}</label>
+                            <div class="mt-4 flex flex-col">
+                                <label class="label" for="email">{{ "login.email" | translate }}</label>
                                 <input
                                     id="email"
                                     type="text"
-                                    class="form-field input mt-2"
+                                    class="input mt-2 w-full"
                                     formControlName="email"
                                     placeholder="{{ 'login.emailPlaceholder' | translate }}"
                                 />
                             </div>
 
-                            <div class="form-group mt-4">
-                                <div class="d-flex justify-content-between">
-                                    <label for="password">{{
+                            <div class="mt-6 flex flex-col">
+                                <div class="flex justify-between">
+                                    <label class="label" for="password">{{
                                         "login.password" | translate
                                     }}</label>
                                 </div>
-                                <div class="position-relative">
+                                <!-- <div class="position-relative"> -->
+                                <div>
                                     <input
                                         id="password"
                                         type="{{ showPassword ? 'text' : 'password' }}"
-                                        class="form-field input mt-2"
+                                        class="input mt-2 w-full"
                                         formControlName="password"
                                         placeholder="&bull;&bull;&bull;&bull;"
                                     />
-                                    <div class="password-toggle-icon">
+                                    <!-- <div class="password-toggle-icon">
                                         <ng-icon
                                             class="item-pressable"
                                             name="{{ showPassword ? 'faEyeSlash' : 'faEye' }}"
                                             size="20px"
                                             (click)="togglePassword()"
                                         ></ng-icon>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
 
-                            <div>
-                                <button class="btn btn-primary w-100 mt-4" (click)="onSubmit()">
+                            <div class="card-actions">
+                                <button class="w-full btn btn-primary mt-9" (click)="onSubmit()">
                                     {{ "login.submit" | translate }}
                                 </button>
                             </div>
                         </form>
                     </div>
-                    <div
-                        class="login-card-footer text-center mt-4 d-flex justify-content-center align-items-center"
-                    >
+                    
+                    <div class="text-center flex justify-center items-center">
                         <!-- <small>{{ "login.forgotPassword" | translate }}</small>
                         <button routerLink="/password-recovery" class="btn btn-sm btn-link">
                             {{ "login.passwordRecovery" | translate }}

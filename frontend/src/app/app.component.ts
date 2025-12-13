@@ -21,23 +21,18 @@ import { PromptModalComponent } from './shared/components/prompt-modal/prompt-mo
     ],
     template: `
         @if(isUserAuthenticated()) {
-            <app-navbar class="sticky-top"/>
+            <app-navbar class="sticky top-0 z-50"/>
         }
-        <main class="app-container container-fluid">
+        <main class="w-full px-2 sm:px-6 lg:px-20 pt-6">
             <app-toast-displayer/>
             <app-prompt-modal />
             <router-outlet></router-outlet>
             @if(!isUserAuthenticated()) {
-                <app-language-selector class="fixed-bottom px-3 py-2" [dropDirection]="'up'" />
+                <app-language-selector class="fixed bottom-0 left-0 w-full px-3 py-2" [dropDirection]="'up'" />
             }
         </main>
     `,
-    styles: [`
-        .app-container {
-            padding-inline: 5rem;
-            padding-block-start: 1.5rem;
-        }    
-    `]
+    styles: [``]
 })
 export class AppComponent implements OnInit {
     private readonly translate = inject(TranslateService);
