@@ -1,71 +1,90 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, Signal } from '@angular/core';
 import { SmallFooterComponent } from "../small-footer/small-footer.component";
-import { NavbarElementComponent } from "../navbar-element/navbar-element.component";
 import { Store } from '@ngxs/store';
 import { UserState } from '../../store/user/user.state';
 import { LocalDataService } from '../../services/local-data/local-data.service';
 import { NavbarElement } from '../../types/navbar.types';
-import { UserProfileNavbarComponent } from '../user-image/user-profile-navbar.component';
+import { DropdownComponent } from "../dropdown/dropdown.component";
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../../services/api/auth/auth.service';
+import { ToastService } from '../../services/toast/toast.service';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { LogoutUser } from '../../store/user/user.actions';
+import { ToastType } from '../../enums/enums';
+import { User } from '../../types/user.types';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
     selector: 'app-navbar',
-    imports: [SmallFooterComponent, NavbarElementComponent, UserProfileNavbarComponent],
+    imports: [SmallFooterComponent, DropdownComponent, TranslatePipe, RouterLink, RouterLinkActive, NgTemplateOutlet],
     template: `
-        <nav class="navbar navbar-expand-lg m-0 p-0">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse align-items-center justify-content-lg-between" id="navbarSupportedContent">
-                    <ul class="navbar-nav mb-2 mb-lg-0">
-                        @if(isUserAuthenticated()) {
-                            <li class="nav-item me-4 d-flex align-items-center">
-                                <app-user-profile-navbar />
-                            </li>
+        <ng-template #navLinks>
+            @for(navElement of navbarElementList; track navElement) {
+                <li>
+                    <a [routerLink]="navElement.url" routerLinkActive="text-primary" class="hover:text-primary">
+                        {{"navbar." + navElement.label | translate}}
+                    </a>
+                </li>
+            }
+        </ng-template>
 
-                            @for(navElement of navbarElementList; track navElement) {
-                                <li class="nav-item">
-                                    <app-navbar-element
-                                        [label]="navElement.label"
-                                        [url]="navElement.url"
-                                    />
-                                </li>
-                            }
-                        }
-                        @else {
-                            <li class="navbar-brand me-4">
-                                OrderPanel
-                            </li>
-                        }
-                    </ul>
-
-                    <ul class="navbar-nav mb-2 mb-lg-0">
-                        @if(isUserAuthenticated()) {
+        <nav class="navbar bg-base-100 shadow-sm">
+            <div class="navbar-start">
+                <div class="hidden lg:flex">
+                    <app-dropdown>
+                        <ng-template #label><span class="text-primary">{{user()?.username}}</span></ng-template>
+                        <ng-template #options>
                             <li>
-                                <span class="navbar-text">
-                                    <app-small-footer/>
-                                </span>
+                                <button class="btn btn-ghost" type="button" (click)="logout()">
+                                    <span class="text-error">{{"navbar.logout" | translate}}</span>
+                                </button>
+                            </li>
+                        </ng-template>
+                    </app-dropdown>
+                </div>
+                <app-dropdown class="lg:hidden">
+                    <ng-template #label>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
+                    </ng-template>
+                    <ng-template #options>
+                        @if(isUserAuthenticated()) {
+                            <li><span class="text-primary font-semibold pointer-events-none">{{user()?.username}}</span></li>
+
+                            <ng-container *ngTemplateOutlet="navLinks"></ng-container>
+
+                            <li>
+                                <button class="btn btn-ghost" type="button" (click)="logout()">
+                                    <span class="text-error">{{"navbar.logout" | translate}}</span>
+                                </button>
                             </li>
                         }
-                    </ul>
-                </div>
+                    </ng-template>
+                </app-dropdown>
+            </div>
+            <div class="navbar-center hidden lg:flex">
+                <ul class="menu menu-horizontal">
+                    @if(isUserAuthenticated()) {
+                        <ng-container *ngTemplateOutlet="navLinks"></ng-container>
+                    }
+                </ul>
+            </div>
+            <div class="navbar-end">
+                <app-small-footer/>
             </div>
         </nav>
     `,
-    styles: [`
-        .navbar {
-            padding: 0 2% 0 2%;
-            min-height: 55px;
-            box-shadow: var(--shadow-sm);
-            background-color: var(--navbar-background-color);
-        }
-    `]
+    styles: [``],
 })
 export class NavbarComponent implements OnInit {
-    private readonly store = inject(Store);
     private readonly localDataService = inject(LocalDataService);
+    private readonly authService = inject(AuthService);
+    private readonly store = inject(Store);
+    private readonly toast = inject(ToastService);
+    private readonly router = inject(Router);
+    private readonly translate = inject(TranslateService);
 
-    protected isUserAuthenticated = this.store.selectSignal(UserState.isAuthenticated); //TODO: Maybe this won't be needed
+    protected user: Signal<User | null> = this.store.selectSignal(UserState.userData);
+    protected isUserAuthenticated = this.store.selectSignal(UserState.isAuthenticated);
     protected navbarElementList: NavbarElement[] = [];
 
     ngOnInit(): void {
@@ -76,6 +95,20 @@ export class NavbarComponent implements OnInit {
             error: (err) => {
                 console.error(err);
             }
+        });
+    }
+
+    protected logout(): void {
+        this.authService.logout().subscribe({
+            next: () => {
+                this.store.dispatch(new LogoutUser);
+                this.router.navigate(['/']).then(() => {
+                    this.toast.show(this.translate.instant('logout.success'), ToastType.warning);
+                });
+            },
+            error: () => {
+                this.toast.show(this.translate.instant('logout.error'), ToastType.danger);
+            },
         });
     }
 }

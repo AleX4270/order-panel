@@ -8,7 +8,9 @@ import { Component, ContentChild, input, InputSignal, TemplateRef } from '@angul
     ],
     template: `
         <div class="dropdown" [ngClass]="classList()">
-            <div tabindex="0" role="button" class="btn mt-1">{{label()}}</div>
+            <div tabindex="0" role="button" class="btn mt-1">
+                <ng-container *ngTemplateOutlet="label"></ng-container>
+            </div>
             <ul 
                 tabindex="-1" 
                 class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
@@ -21,10 +23,10 @@ import { Component, ContentChild, input, InputSignal, TemplateRef } from '@angul
     styles: []
 })
 export class DropdownComponent {
+    @ContentChild('label', { read: TemplateRef }) label!: TemplateRef<any>;
     @ContentChild('options', { read: TemplateRef }) options!: TemplateRef<any>;
 
     public classList: InputSignal<string | null> = input<string | null>(null);
-    public label: InputSignal<string | null> = input<string | null>(null);
 
     protected blurActive(): void {
         (document.activeElement as HTMLElement | null)?.blur();

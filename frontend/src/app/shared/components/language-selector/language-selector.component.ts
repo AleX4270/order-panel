@@ -15,7 +15,8 @@ import { DropdownComponent } from "../dropdown/dropdown.component";
     DropdownComponent
 ],
   template: `
-    <app-dropdown [label]="currentLanguage() ?? ''" classList="dropdown-top">
+    <app-dropdown classList="dropdown-top">
+        <ng-template #label><span class="text-primary uppercase">{{ currentLanguage() }}</span></ng-template>
         <ng-template #options>
             @for(language of languageList(); track language) {
                 <li><button class="uppercase text-primary" type="button" (click)="setLanguage(language)">{{language}}</button></li>
