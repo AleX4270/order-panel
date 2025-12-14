@@ -23,12 +23,12 @@ import { PromptModalComponent } from './shared/components/prompt-modal/prompt-mo
         @if(isUserAuthenticated()) {
             <app-navbar class="sticky top-0 z-50"/>
         }
-        <main class="w-full px-2 sm:px-6 lg:px-20 pt-6">
+        <main class="w-full px-2 sm:px-6 lg:px-20">
             <app-toast-displayer/>
             <app-prompt-modal />
             <router-outlet></router-outlet>
             @if(!isUserAuthenticated()) {
-                <app-language-selector class="fixed bottom-0 left-0 w-full px-3 py-2" [dropDirection]="'up'" />
+                <app-language-selector class="fixed bottom-0 left-0 w-full px-3 py-2" />
             }
         </main>
     `,

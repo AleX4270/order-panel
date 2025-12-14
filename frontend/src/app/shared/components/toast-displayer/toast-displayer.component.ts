@@ -10,12 +10,14 @@ import { Subscription } from 'rxjs';
         ToastComponent,
     ],
     template: `
-        @for(toast of toastStack; track toast) {
-            <app-toast
-                [toastData]="toast"
-                (dismiss)="onToastDismiss($event)"
-            />
-        }
+        <div class="toast">
+            @for(toast of toastStack; track toast) {
+                <app-toast
+                    [toastData]="toast"
+                    (dismiss)="onToastDismiss($event)"
+                />
+            }
+        </div>
     `,
     styles: `
         :host {

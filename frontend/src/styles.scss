@@ -1,7 +1,5 @@
-// @use './styles/themes/light-theme.scss';
-// @use './styles/themes/dark-theme.scss';
-// @use './styles/constants.scss';
-// @use '@ng-select/ng-select/themes/default.theme.css';
+@use './styles/constants.scss';
+@use '@ng-select/ng-select/themes/default.theme.css';
 
 @font-face {
     font-family: 'mainFont';
@@ -37,144 +35,15 @@
     font-family: 'mainFont';
 }
 
-// .navbar-element {
-//     padding: 0.5rem 0.75rem 0.5rem 0.75rem;
-//     border-radius: var(--radius-sm);
-//     transition: color 200ms, background-color 200ms;
-//     cursor: pointer;
-//     border: none;
-//     background-color: transparent;
+.item-pressable {
+    cursor: pointer;
+    transition: transform ease 0.15s;
 
-//     &:hover {
-//         color: var(--navbar-element-text-hover-color);
-//         background-color: var(--navbar-element-hover-background-color);
-//     }
+    &:hover {
+        transform: scale(1.21);
+    }
 
-//     &.active {
-//         color: var(--navbar-element-text-active-color);
-//         background-color: var(--navbar-element-active-background-color);
-
-//         &:hover {
-//             color: var(--navbar-element-text-active-color);
-//             background-color: var(--navbar-element-active-background-color);
-//         }
-//     }
-// }
-
-// .item-pressable {
-//     cursor: pointer;
-//     transition: transform ease 0.15s;
-
-//     &:hover {
-//         transform: scale(1.21);
-//     }
-
-//     &:active {
-//         transform: scale(1.05);
-//     }
-// }
-
-// .cursor-pointer { 
-//     cursor: pointer;
-// }
-
-// .form-field {
-//     appearance: none;
-//     font-size: var(--font-size-xs);
-//     display: block;
-//     width: 100%;
-//     min-height: 36px;
-//     background: var(--background-color);
-//     color: var(--form-field-text-primary-color);
-//     border-radius: var(--radius-md);
-//     box-shadow: var(--shadow-xs);
-//     outline: none;
-//     transition: border-color .15s ease, box-shadow .15s ease,
-//                 background-color .15s ease, color .15s ease;
-
-//     &.dropdown {
-//         .ng-select-container {
-//             background: var(--ng-select-background-color);
-//             color: var(--ng-select-text-primary-color);
-//             border: 1px solid var(--ng-select-border-color);
-//             border-radius: var(--radius-md);
-//             transition: border-color .15s ease, box-shadow .15s ease,
-//                         background-color .15s ease, color .15s ease;
-//         }
-
-//         .ng-value-container {
-//             padding: 4px 12px;
-//             align-items: center;
-//             gap: 4px;
-//         }
-
-//         .ng-input > input {
-//             padding: 0;
-//                 &::placeholder {
-//                     color: var(--ng-select-input-placeholder-color);
-//                     opacity: .7;
-//                 }
-//         }
-
-//         .ng-placeholder {
-//             color: var(--ng-select-placeholder-color);
-//             opacity: .9;
-//         }
-
-//         &.ng-select-multiple {
-//             .ng-select-container { 
-//                 position: relative;
-//             }
-
-//             .ng-placeholder {
-//                 position: absolute;
-//                 transform: translateY(30%);
-//                 margin: 0;
-//                 line-height: 1;
-//                 pointer-events: none;
-//             }
-//         }
-
-//         &.ng-select-disabled .ng-select-container {
-//             opacity: .5;
-//             cursor: not-allowed;
-//             box-shadow: none;
-//         }
-
-//         &.is-invalid .ng-select-container,
-//         &[aria-invalid="true"] .ng-select-container {
-//             border-color: var(--ng-select-invalid-border-color);
-//             box-shadow: var(--shadow-xs);
-//         }
-//     }
-
-//     &.input {
-//         padding: 4px 12px;
-//         border: 1px solid var(--form-input-border-color);
-
-//         &::placeholder {
-//             color: var(--form-input-placeholder-color);
-//             opacity: .7;
-//         }
-
-//         &:focus {
-//             border-color: var(--form-input-focus-color);
-//             box-shadow: 0 0 0 4px var(--form-input-focus-shadow-color);
-//         }
-
-//         &:disabled {
-//             opacity: .5;
-//             cursor: not-allowed;
-//             box-shadow: none;
-//         }
-//     }
-// }
-
-// .required {
-//     &::after {
-//         content: '*';
-//         color: var(--required-symbol-color);
-//         position: relative;
-//         left: 2px;
-//     }
-// }
+    &:active {
+        transform: scale(1.05);
+    }
+}

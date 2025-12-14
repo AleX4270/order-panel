@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from "@angular/core";
+import { Component, OnInit, WritableSignal, inject, signal } from "@angular/core";
 import { WelcomeHeaderComponent } from "../shared/components/welcome-header/welcome-header.component";
 import {
     ReactiveFormsModule,
@@ -19,18 +19,23 @@ import { ToastType } from "../shared/enums/enums";
 import { Store } from "@ngxs/store";
 import { User } from "../shared/types/user.types";
 import { LoginUser } from "../shared/store/user/user.actions";
+import { finalize } from "rxjs";
+import { ButtonComponent } from "../shared/components/button/button.component";
+import { InputErrorLabelComponent } from "../shared/components/input-error-label/input-error-label.component";
 
 @Component({
     selector: "app-login",
     imports: [
-        WelcomeHeaderComponent,
-        ReactiveFormsModule,
-        SmallFooterComponent,
-        NgIconComponent,
-        CommonModule,
-        RouterModule,
-        TranslatePipe,
-    ],
+    WelcomeHeaderComponent,
+    ReactiveFormsModule,
+    SmallFooterComponent,
+    NgIconComponent,
+    CommonModule,
+    RouterModule,
+    TranslatePipe,
+    ButtonComponent,
+    InputErrorLabelComponent
+],
     providers: [provideIcons({ faEye, faEyeSlash })],
     template: `
         <div class="min-h-screen flex items-center justify-center px-2 sm:px-4">
@@ -39,55 +44,61 @@ import { LoginUser } from "../shared/store/user/user.actions";
                     <app-welcome-header />
                 </div>
 
-                <div class="card card-border p-1 shadow-sm shadow-primary/10">
+                <div class="card sm:card-border sm:p-1 sm:shadow-sm sm:shadow-primary/10">
                     <div class="card-body">
                         <h5 class="card-title text-xl">{{ "login.title" | translate }}</h5>
                         <p class="text-base-content/60 mt-1">
                             {{ "login.description" | translate }}
                         </p>
 
-                        <form [formGroup]="form">
-                            <div class="mt-4 flex flex-col">
+                        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                            <div class="mt-5 flex flex-col">
                                 <label class="label" for="email">{{ "login.email" | translate }}</label>
                                 <input
                                     id="email"
-                                    type="text"
-                                    class="input mt-2 w-full"
+                                    type="email"
+                                    class="input w-full"
                                     formControlName="email"
-                                    placeholder="{{ 'login.emailPlaceholder' | translate }}"
+                                    [placeholder]="'login.emailPlaceholder' | translate"
                                 />
+                                <app-input-error-label [control]="form.get('email')" />
                             </div>
 
-                            <div class="mt-6 flex flex-col">
+                            <div class="mt-7 flex flex-col">
                                 <div class="flex justify-between">
                                     <label class="label" for="password">{{
                                         "login.password" | translate
                                     }}</label>
                                 </div>
-                                <!-- <div class="position-relative"> -->
-                                <div>
+                                <div class="relative">
                                     <input
                                         id="password"
-                                        type="{{ showPassword ? 'text' : 'password' }}"
-                                        class="input mt-2 w-full"
+                                        [type]="showPassword ? 'text' : 'password'"
+                                        class="input w-full"
                                         formControlName="password"
                                         placeholder="&bull;&bull;&bull;&bull;"
                                     />
-                                    <!-- <div class="password-toggle-icon">
+                                    <app-input-error-label [control]="form.get('password')" />
+                                    <div class="absolute right-3 -translate-y-1/2 top-5 cursor-pointer">
                                         <ng-icon
                                             class="item-pressable"
-                                            name="{{ showPassword ? 'faEyeSlash' : 'faEye' }}"
+                                            [name]="showPassword ? 'faEyeSlash' : 'faEye'"
                                             size="20px"
                                             (click)="togglePassword()"
                                         ></ng-icon>
-                                    </div> -->
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="card-actions">
-                                <button class="w-full btn btn-primary mt-9" (click)="onSubmit()">
-                                    {{ "login.submit" | translate }}
-                                </button>
+                            <div class="card-actions w-full">
+                                <app-button
+                                    class="w-full"
+                                    classList="w-full btn btn-primary mt-10"
+                                    type="submit"
+                                    [isDisabled]="isSubmitted()"
+                                    [isLoading]="isSubmitted()"
+                                    [label]="'login.submit' | translate"
+                                />
                             </div>
                         </form>
                     </div>
@@ -106,24 +117,7 @@ import { LoginUser } from "../shared/store/user/user.actions";
             </div>
         </div>
     `,
-    styles: [
-        `
-            .login-card {
-                border: 1px solid var(--login-card-border-color);
-                border-radius: var(--radius-lg);
-            }
-
-            .password-toggle-icon {
-                background-color: var(--password-toggle-background-color);
-                padding-left: 6px;
-                position: absolute;
-                top: 59%;
-                transform: translateY(-50%);
-                right: 10px;
-                cursor: pointer;
-            }
-        `,
-    ],
+    styles: [],
 })
 export class LoginComponent implements OnInit {
     private readonly translate: TranslateService = inject(TranslateService);
@@ -136,7 +130,7 @@ export class LoginComponent implements OnInit {
     protected form!: FormGroup;
     protected showPassword: boolean = false;
 
-    private isFormSubmitted: boolean = false;
+    protected isSubmitted: WritableSignal<boolean> = signal<boolean>(false);
 
     ngOnInit(): void {
         this.initForm();
@@ -154,7 +148,7 @@ export class LoginComponent implements OnInit {
     }
 
     protected onSubmit(): void {
-        if (this.isFormSubmitted) {
+        if (this.isSubmitted()) {
             return;
         }
 
@@ -163,12 +157,18 @@ export class LoginComponent implements OnInit {
             return;
         }
 
+        this.isSubmitted.set(true);
+
         const userCredentials: UserLoginCredentials = {
             email: this.form.get("email")?.value,
             password: this.form.get("password")?.value,
         };
 
-        this.authService.login(userCredentials).subscribe({
+        this.authService.login(userCredentials)
+        .pipe(
+            finalize(() => this.isSubmitted.set(false)),
+        )
+        .subscribe({
             next: (res) => {
                 if(res.data) {
                     const userData: User = {

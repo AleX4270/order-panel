@@ -9,21 +9,15 @@ import { ToastType } from '../../enums/enums';
         CommonModule
     ],
     template: `
-        <div>
-            <div
-                class="toast-card toast-success shadow-sm mt-1"
-                [ngClass]="{
-                    'fade-out': isFadingOut(),
-                    'toast-info': toastData().type === toastType.info,
-                    'toast-success': toastData().type === toastType.success,
-                    'toast-warning': toastData().type === toastType.warning,
-                    'toast-danger': toastData().type === toastType.danger
-                }"
-            >
-                <div class="toast-card-body pt-3">
-                    <p class="small">{{toastData().message}}</p>
-                </div>
-            </div>
+        <div role="alert" class="alert alert-soft"
+            [ngClass]="{
+                'alert-info': toastData().type === toastType.info,
+                'alert-success': toastData().type === toastType.success,
+                'alert-warning': toastData().type === toastType.warning,
+                'alert-error': toastData().type === toastType.danger
+            }"
+        >
+            <span>{{toastData().message}}</span>
         </div>
     `,
     styles: `
@@ -38,26 +32,6 @@ import { ToastType } from '../../enums/enums';
 
             &.fade-out {
                 animation: fade-out 0.3s ease-in forwards;
-            }
-
-            &.toast-info {
-                background-color: var(--toast-info-bg);
-                color: var(--toast-info-text);
-            }
-
-            &.toast-success {
-                background-color: var(--toast-success-bg);
-                color: var(--toast-success-text);
-            }
-
-            &.toast-warning {
-                background-color: var(--toast-warning-bg);
-                color: var(--toast-warning-text);
-            }
-
-            &.toast-danger {
-                background-color: var(--toast-danger-bg);
-                color: var(--toast-danger-text);
             }
         }
 

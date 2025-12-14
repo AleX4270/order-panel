@@ -10,7 +10,7 @@ import { APP_VERSION } from '../../../app.constants';
     ],
     template: `
         <div class="flex justify-center items-center">
-            <small class="text-neutral/50">&copy; {{ currentYear + ' ' + ('basic.copyright' | translate) + ' | v' + appVersion}}</small>
+            <small class="text-neutral/50 text-xs">&copy; {{ currentYear + ' ' + ('basic.copyright' | translate) + ' | v' + appVersion}}</small>
         </div>
     `,
     styles: [`
