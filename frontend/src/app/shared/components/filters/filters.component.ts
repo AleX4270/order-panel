@@ -16,48 +16,53 @@ import { debounceTime, Subject } from 'rxjs';
         FormsModule
     ],
     template: `
-        <div class="row w-100 p-4 d-flex justify-content-start align-items-start">
+        <div class="w-full flex flex-col sm:flex-row sm:flex-wrap sm:gap-2 justify-center sm:justify-start items-start">
             @for(filter of filters(); track filter) {
                 @switch(filter.type) {
                     @case ('text') {
-                        <div class="form-group filter-control col-3">
-                            <label [for]="filter.key">{{ filter.label | translate}}</label>
-                            <input
-                                class="form-field input"
-                                type="text"
-                                [id]="filter.key"
-                                [name]="filter.key"
-                                [placeholder]="(filter.placeholder ?? '') | translate"
-                                (input)="onFilterValueChange($event.target.value, filter)"
-                            />
+                        <div class="w-full sm:max-w-xs mt-3 sm:mt-1">
+                            <label [for]="filter.key" class="floating-label">
+                                <span>{{ filter.label | translate}}</span>
+                                <input
+                                    class="input placeholder:opacity-50"
+                                    type="text"
+                                    [id]="filter.key"
+                                    [name]="filter.key"
+                                    [placeholder]="(filter.placeholder ?? '') | translate"
+                                    (input)="onFilterValueChange($event.target.value, filter)"
+                                />
+                            </label>
                         </div>
                     }
                     @case ('multi-select') {
-                        <div class="form-group filter-control col-2">
-                            <label [for]="filter.key">{{ filter.label | translate}}</label>
-                            <ng-select 
-                                class="form-field dropdown"
-                                [items]="filtersDataMap()[filter.key] ?? []"
-                                bindValue="id"
-                                bindLabel="name"
-                                [multiple]="true"
-                                [placeholder]="(filter.placeholder ?? '') | translate"
-                                (search)="onFilterDataSearch($event.term, filter)"
-                                (change)="onFilterValueChange($event, filter)"
-                            />
+                        <div class="w-full sm:max-w-xs mt-3 sm:mt-1">
+                            <label [for]="filter.key" class="floating-label">
+                                <span>{{ filter.label | translate}}</span>
+                                <ng-select 
+                                    [items]="filtersDataMap()[filter.key] ?? []"
+                                    bindValue="id"
+                                    bindLabel="name"
+                                    [multiple]="true"
+                                    [placeholder]="(filter.placeholder ?? '') | translate"
+                                    (search)="onFilterDataSearch($event.term, filter)"
+                                    (change)="onFilterValueChange($event, filter)"
+                                />
+                            </label>
                         </div>
                     }
                     
                     @case ('date') {
-                        <div class="form-group filter-control col-2">
-                            <label [for]="filter.key">{{ filter.label | translate}}</label>
-                            <input
-                                class="form-field input"
-                                type="date"
-                                [id]="filter.key"
-                                [name]="filter.key"
-                                (change)="onFilterValueChange($event.target.value, filter)"
-                            />
+                        <div class="w-full sm:max-w-3xs mt-3 sm:mt-1">
+                            <label [for]="filter.key" class="floating-label">
+                                <span>{{ filter.label | translate}}</span>
+                                <input
+                                    class="input placeholder:opacity-50"
+                                    type="date"
+                                    [id]="filter.key"
+                                    [name]="filter.key"
+                                    (change)="onFilterValueChange($event.target.value, filter)"
+                                />
+                            </label>
                         </div>
                     }
                 }

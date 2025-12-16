@@ -24,38 +24,28 @@ import { ToastService } from '../../shared/services/toast/toast.service';
 @Component({
     selector: 'app-order-list',
     imports: [
-    TranslatePipe,
-    ListTableComponent,
-    TileComponent,
-    NgIcon,
-    ColorLabelComponent,
-    CardComponent,
-    PaginationComponent,
-    FiltersComponent,
-    OrderFormModalComponent,
-    DatePipe,
-    NgClass
-],
+        TranslatePipe,
+        ListTableComponent,
+        TileComponent,
+        NgIcon,
+        ColorLabelComponent,
+        CardComponent,
+        PaginationComponent,
+        FiltersComponent,
+        OrderFormModalComponent,
+        DatePipe,
+        NgClass
+    ],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan})],
     template: `
-        <div class="row order-list-header">
-            <div class="col-12">
-                <div class="row">
-                    <div class="col-6">
-                        <h3>{{'orderList.header' | translate}}</h3>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <app-card overflowType="visible">
-                            <app-filters 
-                                [type]="filterType.orderListFilters"
-                                (filtersChange)="onOrderFiltersChange($event)"
-                            />        
-                        </app-card>
-                    </div>
-                </div>
-            </div> 
+        <div class="w-full order-list-header">
+            <h1 class="font-semibold text-3xl mb-5">{{'orderList.header' | translate}}</h1>
+            <app-card overflowType="visible" [title]="'basic.filters' | translate">
+                <app-filters 
+                    [type]="filterType.orderListFilters"
+                    (filtersChange)="onOrderFiltersChange($event)"
+                />        
+            </app-card>
         </div>
 
         <div class="row order-list-info mt-5">

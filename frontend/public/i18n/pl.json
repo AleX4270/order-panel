@@ -9,7 +9,8 @@
         "noResults": "Brak pozycji",
         "confirm": "Potwierdź",
         "yes": "Tak",
-        "no": "Nie"
+        "no": "Nie",
+        "filters": "Filtry"
     },
     "error": {
         "incorrect": "Dane nieprawidłowe",
@@ -85,7 +86,7 @@
     },
     "orderListFilters": {
         "allFields": "Wszystkie pola",
-        "allFieldsPlaceholder": "Podaj frazę",
+        "allFieldsPlaceholder": "Wyszukaj po wszystkich polach",
         "priority": "Priorytet",
         "priorityPlaceholder": "Wybierz priorytet",
         "status": "Status",

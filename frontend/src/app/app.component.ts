@@ -23,7 +23,7 @@ import { PromptModalComponent } from './shared/components/prompt-modal/prompt-mo
         @if(isUserAuthenticated()) {
             <app-navbar class="sticky top-0 z-50"/>
         }
-        <main class="w-full px-2 sm:px-6 lg:px-20">
+        <main class="w-full px-2 sm:px-6 lg:px-20" [class.pt-7]="isUserAuthenticated()">
             <app-toast-displayer/>
             <app-prompt-modal />
             <router-outlet></router-outlet>
