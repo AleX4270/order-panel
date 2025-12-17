@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ListTableComponent } from '../../shared/components/list-table/list-table.component';
-import { ExpansionState, TileType, ToastType } from '../../shared/enums/enums';
+import { ExpansionState, ToastType } from '../../shared/enums/enums';
 import { Priority } from '../../shared/enums/priority.enum';
 import { TileComponent } from "../../shared/components/tile/tile.component";
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -20,6 +20,7 @@ import { Status } from '../../shared/enums/status.enum';
 import { SortItem } from '../../shared/types/sort.types';
 import { PromptModalService } from '../../shared/services/prompt-modal/prompt-modal.service';
 import { ToastService } from '../../shared/services/toast/toast.service';
+import { TileType } from '../../shared/types/tile.types';
 
 @Component({
     selector: 'app-order-list',
@@ -63,8 +64,8 @@ import { ToastService } from '../../shared/services/toast/toast.service';
             <button class="btn btn-primary" (click)="showOrderFormModal()" >{{'orderList.addNewOrder' | translate}}</button>
         </div>
 
-        <div class="row order-list-table mt-2">
-            <div class="col-12">
+        <div class="w-full mt-2">
+            <!-- <app-card overflowType="visible"> -->
                 <app-list-table
                     [defineTableRowsExternally]="true"
                     [data]="orders()"
@@ -81,43 +82,45 @@ import { ToastService } from '../../shared/services/toast/toast.service';
 
                     <ng-template #rows let-item>
                         <tr 
-                            class="list-row"
-                            [class.completed-row]="item.statusSymbol === status.completed"
-                            [class.overdue-row]="item.isOverdue && item.statusSymbol !== status.completed"
+                            class="bg-base-100 hover:bg-base-200 [&_td]:text-xs p-1"
+                            [ngClass]="{
+                                'bg-neutral/50': item.statusSymbol === status.completed,
+                                'bg-error/50': item.isOverdue && item.statusSymbol !== status.completed
+                            }"
                         >
-                            <td class="fw-semibold">{{ '#' + item.id }}</td>
+                            <td class="font-medium">{{ '#' + item.id }}</td>
                             <td>
-                                <div class="address d-flex flex-column">
-                                    <span class="city-name">{{item.cityName}}</span>
-                                    <span class="address-label text-muted">{{item.address}}</span>
+                                <div class="flex flex-col">
+                                    <span class="text-sm">{{item.cityName}}</span>
+                                    <span class="text-base-content/80 font-light mt-1">{{item.address}}</span>
                                 </div>
                             </td>
                             <td>
-                                <app-tile [type]="getPriorityTileType(item.prioritySymbol)">
+                                <app-tile [type]="getPriorityTileType(item.prioritySymbol)" [isSoft]="true" [isOutlined]="true">
                                     {{ item.priorityName }}
                                 </app-tile>
                             </td>
                             <td>{{ item.dateCreated | date:'dd-MM-yyyy' }}</td>
                             <td>{{ item.dateDeadline | date:'dd-MM-yyyy'}}</td>
-                            <td class="text-secondary">{{ item.remarks }}</td>
+                            <td class="text-base-content/50">{{ item.remarks }}</td>
                             <td>
-                                <div class="d-flex gap-3">
+                                <div class="flex gap-3">
                                     <ng-icon
-                                        class="item-pressable text-dark"
+                                        class="item-pressable"
                                         name="faEye"
                                         size="20px"
                                         (click)="toggleItemDetailsExpansion(item.id)"
                                     ></ng-icon>
 
                                     <ng-icon
-                                        class="item-pressable text-primary"
+                                        class="item-pressable"
                                         name="faPenToSquare"
                                         size="20px"
                                         (click)="showOrderFormModal(item.id)"
                                     ></ng-icon>
 
                                     <ng-icon
-                                        class="item-pressable text-danger"
+                                        class="item-pressable"
                                         name="faTrashCan"
                                         size="20px"
                                         (click)="showOrderDeletePromptModal(item.id)"
@@ -126,17 +129,15 @@ import { ToastService } from '../../shared/services/toast/toast.service';
                             </td>
                         </tr>
 
-                        <tr [class.d-none]="!hasVisibleDetails(item.id)">
+                        <tr [class.hidden]="!hasVisibleDetails(item.id)">
                             <td colspan="7" class="p-0">
-                                <div class="expandable-content order-details p-3">
-                                    <div class="row">
-                                        <div class="col">
-                                            <h6 class="details-header text-primary">{{ 'orderDetails.header' | translate}}</h6>
-                                        </div>
+                                <div class="order-details p-3">
+                                    <div class="w-full">
+                                        <h6 class="text-primary/90">{{ 'orderDetails.header' | translate}}</h6>
                                     </div>
 
-                                    <div class="row mt-2">
-                                        <div class="col d-flex flex-column">
+                                    <div class="w-full mt-2 flex gap-10">
+                                        <div class="flex flex-col">
                                             <span class="details-label text-muted">{{ 'orderDetails.orderNo' | translate}}</span>
                                             <div class="details-value">
                                                 <span>{{ '#' + item.id }}</span>
@@ -156,7 +157,7 @@ import { ToastService } from '../../shared/services/toast/toast.service';
                                         </div>
                                     </div>
 
-                                    <div class="row mt-4">
+                                    <div class="w-full mt-4 flex gap-10">
                                         <div class="col d-flex flex-column">
                                             <span class="details-label text-muted">{{ 'orderDetails.priority' | translate}}</span>
                                             <div class="details-value">
@@ -176,14 +177,14 @@ import { ToastService } from '../../shared/services/toast/toast.service';
                                         <div class="col d-flex flex-column">
                                             <span class="details-label text-muted">{{ 'orderDetails.isOverdue' | translate}}</span>
                                             <div class="details-value">
-                                                <app-tile [type]="item.isOverdue ? tileType.danger : tileType.success">
+                                                <app-tile [type]="item.isOverdue ? 'error' : 'success'">
                                                     {{ (item.isOverdue ? 'basic.yes' : 'basic.no') | translate}}
                                                 </app-tile>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="row mt-4">
+                                    <div class="w-full mt-4 flex gap-10">
                                         <div class="col d-flex flex-column">
                                             <span class="details-label text-muted">{{ 'orderDetails.dateCreated' | translate}}</span>
                                             <div class="details-value">
@@ -204,7 +205,7 @@ import { ToastService } from '../../shared/services/toast/toast.service';
                                         </div>
                                     </div>
 
-                                    <div class="row mt-4">
+                                    <div class="w-full mt-4 flex gap-10">
                                         <div class="col d-flex flex-column">
                                             <span class="details-label text-muted">{{ 'orderDetails.remarks' | translate}}</span>
                                             <div class="details-value">
@@ -217,7 +218,7 @@ import { ToastService } from '../../shared/services/toast/toast.service';
                         </tr>
                     </ng-template>
                 </app-list-table>
-            </div>
+            <!-- </app-card> -->
         </div>
 
         <div class="row order-list-pagination mt-5 pb-4">
@@ -230,55 +231,7 @@ import { ToastService } from '../../shared/services/toast/toast.service';
 
         <app-order-form-modal #orderFormModal (orderSaved)="loadOrders()" />
     `,
-    styles: [`
-        .order-details {
-            .details-header {
-                color: var(--order-list-header-text-color);
-            }
-
-            .details-label {
-                font-size: var(--font-size-xs);
-                font-weight: var(--font-weight-light);
-            }
-
-            .details-value {
-                font-size: var(--font-size-xs);
-            }
-        }
-        
-        .list-row {
-            background-color: var(--order-list-default-row-background-color);
-            border-bottom: 1px solid var(--order-list-row-border-color);
-
-            &:hover {
-                background-color: var(--order-list-hovered-row-background-color);
-            }
-
-            td {
-                font-size: var(--font-size-xs);
-                padding: 1.1rem 0 1.1rem 0.75rem;
-            }
-        }
-
-        .overdue-row {
-            background-color: var(--order-list-overdue-row-background-color);
-        }
-
-        .completed-row {
-            background-color: var(--order-list-completed-row-background-color);
-        }
-
-        .address {
-            .city-name {
-                font-size: var(--font-size-sm);
-            }
-
-            .address-label {
-                font-size: var(--font-size-xs);
-                font-weight: var(--font-weight-light);
-            }
-        }
-    `]
+    styles: [``]
 })
 export class OrderListComponent implements OnInit {
     @ViewChild('orderFormModal') orderFormModal!: OrderFormModalComponent;
@@ -290,7 +243,6 @@ export class OrderListComponent implements OnInit {
 
     protected readonly filterType = FilterType;
     protected readonly status = Status;
-    protected readonly tileType = TileType;
 
     protected expansionState = ExpansionState;
     protected itemDetailsExpansionState: Partial<Record<number, ExpansionState>> = {};
@@ -320,18 +272,16 @@ export class OrderListComponent implements OnInit {
 
     protected getPriorityTileType(type: Priority): TileType {
         return type === Priority.high
-            ? TileType.danger
-            : TileType.secondary;
+            ? 'error'
+            : 'info';
     }
 
     protected getStatusTileType(type: Status): TileType {
         switch(type) {
             case Status.in_progress:
-                return TileType.warning;
+                return 'warning'
             case Status.completed:
-                return TileType.success;
-            default:
-                return TileType.primary;
+                return 'success';
         }
     }
     

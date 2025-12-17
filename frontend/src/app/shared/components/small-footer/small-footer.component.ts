@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TileType } from '../../enums/enums';
 import { APP_VERSION } from '../../../app.constants';
 
 @Component({
@@ -21,7 +20,6 @@ import { APP_VERSION } from '../../../app.constants';
 })
 export class SmallFooterComponent {
     protected currentYear!: number;
-    protected tileType = TileType;
     protected appVersion = APP_VERSION;
 
     constructor() {

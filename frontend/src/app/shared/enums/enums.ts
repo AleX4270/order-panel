@@ -67,14 +67,3 @@ export enum ExpansionState {
     collapsed,
     expanded,
 }
-
-export enum TileType {
-    primary,
-    secondary,
-    success,
-    danger,
-    warning,
-    info,
-    light,
-    dark
-}

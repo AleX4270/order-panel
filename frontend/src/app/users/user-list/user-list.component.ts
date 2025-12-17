@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ListTableComponent } from '../../shared/components/list-table/list-table.component';
-import { ExpansionState, TileType, ToastType } from '../../shared/enums/enums';
+import { ExpansionState, ToastType } from '../../shared/enums/enums';
 import { TileComponent } from "../../shared/components/tile/tile.component";
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { faEye, faPenToSquare, faTrashCan } from '@ng-icons/font-awesome/regular';
@@ -19,6 +19,7 @@ import { UserService } from '../../shared/services/api/user/user.service';
 import { UserFilterParams, UserItem } from '../../shared/types/user.types';
 import { UserFormModalComponent } from "../user-form-modal/user-form-modal.component";
 import { Role } from '../../shared/enums/role.enum';
+import { TileType } from '../../shared/types/tile.types';
 
 @Component({
     selector: 'app-order-list',
@@ -269,7 +270,6 @@ export class UserListComponent implements OnInit {
     private readonly toastService = inject(ToastService);
 
     protected readonly filterType = FilterType;
-    protected readonly tileType = TileType;
 
     protected expansionState = ExpansionState;
     protected itemDetailsExpansionState: Partial<Record<number, ExpansionState>> = {};
@@ -406,11 +406,11 @@ export class UserListComponent implements OnInit {
     protected getRoleTileType(roleSymbol: Role): TileType {
         switch(roleSymbol) {
             case Role.admin:
-                return TileType.danger;
+                return 'error';
             case Role.manager:
-                return TileType.warning;
+                return 'warning';
             case Role.worker:
-                return TileType.primary;
+                return 'primary';
         }
     }
 }

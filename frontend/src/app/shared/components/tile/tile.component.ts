@@ -1,52 +1,73 @@
 import { Component, computed, effect, input, InputSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TileType } from '../../enums/enums';
+import { TileSize, TileType } from '../../types/tile.types';
 
 @Component({
     selector: 'app-tile',
     imports: [CommonModule],
     template: `
-        <span
-            [ngClass]="tileClassList()"
-        >
+        <div [ngClass]="classList()">
             <ng-content/>
-        </span>
+        </div>
     `,
-    styles: [`
-        .tile-label {
-            font-weight: var(--font-weight-medium);
-        }
-    `]
+    styles: [``]
 })
 export class TileComponent {
-    public type: InputSignal<any> = input<any>(TileType.primary);
-    protected tileClassList = computed(() => {
-        let list = 'badge tile-label';
+    public type: InputSignal<TileType> = input<TileType>('primary');
+    public size: InputSignal<TileSize> = input<TileSize>('extra-small');
+    public isSoft: InputSignal<boolean> = input<boolean>(false);
+    public isOutlined: InputSignal<boolean> = input<boolean>(false);
+
+    protected classList = computed(() => {
+        let list = 'badge font-normal';
+
+        if(this.isSoft()) {
+            list += ' badge-soft';
+        }
+
+        if(this.isOutlined()) {
+            list += ' badge-outline';
+        }
+
+        switch(this.size()) {
+            case 'medium':
+                list += ' badge-md';
+                break;
+            case 'small':
+                list += ' badge-sm';
+                break;
+            case 'extra-small':
+                list += ' badge-xs';
+                break;
+            default:
+                list += ' badge-xs';
+                break;
+        }
 
         switch(this.type()) {
-            case TileType.primary:
-                list += ' text-bg-primary';
+            case 'primary':
+                list += ' badge-primary';
                 break;
-            case TileType.secondary:
-                list += ' text-bg-secondary';
+            case 'secondary':
+                list += ' badge-secondary';
                 break;
-            case TileType.success:
-                list += ' text-bg-success';
+            case 'accent':
+                list += ' badge-accent';
                 break;
-            case TileType.danger:
-                list += ' text-bg-danger';
+            case 'info':
+                list += ' badge-info';
                 break;
-            case TileType.warning:
-                list += ' text-bg-warning';
+            case 'success':
+                list += ' badge-success';
                 break;
-            case TileType.info:
-                list += ' text-bg-info';
+            case 'warning':
+                list += ' badge-warning';
                 break;
-            case TileType.light:
-                list += ' text-bg-light';
+            case 'error':
+                list += ' badge-error';
                 break;
-            case TileType.dark:
-                list += ' text-bg-dark';
+            default:
+                list += ' badge-primary';
                 break;
         }
 
