@@ -16,7 +16,7 @@ import { debounceTime, Subject } from 'rxjs';
         FormsModule
     ],
     template: `
-        <div class="w-full flex flex-col sm:flex-row sm:flex-wrap sm:gap-2 justify-center sm:justify-start items-start">
+        <div class="w-full flex flex-col sm:flex-row sm:flex-wrap sm:gap-4 justify-center sm:justify-start items-start">
             @for(filter of filters(); track filter) {
                 @switch(filter.type) {
                     @case ('text') {

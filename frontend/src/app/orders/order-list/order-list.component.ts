@@ -48,21 +48,19 @@ import { ToastService } from '../../shared/services/toast/toast.service';
             </app-card>
         </div>
 
-        <div class="row order-list-info mt-5">
-            <div class="col-8">
-                <h5>{{ ('orderList.orders' | translate) + ' (' + ordersCount() + ')'}}</h5>
-                <div class="d-flex align-items-center gap-3 mt-3">
-                    <span class="text-muted">{{'orderList.legend' | translate}}:</span>
-                    <div class="d-flex gap-3">
-                        <app-color-label color="var(--order-list-default-row-background-color)" [label]="'orderList.inProgress' | translate"></app-color-label>
-                        <app-color-label color="var(--order-list-overdue-row-background-color)" [label]="'orderList.overdue' | translate"></app-color-label>
-                        <app-color-label color="var(--order-list-completed-row-background-color)" [label]="'orderList.completed' | translate"></app-color-label>
+        <div class="w-full mt-5 flex justify-between items-end">
+            <div class="flex flex-col">
+                <h2 class="font-medium text-xl">{{ ('orderList.orders' | translate) + ' (' + ordersCount() + ')'}}</h2>
+                <div class="flex flex-col sm:flex-row sm:items-center sm:mt-3">
+                    <span class="text-neutral/50 text-sm">{{'orderList.legend' | translate}}:</span>
+                    <div class="flex gap-2 text-xs sm:ms-2">
+                        <app-color-label colorClass="bg-red-300" [label]="'orderList.inProgress' | translate"></app-color-label>
+                        <app-color-label colorClass="bg-red-300" [label]="'orderList.overdue' | translate"></app-color-label>
+                        <app-color-label colorClass="bg-red-300" [label]="'orderList.completed' | translate"></app-color-label>
                     </div>
                 </div>
             </div>
-            <div class="col-4 text-end">
-                <button class="btn btn-sm btn-primary" (click)="showOrderFormModal()" >+ {{'orderList.addNewOrder' | translate}}</button>
-            </div>
+            <button class="btn btn-primary" (click)="showOrderFormModal()" >{{'orderList.addNewOrder' | translate}}</button>
         </div>
 
         <div class="row order-list-table mt-2">

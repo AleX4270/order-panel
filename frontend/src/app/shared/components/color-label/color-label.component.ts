@@ -5,27 +5,15 @@ import { Component, input, InputSignal } from '@angular/core';
     selector: 'app-color-label',
     imports: [CommonModule],
     template: `
-        <div class="color-label-container d-flex align-items-center gap-1">
-            <div class="color-label-box" [ngStyle]="{'background-color': color()}"></div>
-            <span class="color-label">{{label()}}</span>
+        <div class="flex items-center gap-1">
+            <div class="w-3 h-3 rounded-sm border border-black/30" [ngStyle]="color() ? {'background-color': color()} : {}" [ngClass]="colorClass()"></div>
+            <span class="text-xs">{{label()}}</span>
         </div>
     `,
-    styles: [`
-        $box-width: 14px;
-
-        .color-label-box {
-            width: $box-width;
-            height: $box-width;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--color-label-border-color);
-        }
-
-        .color-label {
-            font-size: var(--font-size-xs);
-        }
-    `],
+    styles: [``],
 })
 export class ColorLabelComponent {
-    public color: InputSignal<string> = input.required<string>();
+    public colorClass: InputSignal<string> = input<string>('');
+    public color: InputSignal<string> = input<string>('');
     public label: InputSignal<string> = input.required<string>();
 }
