@@ -3,67 +3,75 @@ import { PAGINATION_PAGE_SIZE, PAGINATION_START_PAGE } from '../../../app.consta
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import { PaginationItem } from '../../types/pagination.types';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-pagination',
     imports: [
         NgSelectModule,
-        FormsModule      
+        FormsModule,
+        CommonModule
     ],
     template: `
-        <div class="d-flex justify-content-center align-items-center gap-2">
-            <div>
-                <ul class="pagination-list d-flex justify-content-center align-items-center gap-2">
-                    <li class="pagination-item" [class.disabled]="isPreviousDisabled()">
-                        <button type="button" class="btn btn-link pagination-link" (click)="!isPreviousDisabled() && changePage(page() - 1)">&lt;</button>
-                    </li>
+        <div class="flex justify-center items-center gap-2">
+            <div class="join [&_button]:rounded-sm">
+                <button 
+                    class="join-item btn btn-square" 
+                    [ngClass]="{'pointer-events-none cursor-default': isPreviousDisabled()}"
+                    (click)="!isPreviousDisabled() && changePage(page() - 1)"
+                >
+                    &lt;
+                </button>
+                
+                <button class="join-item btn btn-square text-base-content" [ngClass]="{'bg-info/10': page() === 1}" (click)="changePage(1)">{{1}}</button>
 
-                    <li class="pagination-item" [class.active]="page() === 1"><button type="button" class="btn btn-link pagination-link" (click)="changePage(1)">{{1}}</button></li>
-                    @if(page() >= 4 && totalPages() > 5) {
-                        <li class="pagination-item disabled"><span>&hellip;</span></li>
-                    }
 
-                    @for(position of middlePositions(); track position;) {
-                        @let itemValue = getPaginationItemValue(position);
 
-                        <li 
-                            class="pagination-item" 
-                            [class.active]="page() === itemValue"
-                            [class.disabled]="itemValue === null"
-                        >
-                            <button type="button" class="btn btn-link pagination-link" (click)="itemValue && changePage(itemValue)">{{ itemValue }}</button>
-                        </li>
-                    }
+                @if(page() >= 4 && totalPages() > 5) {
+                    <button class="join-item btn btn-square pointer-events-none cursor-default">&hellip;</button>
+                }
 
-                    @if(totalPages() >= 5) {
-                        @if(totalPages() > 5 && page() <= totalPages() - 3) {
-                            <li class="pagination-item disabled"><span>&hellip;</span></li>
-                        }
+                @for(position of middlePositions(); track position;) {
+                    @let itemValue = getPaginationItemValue(position);
 
-                        <li class="pagination-item" [class.active]="page() === totalPages()">
-                            <button type="button" class="btn btn-link pagination-link" (click)="changePage(totalPages())">{{ totalPages() }}</button>
-                        </li>    
-                    }
-
-                    <li 
-                        class="pagination-item"
-                        [class.disabled]="isNextDisabled()"
+                    <button
+                        class="join-item btn btn-square" 
+                        [ngClass]="{
+                            'bg-info/10': page() === itemValue,
+                            'pointer-events-none cursor-default': itemValue === null
+                        }"
+                        (click)="itemValue && changePage(itemValue)"
                     >
-                        <button type="button" class="btn btn-link pagination-link" (click)="!isNextDisabled() && changePage(page() + 1)">&gt;</button>
-                    </li>             
-                </ul>
+                        {{ itemValue }}
+                    </button>
+                }
+
+                @if(totalPages() >= 5) {
+                    @if(totalPages() > 5 && page() <= totalPages() - 3) {
+                        <button class="join-item btn btn-square pointer-events-none cursor-default">&hellip;</button>
+                    }
+
+                    <button class="join-item btn btn-square" [ngClass]="{'bg-info/10': page() === totalPages()}" (click)="changePage(totalPages())">{{ totalPages() }}</button>
+                }
+
+                <button 
+                    class="join-item btn btn-square"
+                    [ngClass]="{
+                        'pointer-events-none cursor-default': isNextDisabled()
+                    }"
+                    (click)="!isNextDisabled() && changePage(page() + 1)"
+                >
+                    &gt;
+                </button>
             </div>
-            <div>
-                <ng-select 
-                    class="form-field dropdown"
-                    [items]="pageSizeOptions"
-                    [searchable]="false"
-                    [clearable]="false"
-                    [multiple]="false"
-                    [ngModel]="pageSize()"
-                    (change)="changePageSize($event)"
-                />
-            </div>
+            <ng-select 
+                [items]="pageSizeOptions"
+                [searchable]="false"
+                [clearable]="false"
+                [multiple]="false"
+                [ngModel]="pageSize()"
+                (change)="changePageSize($event)"
+            />
         </div>
     `,
     styles: [`

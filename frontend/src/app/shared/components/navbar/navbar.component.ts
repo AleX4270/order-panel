@@ -32,7 +32,7 @@ import { NgTemplateOutlet } from '@angular/common';
             <div class="navbar-start">
                 <div class="hidden lg:flex">
                     <app-dropdown>
-                        <ng-template #label><span class="text-primary">{{user()?.username}}</span></ng-template>
+                        <ng-template #label><span class="text-base-content/75">{{user()?.username}}</span></ng-template>
                         <ng-template #options>
                             <li>
                                 <button class="btn btn-ghost" type="button" (click)="logout()">
@@ -48,7 +48,7 @@ import { NgTemplateOutlet } from '@angular/common';
                     </ng-template>
                     <ng-template #options>
                         @if(isUserAuthenticated()) {
-                            <li><span class="text-primary font-semibold pointer-events-none">{{user()?.username}}</span></li>
+                            <li><span class="text-base-content/75 font-semibold pointer-events-none">{{user()?.username}}</span></li>
 
                             <ng-container *ngTemplateOutlet="navLinks"></ng-container>
 

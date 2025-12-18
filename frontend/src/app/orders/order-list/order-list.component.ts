@@ -40,7 +40,7 @@ import { TileType } from '../../shared/types/tile.types';
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan})],
     template: `
         <div class="w-full order-list-header">
-            <h1 class="font-semibold text-3xl mb-5">{{'orderList.header' | translate}}</h1>
+            <h1 class="font-semibold text-2xl mb-5">{{'orderList.header' | translate}}</h1>
             <app-card overflowType="visible" [title]="'basic.filters' | translate">
                 <app-filters 
                     [type]="filterType.orderListFilters"
@@ -224,7 +224,7 @@ import { TileType } from '../../shared/types/tile.types';
         <div class="row order-list-pagination mt-5 pb-4">
             <div class="col-12">
                 <app-card [isContentCentered]="true" overflowType="visible">
-                    <app-pagination [totalItems]="ordersCount()" (change)="onOrderPaginationChange($event)"></app-pagination>
+                    <app-pagination [totalItems]="100" (change)="onOrderPaginationChange($event)"></app-pagination>
                 </app-card>
             </div>
         </div>

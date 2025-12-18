@@ -10,7 +10,7 @@ import { Component, input } from '@angular/core';
         >
             <div class="card-body">
                 @if(title()) {
-                    <h2 class="card-title">{{ title() }}</h2>
+                    <h2 class="card-title text-md">{{ title() }}</h2>
                 }
                 <div 
                     [class.flex]="isContentCentered()"
