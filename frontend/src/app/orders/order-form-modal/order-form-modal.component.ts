@@ -22,13 +22,233 @@ import { ToastService } from '../../shared/services/toast/toast.service';
 import { ToastType } from '../../shared/enums/enums';
 import { OrderService } from '../../shared/services/api/order/order.service';
 import { OrderItem, OrderParams } from '../../shared/types/order.types';
+import { SelectComponent } from "../../shared/components/select/select.component";
 
 @Component({
     selector: 'app-order-form-modal',
-    imports: [ReactiveFormsModule, NgSelectComponent, DatePipe, InputErrorLabelComponent, TranslatePipe, NgClass],
+    imports: [ReactiveFormsModule, NgSelectComponent, DatePipe, InputErrorLabelComponent, TranslatePipe, NgClass, SelectComponent],
     providers: [DatePipe],
     template: `
-        <div #modalRef class="modal modal-lg fade" tabindex="-1">
+        <dialog #modalRef class="modal">
+            <div class="modal-box max-w-3xl">
+                <div class="header">
+                    <h5 class="text-primary font-semibold">{{ ("orderForm." + (isEditScenario() ? "updateTitle" : "createTitle") | translate) + (isEditScenario() ? ' - #' + this.orderId() : '') }}</h5>
+                    <form method="dialog">
+                        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                    </form>
+                </div>
+
+                <div class="content">
+                    @if(!isLoading() && form) {
+                        <form [formGroup]="form" class="w-full">
+                            @if(isEditScenario()) {
+                                <div class="w-full flex flex-col mt-3">
+                                    <label for="orderNumber" class="label">{{ "orderForm.orderNumber" | translate }}</label>
+                                    <input
+                                        type="text"
+                                        formControlName="orderNumber"
+                                        id="orderNumber"
+                                        name="orderNumber"
+                                        class="input"
+                                        [placeholder]="'orderForm.orderNumberPlaceholder' | translate"
+                                    />
+                                </div>
+                                <app-input-error-label [control]="form.get('orderNumber')" />
+
+                                <div class="divider"></div>
+                            }
+                            
+                            <div class="w-full flex flex-col items-center md:flex-row md:gap-3 md:flex-wrap" [class.mt-2]="isEditScenario()">
+                                <div class="flex flex-col">
+                                    <label for="countryId" class="label">{{ "orderForm.country" | translate }}</label>
+                                    <ng-select
+                                        formControlName="countryId"
+                                        [items]="countries()"
+                                        bindValue="id"
+                                        bindLabel="name"
+                                        [multiple]="false"
+                                        [placeholder]="'orderForm.countryPlaceholder' | translate"
+                                    />
+                                    <app-input-error-label [control]="form.get('countryId')" />
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <label for="provinceId" class="label">{{ "orderForm.province" | translate }}</label>
+                                    <ng-select
+                                        formControlName="provinceId"
+                                        [items]="provinces()"
+                                        bindValue="id"
+                                        bindLabel="name"
+                                        [multiple]="false"
+                                        [placeholder]="'orderForm.provincePlaceholder' | translate"
+                                    />
+                                    <app-input-error-label [control]="form.get('provinceId')" />
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <label for="cityId" class="label">{{ "orderForm.city" | translate }}</label>
+                                    <ng-select 
+                                        formControlName="cityId"
+                                        [items]="cities()"
+                                        bindValue="id"
+                                        bindLabel="name"
+                                        [multiple]="false"
+                                        [placeholder]="'orderForm.cityPlaceholder' | translate"
+                                        [addTagText]="'orderForm.addCity' | translate"
+                                        [addTag]="addNewCity"
+                                        (change)="onCityChange($event)"
+                                    />
+                                    <app-input-error-label [control]="form.get('cityId')" />
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <label for="postalCode" class="label">{{ "orderForm.postalCode" | translate }}</label>
+                                    <input
+                                        type="text"
+                                        formControlName="postalCode"
+                                        id="postalCode"
+                                        name="postalCode"
+                                        class="input"
+                                        [placeholder]="'orderForm.postalCodePlaceholder' | translate"
+                                    />
+                                    <app-input-error-label [control]="form.get('postalCode')" />
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <label for="address" class="label">{{ "orderForm.address" | translate }}</label>
+                                    <input
+                                        type="text"
+                                        formControlName="address"
+                                        id="address"
+                                        name="address"
+                                        class="input"
+                                        [placeholder]="'orderForm.addressPlaceholder' | translate"
+                                    />
+                                    <app-input-error-label [control]="form.get('address')" />
+                                </div>
+                            </div>
+
+                            <div class="divider md:hidden"></div>
+
+                            <div class="w-full flex flex-col items-center md:flex-row md:gap-3 md:flex-wrap md:mt-3">
+                                <div class="w-full md:max-w-xs flex flex-col">
+                                    <label for="priorityId" class="label">{{ "orderForm.priority" | translate }}</label>
+                                    <ng-select 
+                                        formControlName="priorityId"
+                                        [items]="priorities()"
+                                        bindValue="id"
+                                        bindLabel="name"
+                                        [multiple]="false"
+                                        [placeholder]="'orderForm.priorityPlaceholder' | translate"
+                                    />
+                                    <app-input-error-label [control]="form.get('priorityId')" />
+                                </div>
+
+                                <div class="w-full md:max-w-xs flex flex-col">
+                                    <label for="statusId" class="label">{{ "orderForm.status" | translate }}</label>
+                                    <ng-select 
+                                        formControlName="statusId"
+                                        [items]="statuses()"
+                                        bindValue="id"
+                                        bindLabel="name"
+                                        [multiple]="false"
+                                        [placeholder]="'orderForm.statusPlaceholder' | translate"
+                                    />
+                                    <app-input-error-label [control]="form.get('statusId')" />
+                                </div>
+
+                                <div class="w-full md:max-w-xs flex flex-col">
+                                    <label for="phoneNumber" class="label">{{ "orderForm.phoneNumber" | translate }}</label>
+                                    <input
+                                        type="tel"
+                                        formControlName="phoneNumber"
+                                        id="phoneNumber"
+                                        name="phoneNumber"
+                                        class="input"
+                                        [placeholder]="'orderForm.phoneNumberPlaceholder' | translate"
+                                    />
+                                    <app-input-error-label [control]="form.get('phoneNumber')" />
+                                </div>
+                            </div>
+
+                            <div class="divider md:hidden"></div>
+
+                            <div class="w-full flex flex-col items-center md:flex-row md:gap-3 md:flex-wrap md:mt-3">
+                                <div class="w-full md:max-w-xs flex flex-col">
+                                    <label for="dateCreation" class="label">{{ "orderForm.dateCreation" | translate }}</label>
+                                    <input
+                                        type="date"
+                                        formControlName="dateCreation"
+                                        id="dateCreation"
+                                        name="dateCreation"
+                                        class="input"
+                                        [min]="currentDate()"
+                                    />
+                                    <app-input-error-label [control]="form.get('dateCreation')" />
+                                </div>
+
+                                <div class="w-full md:max-w-xs flex flex-col">
+                                    <label for="dateDeadline" class="label">{{ "orderForm.dateDeadline" | translate }}</label>
+                                    <input
+                                        type="date"
+                                        formControlName="dateDeadline"
+                                        id="dateDeadline"
+                                        name="dateDeadline"
+                                        class="input"
+                                        [min]="form.get('dateCreation')?.value"
+                                    />
+                                    <app-input-error-label [control]="form.get('dateDeadline')" />
+                                </div>
+
+                                @if(isEditScenario()) {
+                                    <div class="w-full md:max-w-xs flex flex-col">
+                                        <label for="dateCompleted" class="label">{{ "orderForm.dateCompleted" | translate }}</label>
+                                        <input
+                                            type="date"
+                                            formControlName="dateCompleted"
+                                            id="dateCompleted"
+                                            name="dateCompleted"
+                                            class="input"
+                                            [min]="form.get('dateCreation')?.value"
+                                        />
+                                        <app-input-error-label [control]="form.get('dateCompleted')" />
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="divider md:hidden"></div>
+
+                            <div class="w-full flex flex-col items-center md:flex-row md:gap-3 md:flex-wrap md:mt-3">
+                                <div class="w-full md:max-w-xs flex flex-col">
+                                    <label for="remarks" class="label">{{ "orderForm.remarks" | translate }}</label>
+                                    <textarea
+                                        id="remarks"
+                                        name="remarks"
+                                        rows="5"
+                                        formControlName="remarks"
+                                        class="input mt-2"
+                                        [placeholder]="'orderForm.remarksPlaceholder' | translate"
+                                    ></textarea>
+                                    <app-input-error-label [control]="form.get('remarks')" />
+                                </div>
+                            </div>
+                        </form>
+                    }
+                </div>
+
+                <div class="footer">
+                    <div class="modal-action w-full">
+                        <form method="dialog" class="flex items-center gap-3">
+                            <button class="btn btn-outline btn-sm btn-error">Anuluj</button>
+                            <button class="btn btn-primary btn-sm" type="button">Zapisz</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </dialog>
+
+
+        <!-- <div class="modal modal-lg fade" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -243,7 +463,7 @@ import { OrderItem, OrderParams } from '../../shared/types/order.types';
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     `,
     styles: [`
         label {
@@ -251,12 +471,11 @@ import { OrderItem, OrderParams } from '../../shared/types/order.types';
         }
 
         input, ng-select {
-            box-shadow: var(--shadow-xs);
             margin-top: 5px;
-        }    
+        }
     `],
 })
-export class OrderFormModalComponent implements OnDestroy {
+export class OrderFormModalComponent {
     @ViewChild('modalRef') orderFormModal!: ElementRef;
 
     private readonly translateService: TranslateService = inject(TranslateService);
@@ -271,11 +490,9 @@ export class OrderFormModalComponent implements OnDestroy {
     private readonly cityService: CityService = inject(CityService);
     private readonly orderService: OrderService = inject(OrderService);
 
-    private modal?: any;
-
     protected form!: FormGroup;
     protected orderId: WritableSignal<number | null> = signal<number | null>(null);
-    protected isEditScenario: WritableSignal<boolean> = signal<boolean>(false);
+    protected isEditScenario: WritableSignal<boolean> = signal<boolean>(true);
     protected isLoading: WritableSignal<boolean> = signal<boolean>(false);
 
     protected priorities: WritableSignal<PriorityItem[]> = signal<PriorityItem[]>([]);
@@ -328,37 +545,26 @@ export class OrderFormModalComponent implements OnDestroy {
     }
     
     protected openModal(): void {
-        if(!this.modal) {
-            this.modal = new window.bootstrap.Modal(this.orderFormModal.nativeElement, {
-                focus: true,
-                keyboard: false,
-                backdrop: 'static'
-            });
+        const modal = this.orderFormModal.nativeElement as HTMLDialogElement;
+        if(!modal) {
+            return;
         }
 
-        if(typeof window !== 'undefined' && window.bootstrap) {
-            this.modal.show();
-        }
-
+        modal.showModal();
         this.isLoading.set(false);
     }
 
     protected closeModal(): void {
-        if(!this.modal) {
+        const modal = this.orderFormModal.nativeElement as HTMLDialogElement;
+        if(!modal) {
             return;
         }
 
-        this.orderFormModal.nativeElement.addEventListener(
-            'hidden.bs.modal',
-            () => {
-                this.isEditScenario.set(false);
-                this.orderId.set(null);
-                this.form.reset();
-            },
-            {once: true},
-        );
-        
-        this.modal?.hide();
+        modal.close();
+
+        this.isEditScenario.set(false);
+        this.orderId.set(null);
+        this.form.reset();
     }
 
     private initForm(): void {
@@ -594,9 +800,5 @@ export class OrderFormModalComponent implements OnDestroy {
         }
 
         this.form.get('cityName')?.reset();
-    }
-
-    ngOnDestroy(): void {
-        this.modal?.dispose();
     }
 }
