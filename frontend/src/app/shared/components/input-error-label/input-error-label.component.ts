@@ -9,17 +9,12 @@ import { ErrorLabelPipe } from '../../pipes/error-label.pipe';
         @if(control() && control()?.invalid && (control()?.dirty || control()?.touched)) {
             <div class="ps-2">
                 @for(error of errors(); track error) {
-                    <span class="error-label">{{error | errorLabel: control()}}</span>
+                    <span class="text-error text-[10px]">{{error | errorLabel: control()}}</span>
                 }
             </div>    
         }
     `,
-    styles: [`
-        .error-label {
-            color: var(--error-label-text-color);
-            font-size: var(--font-size-xxs);
-        }
-    `],
+    styles: [``],
 })
 export class InputErrorLabelComponent {
     public control: InputSignal<AbstractControl | null> = input.required<AbstractControl | null>();

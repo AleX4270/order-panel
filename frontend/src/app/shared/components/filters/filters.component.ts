@@ -16,7 +16,7 @@ import { debounceTime, Subject } from 'rxjs';
         FormsModule
     ],
     template: `
-        <div class="w-full flex flex-col sm:flex-row sm:flex-wrap sm:gap-4 justify-center sm:justify-start items-start">
+        <div class="w-full flex flex-col gap-y-3 sm:flex-row sm:flex-wrap sm:gap-4 justify-center sm:justify-start items-start">
             @for(filter of filters(); track filter) {
                 @switch(filter.type) {
                     @case ('text') {
@@ -24,7 +24,7 @@ import { debounceTime, Subject } from 'rxjs';
                             <label [for]="filter.key" class="floating-label">
                                 <span>{{ filter.label | translate}}</span>
                                 <input
-                                    class="input placeholder:opacity-50"
+                                    class="input placeholder:opacity-50 w-full text-xs"
                                     type="text"
                                     [id]="filter.key"
                                     [name]="filter.key"
@@ -56,7 +56,7 @@ import { debounceTime, Subject } from 'rxjs';
                             <label [for]="filter.key" class="floating-label">
                                 <span>{{ filter.label | translate}}</span>
                                 <input
-                                    class="input placeholder:opacity-50"
+                                    class="input placeholder:opacity-50 w-full text-xs"
                                     type="date"
                                     [id]="filter.key"
                                     [name]="filter.key"

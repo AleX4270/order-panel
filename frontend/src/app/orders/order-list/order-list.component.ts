@@ -53,172 +53,170 @@ import { TileType } from '../../shared/types/tile.types';
             <div class="flex flex-col">
                 <h2 class="font-medium text-xl">{{ ('orderList.orders' | translate) + ' (' + ordersCount() + ')'}}</h2>
                 <div class="flex flex-col sm:flex-row sm:items-center sm:mt-3">
-                    <span class="text-neutral/50 text-sm">{{'orderList.legend' | translate}}:</span>
-                    <div class="flex gap-2 text-xs sm:ms-2">
-                        <app-color-label colorClass="bg-red-300" [label]="'orderList.inProgress' | translate"></app-color-label>
-                        <app-color-label colorClass="bg-red-300" [label]="'orderList.overdue' | translate"></app-color-label>
-                        <app-color-label colorClass="bg-red-300" [label]="'orderList.completed' | translate"></app-color-label>
+                    <span class="text-neutral/45 font-light text-sm">{{'orderList.legend' | translate}}:</span>
+                    <div class="flex gap-2 text-xs mt-2 sm:mt-0 sm:ms-2 font-light">
+                        <app-color-label colorClass="bg-base-100" [label]="'orderList.inProgress' | translate"></app-color-label>
+                        <app-color-label colorClass="bg-error/20" [label]="'orderList.overdue' | translate"></app-color-label>
+                        <app-color-label colorClass="bg-neutral/10" [label]="'orderList.completed' | translate"></app-color-label>
                     </div>
                 </div>
             </div>
-            <button class="btn btn-primary" (click)="showOrderFormModal()" >{{'orderList.addNewOrder' | translate}}</button>
+            <button class="btn btn-sm btn-primary md:btn-md" (click)="showOrderFormModal()" >{{'orderList.addNewOrder' | translate}}</button>
         </div>
 
         <div class="w-full mt-2">
-            <!-- <app-card overflowType="visible"> -->
-                <app-list-table
-                    [defineTableRowsExternally]="true"
-                    [data]="orders()"
-                >
-                    <ng-template #headers>
-                        <th class="cursor-pointer" (click)="onOrderSortChange('orderNumber')">{{'orderListTable.orderNo' | translate}}</th>
-                        <th class="cursor-pointer" (click)="onOrderSortChange('address')">{{'orderListTable.address' | translate}}</th>
-                        <th class="cursor-pointer" (click)="onOrderSortChange('priority')">{{'orderListTable.priority' | translate}}</th>
-                        <th class="cursor-pointer" (click)="onOrderSortChange('dateCreated')">{{'orderListTable.dateCreated' | translate}}</th>
-                        <th class="cursor-pointer" (click)="onOrderSortChange('dateDeadline')">{{'orderListTable.dateDeadline' | translate}}</th>
-                        <th class="cursor-pointer" (click)="onOrderSortChange('remarks')">{{'orderListTable.remarks' | translate}}</th>
-                        <th>{{'orderListTable.actions' | translate}}</th>
-                    </ng-template>
+            <app-list-table
+                [defineTableRowsExternally]="true"
+                [data]="orders()"
+            >
+                <ng-template #headers>
+                    <th class="cursor-pointer" (click)="onOrderSortChange('orderNumber')">{{'orderListTable.orderNo' | translate}}</th>
+                    <th class="cursor-pointer" (click)="onOrderSortChange('address')">{{'orderListTable.address' | translate}}</th>
+                    <th class="cursor-pointer" (click)="onOrderSortChange('priority')">{{'orderListTable.priority' | translate}}</th>
+                    <th class="cursor-pointer" (click)="onOrderSortChange('dateCreated')">{{'orderListTable.dateCreated' | translate}}</th>
+                    <th class="cursor-pointer" (click)="onOrderSortChange('dateDeadline')">{{'orderListTable.dateDeadline' | translate}}</th>
+                    <th class="cursor-pointer" (click)="onOrderSortChange('remarks')">{{'orderListTable.remarks' | translate}}</th>
+                    <th>{{'orderListTable.actions' | translate}}</th>
+                </ng-template>
 
-                    <ng-template #rows let-item>
-                        <tr 
-                            class="bg-base-100 hover:bg-base-200 [&_td]:text-xs p-1"
-                            [ngClass]="{
-                                'bg-neutral/50': item.statusSymbol === status.completed,
-                                'bg-error/50': item.isOverdue && item.statusSymbol !== status.completed
-                            }"
-                        >
-                            <td class="font-medium">{{ '#' + item.id }}</td>
-                            <td>
-                                <div class="flex flex-col">
-                                    <span class="text-sm">{{item.cityName}}</span>
-                                    <span class="text-base-content/80 font-light mt-1">{{item.address}}</span>
+                <ng-template #rows let-item>
+                    <tr 
+                        class="bg-base-100 hover:bg-base-200 [&_td]:text-xs p-1"
+                        [ngClass]="{
+                            'bg-neutral/10': item.statusSymbol === status.completed,
+                            'bg-error/20': item.isOverdue && item.statusSymbol !== status.completed
+                        }"
+                    >
+                        <td class="font-normal">{{ '#' + item.id }}</td>
+                        <td>
+                            <div class="flex flex-col">
+                                <span class="text-xs">{{item.cityName}}</span>
+                                <span class="text-base-content/70 font-light mt-1">{{item.address}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <app-tile [type]="getPriorityTileType(item.prioritySymbol)">
+                                <span>{{ item.priorityName }}</span>
+                            </app-tile>
+                        </td>
+                        <td><span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span></td>
+                        <td><span>{{ item.dateDeadline | date:'dd-MM-yyyy'}}</span></td>
+                        <td class="text-base-content/60 font-light">{{ item.remarks }}</td>
+                        <td>
+                            <div class="flex gap-3">
+                                <ng-icon
+                                    class="item-pressable"
+                                    name="faEye"
+                                    size="18px"
+                                    (click)="toggleItemDetailsExpansion(item.id)"
+                                ></ng-icon>
+
+                                <ng-icon
+                                    class="item-pressable"
+                                    name="faPenToSquare"
+                                    size="18px"
+                                    (click)="showOrderFormModal(item.id)"
+                                ></ng-icon>
+
+                                <ng-icon
+                                    class="item-pressable"
+                                    name="faTrashCan"
+                                    size="18px"
+                                    (click)="showOrderDeletePromptModal(item.id)"
+                                ></ng-icon>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr [class.hidden]="!hasVisibleDetails(item.id)">
+                        <td colspan="7" class="p-0">
+                            <div class="p-3">
+                                <div class="w-full">
+                                    <h6 class="text-primary text-sm">{{ 'orderDetails.header' | translate}}</h6>
                                 </div>
-                            </td>
-                            <td>
-                                <app-tile [type]="getPriorityTileType(item.prioritySymbol)">
-                                    {{ item.priorityName }}
-                                </app-tile>
-                            </td>
-                            <td>{{ item.dateCreated | date:'dd-MM-yyyy' }}</td>
-                            <td>{{ item.dateDeadline | date:'dd-MM-yyyy'}}</td>
-                            <td class="text-base-content/50">{{ item.remarks }}</td>
-                            <td>
-                                <div class="flex gap-3">
-                                    <ng-icon
-                                        class="item-pressable"
-                                        name="faEye"
-                                        size="20px"
-                                        (click)="toggleItemDetailsExpansion(item.id)"
-                                    ></ng-icon>
 
-                                    <ng-icon
-                                        class="item-pressable"
-                                        name="faPenToSquare"
-                                        size="20px"
-                                        (click)="showOrderFormModal(item.id)"
-                                    ></ng-icon>
-
-                                    <ng-icon
-                                        class="item-pressable"
-                                        name="faTrashCan"
-                                        size="20px"
-                                        (click)="showOrderDeletePromptModal(item.id)"
-                                    ></ng-icon>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr [class.hidden]="!hasVisibleDetails(item.id)">
-                            <td colspan="7" class="p-0">
-                                <div class="order-details p-3">
-                                    <div class="w-full">
-                                        <h6 class="text-primary/90">{{ 'orderDetails.header' | translate}}</h6>
-                                    </div>
-
-                                    <div class="w-full mt-2 flex gap-10">
-                                        <div class="flex flex-col">
-                                            <span class="details-label text-muted">{{ 'orderDetails.orderNo' | translate}}</span>
-                                            <div class="details-value">
-                                                <span>{{ '#' + item.id }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.address' | translate}}</span>
-                                            <div class="details-value">
-                                                <span>{{ item.address + ', ' + (item.postalCode ? (item.postalCode + ', ') : '') + item.cityName }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.phoneNumber' | translate}}</span>
-                                            <div class="details-value">
-                                                <span>{{ item.phoneNumber }}</span>
-                                            </div>
+                                <div class="w-full mt-2 flex">
+                                    <div class="flex flex-col w-1/4">
+                                        <span class="details-label">{{ 'orderDetails.orderNo' | translate}}</span>
+                                        <div class="details-content">
+                                            <span>{{ '#' + item.id }}</span>
                                         </div>
                                     </div>
-
-                                    <div class="w-full mt-4 flex gap-10">
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.priority' | translate}}</span>
-                                            <div class="details-value">
-                                                <app-tile [type]="getPriorityTileType(item.prioritySymbol)">
-                                                    {{ item.priorityName }}
-                                                </app-tile>
-                                            </div>
-                                        </div>
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.status' | translate}}</span>
-                                            <div class="details-value">
-                                                <app-tile [type]="getStatusTileType(item.statusSymbol)">
-                                                    {{ item.statusName }}
-                                                </app-tile>
-                                            </div>
-                                        </div>
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.isOverdue' | translate}}</span>
-                                            <div class="details-value">
-                                                <app-tile [type]="item.isOverdue ? 'error' : 'success'">
-                                                    {{ (item.isOverdue ? 'basic.yes' : 'basic.no') | translate}}
-                                                </app-tile>
-                                            </div>
+                                    <div class="flex flex-col w-1/4">
+                                        <span class="details-label text-muted">{{ 'orderDetails.address' | translate}}</span>
+                                        <div class="details-value">
+                                            <span>{{ item.address + ', ' + (item.postalCode ? (item.postalCode + ', ') : '') + item.cityName }}</span>
                                         </div>
                                     </div>
-
-                                    <div class="w-full mt-4 flex gap-10">
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.dateCreated' | translate}}</span>
-                                            <div class="details-value">
-                                                <span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.dateDeadline' | translate}}</span>
-                                            <div class="details-value">
-                                                <span>{{ item.dateDeadline | date:'dd-MM-yyyy' }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.dateCompleted' | translate}}</span>
-                                            <div class="details-value">
-                                                <span>{{ (item.dateCompleted | date:'dd-MM-yyyy') ?? '-' }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="w-full mt-4 flex gap-10">
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'orderDetails.remarks' | translate}}</span>
-                                            <div class="details-value">
-                                                <span class="text-muted">{{ item.remarks ?? '-' }}</span>
-                                            </div>
+                                    <div class="flex flex-col w-1/4">
+                                        <span class="details-label text-muted">{{ 'orderDetails.phoneNumber' | translate}}</span>
+                                        <div class="details-value">
+                                            <span>{{ item.phoneNumber }}</span>
                                         </div>
                                     </div>
                                 </div>
-                            </td>
-                        </tr>
-                    </ng-template>
-                </app-list-table>
-            <!-- </app-card> -->
+
+                                <div class="w-full mt-4 flex gap-10">
+                                    <div class="flex flex-col w-1/4">
+                                        <span class="details-label text-muted">{{ 'orderDetails.priority' | translate}}</span>
+                                        <div class="details-value">
+                                            <app-tile [type]="getPriorityTileType(item.prioritySymbol)">
+                                                {{ item.priorityName }}
+                                            </app-tile>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col w-1/4">
+                                        <span class="details-label text-muted">{{ 'orderDetails.status' | translate}}</span>
+                                        <div class="details-value">
+                                            <app-tile [type]="getStatusTileType(item.statusSymbol)">
+                                                {{ item.statusName }}
+                                            </app-tile>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col w-1/4">
+                                        <span class="details-label text-muted">{{ 'orderDetails.isOverdue' | translate}}</span>
+                                        <div class="details-value">
+                                            <app-tile [type]="item.isOverdue ? 'error' : 'success'">
+                                                {{ (item.isOverdue ? 'basic.yes' : 'basic.no') | translate}}
+                                            </app-tile>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="w-full mt-4 flex gap-10">
+                                    <div class="flex flex-col flex-1">
+                                        <span class="details-label text-muted">{{ 'orderDetails.dateCreated' | translate}}</span>
+                                        <div class="details-value">
+                                            <span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col flex-1">
+                                        <span class="details-label text-muted">{{ 'orderDetails.dateDeadline' | translate}}</span>
+                                        <div class="details-value">
+                                            <span>{{ item.dateDeadline | date:'dd-MM-yyyy' }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col flex-1">
+                                        <span class="details-label text-muted">{{ 'orderDetails.dateCompleted' | translate}}</span>
+                                        <div class="details-value">
+                                            <span>{{ (item.dateCompleted | date:'dd-MM-yyyy') ?? '-' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="w-full mt-4 flex gap-10">
+                                    <div class="flex flex-col flex-1">
+                                        <span class="details-label text-muted">{{ 'orderDetails.remarks' | translate}}</span>
+                                        <div class="details-value">
+                                            <span class="text-muted">{{ item.remarks ?? '-' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </app-list-table>
         </div>
 
         <div class="row order-list-pagination mt-5 pb-4">

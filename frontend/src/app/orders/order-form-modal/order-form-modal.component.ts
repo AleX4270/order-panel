@@ -1,5 +1,5 @@
-import { DatePipe, NgClass } from '@angular/common';
-import { Component, computed, DestroyRef, ElementRef, inject, OnDestroy, output, Signal, signal, ViewChild, WritableSignal } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, computed, DestroyRef, ElementRef, inject, output, Signal, signal, ViewChild, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { InputErrorLabelComponent } from '../../shared/components/input-error-label/input-error-label.component';
@@ -13,7 +13,7 @@ import { CityItem } from '../../shared/types/city.types';
 import { PriorityService } from '../../shared/services/api/priority/priority.service';
 import { StatusService } from '../../shared/services/api/status/status.service';
 import { CountryService } from '../../shared/services/api/country/country.service';
-import { catchError, count, distinctUntilChanged, forkJoin, map, of, takeUntil, tap } from 'rxjs';
+import { distinctUntilChanged, forkJoin, map, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DEFAULT_COUNTRY_SYMBOL, DEFAULT_PRIORITY_SYMBOL, DEFAULT_STATUS_SYMBOL } from '../../app.constants';
 import { ProvinceService } from '../../shared/services/api/province/province.service';
@@ -22,23 +22,22 @@ import { ToastService } from '../../shared/services/toast/toast.service';
 import { ToastType } from '../../shared/enums/enums';
 import { OrderService } from '../../shared/services/api/order/order.service';
 import { OrderItem, OrderParams } from '../../shared/types/order.types';
-import { SelectComponent } from "../../shared/components/select/select.component";
 
 @Component({
     selector: 'app-order-form-modal',
-    imports: [ReactiveFormsModule, NgSelectComponent, DatePipe, InputErrorLabelComponent, TranslatePipe, NgClass, SelectComponent],
+    imports: [ReactiveFormsModule, NgSelectComponent, InputErrorLabelComponent, TranslatePipe],
     providers: [DatePipe],
     template: `
         <dialog #modalRef class="modal">
             <div class="modal-box max-w-3xl">
                 <div class="header">
-                    <h5 class="text-primary font-semibold">{{ ("orderForm." + (isEditScenario() ? "updateTitle" : "createTitle") | translate) + (isEditScenario() ? ' - #' + this.orderId() : '') }}</h5>
+                    <h5 class="text-primary font-semibold text-xl">{{ ("orderForm." + (isEditScenario() ? "updateTitle" : "createTitle") | translate) + (isEditScenario() ? ' - #' + this.orderId() : '') }}</h5>
                     <form method="dialog">
                         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                     </form>
                 </div>
 
-                <div class="content">
+                <div class="content [&_label]:text-xs [&_label]:font-light [&_label]:mb-1">
                     @if(!isLoading() && form) {
                         <form [formGroup]="form" class="w-full">
                             @if(isEditScenario()) {
@@ -49,7 +48,7 @@ import { SelectComponent } from "../../shared/components/select/select.component
                                         formControlName="orderNumber"
                                         id="orderNumber"
                                         name="orderNumber"
-                                        class="input"
+                                        class="input text-xs w-full"
                                         [placeholder]="'orderForm.orderNumberPlaceholder' | translate"
                                     />
                                 </div>
@@ -58,8 +57,8 @@ import { SelectComponent } from "../../shared/components/select/select.component
                                 <div class="divider"></div>
                             }
                             
-                            <div class="w-full flex flex-col items-center md:flex-row md:gap-3 md:flex-wrap" [class.mt-2]="isEditScenario()">
-                                <div class="flex flex-col">
+                            <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap mt-4">
+                                <div class="flex flex-col w-full md:w-1/4">
                                     <label for="countryId" class="label">{{ "orderForm.country" | translate }}</label>
                                     <ng-select
                                         formControlName="countryId"
@@ -72,7 +71,7 @@ import { SelectComponent } from "../../shared/components/select/select.component
                                     <app-input-error-label [control]="form.get('countryId')" />
                                 </div>
 
-                                <div class="flex flex-col">
+                                <div class="flex flex-col w-full md:w-1/3">
                                     <label for="provinceId" class="label">{{ "orderForm.province" | translate }}</label>
                                     <ng-select
                                         formControlName="provinceId"
@@ -85,7 +84,7 @@ import { SelectComponent } from "../../shared/components/select/select.component
                                     <app-input-error-label [control]="form.get('provinceId')" />
                                 </div>
 
-                                <div class="flex flex-col">
+                                <div class="flex flex-col w-full md:w-1/3">
                                     <label for="cityId" class="label">{{ "orderForm.city" | translate }}</label>
                                     <ng-select 
                                         formControlName="cityId"
@@ -101,27 +100,27 @@ import { SelectComponent } from "../../shared/components/select/select.component
                                     <app-input-error-label [control]="form.get('cityId')" />
                                 </div>
 
-                                <div class="flex flex-col">
+                                <div class="flex flex-col w-full md:w-1/3">
                                     <label for="postalCode" class="label">{{ "orderForm.postalCode" | translate }}</label>
                                     <input
                                         type="text"
                                         formControlName="postalCode"
                                         id="postalCode"
                                         name="postalCode"
-                                        class="input"
+                                        class="input text-xs w-full"
                                         [placeholder]="'orderForm.postalCodePlaceholder' | translate"
                                     />
                                     <app-input-error-label [control]="form.get('postalCode')" />
                                 </div>
 
-                                <div class="flex flex-col">
+                                <div class="flex flex-col w-full md:flex-1">
                                     <label for="address" class="label">{{ "orderForm.address" | translate }}</label>
                                     <input
                                         type="text"
                                         formControlName="address"
                                         id="address"
                                         name="address"
-                                        class="input"
+                                        class="input text-xs w-full"
                                         [placeholder]="'orderForm.addressPlaceholder' | translate"
                                     />
                                     <app-input-error-label [control]="form.get('address')" />
@@ -130,8 +129,8 @@ import { SelectComponent } from "../../shared/components/select/select.component
 
                             <div class="divider md:hidden"></div>
 
-                            <div class="w-full flex flex-col items-center md:flex-row md:gap-3 md:flex-wrap md:mt-3">
-                                <div class="w-full md:max-w-xs flex flex-col">
+                            <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
+                                <div class="flex flex-col w-full md:w-1/4">
                                     <label for="priorityId" class="label">{{ "orderForm.priority" | translate }}</label>
                                     <ng-select 
                                         formControlName="priorityId"
@@ -144,7 +143,7 @@ import { SelectComponent } from "../../shared/components/select/select.component
                                     <app-input-error-label [control]="form.get('priorityId')" />
                                 </div>
 
-                                <div class="w-full md:max-w-xs flex flex-col">
+                                <div class="flex flex-col w-full md:w-1/4">
                                     <label for="statusId" class="label">{{ "orderForm.status" | translate }}</label>
                                     <ng-select 
                                         formControlName="statusId"
@@ -157,14 +156,14 @@ import { SelectComponent } from "../../shared/components/select/select.component
                                     <app-input-error-label [control]="form.get('statusId')" />
                                 </div>
 
-                                <div class="w-full md:max-w-xs flex flex-col">
+                                <div class="flex flex-col w-full md:flex-1">
                                     <label for="phoneNumber" class="label">{{ "orderForm.phoneNumber" | translate }}</label>
                                     <input
                                         type="tel"
                                         formControlName="phoneNumber"
                                         id="phoneNumber"
                                         name="phoneNumber"
-                                        class="input"
+                                        class="input text-xs w-full"
                                         [placeholder]="'orderForm.phoneNumberPlaceholder' | translate"
                                     />
                                     <app-input-error-label [control]="form.get('phoneNumber')" />
@@ -173,42 +172,42 @@ import { SelectComponent } from "../../shared/components/select/select.component
 
                             <div class="divider md:hidden"></div>
 
-                            <div class="w-full flex flex-col items-center md:flex-row md:gap-3 md:flex-wrap md:mt-3">
-                                <div class="w-full md:max-w-xs flex flex-col">
+                            <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
+                                <div class="flex flex-col w-full md:flex-1">
                                     <label for="dateCreation" class="label">{{ "orderForm.dateCreation" | translate }}</label>
                                     <input
                                         type="date"
                                         formControlName="dateCreation"
                                         id="dateCreation"
                                         name="dateCreation"
-                                        class="input"
+                                        class="input text-xs w-full"
                                         [min]="currentDate()"
                                     />
                                     <app-input-error-label [control]="form.get('dateCreation')" />
                                 </div>
 
-                                <div class="w-full md:max-w-xs flex flex-col">
+                                <div class="flex flex-col w-full md:flex-1">
                                     <label for="dateDeadline" class="label">{{ "orderForm.dateDeadline" | translate }}</label>
                                     <input
                                         type="date"
                                         formControlName="dateDeadline"
                                         id="dateDeadline"
                                         name="dateDeadline"
-                                        class="input"
+                                        class="input text-xs w-full"
                                         [min]="form.get('dateCreation')?.value"
                                     />
                                     <app-input-error-label [control]="form.get('dateDeadline')" />
                                 </div>
 
                                 @if(isEditScenario()) {
-                                    <div class="w-full md:max-w-xs flex flex-col">
+                                    <div class="flex flex-col w-full md:flex-1">
                                         <label for="dateCompleted" class="label">{{ "orderForm.dateCompleted" | translate }}</label>
                                         <input
                                             type="date"
                                             formControlName="dateCompleted"
                                             id="dateCompleted"
                                             name="dateCompleted"
-                                            class="input"
+                                            class="input text-xs w-full"
                                             [min]="form.get('dateCreation')?.value"
                                         />
                                         <app-input-error-label [control]="form.get('dateCompleted')" />
@@ -218,15 +217,15 @@ import { SelectComponent } from "../../shared/components/select/select.component
 
                             <div class="divider md:hidden"></div>
 
-                            <div class="w-full flex flex-col items-center md:flex-row md:gap-3 md:flex-wrap md:mt-3">
-                                <div class="w-full md:max-w-xs flex flex-col">
+                            <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
+                                <div class="flex flex-col w-full">
                                     <label for="remarks" class="label">{{ "orderForm.remarks" | translate }}</label>
                                     <textarea
                                         id="remarks"
                                         name="remarks"
-                                        rows="5"
+                                        rows="4"
                                         formControlName="remarks"
-                                        class="input mt-2"
+                                        class="textarea mt-2 text-xs w-full"
                                         [placeholder]="'orderForm.remarksPlaceholder' | translate"
                                     ></textarea>
                                     <app-input-error-label [control]="form.get('remarks')" />
@@ -240,240 +239,14 @@ import { SelectComponent } from "../../shared/components/select/select.component
                     <div class="modal-action w-full">
                         <form method="dialog" class="flex items-center gap-3">
                             <button class="btn btn-outline btn-sm btn-error">Anuluj</button>
-                            <button class="btn btn-primary btn-sm" type="button">Zapisz</button>
+                            <button type="button" class="btn btn-primary btn-sm" (click)="saveOrder()">Zapisz</button>
                         </form>
                     </div>
                 </div>
             </div>
         </dialog>
-
-
-        <!-- <div class="modal modal-lg fade" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-primary">{{ ("orderForm." + (isEditScenario() ? "updateTitle" : "createTitle") | translate) + (isEditScenario() ? ' - #' + this.orderId() : '') }}</h5>
-                    </div>
-                    <div class="modal-body">
-                        @if(!isLoading() && form) {
-                            <form [formGroup]="form" class="p-3">
-                                @if(isEditScenario()) {
-                                    <div class="row">
-                                        <div class="form-group col-12">
-                                            <label for="orderNumber" class="required">{{ "orderForm.orderNumber" | translate }}</label>
-                                            <input
-                                                type="text"
-                                                formControlName="orderNumber"
-                                                id="orderNumber"
-                                                name="orderNumber"
-                                                class="form-field input required"
-                                                [placeholder]="'orderForm.orderNumberPlaceholder' | translate"
-                                            />
-                                        </div>
-                                        <app-input-error-label [control]="form.get('orderNumber')" />
-                                    </div>
-                                }
-                                
-                                <div
-                                    [ngClass]="{
-                                        'row': true,
-                                        'mt-4': isEditScenario()
-                                    }"
-                                >
-                                    <div class="form-group col-3">
-                                        <label for="countryId" class="required">{{ "orderForm.country" | translate }}</label>
-                                        <ng-select
-                                            formControlName="countryId"
-                                            [items]="countries()"
-                                            bindValue="id"
-                                            bindLabel="name"
-                                            [multiple]="false"
-                                            [placeholder]="'orderForm.countryPlaceholder' | translate"
-                                            class="form-field dropdown"
-                                        />
-                                        <app-input-error-label [control]="form.get('countryId')" />
-                                    </div>
-
-                                    <div class="form-group col-5">
-                                        <label for="provinceId" class="required">{{ "orderForm.province" | translate }}</label>
-                                        <ng-select
-                                            formControlName="provinceId"
-                                            [items]="provinces()"
-                                            bindValue="id"
-                                            bindLabel="name"
-                                            [multiple]="false"
-                                            [placeholder]="'orderForm.provincePlaceholder' | translate"
-                                            class="form-field dropdown"
-                                        />
-                                        <app-input-error-label [control]="form.get('provinceId')" />
-                                    </div>
-
-                                    <div class="form-group col-4">
-                                        <label for="cityId" class="required">{{ "orderForm.city" | translate }}</label>
-                                        <ng-select 
-                                            formControlName="cityId"
-                                            [items]="cities()"
-                                            bindValue="id"
-                                            bindLabel="name"
-                                            [multiple]="false"
-                                            [placeholder]="'orderForm.cityPlaceholder' | translate"
-                                            class="form-field dropdown"
-                                            [addTagText]="'orderForm.addCity' | translate"
-                                            [addTag]="addNewCity"
-                                            (change)="onCityChange($event)"
-                                        />
-                                        <app-input-error-label [control]="form.get('cityId')" />
-                                    </div>
-                                </div>
-
-                                <div class="row mt-4">
-                                    <div class="form-group col-3">
-                                        <label for="postalCode">{{ "orderForm.postalCode" | translate }}</label>
-                                        <input
-                                            type="text"
-                                            formControlName="postalCode"
-                                            id="postalCode"
-                                            name="postalCode"
-                                            class="form-field input"
-                                            [placeholder]="'orderForm.postalCodePlaceholder' | translate"
-                                        />
-                                        <app-input-error-label [control]="form.get('postalCode')" />
-                                    </div>
-
-                                    <div class="form-group col-9">
-                                        <label for="address" class="required">{{ "orderForm.address" | translate }}</label>
-                                        <input
-                                            type="text"
-                                            formControlName="address"
-                                            id="address"
-                                            name="address"
-                                            class="form-field input"
-                                            [placeholder]="'orderForm.addressPlaceholder' | translate"
-                                        />
-                                        <app-input-error-label [control]="form.get('address')" />
-                                    </div>
-                                </div>
-
-                                <div class="row mt-4">
-                                    <div class="form-group col-3">
-                                        <label for="priorityId" class="required">{{ "orderForm.priority" | translate }}</label>
-                                        <ng-select 
-                                            formControlName="priorityId"
-                                            [items]="priorities()"
-                                            bindValue="id"
-                                            bindLabel="name"
-                                            [multiple]="false"
-                                            [placeholder]="'orderForm.priorityPlaceholder' | translate"
-                                            class="form-field dropdown"
-                                        />
-                                        <app-input-error-label [control]="form.get('priorityId')" />
-                                    </div>
-
-                                    <div class="form-group col-3">
-                                        <label for="statusId" class="required">{{ "orderForm.status" | translate }}</label>
-                                        <ng-select 
-                                            formControlName="statusId"
-                                            [items]="statuses()"
-                                            bindValue="id"
-                                            bindLabel="name"
-                                            [multiple]="false"
-                                            [placeholder]="'orderForm.statusPlaceholder' | translate"
-                                            class="form-field dropdown"
-                                        />
-                                        <app-input-error-label [control]="form.get('statusId')" />
-                                    </div>
-
-                                    <div class="form-group col-6">
-                                        <label for="phoneNumber" class="required">{{ "orderForm.phoneNumber" | translate }}</label>
-                                        <input
-                                            type="tel"
-                                            formControlName="phoneNumber"
-                                            id="phoneNumber"
-                                            name="phoneNumber"
-                                            class="form-field input"
-                                            [placeholder]="'orderForm.phoneNumberPlaceholder' | translate"
-                                        />
-                                        <app-input-error-label [control]="form.get('phoneNumber')" />
-                                    </div>
-                                </div>
-
-                                <div class="row mt-4">
-                                    <div class="form-group col-4">
-                                        <label for="dateCreation" class="required">{{ "orderForm.dateCreation" | translate }}</label>
-                                        <input
-                                            type="date"
-                                            formControlName="dateCreation"
-                                            id="dateCreation"
-                                            name="dateCreation"
-                                            class="form-field input"
-                                            [min]="currentDate()"
-                                        />
-                                        <app-input-error-label [control]="form.get('dateCreation')" />
-                                    </div>
-
-                                    <div class="form-group col-4">
-                                        <label for="dateDeadline" class="required">{{ "orderForm.dateDeadline" | translate }}</label>
-                                        <input
-                                            type="date"
-                                            formControlName="dateDeadline"
-                                            id="dateDeadline"
-                                            name="dateDeadline"
-                                            class="form-field input"
-                                            [min]="form.get('dateCreation')?.value"
-                                        />
-                                        <app-input-error-label [control]="form.get('dateDeadline')" />
-                                    </div>
-
-                                    @if(isEditScenario()) {
-                                        <div class="form-group col-4">
-                                            <label for="dateCompleted">{{ "orderForm.dateCompleted" | translate }}</label>
-                                            <input
-                                                type="date"
-                                                formControlName="dateCompleted"
-                                                id="dateCompleted"
-                                                name="dateCompleted"
-                                                class="form-field input"
-                                                [min]="form.get('dateCreation')?.value"
-                                            />
-                                            <app-input-error-label [control]="form.get('dateCompleted')" />
-                                        </div>
-                                    }
-                                </div>
-
-                                <div class="row mt-4">
-                                    <div class="form-group col-12">
-                                        <label for="remarks">{{ "orderForm.remarks" | translate }}</label>
-                                        <textarea
-                                            id="remarks"
-                                            name="remarks"
-                                            rows="4"
-                                            formControlName="remarks"
-                                            class="form-field input mt-2"
-                                            [placeholder]="'orderForm.remarksPlaceholder' | translate"
-                                        ></textarea>
-                                        <app-input-error-label [control]="form.get('remarks')" />
-                                    </div>
-                                </div>
-                            </form>
-                        }
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-outline-danger" (click)="closeModal()">{{"basic.cancel" | translate}}</button>
-                        <button type="button" class="btn btn-sm btn-primary" (click)="saveOrder()">{{"basic.save" | translate}}</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
     `,
-    styles: [`
-        label {
-            font-size: var(--font-size-sm);
-        }
-
-        input, ng-select {
-            margin-top: 5px;
-        }
-    `],
+    styles: [``],
 })
 export class OrderFormModalComponent {
     @ViewChild('modalRef') orderFormModal!: ElementRef;
@@ -492,7 +265,7 @@ export class OrderFormModalComponent {
 
     protected form!: FormGroup;
     protected orderId: WritableSignal<number | null> = signal<number | null>(null);
-    protected isEditScenario: WritableSignal<boolean> = signal<boolean>(true);
+    protected isEditScenario: WritableSignal<boolean> = signal<boolean>(false);
     protected isLoading: WritableSignal<boolean> = signal<boolean>(false);
 
     protected priorities: WritableSignal<PriorityItem[]> = signal<PriorityItem[]>([]);
