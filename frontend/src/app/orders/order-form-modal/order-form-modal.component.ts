@@ -238,8 +238,8 @@ import { OrderItem, OrderParams } from '../../shared/types/order.types';
                 <div class="footer">
                     <div class="modal-action w-full">
                         <form method="dialog" class="flex items-center gap-3">
-                            <button class="btn btn-outline btn-sm btn-error">Anuluj</button>
-                            <button type="button" class="btn btn-primary btn-sm" (click)="saveOrder()">Zapisz</button>
+                            <button class="btn btn-outline btn-sm btn-error">{{"basic.cancel" | translate}}</button>
+                            <button type="button" class="btn btn-primary btn-sm" (click)="saveOrder()">{{"basic.save" | translate}}</button>
                         </form>
                     </div>
                 </div>

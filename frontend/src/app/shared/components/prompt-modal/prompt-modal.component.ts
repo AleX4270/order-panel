@@ -9,22 +9,26 @@ import { PromptModalConfig } from '../../types/prompt-modal.types';
         TranslatePipe,
     ],
     template: `
-        <div #modalRef class="modal fade" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-primary">{{ config?.title }}</h5>
-                    </div>
-                    <div class="modal-body">
-                        <small>{{ config?.message }}</small>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-outline-danger" (click)="closeModal()">{{"basic.cancel" | translate}}</button>
-                        <button type="button" class="btn btn-sm btn-primary" (click)="handleAccept()">{{"basic.confirm" | translate}}</button>
-                    </div>
+        <dialog #modalRef class="modal">
+            <div class="modal-box">
+                <div class="modal-header">
+                    <h5 class="text-error text-lg">{{ config?.title }}</h5>
+                </div>
+
+                <div class="divider p-0 m-0"></div>
+
+                <div class="modal-content mt-2">
+                    <span class="text-sm">{{ config?.message }}</span>
+                </div>
+
+                <div class="modal-actions w-full mt-10">
+                    <form method="dialog" class="flex justify-end gap-2">
+                        <button class="btn btn-sm btn-outline btn-error">{{"basic.cancel" | translate}}</button>
+                        <button type="button" class="btn btn-primary btn-sm" (click)="handleAccept()">{{"basic.confirm" | translate}}</button>
+                    </form>
                 </div>
             </div>
-        </div>
+        </dialog>
     `,
     styles: [``]
 })
@@ -32,8 +36,6 @@ export class PromptModalComponent {
     @ViewChild('modalRef') promptModal!: ElementRef;
 
     private readonly promptModalService: PromptModalService = inject(PromptModalService);
-    private modal?: any;
-    
     protected config: PromptModalConfig | null = null;
 
     constructor() {
@@ -51,17 +53,12 @@ export class PromptModalComponent {
     }
 
     protected openModal(): void {
-        if(!this.modal) {
-            this.modal = new window.bootstrap.Modal(this.promptModal.nativeElement, {
-                focus: true,
-                keyboard: false,
-                backdrop: 'static'
-            });
+        const modal = this.promptModal.nativeElement as HTMLDialogElement;
+        if(!modal) {
+            return;
         }
 
-        if(typeof window !== 'undefined' && window.bootstrap) {
-            this.modal.show();
-        }
+        modal.showModal();
     }
 
     protected handleAccept(): void {
@@ -70,11 +67,11 @@ export class PromptModalComponent {
     }
 
     protected closeModal(): void {
-        this.promptModalService.closeModal();
-        this.modal?.hide();
-    }
+        const modal = this.promptModal.nativeElement as HTMLDialogElement;
+        if(!modal) {
+            return;
+        }
 
-    ngOnDestroy(): void {
-        this.modal?.dispose();
+        modal.close();
     }
 }
