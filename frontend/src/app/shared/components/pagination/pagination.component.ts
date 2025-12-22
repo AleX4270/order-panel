@@ -23,7 +23,7 @@ import { CommonModule } from '@angular/common';
                     &lt;
                 </button>
                 
-                <button class="join-item btn btn-square text-base-content" [ngClass]="{'bg-info/10': page() === 1}" (click)="changePage(1)">{{1}}</button>
+                <button class="join-item btn btn-square text-base-content" [ngClass]="{'bg-primary/10': page() === 1}" (click)="changePage(1)">{{1}}</button>
 
 
 
@@ -37,7 +37,7 @@ import { CommonModule } from '@angular/common';
                     <button
                         class="join-item btn btn-square" 
                         [ngClass]="{
-                            'bg-info/10': page() === itemValue,
+                            'bg-primary/10': page() === itemValue,
                             'pointer-events-none cursor-default': itemValue === null
                         }"
                         (click)="itemValue && changePage(itemValue)"
@@ -51,7 +51,7 @@ import { CommonModule } from '@angular/common';
                         <button class="join-item btn btn-square pointer-events-none cursor-default">&hellip;</button>
                     }
 
-                    <button class="join-item btn btn-square" [ngClass]="{'bg-info/10': page() === totalPages()}" (click)="changePage(totalPages())">{{ totalPages() }}</button>
+                    <button class="join-item btn btn-square" [ngClass]="{'bg-primary/10': page() === totalPages()}" (click)="changePage(totalPages())">{{ totalPages() }}</button>
                 }
 
                 <button 

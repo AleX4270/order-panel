@@ -12,7 +12,7 @@ import { TranslatePipe } from '@ngx-translate/core';
         <div class="w-full overflow-x-auto">
             <table class="table bg-base-100 border border-base-300 shadow-xs">
                 <thead>
-                    <tr class="bg-info/8 text-base-content [&_th]:font-normal [&_th]:text-xs">
+                    <tr class="bg-primary/8 text-base-content [&_th]:font-normal [&_th]:text-xs">
                         <ng-container *ngTemplateOutlet="headers"></ng-container>
                     </tr>
                 </thead>

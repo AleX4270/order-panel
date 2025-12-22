@@ -96,7 +96,7 @@ import { TileType } from '../../shared/types/tile.types';
                                 </div>
                             </td>
                             <td>
-                                <app-tile [type]="getPriorityTileType(item.prioritySymbol)" [isSoft]="true" [isOutlined]="true">
+                                <app-tile [type]="getPriorityTileType(item.prioritySymbol)">
                                     {{ item.priorityName }}
                                 </app-tile>
                             </td>
@@ -224,7 +224,7 @@ import { TileType } from '../../shared/types/tile.types';
         <div class="row order-list-pagination mt-5 pb-4">
             <div class="col-12">
                 <app-card [isContentCentered]="true" overflowType="visible">
-                    <app-pagination [totalItems]="100" (change)="onOrderPaginationChange($event)"></app-pagination>
+                    <app-pagination [totalItems]="ordersCount()" (change)="onOrderPaginationChange($event)"></app-pagination>
                 </app-card>
             </div>
         </div>

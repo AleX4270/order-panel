@@ -97,8 +97,7 @@ import { InputErrorLabelComponent } from "../shared/components/input-error-label
                                     type="submit"
                                     [isDisabled]="isSubmitted()"
                                     [isLoading]="isSubmitted()"
-                                    [label]="'login.submit' | translate"
-                                />
+                                >{{'login.submit' | translate}}</app-button>
                             </div>
                         </form>
                     </div>

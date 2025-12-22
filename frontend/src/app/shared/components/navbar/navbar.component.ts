@@ -21,7 +21,7 @@ import { NgTemplateOutlet } from '@angular/common';
         <ng-template #navLinks>
             @for(navElement of navbarElementList; track navElement) {
                 <li>
-                    <a [routerLink]="navElement.url" routerLinkActive="text-primary" class="hover:text-primary">
+                    <a [routerLink]="navElement.url" routerLinkActive="text-underline" class="active:bg-neutral/27">
                         {{"navbar." + navElement.label | translate}}
                     </a>
                 </li>

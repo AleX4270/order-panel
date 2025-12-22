@@ -6,12 +6,12 @@ type ButtonType = 'submit' | 'button';
     selector: 'app-button',
     imports: [],
     template: `
-        <button [type]="type()" [disabled]="isDisabled()" [class]="classList()" (click)="onClick()">
+        <button [type]="type()" [disabled]="isDisabled()" [class]="classList()" (click)="onClick($event)">
             @if(isLoading()) {
                 <span class="loading loading-spinner"></span>
             }
             @else {
-                <span>{{ label() }}</span>
+                <ng-content></ng-content>
             }
         </button>
     `,
@@ -21,12 +21,12 @@ export class ButtonComponent {
     public type: InputSignal<ButtonType> = input<ButtonType>('button');
     public isLoading: InputSignal<boolean> = input<boolean>(false);
     public isDisabled: InputSignal<boolean> = input<boolean>(false);
-    public label: InputSignal<string | null> = input<string | null>(null);
+    // public label: InputSignal<string | null> = input<string | null>(null);
     public classList: InputSignal<string | null> = input<string | null>(null);
 
-    public click = output<void>();
+    public click = output<Event>();
 
-    protected onClick(): void {
-        this.click.emit();
+    protected onClick(e: Event): void {
+        this.click.emit(e);
     }
 }
