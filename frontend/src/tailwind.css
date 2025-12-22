@@ -36,5 +36,20 @@
   --noise: 0;
 }
 
+/* Temp */
+.row-details-container {
+  @apply w-full mt-4 grid grid-cols-3 gap-6;
+}
 
+.row-details-box {
+  @apply flex flex-col;
+}
+
+.row-details-label {
+  @apply text-xs font-light text-base-content/60;
+}
+
+.row-details-value {
+  @apply text-xs mt-1;
+}
 

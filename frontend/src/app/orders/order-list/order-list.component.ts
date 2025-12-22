@@ -128,6 +128,7 @@ import { TileType } from '../../shared/types/tile.types';
                         </td>
                     </tr>
 
+                    <!-- TODO: This needs to be a standalone component -->
                     <tr [class.hidden]="!hasVisibleDetails(item.id)">
                         <td colspan="7" class="p-0">
                             <div class="p-3">
@@ -135,47 +136,47 @@ import { TileType } from '../../shared/types/tile.types';
                                     <h6 class="text-primary text-sm">{{ 'orderDetails.header' | translate}}</h6>
                                 </div>
 
-                                <div class="w-full mt-2 flex">
-                                    <div class="flex flex-col w-1/4">
-                                        <span class="details-label">{{ 'orderDetails.orderNo' | translate}}</span>
-                                        <div class="details-content">
+                                <div class="row-details-container">
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'orderDetails.orderNo' | translate}}</span>
+                                        <div class="row-details-value">
                                             <span>{{ '#' + item.id }}</span>
                                         </div>
                                     </div>
-                                    <div class="flex flex-col w-1/4">
-                                        <span class="details-label text-muted">{{ 'orderDetails.address' | translate}}</span>
-                                        <div class="details-value">
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'orderDetails.address' | translate}}</span>
+                                        <div class="row-details-value">
                                             <span>{{ item.address + ', ' + (item.postalCode ? (item.postalCode + ', ') : '') + item.cityName }}</span>
                                         </div>
                                     </div>
-                                    <div class="flex flex-col w-1/4">
-                                        <span class="details-label text-muted">{{ 'orderDetails.phoneNumber' | translate}}</span>
-                                        <div class="details-value">
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'orderDetails.phoneNumber' | translate}}</span>
+                                        <div class="row-details-value">
                                             <span>{{ item.phoneNumber }}</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="w-full mt-4 flex gap-10">
-                                    <div class="flex flex-col w-1/4">
-                                        <span class="details-label text-muted">{{ 'orderDetails.priority' | translate}}</span>
-                                        <div class="details-value">
+                                <div class="row-details-container">
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'orderDetails.priority' | translate}}</span>
+                                        <div class="row-details-value">
                                             <app-tile [type]="getPriorityTileType(item.prioritySymbol)">
                                                 {{ item.priorityName }}
                                             </app-tile>
                                         </div>
                                     </div>
-                                    <div class="flex flex-col w-1/4">
-                                        <span class="details-label text-muted">{{ 'orderDetails.status' | translate}}</span>
-                                        <div class="details-value">
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'orderDetails.status' | translate}}</span>
+                                        <div class="row-details-value">
                                             <app-tile [type]="getStatusTileType(item.statusSymbol)">
                                                 {{ item.statusName }}
                                             </app-tile>
                                         </div>
                                     </div>
-                                    <div class="flex flex-col w-1/4">
-                                        <span class="details-label text-muted">{{ 'orderDetails.isOverdue' | translate}}</span>
-                                        <div class="details-value">
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'orderDetails.isOverdue' | translate}}</span>
+                                        <div class="row-details-value">
                                             <app-tile [type]="item.isOverdue ? 'error' : 'success'">
                                                 {{ (item.isOverdue ? 'basic.yes' : 'basic.no') | translate}}
                                             </app-tile>
@@ -183,31 +184,31 @@ import { TileType } from '../../shared/types/tile.types';
                                     </div>
                                 </div>
 
-                                <div class="w-full mt-4 flex gap-10">
-                                    <div class="flex flex-col flex-1">
-                                        <span class="details-label text-muted">{{ 'orderDetails.dateCreated' | translate}}</span>
-                                        <div class="details-value">
+                                <div class="row-details-container">
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'orderDetails.dateCreated' | translate}}</span>
+                                        <div class="row-details-value">
                                             <span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span>
                                         </div>
                                     </div>
-                                    <div class="flex flex-col flex-1">
-                                        <span class="details-label text-muted">{{ 'orderDetails.dateDeadline' | translate}}</span>
-                                        <div class="details-value">
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'orderDetails.dateDeadline' | translate}}</span>
+                                        <div class="row-details-value">
                                             <span>{{ item.dateDeadline | date:'dd-MM-yyyy' }}</span>
                                         </div>
                                     </div>
-                                    <div class="flex flex-col flex-1">
-                                        <span class="details-label text-muted">{{ 'orderDetails.dateCompleted' | translate}}</span>
-                                        <div class="details-value">
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'orderDetails.dateCompleted' | translate}}</span>
+                                        <div class="row-details-value">
                                             <span>{{ (item.dateCompleted | date:'dd-MM-yyyy') ?? '-' }}</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="w-full mt-4 flex gap-10">
-                                    <div class="flex flex-col flex-1">
-                                        <span class="details-label text-muted">{{ 'orderDetails.remarks' | translate}}</span>
-                                        <div class="details-value">
+                                <div class="row-details-container">
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'orderDetails.remarks' | translate}}</span>
+                                        <div class="row-details-value">
                                             <span class="text-muted">{{ item.remarks ?? '-' }}</span>
                                         </div>
                                     </div>
