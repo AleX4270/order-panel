@@ -21,12 +21,12 @@ export class ButtonComponent {
     public type: InputSignal<ButtonType> = input<ButtonType>('button');
     public isLoading: InputSignal<boolean> = input<boolean>(false);
     public isDisabled: InputSignal<boolean> = input<boolean>(false);
-    // public label: InputSignal<string | null> = input<string | null>(null);
     public classList: InputSignal<string | null> = input<string | null>(null);
 
     public click = output<Event>();
 
     protected onClick(e: Event): void {
+        e.stopPropagation();
         this.click.emit(e);
     }
 }

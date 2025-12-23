@@ -13,7 +13,7 @@ import { CityItem } from '../../shared/types/city.types';
 import { PriorityService } from '../../shared/services/api/priority/priority.service';
 import { StatusService } from '../../shared/services/api/status/status.service';
 import { CountryService } from '../../shared/services/api/country/country.service';
-import { distinctUntilChanged, forkJoin, map, tap } from 'rxjs';
+import { distinctUntilChanged, finalize, forkJoin, map, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DEFAULT_COUNTRY_SYMBOL, DEFAULT_PRIORITY_SYMBOL, DEFAULT_STATUS_SYMBOL } from '../../app.constants';
 import { ProvinceService } from '../../shared/services/api/province/province.service';
@@ -22,10 +22,11 @@ import { ToastService } from '../../shared/services/toast/toast.service';
 import { ToastType } from '../../shared/enums/enums';
 import { OrderService } from '../../shared/services/api/order/order.service';
 import { OrderItem, OrderParams } from '../../shared/types/order.types';
+import { ButtonComponent } from "../../shared/components/button/button.component";
 
 @Component({
     selector: 'app-order-form-modal',
-    imports: [ReactiveFormsModule, NgSelectComponent, InputErrorLabelComponent, TranslatePipe],
+    imports: [ReactiveFormsModule, NgSelectComponent, InputErrorLabelComponent, TranslatePipe, ButtonComponent],
     providers: [DatePipe],
     template: `
         <dialog #modalRef class="modal">
@@ -33,7 +34,7 @@ import { OrderItem, OrderParams } from '../../shared/types/order.types';
                 <div class="header">
                     <h5 class="text-primary font-semibold text-xl">{{ ("orderForm." + (isEditScenario() ? "updateTitle" : "createTitle") | translate) + (isEditScenario() ? ' - #' + this.orderId() : '') }}</h5>
                     <form method="dialog">
-                        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                        <app-button type="submit" classList="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</app-button>
                     </form>
                 </div>
 
@@ -238,8 +239,8 @@ import { OrderItem, OrderParams } from '../../shared/types/order.types';
                 <div class="footer">
                     <div class="modal-action w-full">
                         <form method="dialog" class="flex items-center gap-3">
-                            <button class="btn btn-outline btn-sm btn-error">{{"basic.cancel" | translate}}</button>
-                            <button type="button" class="btn btn-primary btn-sm" (click)="saveOrder()">{{"basic.save" | translate}}</button>
+                            <app-button type="submit" classList="btn btn-outline btn-sm btn-error">{{"basic.cancel" | translate}}</app-button>
+                            <app-button type="button" classList="btn btn-primary btn-sm" (click)="saveOrder()" [isLoading]="isSubmitted()" [isDisabled]="isSubmitted()">{{"basic.save" | translate}}</app-button>
                         </form>
                     </div>
                 </div>
@@ -267,6 +268,7 @@ export class OrderFormModalComponent {
     protected orderId: WritableSignal<number | null> = signal<number | null>(null);
     protected isEditScenario: WritableSignal<boolean> = signal<boolean>(false);
     protected isLoading: WritableSignal<boolean> = signal<boolean>(false);
+    protected isSubmitted: WritableSignal<boolean> = signal<boolean>(false);
 
     protected priorities: WritableSignal<PriorityItem[]> = signal<PriorityItem[]>([]);
     protected statuses: WritableSignal<StatusItem[]> = signal<StatusItem[]>([]);
@@ -501,12 +503,17 @@ export class OrderFormModalComponent {
     }
 
     protected saveOrder(): void {
+        if(this.isSubmitted()) {
+            return;
+        }
+
         if(this.form.invalid) {
             this.form.markAllAsDirty();
             this.toastService.show(this.translateService.instant('form.error'), ToastType.danger);
             return;
         }
 
+        this.isSubmitted.set(true);
         const formValues = this.form.value;
 
         let orderParams = {
@@ -545,7 +552,11 @@ export class OrderFormModalComponent {
             ? this.orderService.update(orderParams)
             : this.orderService.store(orderParams);
 
-        method.subscribe({
+        method
+        .pipe(
+            finalize(() => this.isSubmitted.set(false))
+        )
+        .subscribe({
             next: (res) => {
                 this.toastService.show(
                     this.translateService.instant('orderForm.saveSuccessMessage'),

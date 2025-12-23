@@ -21,22 +21,24 @@ import { SortItem } from '../../shared/types/sort.types';
 import { PromptModalService } from '../../shared/services/prompt-modal/prompt-modal.service';
 import { ToastService } from '../../shared/services/toast/toast.service';
 import { TileType } from '../../shared/types/tile.types';
+import { ButtonComponent } from "../../shared/components/button/button.component";
 
 @Component({
     selector: 'app-order-list',
     imports: [
-        TranslatePipe,
-        ListTableComponent,
-        TileComponent,
-        NgIcon,
-        ColorLabelComponent,
-        CardComponent,
-        PaginationComponent,
-        FiltersComponent,
-        OrderFormModalComponent,
-        DatePipe,
-        NgClass
-    ],
+    TranslatePipe,
+    ListTableComponent,
+    TileComponent,
+    NgIcon,
+    ColorLabelComponent,
+    CardComponent,
+    PaginationComponent,
+    FiltersComponent,
+    OrderFormModalComponent,
+    DatePipe,
+    NgClass,
+    ButtonComponent
+],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan})],
     template: `
         <div class="w-full order-list-header">
@@ -61,7 +63,7 @@ import { TileType } from '../../shared/types/tile.types';
                     </div>
                 </div>
             </div>
-            <button class="btn btn-sm btn-primary md:btn-md" (click)="showOrderFormModal()" >{{'orderList.addNewOrder' | translate}}</button>
+            <app-button classList="btn btn-sm btn-primary md:btn-md" (click)="showOrderFormModal()">{{'orderList.addNewOrder' | translate}}</app-button>
         </div>
 
         <div class="w-full mt-2">
@@ -87,7 +89,7 @@ import { TileType } from '../../shared/types/tile.types';
                             'bg-error/20': item.isOverdue && item.statusSymbol !== status.completed
                         }"
                     >
-                        <td class="font-normal">{{ '#' + item.id }}</td>
+                        <td class="font-normal"><span>{{ '#' + item.id }}</span></td>
                         <td>
                             <div class="flex flex-col">
                                 <span class="text-xs">{{item.cityName}}</span>
@@ -220,12 +222,10 @@ import { TileType } from '../../shared/types/tile.types';
             </app-list-table>
         </div>
 
-        <div class="row order-list-pagination mt-5 pb-4">
-            <div class="col-12">
-                <app-card [isContentCentered]="true" overflowType="visible">
-                    <app-pagination [totalItems]="ordersCount()" (change)="onOrderPaginationChange($event)"></app-pagination>
-                </app-card>
-            </div>
+        <div class="w-full mt-8">
+            <app-card [isContentCentered]="true" overflowType="visible">
+                <app-pagination [totalItems]="ordersCount()" (change)="onOrderPaginationChange($event)"></app-pagination>
+            </app-card>
         </div>
 
         <app-order-form-modal #orderFormModal (orderSaved)="loadOrders()" />

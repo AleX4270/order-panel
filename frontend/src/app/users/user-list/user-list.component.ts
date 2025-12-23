@@ -20,6 +20,7 @@ import { UserFilterParams, UserItem } from '../../shared/types/user.types';
 import { UserFormModalComponent } from "../user-form-modal/user-form-modal.component";
 import { Role } from '../../shared/enums/role.enum';
 import { TileType } from '../../shared/types/tile.types';
+import { ButtonComponent } from "../../shared/components/button/button.component";
 
 @Component({
     selector: 'app-order-list',
@@ -34,232 +35,177 @@ import { TileType } from '../../shared/types/tile.types';
     FiltersComponent,
     DatePipe,
     NgClass,
-    UserFormModalComponent
+    UserFormModalComponent,
+    ButtonComponent
 ],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan})],
     template: `
-        <div class="row order-list-header">
-            <div class="col-12">
-                <div class="row">
-                    <div class="col-6">
-                        <h3>{{'userList.header' | translate}}</h3>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <app-card overflowType="visible">
-                            <app-filters 
-                                [type]="filterType.userListFilters"
-                                (filtersChange)="onUserFiltersChange($event)"
-                            />        
-                        </app-card>
-                    </div>
-                </div>
-            </div> 
+        <div class="w-full user-list-header">
+            <h1 class="font-semibold text-2xl mb-5">{{'userList.header' | translate}}</h1>
+            <app-card overflowType="visible" [title]="'basic.filters' | translate">
+                <app-filters 
+                    [type]="filterType.userListFilters"
+                    (filtersChange)="onUserFiltersChange($event)"
+                />        
+            </app-card>
         </div>
 
-        <div class="row order-list-info mt-5">
-            <div class="col-8">
-                <h5>{{ ('userList.users' | translate) + ' (' + usersCount() + ')'}}</h5>
+        <div class="w-full mt-5 flex justify-between items-end">
+            <div class="flex flex-col">
+                <h2 class="font-medium text-xl">{{ ('userList.users' | translate) + ' (' + usersCount() + ')'}}</h2>
             </div>
-            <div class="col-4 text-end">
-                <button class="btn btn-sm btn-primary" (click)="showUserFormModal()" >+ {{'userList.addNewUser' | translate}}</button>
-            </div>
+            <app-button classList="btn btn-sm btn-primary md:btn-md" (click)="showUserFormModal()">{{'userList.addNewUser' | translate}}</app-button>
         </div>
 
-        <div class="row order-list-table mt-2">
-            <div class="col-12">
-                <app-list-table
-                    [defineTableRowsExternally]="true"
-                    [data]="users()"
-                >
-                    <ng-template #headers>
-                        <th class="cursor-pointer" (click)="onSortChange('userNumber')">{{'userListTable.userNumber' | translate}}</th>
-                        <th class="cursor-pointer" (click)="onSortChange('name')">{{'userListTable.name' | translate}}</th>
-                        <th class="cursor-pointer" (click)="onSortChange('email')">{{'userListTable.email' | translate}}</th>
-                        <th class="cursor-pointer" (click)="onSortChange('roles')">{{'userListTable.roles' | translate}}</th>
-                        <th class="cursor-pointer" (click)="onSortChange('dateCreated')">{{'userListTable.dateCreated' | translate}}</th>
-                        <th class="cursor-pointer" (click)="onSortChange('dateUpdated')">{{'userListTable.dateUpdated' | translate}}</th>
-                        <th>{{'userListTable.actions' | translate}}</th>
-                    </ng-template>
+        <div class="w-full mt-2">
+            <app-list-table
+                [defineTableRowsExternally]="true"
+                [data]="users()"
+            >
+                <ng-template #headers>
+                    <th class="cursor-pointer" (click)="onSortChange('userNumber')">{{'userListTable.userNumber' | translate}}</th>
+                    <th class="cursor-pointer" (click)="onSortChange('name')">{{'userListTable.name' | translate}}</th>
+                    <th class="cursor-pointer" (click)="onSortChange('email')">{{'userListTable.email' | translate}}</th>
+                    <th class="cursor-pointer" (click)="onSortChange('roles')">{{'userListTable.roles' | translate}}</th>
+                    <th class="cursor-pointer" (click)="onSortChange('dateCreated')">{{'userListTable.dateCreated' | translate}}</th>
+                    <th class="cursor-pointer" (click)="onSortChange('dateUpdated')">{{'userListTable.dateUpdated' | translate}}</th>
+                    <th>{{'userListTable.actions' | translate}}</th>
+                </ng-template>
 
-                    <ng-template #rows let-item>
-                        <tr class="list-row">
-                            <td class="fw-semibold">{{ '#' + item.id }}</td>
-                            <td>
-                                <div class="user-name-container d-flex flex-column">
-                                    <span class="user-name">{{ item.name }}</span>
-                                    @if(item.firstName || item.lastName) {
-                                        <span class="user-name-label text-muted">{{ (item.firstName ?? '') + (item.lastName ? (' ' + item.lastName) : '') }}</span>
-                                    }
-                                </div>
-                            </td>
-                            <td>{{ item.email }}</td>
-                            <td>
-                                <div class="d-flex gap-1">
-                                    @for(role of item.roles; track role.id) {
-                                        <app-tile [type]="getRoleTileType(role.symbol)">
-                                            {{ role.name }}
-                                        </app-tile>
-                                    }
-                                    @empty {
-                                        <span>-</span>
-                                    }
-                                </div>
-                            </td>
-                            <td>{{ item.dateCreated | date:'dd-MM-yyyy' }}</td>
-                            <td>{{ item.dateUpdated | date:'dd-MM-yyyy'}}</td>
-                            <td>
-                                <div class="d-flex gap-3">
+                <ng-template #rows let-item>
+                    <tr class="bg-base-100 hover:bg-base-200 [&_td]:text-xs p-1">
+                        <td class="font-normal"><span>{{ '#' + item.id }}</span></td>
+                        <td>
+                            <div class="flex flex-col">
+                                <span>{{ item.name }}</span>
+                                @if(item.firstName || item.lastName) {
+                                    <span class="text-base-content/50">{{ (item.firstName ?? '') + (item.lastName ? (' ' + item.lastName) : '') }}</span>
+                                }
+                            </div>
+                        </td>
+                        <td><span>{{ item.email }}</span></td>
+                        <td>
+                            <div class="flex gap-1">
+                                @for(role of item.roles; track role.id) {
+                                    <app-tile [type]="getRoleTileType(role.symbol)">
+                                        {{ role.name }}
+                                    </app-tile>
+                                }
+                                @empty {
+                                    <span>-</span>
+                                }
+                            </div>
+                        </td>
+                        <td><span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span></td>
+                        <td><span>{{ item.dateUpdated | date:'dd-MM-yyyy'}}</span></td>
+                        <td>
+                            <div class="flex gap-3">
+                                <ng-icon
+                                    class="item-pressable text-dark"
+                                    name="faEye"
+                                    size="18px"
+                                    (click)="toggleItemDetailsExpansion(item.id)"
+                                ></ng-icon>
+
+                                <ng-icon
+                                    class="item-pressable text-primary"
+                                    name="faPenToSquare"
+                                    size="18px"
+                                    (click)="showUserFormModal(item.id)"
+                                ></ng-icon>
+
+                                @if(!item.isInternal) {
                                     <ng-icon
-                                        class="item-pressable text-dark"
-                                        name="faEye"
-                                        size="20px"
-                                        (click)="toggleItemDetailsExpansion(item.id)"
+                                        class="item-pressable text-danger"
+                                        name="faTrashCan"
+                                        size="18px"
+                                        (click)="showUserDeletePromptModal(item.id)"
                                     ></ng-icon>
+                                }
+                            </div>
+                        </td>
+                    </tr>
 
-                                    <ng-icon
-                                        class="item-pressable text-primary"
-                                        name="faPenToSquare"
-                                        size="20px"
-                                        (click)="showUserFormModal(item.id)"
-                                    ></ng-icon>
-
-                                    @if(!item.isInternal) {
-                                        <ng-icon
-                                            class="item-pressable text-danger"
-                                            name="faTrashCan"
-                                            size="20px"
-                                            (click)="showUserDeletePromptModal(item.id)"
-                                        ></ng-icon>
-                                    }
+                    <tr [class.hidden]="!hasVisibleDetails(item.id)">
+                        <td colspan="7" class="p-0">
+                            <div class="p-3">
+                                <div class="w-full">
+                                    <h6 class="text-primary text-sm">{{ 'userDetails.header' | translate}}</h6>
                                 </div>
-                            </td>
-                        </tr>
 
-                        <tr [class.d-none]="!hasVisibleDetails(item.id)">
-                            <td colspan="7" class="p-0">
-                                <div class="expandable-content details p-3">
-                                    <div class="row">
-                                        <div class="col">
-                                            <h6 class="details-header text-primary">{{ 'userDetails.header' | translate}}</h6>
+                                <div class="row-details-container">
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'userDetails.userNumber' | translate}}</span>
+                                        <div class="row-details-value">
+                                            <span>{{ '#' + item.id }}</span>
                                         </div>
                                     </div>
-
-                                    <div class="row mt-2">
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'userDetails.userNumber' | translate}}</span>
-                                            <div class="details-value">
-                                                <span>{{ '#' + item.id }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'userDetails.firstAndLastName' | translate}}</span>
-                                            <div class="details-value">
-                                                <span class="address-label">{{ (item.firstName ?? '') + (item.lastName ? (' ' + item.lastName) : '') }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'userDetails.name' | translate}}</span>
-                                            <div class="details-value">
-                                                <span>{{ item.name }}</span>
-                                            </div>
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'userDetails.firstAndLastName' | translate}}</span>
+                                        <div class="row-details-value">
+                                            <span class="address-label">{{ (item.firstName ?? '') + (item.lastName ? (' ' + item.lastName) : '-') }}</span>
                                         </div>
                                     </div>
-
-                                    <div class="row mt-4">
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'userDetails.email' | translate}}</span>
-                                            <div class="details-value">
-                                                <span>{{ item.email  }}</span>
-                                            </div>
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'userDetails.name' | translate}}</span>
+                                        <div class="row-details-value">
+                                            <span>{{ item.name }}</span>
                                         </div>
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'userDetails.dateCreated' | translate}}</span>
-                                            <div class="details-value">
-                                                <span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'userDetails.dateUpdated' | translate}}</span>
-                                            <div class="details-value">
-                                                <span>{{ item.dateUpdated | date:'dd-MM-yyyy' }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mt-4">
-                                        <div class="col d-flex flex-column">
-                                            <span class="details-label text-muted">{{ 'userDetails.roles' | translate}}</span>
-                                            <div class="details-value d-flex gap-1">
-                                                @for(role of item.roles; track role.id) {
-                                                    <app-tile [type]="getRoleTileType(role.symbol)">
-                                                        {{ role.name }}
-                                                    </app-tile>
-                                                }
-                                                @empty {
-                                                    <span>-</span>
-                                                }
-                                            </div>
-                                        </div>
-                                        <div class="col d-flex flex-column"></div>
-                                        <div class="col d-flex flex-column"></div>
                                     </div>
                                 </div>
-                            </td>
-                        </tr>
-                    </ng-template>
-                </app-list-table>
-            </div>
+
+                                <div class="row-details-container">
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'userDetails.email' | translate}}</span>
+                                        <div class="row-details-value">
+                                            <span>{{ item.email  }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'userDetails.dateCreated' | translate}}</span>
+                                        <div class="row-details-value">
+                                            <span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'userDetails.dateUpdated' | translate}}</span>
+                                        <div class="row-details-value">
+                                            <span>{{ item.dateUpdated | date:'dd-MM-yyyy' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row-details-container">
+                                    <div class="row-details-box">
+                                        <span class="row-details-label">{{ 'userDetails.roles' | translate}}</span>
+                                        <div class="row-details-value flex gap-1">
+                                            @for(role of item.roles; track role.id) {
+                                                <app-tile [type]="getRoleTileType(role.symbol)">
+                                                    {{ role.name }}
+                                                </app-tile>
+                                            }
+                                            @empty {
+                                                <span>-</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </app-list-table>
         </div>
 
-        <div class="row user-list-pagination mt-5 pb-4">
-            <div class="col-12">
-                <app-card [isContentCentered]="true" overflowType="visible">
-                    <app-pagination [totalItems]="usersCount()" (change)="onUsersPaginationChange($event)"></app-pagination>
-                </app-card>
-            </div>
+        <div class="w-full mt-8">
+            <app-card [isContentCentered]="true" overflowType="visible">
+                <app-pagination [totalItems]="usersCount()" (change)="onUsersPaginationChange($event)"></app-pagination>
+            </app-card>
         </div>
 
         <app-user-form-modal #userFormModal (userSaved)="loadUsers()" />
     `,
-    styles: [`
-        .details {
-            .details-header {
-                color: var(--order-list-header-text-color);
-            }
-
-            .details-label {
-                font-size: var(--font-size-xs);
-                font-weight: var(--font-weight-light);
-            }
-
-            .details-value {
-                font-size: var(--font-size-xs);
-            }
-        }
-        
-        .list-row {
-            background-color: var(--order-list-default-row-background-color);
-            border-bottom: 1px solid var(--order-list-row-border-color);
-
-            &:hover {
-                background-color: var(--order-list-hovered-row-background-color);
-            }
-
-            td {
-                font-size: var(--font-size-xs);
-                padding: 0.9rem 0 0.9rem 0.75rem;
-            }
-        }
-
-        .user-name-container {
-            .user-name-label {
-                font-size: var(--font-size-xs);
-                font-weight: var(--font-weight-light);
-            }
-        }
-    `]
+    styles: [``]
 })
 export class UserListComponent implements OnInit {
     @ViewChild('userFormModal') userFormModal!: UserFormModalComponent;
