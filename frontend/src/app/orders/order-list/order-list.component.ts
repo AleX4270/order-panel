@@ -58,8 +58,8 @@ import { ButtonComponent } from "../../shared/components/button/button.component
                     <span class="text-neutral/45 font-light text-sm">{{'orderList.legend' | translate}}:</span>
                     <div class="flex gap-2 text-xs mt-2 sm:mt-0 sm:ms-2 font-light">
                         <app-color-label colorClass="bg-base-100" [label]="'orderList.inProgress' | translate"></app-color-label>
-                        <app-color-label colorClass="bg-error/20" [label]="'orderList.overdue' | translate"></app-color-label>
-                        <app-color-label colorClass="bg-neutral/10" [label]="'orderList.completed' | translate"></app-color-label>
+                        <app-color-label colorClass="bg-error/15" [label]="'orderList.overdue' | translate"></app-color-label>
+                        <app-color-label colorClass="bg-neutral/9" [label]="'orderList.completed' | translate"></app-color-label>
                     </div>
                 </div>
             </div>
@@ -85,8 +85,8 @@ import { ButtonComponent } from "../../shared/components/button/button.component
                     <tr 
                         class="bg-base-100 hover:bg-base-300/70 [&_td]:text-xs p-1"
                         [ngClass]="{
-                            'bg-neutral/10': item.statusSymbol === status.completed,
-                            'bg-error/20': item.isOverdue && item.statusSymbol !== status.completed
+                            'bg-neutral/9': item.statusSymbol === status.completed,
+                            'bg-error/15': item.isOverdue && item.statusSymbol !== status.completed
                         }"
                     >
                         <td class="font-normal"><span>{{ '#' + item.id }}</span></td>
@@ -222,7 +222,7 @@ import { ButtonComponent } from "../../shared/components/button/button.component
             </app-list-table>
         </div>
 
-        <div class="w-full mt-8">
+        <div class="w-full mt-9">
             <app-card [isContentCentered]="true" overflowType="visible">
                 <app-pagination [totalItems]="ordersCount()" (change)="onOrderPaginationChange($event)"></app-pagination>
             </app-card>

@@ -16,27 +16,27 @@ import { CommonModule } from '@angular/common';
         <div class="flex justify-center items-center gap-2">
             <div class="join [&_button]:rounded-sm [&_button]:border-none gap-2">
                 <button 
-                    class="join-item btn btn-square" 
-                    [ngClass]="{'pointer-events-none cursor-default': isPreviousDisabled()}"
+                    class="join-item btn btn-sm btn-square bg-base-100" 
+                    [ngClass]="{'cursor-default': isPreviousDisabled()}"
                     (click)="!isPreviousDisabled() && changePage(page() - 1)"
                 >
                     &lt;
                 </button>
                 
-                <button class="join-item btn btn-square text-base-content" [ngClass]="{'bg-primary/10': page() === 1}" (click)="changePage(1)">{{1}}</button>
+                <button class="join-item btn btn-sm btn-square text-base-content" [ngClass]="{'bg-primary/10': page() === 1}" (click)="changePage(1)">{{1}}</button>
 
                 @if(page() >= 4 && totalPages() > 5) {
-                    <button class="join-item btn btn-square pointer-events-none cursor-default">&hellip;</button>
+                    <button class="join-item btn btn-sm btn-square pointer-events-none cursor-default">&hellip;</button>
                 }
 
                 @for(position of middlePositions(); track position;) {
                     @let itemValue = getPaginationItemValue(position);
 
                     <button
-                        class="join-item btn btn-square" 
+                        class="join-item btn btn-sm btn-square" 
                         [ngClass]="{
                             'bg-primary/10': page() === itemValue,
-                            'pointer-events-none cursor-default': itemValue === null
+                            'cursor-default': itemValue === null
                         }"
                         (click)="itemValue && changePage(itemValue)"
                     >
@@ -46,16 +46,16 @@ import { CommonModule } from '@angular/common';
 
                 @if(totalPages() >= 5) {
                     @if(totalPages() > 5 && page() <= totalPages() - 3) {
-                        <button class="join-item btn btn-square pointer-events-none cursor-default">&hellip;</button>
+                        <button class="join-item btn btn-sm btn-square pointer-events-none cursor-default">&hellip;</button>
                     }
 
-                    <button class="join-item btn btn-square" [ngClass]="{'bg-primary/10': page() === totalPages()}" (click)="changePage(totalPages())">{{ totalPages() }}</button>
+                    <button class="join-item btn btn-sm btn-square" [ngClass]="{'bg-primary/10': page() === totalPages()}" (click)="changePage(totalPages())">{{ totalPages() }}</button>
                 }
 
                 <button 
-                    class="join-item btn btn-square"
+                    class="join-item btn btn-sm btn-square bg-base-100"
                     [ngClass]="{
-                        'pointer-events-none cursor-default': isNextDisabled()
+                        'cursor-default': isNextDisabled()
                     }"
                     (click)="!isNextDisabled() && changePage(page() + 1)"
                 >

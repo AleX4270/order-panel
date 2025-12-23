@@ -26,16 +26,16 @@ import { InputErrorLabelComponent } from "../shared/components/input-error-label
 @Component({
     selector: "app-login",
     imports: [
-    WelcomeHeaderComponent,
-    ReactiveFormsModule,
-    SmallFooterComponent,
-    NgIconComponent,
-    CommonModule,
-    RouterModule,
-    TranslatePipe,
-    ButtonComponent,
-    InputErrorLabelComponent
-],
+        WelcomeHeaderComponent,
+        ReactiveFormsModule,
+        SmallFooterComponent,
+        NgIconComponent,
+        CommonModule,
+        RouterModule,
+        TranslatePipe,
+        ButtonComponent,
+        InputErrorLabelComponent
+    ],
     providers: [provideIcons({ faEye, faEyeSlash })],
     template: `
         <div class="min-h-screen flex items-center justify-center px-2 sm:px-4">
@@ -64,7 +64,7 @@ import { InputErrorLabelComponent } from "../shared/components/input-error-label
                                 <app-input-error-label [control]="form.get('email')" />
                             </div>
 
-                            <div class="mt-7 flex flex-col">
+                            <div class="mt-4 flex flex-col">
                                 <div class="flex justify-between">
                                     <label class="label" for="password">{{
                                         "login.password" | translate

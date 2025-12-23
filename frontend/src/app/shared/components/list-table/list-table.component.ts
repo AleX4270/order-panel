@@ -9,7 +9,7 @@ import { TranslatePipe } from '@ngx-translate/core';
         TranslatePipe,
     ],
     template: `
-        <div class="w-full overflow-x-auto rounded-box bg-base-100 shadow-sm">
+        <div class="w-full overflow-x-auto rounded-box shadow-sm">
             <table class="table w-full">
                 <thead>
                     <tr class="bg-base-100 text-base-content [&_th]:font-light [&_th]:text-xs">
@@ -52,7 +52,7 @@ import { TranslatePipe } from '@ngx-translate/core';
             </table>
         </div>
     `,
-    styles: []
+    styles: [``]
 })
 export class ListTableComponent {
     @ContentChild('headers', { read: TemplateRef }) headers!: TemplateRef<any>;

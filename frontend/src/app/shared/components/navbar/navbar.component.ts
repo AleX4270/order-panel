@@ -32,7 +32,7 @@ import { NgTemplateOutlet } from '@angular/common';
             <div class="navbar-start">
                 <div class="hidden lg:flex">
                     <app-dropdown>
-                        <ng-template #label><span class="text-base-content/75">{{user()?.username}}</span></ng-template>
+                        <ng-template #label><span class="text-primary/80">{{user()?.username}}</span></ng-template>
                         <ng-template #options>
                             <li>
                                 <button class="btn btn-ghost" type="button" (click)="logout()">
