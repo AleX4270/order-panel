@@ -222,7 +222,7 @@ import { ButtonComponent } from "../../shared/components/button/button.component
             </app-list-table>
         </div>
 
-        <div class="w-full mt-9">
+        <div class="w-full mt-9 mb-6">
             <app-card [isContentCentered]="true" overflowType="visible">
                 <app-pagination [totalItems]="ordersCount()" (change)="onOrderPaginationChange($event)"></app-pagination>
             </app-card>

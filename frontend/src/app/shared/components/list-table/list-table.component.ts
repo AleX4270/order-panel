@@ -9,7 +9,7 @@ import { TranslatePipe } from '@ngx-translate/core';
         TranslatePipe,
     ],
     template: `
-        <div class="w-full overflow-x-auto rounded-box shadow-sm">
+        <div class="w-full overflow-x-auto rounded-box shadow-sm bg-base-100">
             <table class="table w-full">
                 <thead>
                     <tr class="bg-base-100 text-base-content [&_th]:font-light [&_th]:text-xs">

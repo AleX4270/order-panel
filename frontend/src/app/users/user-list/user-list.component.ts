@@ -84,7 +84,7 @@ import { ButtonComponent } from "../../shared/components/button/button.component
                         <td>
                             <div class="flex gap-1">
                                 @for(role of item.roles; track role.id) {
-                                    <app-tile [type]="getRoleTileType(role.symbol)">
+                                    <app-tile [type]="getRoleTileType(role.symbol)" [isSoft]="true" [isOutlined]="true">
                                         {{ role.name }}
                                     </app-tile>
                                 }
@@ -98,14 +98,14 @@ import { ButtonComponent } from "../../shared/components/button/button.component
                         <td>
                             <div class="flex gap-3">
                                 <ng-icon
-                                    class="item-pressable text-dark"
+                                    class="item-pressable"
                                     name="faEye"
                                     size="18px"
                                     (click)="toggleItemDetailsExpansion(item.id)"
                                 ></ng-icon>
 
                                 <ng-icon
-                                    class="item-pressable text-primary"
+                                    class="item-pressable [&>svg]:fill-primary"
                                     name="faPenToSquare"
                                     size="18px"
                                     (click)="showUserFormModal(item.id)"
@@ -113,7 +113,7 @@ import { ButtonComponent } from "../../shared/components/button/button.component
 
                                 @if(!item.isInternal) {
                                     <ng-icon
-                                        class="item-pressable text-danger"
+                                        class="item-pressable [&>svg]:fill-error"
                                         name="faTrashCan"
                                         size="18px"
                                         (click)="showUserDeletePromptModal(item.id)"
@@ -194,7 +194,7 @@ import { ButtonComponent } from "../../shared/components/button/button.component
             </app-list-table>
         </div>
 
-        <div class="w-full mt-9">
+        <div class="w-full mt-9 mb-6">
             <app-card [isContentCentered]="true" overflowType="visible">
                 <app-pagination [totalItems]="usersCount()" (change)="onUsersPaginationChange($event)"></app-pagination>
             </app-card>
