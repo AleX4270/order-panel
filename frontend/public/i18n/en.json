@@ -9,7 +9,8 @@
     "noResults": "No results",
     "confirm": "Confirm",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "filters": "Filters"
   },
   "error": {
     "incorrect": "Invalid data",
