@@ -6,13 +6,13 @@ import { Component, input } from '@angular/core';
     imports: [CommonModule],
     template: `
         <div 
-            class="card card-border bg-base-200 border-base-300 w-full shadow-xs"
+            class="card card-border bg-base-100 w-full shadow-sm"
         >
             <div class="card-body">
                 @if(title()) {
                     <h2 class="card-title text-md">{{ title() }}</h2>
                 }
-                <div 
+                <div
                     [class.flex]="isContentCentered()"
                     [class.items-center]="isContentCentered()"
                     [class.justify-center]="isContentCentered()"

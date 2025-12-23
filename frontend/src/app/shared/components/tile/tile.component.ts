@@ -64,7 +64,10 @@ export class TileComponent {
                 list += ' badge-warning';
                 break;
             case 'error':
-                list += ' badge-error text-base-100';
+                list += ' badge-error';
+                break;
+            case 'neutral':
+                list += ' badge-neutral';
                 break;
             default:
                 list += ' badge-primary';

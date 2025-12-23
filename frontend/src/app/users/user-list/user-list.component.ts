@@ -5,12 +5,11 @@ import { ExpansionState, ToastType } from '../../shared/enums/enums';
 import { TileComponent } from "../../shared/components/tile/tile.component";
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { faEye, faPenToSquare, faTrashCan } from '@ng-icons/font-awesome/regular';
-import { ColorLabelComponent } from '../../shared/components/color-label/color-label.component';
 import { CardComponent } from "../../shared/components/card/card.component";
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 import { FiltersComponent } from '../../shared/components/filters/filters.component';
 import { FilterType } from '../../shared/enums/filter-type.enum';
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { PaginationItem } from '../../shared/types/pagination.types';
 import { SortItem } from '../../shared/types/sort.types';
 import { PromptModalService } from '../../shared/services/prompt-modal/prompt-modal.service';
@@ -29,12 +28,10 @@ import { ButtonComponent } from "../../shared/components/button/button.component
     ListTableComponent,
     TileComponent,
     NgIcon,
-    ColorLabelComponent,
     CardComponent,
     PaginationComponent,
     FiltersComponent,
     DatePipe,
-    NgClass,
     UserFormModalComponent,
     ButtonComponent
 ],

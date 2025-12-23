@@ -28,7 +28,7 @@ import { NgTemplateOutlet } from '@angular/common';
             }
         </ng-template>
 
-        <nav class="navbar bg-base-100 shadow-sm">
+        <nav class="navbar bg-base-100 shadow-xs">
             <div class="navbar-start">
                 <div class="hidden lg:flex">
                     <app-dropdown>

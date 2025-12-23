@@ -44,20 +44,20 @@ import { InputErrorLabelComponent } from "../shared/components/input-error-label
                     <app-welcome-header />
                 </div>
 
-                <div class="card sm:card-border sm:p-1 sm:shadow-sm sm:shadow-primary/10">
+                <div class="card bg-base-100 sm:p-1 sm:shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title text-xl">{{ "login.title" | translate }}</h5>
                         <p class="text-base-content/60 mt-1">
                             {{ "login.description" | translate }}
                         </p>
 
-                        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="[&_label]:mb-2">
                             <div class="mt-5 flex flex-col">
                                 <label class="label" for="email">{{ "login.email" | translate }}</label>
                                 <input
                                     id="email"
                                     type="email"
-                                    class="input w-full"
+                                    class="input w-full text-xs"
                                     formControlName="email"
                                     [placeholder]="'login.emailPlaceholder' | translate"
                                 />
@@ -74,7 +74,7 @@ import { InputErrorLabelComponent } from "../shared/components/input-error-label
                                     <input
                                         id="password"
                                         [type]="showPassword ? 'text' : 'password'"
-                                        class="input w-full"
+                                        class="input w-full text-xs"
                                         formControlName="password"
                                         placeholder="&bull;&bull;&bull;&bull;"
                                     />

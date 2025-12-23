@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
     ],
     template: `
         <div class="flex justify-center items-center gap-2">
-            <div class="join [&_button]:rounded-sm">
+            <div class="join [&_button]:rounded-sm [&_button]:border-none gap-2">
                 <button 
                     class="join-item btn btn-square" 
                     [ngClass]="{'pointer-events-none cursor-default': isPreviousDisabled()}"
@@ -24,8 +24,6 @@ import { CommonModule } from '@angular/common';
                 </button>
                 
                 <button class="join-item btn btn-square text-base-content" [ngClass]="{'bg-primary/10': page() === 1}" (click)="changePage(1)">{{1}}</button>
-
-
 
                 @if(page() >= 4 && totalPages() > 5) {
                     <button class="join-item btn btn-square pointer-events-none cursor-default">&hellip;</button>
@@ -74,40 +72,7 @@ import { CommonModule } from '@angular/common';
             />
         </div>
     `,
-    styles: [`
-        .pagination-list {
-            margin: 12px 0;
-            list-style-type: none;
-        }
-
-        .pagination-link {
-            color: var(--pagination-link-color);
-            text-decoration: none;
-        }
-
-        .pagination-item {
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            color: var(--pagination-item-color);
-
-            &.disabled {
-                pointer-events: none;
-                cursor: default;
-
-                .pagination-link {
-                    color: var(--pagination-link-muted-color);
-                }
-            }
-
-            &:hover {
-                background-color: var(--pagination-item-hover-color);
-            }
-
-            &.active {
-                background-color: var(--pagination-item-active-color);
-            }
-        }
-    `],
+    styles: [``],
 })
 export class PaginationComponent {
     protected pageSizeOptions = [10,20,50,100] as const;

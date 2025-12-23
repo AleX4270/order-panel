@@ -83,7 +83,7 @@ import { ButtonComponent } from "../../shared/components/button/button.component
 
                 <ng-template #rows let-item>
                     <tr 
-                        class="bg-base-100 hover:bg-base-200 [&_td]:text-xs p-1"
+                        class="bg-base-100 hover:bg-base-300/70 [&_td]:text-xs p-1"
                         [ngClass]="{
                             'bg-neutral/10': item.statusSymbol === status.completed,
                             'bg-error/20': item.isOverdue && item.statusSymbol !== status.completed
@@ -97,7 +97,7 @@ import { ButtonComponent } from "../../shared/components/button/button.component
                             </div>
                         </td>
                         <td>
-                            <app-tile [type]="getPriorityTileType(item.prioritySymbol)">
+                            <app-tile [type]="getPriorityTileType(item.prioritySymbol)" [isSoft]="true" [isOutlined]="true">
                                 <span>{{ item.priorityName }}</span>
                             </app-tile>
                         </td>
@@ -114,14 +114,14 @@ import { ButtonComponent } from "../../shared/components/button/button.component
                                 ></ng-icon>
 
                                 <ng-icon
-                                    class="item-pressable"
+                                    class="item-pressable [&>svg]:fill-primary"
                                     name="faPenToSquare"
                                     size="18px"
                                     (click)="showOrderFormModal(item.id)"
                                 ></ng-icon>
 
                                 <ng-icon
-                                    class="item-pressable"
+                                    class="item-pressable [&>svg]:fill-error"
                                     name="faTrashCan"
                                     size="18px"
                                     (click)="showOrderDeletePromptModal(item.id)"
@@ -272,7 +272,7 @@ export class OrderListComponent implements OnInit {
     protected getPriorityTileType(type: Priority): TileType {
         return type === Priority.high
             ? 'error'
-            : 'info';
+            : 'primary';
     }
 
     protected getStatusTileType(type: Status): TileType {
