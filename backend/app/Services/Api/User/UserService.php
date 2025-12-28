@@ -52,18 +52,18 @@ class UserService {
     }
 
     public function show(int $orderId): array {
-        $data = $this->userRepository->getOne($orderId)->first();
+        $user = $this->userRepository->getOne($orderId)->first();
         
         $data = [
-            'id' => $data->id,
-            'name' => $data->name,
-            'firstName' => $data->firstName,
-            'lastName' => $data->lastName,
-            'email' => $data->email,
-            'dateCreated' => $data->dateCreated,
-            'dateUpdated' => $data->dateUpdated,
-            'roles' => $this->mapRoles($data->roles),
-            'isInternal' => $data->isInternal,
+            'id' => $user->id,
+            'name' => $user->name,
+            'firstName' => $user->firstName,
+            'lastName' => $user->lastName,
+            'email' => $user->email,
+            'dateCreated' => $user->dateCreated,
+            'dateUpdated' => $user->dateUpdated,
+            'roles' => $this->mapRoles($user->roles),
+            'isInternal' => $user->isInternal,
         ];
 
         return $data;

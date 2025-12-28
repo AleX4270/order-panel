@@ -6,6 +6,7 @@ export interface User {
     username: string;
     language?: LanguageType;
     isAuthenticated: boolean;
+    permissions?: string[];
 }
 
 export interface UserFilterParams extends BaseFilterParams {

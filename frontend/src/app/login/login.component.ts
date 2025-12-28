@@ -173,6 +173,7 @@ export class LoginComponent implements OnInit {
                     const userData: User = {
                         username: res.data.name,
                         isAuthenticated: true,
+                        permissions: res.data.permissions ?? [],
                     };
 
                     this.store.dispatch(new LoginUser(userData));

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Enums\HttpStatus;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Auth\LoginRequest;
 use App\Http\Requests\Api\Auth\RegisterRequest;
 use App\Services\Api\Auth\AuthService;
@@ -16,11 +15,11 @@ class AuthController {
     ) {}
 
     public function user(Request $request): ApiResponse {
-        $currentUser = $request->user();
+        $data = $this->authService->getUserData($request);
 
         return new ApiResponse(
             status: HttpStatus::OK,
-            data: $currentUser,
+            data: $data,
             message: __('response.success'),
         );
     }

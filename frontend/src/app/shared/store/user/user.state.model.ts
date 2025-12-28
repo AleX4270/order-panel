@@ -7,4 +7,5 @@ export const initialUserState: UserStateModel = {
     username: '',
     language: LanguageType.polish,
     isAuthenticated: false,
+    permissions: [],
 }

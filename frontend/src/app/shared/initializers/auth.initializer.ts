@@ -5,7 +5,6 @@ import { catchError, Observable, of, tap } from "rxjs";
 import { LoginUser, LogoutUser } from "../store/user/user.actions";
 import { ApiResponse } from "../types/rest.types";
 import { UserDetailsResponse } from "../types/auth.types";
-import { LanguageType } from "../enums/enums";
 
 export function initializeAuth(): Observable<ApiResponse<UserDetailsResponse> | null> {
     const store = inject(Store);

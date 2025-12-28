@@ -8,13 +8,24 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Api\Auth\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 
 class AuthService {
-    public function login(LoginRequest $request, array $data): ?User {
-        $user = User::where('email', $data['email'])->first();
+    public function getUserData(Request $request): Collection {
+        $user = $request->user();
+        // $userPermissions = $user->getAllPermissions()->pluck('name')->toArray();
 
-        if(empty($user) || empty($user->is_active)) {
+        return collect([
+            'id' => $user->id,
+            'name' => $user->name,
+            // 'permissions' => $userPermissions,
+        ]);
+    }
+
+    public function login(LoginRequest $request, array $data): ?Collection {
+        $requestUser = User::where('email', $data['email'])->first();
+        if(empty($requestUser) || empty($requestUser->is_active)) {
             return null;
         }
 
@@ -23,7 +34,15 @@ class AuthService {
         }
 
         $request->session()->regenerate();
-        return Auth::guard('web')->user();
+
+        $user = Auth::guard('web')->user();
+        $userPermissions = $user->getAllPermissions()->pluck('name')->toArray();
+
+        return collect([
+            'id' => $user->id,
+            'name' => $user->name,
+            'permissions' => $userPermissions,
+        ]);
     }
 
     public function register(array $data): bool {

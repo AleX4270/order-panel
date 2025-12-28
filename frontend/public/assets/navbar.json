@@ -1,10 +1,12 @@
 [
     {
         "label": "orders",
-        "url": "/orders"
+        "url": "/orders",
+        "permissions": ["orders.list"]
     },
     {
         "label": "users",
-        "url": "/users"
+        "url": "/users",
+        "permissions": ["users.list"]
     }
 ]

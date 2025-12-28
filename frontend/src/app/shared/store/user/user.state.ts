@@ -56,4 +56,9 @@ export class UserState {
     static userData(state: UserStateModel): User {
         return state;
     }
+
+    @Selector([UserState])
+    static permissions(state: UserStateModel): string[] {
+        return state.permissions ?? [];
+    }
 }
