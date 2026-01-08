@@ -7,6 +7,7 @@ import { authGuard } from './shared/guards/auth.guard';
 import { guestGuard } from './shared/guards/guest.guard';
 import { OrderListComponent } from './orders/order-list/order-list.component';
 import { UserListComponent } from './users/user-list/user-list.component';
+import { Permission } from './shared/enums/permission.enum';
 
 export const routes: Routes = [
     {
@@ -26,12 +27,12 @@ export const routes: Routes = [
     {
         path: 'orders',
         component: OrderListComponent,
-        canActivate: [authGuard],
+        canActivate: [authGuard(Permission.orders_view)],
     },
     {
         path: 'users',
         component: UserListComponent,
-        canActivate: [authGuard],
+        canActivate: [authGuard(Permission.users_view)],
     },
     {
         path: '**',

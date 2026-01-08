@@ -20,6 +20,8 @@ import { UserFormModalComponent } from "../user-form-modal/user-form-modal.compo
 import { Role } from '../../shared/enums/role.enum';
 import { TileType } from '../../shared/types/tile.types';
 import { ButtonComponent } from "../../shared/components/button/button.component";
+import { HasPermissionDirective } from '../../shared/directives/has-permission.directive';
+import { Permission } from '../../shared/enums/permission.enum';
 
 @Component({
     selector: 'app-order-list',
@@ -33,7 +35,8 @@ import { ButtonComponent } from "../../shared/components/button/button.component
     FiltersComponent,
     DatePipe,
     UserFormModalComponent,
-    ButtonComponent
+    ButtonComponent,
+    HasPermissionDirective,
 ],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan})],
     template: `
@@ -51,7 +54,7 @@ import { ButtonComponent } from "../../shared/components/button/button.component
             <div class="flex flex-col">
                 <h2 class="font-medium text-xl">{{ ('userList.users' | translate) + ' (' + usersCount() + ')'}}</h2>
             </div>
-            <app-button classList="btn btn-sm btn-primary md:btn-md" (click)="showUserFormModal()">{{'userList.addNewUser' | translate}}</app-button>
+            <app-button *hasPermission="permission.users_create" classList="btn btn-sm btn-primary md:btn-md" (click)="showUserFormModal()">{{'userList.addNewUser' | translate}}</app-button>
         </div>
 
         <div class="w-full mt-2">
@@ -98,6 +101,7 @@ import { ButtonComponent } from "../../shared/components/button/button.component
                         <td>
                             <div class="flex gap-3">
                                 <ng-icon
+                                    *hasPermission="permission.users_show"
                                     class="item-pressable"
                                     name="faEye"
                                     size="18px"
@@ -105,6 +109,7 @@ import { ButtonComponent } from "../../shared/components/button/button.component
                                 ></ng-icon>
 
                                 <ng-icon
+                                    *hasPermission="permission.users_update"
                                     class="item-pressable [&>svg]:fill-primary"
                                     name="faPenToSquare"
                                     size="18px"
@@ -113,6 +118,7 @@ import { ButtonComponent } from "../../shared/components/button/button.component
 
                                 @if(!item.isInternal) {
                                     <ng-icon
+                                        *hasPermission="permission.users_delete"
                                         class="item-pressable [&>svg]:fill-error"
                                         name="faTrashCan"
                                         size="18px"
@@ -213,6 +219,7 @@ export class UserListComponent implements OnInit {
     private readonly toastService = inject(ToastService);
 
     protected readonly filterType = FilterType;
+    protected readonly permission = Permission;
 
     protected expansionState = ExpansionState;
     protected itemDetailsExpansionState: Partial<Record<number, ExpansionState>> = {};

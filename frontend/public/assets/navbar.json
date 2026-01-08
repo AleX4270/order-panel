@@ -2,11 +2,11 @@
     {
         "label": "orders",
         "url": "/orders",
-        "permissions": ["orders.list"]
+        "permissions": ["orders.view"]
     },
     {
         "label": "users",
         "url": "/users",
-        "permissions": ["users.list"]
+        "permissions": ["users.view"]
     }
 ]

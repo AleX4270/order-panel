@@ -13,6 +13,7 @@ import { LogoutUser } from '../../store/user/user.actions';
 import { ToastType } from '../../enums/enums';
 import { User } from '../../types/user.types';
 import { NgTemplateOutlet } from '@angular/common';
+import { UserPermissionService } from '../../services/user-permission/user-permission.service';
 
 @Component({
     selector: 'app-navbar',
@@ -20,11 +21,13 @@ import { NgTemplateOutlet } from '@angular/common';
     template: `
         <ng-template #navLinks>
             @for(navElement of navbarElementList; track navElement) {
-                <li>
-                    <a [routerLink]="navElement.url" routerLinkActive="text-underline" class="active:bg-neutral/27">
-                        {{"navbar." + navElement.label | translate}}
-                    </a>
-                </li>
+                @if(hasPermission(navElement.permissions)) {
+                    <li>
+                        <a [routerLink]="navElement.url" routerLinkActive="text-underline" class="active:bg-neutral/27">
+                            {{"navbar." + navElement.label | translate}}
+                        </a>
+                    </li>
+                }
             }
         </ng-template>
 
@@ -82,6 +85,7 @@ export class NavbarComponent implements OnInit {
     private readonly toast = inject(ToastService);
     private readonly router = inject(Router);
     private readonly translate = inject(TranslateService);
+    private readonly userPermissionService = inject(UserPermissionService);
 
     protected user: Signal<User | null> = this.store.selectSignal(UserState.userData);
     protected isUserAuthenticated = this.store.selectSignal(UserState.isAuthenticated);
@@ -110,5 +114,9 @@ export class NavbarComponent implements OnInit {
                 this.toast.show(this.translate.instant('logout.error'), ToastType.danger);
             },
         });
+    }
+
+    protected hasPermission(permission: string | string[]): boolean {
+        return this.userPermissionService.hasEveryPermission(permission);
     }
 }
