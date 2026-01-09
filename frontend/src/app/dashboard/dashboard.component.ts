@@ -6,10 +6,10 @@ import { Router } from '@angular/router';
 @Component({
     selector: 'app-dashboard',
     imports: [],
-    template: ``,
-    styles: [`
-
-    `]
+    template: `
+        
+    `,
+    styles: [``]
 })
 export class DashboardComponent {
     private readonly authService = inject(AuthService);

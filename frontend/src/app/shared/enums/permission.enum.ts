@@ -12,4 +12,7 @@ export enum Permission {
     users_create = 'users.create',
     users_update = 'users.update',
     users_delete = 'users.delete',
+
+    //Dashboard
+    dashboard_view = 'dashboard.view',
 }

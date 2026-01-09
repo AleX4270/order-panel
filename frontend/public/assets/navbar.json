@@ -1,5 +1,10 @@
 [
     {
+        "label": "dashboard",
+        "url": "/dashboard",
+        "permissions": ["dashboard.view"]
+    },
+    {
         "label": "orders",
         "url": "/orders",
         "permissions": ["orders.view"]

@@ -18,6 +18,9 @@ enum PermissionType: string {
     case USERS_UPDATE = 'users.update';
     case USERS_DELETE = 'users.delete';
 
+    //Dashboard
+    case DASHBOARD_VIEW = 'dashboard.view';
+
     public static function all(): array {
         $permissions = [];
         

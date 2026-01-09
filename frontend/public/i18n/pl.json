@@ -27,7 +27,7 @@
         "passwordMismatch": "Podane hasła nie są identyczne"
     },
     "navbar": {
-        "dashboard": "Panel",
+        "dashboard": "Panel główny",
         "orders": "Zlecenia",
         "settings": "Ustawienia",
         "users": "Użytkownicy",
