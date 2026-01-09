@@ -76,7 +76,7 @@ import { UserPermissionService } from '../../services/user-permission/user-permi
             </div>
         </nav>
     `,
-    styles: [``],
+    host: { class: 'block' },
 })
 export class NavbarComponent implements OnInit {
     private readonly localDataService = inject(LocalDataService);
