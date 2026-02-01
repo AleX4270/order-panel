@@ -19,11 +19,11 @@ export const routes: Routes = [
         path: 'password-recovery',
         component: PasswordRecoveryComponent,
     },
-    {
-        path: 'dashboard',
-        component: DashboardComponent,
-        canActivate: [authGuard],
-    },
+    // {
+    //     path: 'dashboard',
+    //     component: DashboardComponent,
+    //     canActivate: [authGuard],
+    // },
     {
         path: 'orders',
         component: OrderListComponent,
