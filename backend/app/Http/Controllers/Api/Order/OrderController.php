@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\Order;
 
 use App\Enums\HttpStatus;
-use App\Enums\PermissionType;
 use App\Http\Requests\Api\Order\OrderFilterRequest;
 use App\Http\Requests\Api\Order\OrderRequest;
 use App\Http\Responses\Api\ApiResponse;
@@ -37,7 +36,7 @@ class OrderController {
             return new ApiResponse(
                 status: HttpStatus::BAD_REQUEST,
                 message: __('response.badRequest'),
-            );    
+            );
         }
 
         $result = $this->orderService->show($orderId);
@@ -76,7 +75,7 @@ class OrderController {
             return new ApiResponse(
                 status: HttpStatus::BAD_REQUEST,
                 message: __('response.badRequest'),
-            );    
+            );
         }
 
         $this->orderService->delete($orderId);
