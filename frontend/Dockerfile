@@ -3,17 +3,19 @@ FROM node:25-alpine AS build
 
 WORKDIR /app
 
-COPY ./frontend/package.json ./frontend/package-lock.json ./
+COPY frontend/package.json frontend/package-lock.json ./
 
 RUN npm ci
 
-COPY ./frontend .
+COPY frontend/ .
 
 RUN npm run build -- --configuration production
 
-# Host stage
+#Host stage
 FROM httpd:2.4-alpine
 
-COPY ./docker/frontend/my-httpd.conf /usr/local/apache2/conf/httpd.conf
+COPY docker/frontend/my-httpd.conf /usr/local/apache2/conf/httpd.conf
 
 COPY --from=build /app/dist/frontend/browser /usr/local/apache2/htdocs/
+
+EXPOSE 80

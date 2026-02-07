@@ -6,8 +6,8 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     libzip-dev \
     && docker-php-ext-install \
-    pdo_pgsql \ 
-    bcmath \ 
+    pdo_pgsql \
+    bcmath \
     opcache \
     zip
 
@@ -16,15 +16,16 @@ RUN a2enmod rewrite \
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-COPY ./backend/composer.json ./backend/composer.lock ./
+COPY backend/composer.json backend/composer.lock ./
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
-COPY ./backend ./docker/backend/.htaccess ./
+COPY backend/ docker/backend/.htaccess ./
 
-RUN composer dump-autoload --optimize
+RUN cp .env.production .env && composer dump-autoload --optimize
 
-RUN php artisan config:cache && \
-php artisan route:cache
+RUN php artisan key:generate && \
+    php artisan config:cache && \
+    php artisan route:cache
 
 EXPOSE 80

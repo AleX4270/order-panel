@@ -57,3 +57,5 @@ phpunit.phar
 /deploy
 
 .env
+.env.prod
+.env.staging
