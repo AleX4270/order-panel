@@ -47,10 +47,10 @@ import { Permission } from '../../shared/enums/permission.enum';
         <div class="w-full order-list-header">
             <h1 class="font-semibold text-2xl mb-5">{{'orderList.header' | translate}}</h1>
             <app-card overflowType="visible" [title]="'basic.filters' | translate">
-                <app-filters 
+                <app-filters
                     [type]="filterType.orderListFilters"
                     (filtersChange)="onOrderFiltersChange($event)"
-                />        
+                />
             </app-card>
         </div>
 
@@ -85,7 +85,7 @@ import { Permission } from '../../shared/enums/permission.enum';
                 </ng-template>
 
                 <ng-template #rows let-item>
-                    <tr 
+                    <tr
                         class="bg-base-100 hover:bg-base-300/70 [&_td]:text-xs p-1"
                         [ngClass]="{
                             'bg-neutral/9': item.statusSymbol === status.completed,
@@ -290,7 +290,7 @@ export class OrderListComponent implements OnInit {
                 return 'success';
         }
     }
-    
+
     protected showOrderFormModal(id?: number): void {
         this.orderFormModal.showForm(id);
     }

@@ -11,7 +11,7 @@ import { RestService } from '../rest/rest.service';
 })
 export class AuthService extends RestService {
     public login(userCredentials: UserLoginCredentials): Observable<ApiResponse<UserDetailsResponse>> {
-        return this.http.get<Response>(`${this.baseApiUrl}/sanctum/csrf-cookie`, { withCredentials: true }).pipe(
+        return this.http.get<Response>(`${this.apiUrl}/sanctum/csrf-cookie`, { withCredentials: true }).pipe(
             switchMap(() => {
                 return this.http.post<ApiResponse<UserDetailsResponse>>(`${this.apiUrl}/login`, userCredentials, { withCredentials: true });
             })

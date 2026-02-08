@@ -17,5 +17,3 @@ FROM httpd:2.4-alpine
 COPY docker/frontend/my-httpd.conf /usr/local/apache2/conf/httpd.conf
 
 COPY --from=build /app/dist/frontend/browser /usr/local/apache2/htdocs/
-
-EXPOSE 80

@@ -8,7 +8,6 @@ import { environment } from '../../../../../environments/environment';
 export class RestService {
     protected readonly http = inject(HttpClient);
     protected readonly apiUrl = environment.apiUrl;
-    protected readonly baseApiUrl = environment.baseApiUrl;
 
     protected getQueryParams(params: Object | null | undefined): string {
         if(params == null || params == undefined) {

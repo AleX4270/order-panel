@@ -20,12 +20,10 @@ COPY backend/composer.json backend/composer.lock ./
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
-COPY backend/ docker/backend/.htaccess ./
+COPY backend/ ./
 
-RUN cp .env.production .env && composer dump-autoload --optimize
+RUN cp .env.staging .env && composer dump-autoload --optimize #change to .env.production later
 
 RUN php artisan key:generate && \
     php artisan config:cache && \
     php artisan route:cache
-
-EXPOSE 80
