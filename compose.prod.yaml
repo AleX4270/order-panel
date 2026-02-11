@@ -32,7 +32,7 @@ services:
             - traefik_proxy
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.frontend.rule=Host(${FRONTEND_URL})"
+            - "traefik.http.routers.frontend.rule=Host(`${FRONTEND_URL}`)"
             - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
             - "traefik.http.routers.frontend.entrypoints=websecure"
             - "traefik.http.routers.frontend.tls=true"
@@ -51,7 +51,7 @@ services:
             - traefik_proxy
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.backend.rule=Host(${BACKEND_URL})"
+            - "traefik.http.routers.backend.rule=Host(`${BACKEND_URL}`)"
             - "traefik.http.routers.backend.rule=PathPrefix(`/api`)"
             - "traefik.http.routers.backend.entrypoints=websecure"
             - "traefik.http.routers.backend.tls=true"
