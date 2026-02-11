@@ -1,5 +1,10 @@
 services:
     traefik:
+        image: traefik:v3.6.7
+        container_name: traefik
+        restart: unless-stopped
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:rw
         command:
             - "--providers.docker=true"
             - "--providers.docker.exposedByDefault=false"
@@ -8,6 +13,8 @@ services:
         ports:
             - "80:80"
             - "8080:8080"
+        networks:
+            - order-panel-network
     frontend:
         container_name: frontend
         image: node:25-alpine

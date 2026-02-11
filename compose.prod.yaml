@@ -1,26 +1,26 @@
 services:
-    traefik:
-        command:
-            - "--providers.docker=true"
-            - "--providers.docker.exposedByDefault=false"
-            - "--api.insecure=false"
+    # traefik:
+    #     command:
+    #         - "--providers.docker=true"
+    #         - "--providers.docker.exposedByDefault=false"
+    #         - "--api.insecure=false"
 
-            - "--entrypoints.web.address=:80"
-            - "--entrypoints.websecure.address=:443"
-            - "--entrypoints.websecure.http.tls=true"
-            - "--entrypoints.websecure.http.tls.certresolver=le"
+    #         - "--entrypoints.web.address=:80"
+    #         - "--entrypoints.websecure.address=:443"
+    #         - "--entrypoints.websecure.http.tls=true"
+    #         - "--entrypoints.websecure.http.tls.certresolver=le"
 
-            - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-            - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-            - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+    #         - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+    #         - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+    #         - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
 
-            - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
-            - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
-        ports:
-            - "80:80"
-            - "443:443"
-        volumes:
-            - letsencrypt:/letsencrypt
+    #         - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
+    #         - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
+    #     ports:
+    #         - "80:80"
+    #         - "443:443"
+    #     volumes:
+    #         - letsencrypt:/letsencrypt
     frontend:
         container_name: frontend
         build:
@@ -29,6 +29,7 @@ services:
         restart: unless-stopped
         networks:
             - order-panel-network
+            - traefik_proxy
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.frontend.rule=Host(${FRONTEND_URL})"
@@ -47,6 +48,7 @@ services:
             - database
         networks:
             - order-panel-network
+            - traefik_proxy
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.backend.rule=Host(${BACKEND_URL})"
@@ -56,3 +58,8 @@ services:
 
 volumes:
      letsencrypt:
+
+networks:
+    traefik_proxy:
+         name: traefik_proxy
+         driver: bridge
