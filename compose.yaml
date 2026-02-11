@@ -1,12 +1,4 @@
 services:
-    # traefik:
-    #     image: traefik:v3.6
-    #     container_name: traefik
-    #     restart: unless-stopped
-    #     volumes:
-    #         - /var/run/docker.sock:/var/run/docker.sock:rw
-    #     networks:
-    #         - order-panel-network
     database:
         container_name: database
         image: postgres:18.1-alpine3.23

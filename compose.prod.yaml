@@ -1,31 +1,7 @@
 services:
-    # traefik:
-    #     command:
-    #         - "--providers.docker=true"
-    #         - "--providers.docker.exposedByDefault=false"
-    #         - "--api.insecure=false"
-
-    #         - "--entrypoints.web.address=:80"
-    #         - "--entrypoints.websecure.address=:443"
-    #         - "--entrypoints.websecure.http.tls=true"
-    #         - "--entrypoints.websecure.http.tls.certresolver=le"
-
-    #         - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-    #         - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-    #         - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
-
-    #         - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
-    #         - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
-    #     ports:
-    #         - "80:80"
-    #         - "443:443"
-    #     volumes:
-    #         - letsencrypt:/letsencrypt
     frontend:
         container_name: frontend
-        build:
-            context: .
-            dockerfile: frontend/Dockerfile
+        image: ghcr.io/order-panel/frontend:${FRONTEND_TAG}
         restart: unless-stopped
         networks:
             - order-panel-network
@@ -38,12 +14,12 @@ services:
             - "traefik.http.routers.frontend.tls=true"
     backend:
         container_name: backend
-        build:
-            context: .
-            dockerfile: backend/Dockerfile
+        image: ghcr.io/order-panel/backend:${BACKEND_TAG}
         restart: unless-stopped
+        env_file: .env.backend
         volumes:
-            - backend-vendor:/var/www/html/vendor
+            - backend-storage:/var/www/html/storage/app
+            - backend-logs:/var/www/html/storage/app
         depends_on:
             - database
         networks:
@@ -52,12 +28,12 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.backend.rule=Host(`${BACKEND_URL}`)"
-            - "traefik.http.routers.backend.rule=PathPrefix(`/api`)"
             - "traefik.http.routers.backend.entrypoints=websecure"
             - "traefik.http.routers.backend.tls=true"
 
 volumes:
-     letsencrypt:
+    backend-storage:
+    backend-logs:
 
 networks:
     traefik_proxy:

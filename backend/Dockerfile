@@ -1,7 +1,5 @@
 FROM php:8.4-apache
 
-ARG ENV=".env.production"
-
 WORKDIR /var/www/html
 
 RUN apt-get update && apt-get install -y \
@@ -24,8 +22,8 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --no-script
 
 COPY backend/ ./
 
-RUN cp $ENV .env && composer dump-autoload --optimize #change to .env.production later
+RUN composer dump-autoload --optimize
 
-RUN php artisan key:generate && \
-    php artisan config:cache && \
-    php artisan route:cache
+ENTRYPOINT ["entrypoint.sh"]
+
+CMD ["apache2-foreground"]
