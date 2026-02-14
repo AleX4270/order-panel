@@ -24,6 +24,4 @@ COPY backend/ ./
 
 RUN composer dump-autoload --optimize
 
-ENTRYPOINT ["entrypoint.sh"]
-
-CMD ["apache2-foreground"]
+CMD ["sh", "-c", "php artisan config:cache && php artisan route:cache && php artisan migrate --force && apache2-foreground"]
