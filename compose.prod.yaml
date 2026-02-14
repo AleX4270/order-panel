@@ -8,11 +8,11 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.docker.network=traefik_proxy"
-            - "traefik.http.routers.frontend.rule=Host(`${FRONTEND_URL}`)"
-            - "traefik.http.routers.frontend.entrypoints=websecure"
-            - "traefik.http.routers.frontend.tls=true"
-            - "traefik.http.routers.frontend.tls.certResolver=le"
-            - "traefik.http.services.frontend.loadbalancer.server.port=80"
+            - "traefik.http.routers.${APP_NAMESPACE}-frontend.rule=Host(`${FRONTEND_URL}`)"
+            - "traefik.http.routers.${APP_NAMESPACE}-frontend.entrypoints=websecure"
+            - "traefik.http.routers.${APP_NAMESPACE}-frontend.tls=true"
+            - "traefik.http.routers.${APP_NAMESPACE}-frontend.tls.certResolver=le"
+            - "traefik.http.services.${APP_NAMESPACE}-frontend.loadbalancer.server.port=80"
     backend:
         image: ghcr.io/alex4270/order-panel-backend:${BACKEND_TAG}
         restart: unless-stopped
@@ -28,15 +28,17 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.docker.network=traefik_proxy"
-            - "traefik.http.routers.backend.rule=Host(`${BACKEND_URL}`)"
-            - "traefik.http.routers.backend.entrypoints=websecure"
-            - "traefik.http.routers.backend.tls=true"
-            - "traefik.http.routers.backend.tls.certResolver=le"
-            - "traefik.http.services.backend.loadbalancer.server.port=80"
+            - "traefik.http.routers.${APP_NAMESPACE}-backend.rule=Host(`${BACKEND_URL}`)"
+            - "traefik.http.routers.${APP_NAMESPACE}-backend.entrypoints=websecure"
+            - "traefik.http.routers.${APP_NAMESPACE}-backend.tls=true"
+            - "traefik.http.routers.${APP_NAMESPACE}-backend.tls.certResolver=le"
+            - "traefik.http.services.${APP_NAMESPACE}-backend.loadbalancer.server.port=80"
 
 volumes:
     backend-storage:
+        name: ${APP_NAMESPACE}-backend-storage
     backend-logs:
+        name: ${APP_NAMESPACE}-backend-logs
 
 networks:
     traefik_proxy:

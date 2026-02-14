@@ -13,10 +13,10 @@ services:
 
 volumes:
     node_modules:
-    backend-vendor:
     database-data:
+        name: ${APP_NAMESPACE}-database-data
 
 networks:
     order-panel-network:
-        name: order-panel-network
+        name: ${APP_NAMESPACE}-network
         driver: bridge

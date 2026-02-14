@@ -50,3 +50,6 @@ services:
             - "traefik.http.routers.backend.rule=Host(${BACKEND_URL})"
             - "traefik.http.routers.backend.entrypoints=web"
             - "traefik.http.routers.backend.rule=PathPrefix(`/api`)"
+
+volumes:
+    backend-vendor:
