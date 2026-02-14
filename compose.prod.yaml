@@ -1,6 +1,5 @@
 services:
     frontend:
-        container_name: frontend
         image: ghcr.io/alex4270/order-panel-frontend:${FRONTEND_TAG}
         restart: unless-stopped
         networks:
@@ -15,7 +14,6 @@ services:
             - "traefik.http.routers.frontend.tls.certResolver=le"
             - "traefik.http.services.frontend.loadbalancer.server.port=80"
     backend:
-        container_name: backend
         image: ghcr.io/alex4270/order-panel-backend:${BACKEND_TAG}
         restart: unless-stopped
         env_file: .env.production
