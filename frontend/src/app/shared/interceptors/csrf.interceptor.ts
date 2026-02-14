@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 
 export const csrfInterceptor: HttpInterceptorFn = (req, next) => {
     const cookieService = inject(CookieService);
-    
+
     const xsrfToken = cookieService.get('XSRF-TOKEN');
 
     if(xsrfToken && req.url.startsWith(environment.apiUrl)) {

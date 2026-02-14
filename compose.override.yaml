@@ -1,0 +1,55 @@
+services:
+    traefik:
+        image: traefik:v3.6.7
+        container_name: traefik
+        restart: unless-stopped
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:rw
+        command:
+            - "--providers.docker=true"
+            - "--providers.docker.exposedByDefault=false"
+            - "--api.insecure=true"
+            - "--entrypoints.web.address=:80"
+        ports:
+            - "80:80"
+            - "8080:8080"
+        networks:
+            - order-panel-network
+    frontend:
+        container_name: frontend
+        image: node:25-alpine
+        restart: unless-stopped
+        working_dir: /app
+        volumes:
+            - ./frontend:/app:rw
+            - node_modules:/app/node_modules
+        command: sh -c "npm install && npm start -- --host 0.0.0.0"
+        networks:
+            - order-panel-network
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.frontend.rule=Host(${FRONTEND_URL})"
+            - "traefik.http.routers.frontend.entrypoints=web"
+            - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
+            - "traefik.http.services.frontend.loadbalancer.server.port=4200"
+    backend:
+        container_name: backend
+        build:
+            context: .
+            dockerfile: backend/Dockerfile.dev
+        restart: unless-stopped
+        volumes:
+            - ./backend:/var/www/html:rw
+            - backend-vendor:/var/www/html/vendor
+        depends_on:
+            - database
+        networks:
+            - order-panel-network
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.backend.rule=Host(${BACKEND_URL})"
+            - "traefik.http.routers.backend.entrypoints=web"
+            - "traefik.http.routers.backend.rule=PathPrefix(`/api`)"
+
+volumes:
+    backend-vendor:

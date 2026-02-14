@@ -55,3 +55,7 @@ phpunit.phar
 .zed/*
 
 /deploy
+
+.env
+.env.prod
+.env.staging
