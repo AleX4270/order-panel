@@ -5,7 +5,7 @@ import { ExpansionState, ToastType } from '../../shared/enums/enums';
 import { Priority } from '../../shared/enums/priority.enum';
 import { TileComponent } from "../../shared/components/tile/tile.component";
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { faEye, faPenToSquare, faTrashCan } from '@ng-icons/font-awesome/regular';
+import { faEye, faPenToSquare, faTrashCan, faCircleCheck } from '@ng-icons/font-awesome/regular';
 import { ColorLabelComponent } from '../../shared/components/color-label/color-label.component';
 import { CardComponent } from "../../shared/components/card/card.component";
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
@@ -42,7 +42,7 @@ import { Permission } from '../../shared/enums/permission.enum';
     ButtonComponent,
     HasPermissionDirective,
 ],
-    providers: [provideIcons({faEye, faPenToSquare, faTrashCan})],
+    providers: [provideIcons({faEye, faPenToSquare, faTrashCan, faCircleCheck})],
     template: `
         <div class="w-full order-list-header">
             <h1 class="font-semibold text-2xl mb-5">{{'orderList.header' | translate}}</h1>
@@ -109,6 +109,13 @@ import { Permission } from '../../shared/enums/permission.enum';
                         <td class="text-base-content/60 font-light">{{ item.remarks }}</td>
                         <td>
                             <div class="flex gap-3">
+                                <ng-icon
+                                    *hasPermission="permission.orders_update"
+                                    class="item-pressable [&>svg]:fill-success"
+                                    name="faCircleCheck"
+                                    size="17px"
+                                ></ng-icon>
+
                                 <ng-icon
                                     *hasPermission="permission.orders_show"
                                     class="item-pressable"
