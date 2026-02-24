@@ -307,6 +307,7 @@ export class OrderFormModalComponent {
 
     public showForm(orderId?: number): void {
         this.isLoading.set(true);
+        this.cleanFormMetaData();
 
         if(orderId) {
             this.orderId.set(orderId);
@@ -336,10 +337,11 @@ export class OrderFormModalComponent {
         }
 
         modal.close();
+    }
 
-        this.isEditScenario.set(false);
+    protected cleanFormMetaData(): void {
         this.orderId.set(null);
-        this.form.reset();
+        this.isEditScenario.set(false);
     }
 
     private initForm(): void {
@@ -527,6 +529,8 @@ export class OrderFormModalComponent {
             dateCreation: formValues.dateCreation,
             dateDeadline: formValues.dateDeadline,
         } as OrderParams;
+
+        // TODO: Improve
 
         if(formValues.id) {
             orderParams.id = formValues.id;
