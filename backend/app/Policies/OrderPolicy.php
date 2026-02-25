@@ -14,4 +14,8 @@ class OrderPolicy {
     public function delete(User $user): bool {
         return $user->can(PermissionType::ORDERS_DELETE->value);
     }
+
+    public function markAsCompleted(User $user): bool {
+        return $user->can(PermissionType::ORDERS_UPDATE->value);
+    }
 }

@@ -38,4 +38,8 @@ export class OrderService extends RestService {
     public delete(orderId: number): Observable<ApiResponse<void>> {
         return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/orders/${orderId}`);
     }
+
+    public markAsCompleted(orderId: number): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${this.apiUrl}/orders/mark-as-completed`, { id: orderId });
+    }
 }

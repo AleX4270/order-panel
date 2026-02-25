@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\City\CityController;
 use App\Http\Controllers\Api\Country\CountryController;
 use App\Http\Controllers\Api\Order\OrderController;
+use App\Http\Controllers\Api\Order\OrderQuickActionController;
 use App\Http\Controllers\Api\Priority\PriorityController;
 use App\Http\Controllers\Api\Province\ProvinceController;
 use App\Http\Controllers\Api\Role\RoleController;
@@ -24,6 +25,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [OrderController::class, 'store']);
         Route::put('/', [OrderController::class, 'update']);
         Route::delete('/{id}', [OrderController::class, 'delete']);
+        Route::post('/mark-as-completed', [OrderQuickActionController::class, 'markAsCompleted']);
     });
 
     Route::prefix('priorities')->group(function() {
