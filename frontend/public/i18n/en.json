@@ -70,7 +70,9 @@
     "legend": "Legend",
     "deleteSuccess": "Order deleted successfully",
     "deleteError": "Failed to delete order",
-    "orders": "Orders"
+    "orders": "Orders",
+    "markAsCompletedSuccess": "Order marked as completed successfully",
+    "markAsCompletedError": "Failed to mark order as completed"
   },
   "orderListTable": {
     "orderNo": "Order number",
@@ -130,6 +132,10 @@
   "orderDeletePromptModal": {
     "title": "Order deletion confirmation",
     "message": "Do you confirm deletion of the selected order?"
+  },
+  "orderCompletePromptModal": {
+    "title": "Order completion confirmation",
+    "message": "Do you confirm marking this order as completed?"
   },
   "orderDetails": {
     "header": "Order details",

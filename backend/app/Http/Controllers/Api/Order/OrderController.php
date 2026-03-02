@@ -66,7 +66,7 @@ class OrderController {
         );
     }
 
-    public function delete(Request $request) {
+    public function delete(Request $request): ApiResponse {
         Gate::authorize('delete', Order::class);
 
         $orderId = (int)$request->route('id');

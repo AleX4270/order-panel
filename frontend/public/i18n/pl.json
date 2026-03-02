@@ -70,7 +70,9 @@
         "legend": "Legenda",
         "deleteSuccess": "Pomyślnie usunięto zlecenie",
         "deleteError": "Nie udało się usunąć zlecenia",
-        "orders": "Zlecenia"
+        "orders": "Zlecenia",
+        "markAsCompletedSuccess": "Pomyślnie oznaczono zlecenie jako ukończone",
+        "markAsCompletedError": "Nie udało się oznaczyć zlecenia jako ukończone"
     },
     "orderListTable": {
         "orderNo": "Numer zlecenia",
@@ -130,6 +132,10 @@
     "orderDeletePromptModal": {
         "title": "Potwierdzenie usunięcia zlecenia",
         "message": "Czy potwierdzasz usunięcie wybranego zlecenia?"
+    },
+    "orderCompletePromptModal": {
+        "title": "Potwierdzenie oznaczenia zlecenia jako ukończone",
+        "message": "Czy potwierdzasz oznaczenie tego zlecenia jako ukończone?"
     },
     "orderDetails": {
         "header": "Szczegóły zlecenia",

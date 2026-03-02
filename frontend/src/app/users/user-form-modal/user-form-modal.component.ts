@@ -169,6 +169,7 @@ export class UserFormModalComponent {
 
     public showForm(userId?: number): void {
         this.isLoading.set(true);
+        this.cleanFormMetaData();
 
         if(userId) {
             this.userId.set(userId);
@@ -201,6 +202,11 @@ export class UserFormModalComponent {
         this.isEditScenario.set(false);
         this.userId.set(null);
         this.form.reset();
+    }
+
+    protected cleanFormMetaData(): void {
+        this.userId.set(null);
+        this.isEditScenario.set(false);
     }
 
     private initForm(): void {
