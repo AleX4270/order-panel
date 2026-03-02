@@ -14,8 +14,7 @@ export const authGuard = (requiredPermissions?: string | string[] | Permission |
 
         const isAuthenticated = store.selectSignal(UserState.isAuthenticated);
         if(!isAuthenticated()) {
-            router.createUrlTree(['/']);
-            return false;
+            return router.createUrlTree(['/']);
         }
 
         if(!requiredPermissions) {
