@@ -72,7 +72,7 @@ class OrderRepository {
                     ->orWhereLike('cl.email', '%'.$dto->allFields.'%')
                     ->orWhereLike('cl.phone_number', '%'.$dto->allFields.'%')
                     ->orWhereLike('ot.remarks', '%'.$dto->allFields.'%')
-                    ->orWhere('o.id', $dto->allFields);
+                    ->orWhereLike('o.id', $dto->allFields);
             });
         }
 
