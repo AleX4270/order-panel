@@ -44,7 +44,7 @@ class UserRepository {
                     ->orWhereLike('u.first_name', '%'.$dto->allFields.'%')
                     ->orWhereLike('u.last_name', '%'.$dto->allFields.'%')
                     ->orWhereLike('u.email', '%'.$dto->allFields.'%')
-                    ->orWhere('u.id', $dto->allFields);
+                    ->orWhereLike('u.id', $dto->allFields);
             });
         }
 
