@@ -16,6 +16,6 @@ class OrderPolicy {
     }
 
     public function markAsCompleted(User $user): bool {
-        return $user->can(PermissionType::ORDERS_UPDATE->value);
+        return $user->can(PermissionType::ORDERS_MARK_AS_COMPLETED->value);
     }
 }

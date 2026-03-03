@@ -5,6 +5,7 @@ export enum Permission {
     orders_create = 'orders.create',
     orders_update = 'orders.update',
     orders_delete = 'orders.delete',
+    orders_mark_as_completed = 'orders.mark_as_completed',
 
     //Users
     users_view = 'users.view',

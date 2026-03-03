@@ -10,6 +10,7 @@ enum PermissionType: string {
     case ORDERS_CREATE = 'orders.create';
     case ORDERS_UPDATE = 'orders.update';
     case ORDERS_DELETE = 'orders.delete';
+    case ORDERS_MARK_AS_COMPLETED = 'orders.mark_as_completed';
 
     //Users
     case USERS_VIEW = 'users.view';

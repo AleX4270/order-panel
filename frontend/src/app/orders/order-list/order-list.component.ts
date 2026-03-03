@@ -119,7 +119,7 @@ import { Permission } from '../../shared/enums/permission.enum';
 
                                 @if(item.statusSymbol !== status.completed) {
                                     <ng-icon
-                                        *hasPermission="permission.orders_update"
+                                        *hasPermission="permission.orders_mark_as_completed"
                                         class="item-pressable [&>svg]:fill-success"
                                         name="faCircleCheck"
                                         size="17px"

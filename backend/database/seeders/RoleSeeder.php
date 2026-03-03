@@ -65,6 +65,7 @@ class RoleSeeder extends Seeder {
                 'permissions' => [
                     PermissionType::ORDERS_VIEW->value,
                     PermissionType::ORDERS_SHOW->value,
+                    PermissionType::ORDERS_MARK_AS_COMPLETED->value,
                 ],
             ],
         ];
