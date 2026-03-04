@@ -39,6 +39,5 @@ export const appConfig: ApplicationConfig = {
         ], withNgxsStoragePlugin({
             keys: ['user']
         })),
-        provideAppInitializer(initializeAuth)
     ]
 };
