@@ -15,10 +15,10 @@ export const routes: Routes = [
         component: LoginComponent,
         canActivate: [guestGuard],
     },
-    {
-        path: 'password-recovery',
-        component: PasswordRecoveryComponent,
-    },
+    // {
+    //     path: 'password-recovery',
+    //     component: PasswordRecoveryComponent,
+    // },
     // {
     //     path: 'dashboard',
     //     component: DashboardComponent,

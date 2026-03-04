@@ -9,7 +9,7 @@ export const guestGuard: CanActivateFn = (route, state) => {
     const isAuthenticated = store.selectSignal(UserState.isAuthenticated);
 
     if(isAuthenticated()) {
-        return router.createUrlTree(['/dashboard']);
+        return router.createUrlTree(['/orders']);
     }
 
     return true;
