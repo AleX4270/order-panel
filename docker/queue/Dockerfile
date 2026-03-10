@@ -8,6 +8,6 @@ RUN apt-get update && apt-get install -y \
     pdo_pgsql \
     bcmath
 
-FROM base as dev
+FROM base as local
 
 CMD php artisan queue:listen

@@ -1,4 +1,4 @@
-FROM php:8.4-apache
+FROM php:8.4-apache as base
 
 WORKDIR /var/www/html
 
@@ -17,6 +17,12 @@ RUN a2enmod rewrite \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 COPY backend/composer.json backend/composer.lock ./
+
+FROM base as local
+
+RUN composer install --no-interaction --no-scripts
+
+FROM base as production
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
