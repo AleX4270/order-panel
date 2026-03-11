@@ -28,7 +28,6 @@ services:
             - order-panel-network
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.frontend.rule=Host(${FRONTEND_URL})"
             - "traefik.http.routers.frontend.entrypoints=web"
             - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
             - "traefik.http.services.frontend.loadbalancer.server.port=4200"
@@ -48,7 +47,6 @@ services:
             - order-panel-network
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.backend.rule=Host(${BACKEND_URL})"
             - "traefik.http.routers.backend.entrypoints=web"
             - "traefik.http.routers.backend.rule=PathPrefix(`/api`)"
     queue:
@@ -65,6 +63,25 @@ services:
             - backend
         networks:
             - order-panel-network
+    reverb:
+        container_name: reverb
+        build:
+            context: .
+            dockerfile: docker/reverb/Dockerfile
+            target: local
+        restart: unless-stopped
+        volumes:
+            - ./backend:/var/www/html:rw
+            - backend-vendor:/var/www/html/vendor
+        depends_on:
+            - backend
+        networks:
+            - order-panel-network
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.reverb.rule=Host(`${REVERB_URL}`)"
+            - "traefik.http.routers.reverb.entrypoints=web"
+            - "traefik.http.services.reverb.loadbalancer.server.port=8080"
     database:
         container_name: database
         volumes:
