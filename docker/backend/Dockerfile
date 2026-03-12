@@ -9,7 +9,10 @@ RUN apt-get update && apt-get install -y \
     pdo_pgsql \
     bcmath \
     opcache \
-    zip
+    zip \
+    pcntl \
+    && docker-php-ext-configure \
+    pcntl --enable-pcntl
 
 RUN a2enmod rewrite \
     && sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
@@ -30,4 +33,5 @@ COPY backend/ ./
 
 RUN composer dump-autoload --optimize
 
-CMD ["sh", "-c", "php artisan config:cache && php artisan route:cache && php artisan migrate --force && apache2-foreground"]
+# TODO: Move the migration and seeders to a dedicated external script
+CMD ["sh", "-c", "php artisan config:cache && php artisan route:cache && php artisan migrate --force && php artisan db:seed --force && apache2-foreground"]

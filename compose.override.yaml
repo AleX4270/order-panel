@@ -53,28 +53,27 @@ services:
         container_name: queue
         build:
             context: .
-            dockerfile: docker/queue/Dockerfile
+            dockerfile: docker/backend/Dockerfile
             target: local
         restart: unless-stopped
         volumes:
             - ./backend:/var/www/html:rw
             - backend-vendor:/var/www/html/vendor
         depends_on:
-            - backend
+            - database
         networks:
             - order-panel-network
+        command: sh -c "php artisan queue:listen"
     reverb:
         container_name: reverb
         build:
             context: .
-            dockerfile: docker/reverb/Dockerfile
+            dockerfile: docker/backend/Dockerfile
             target: local
         restart: unless-stopped
         volumes:
             - ./backend:/var/www/html:rw
             - backend-vendor:/var/www/html/vendor
-        depends_on:
-            - backend
         networks:
             - order-panel-network
         labels:
@@ -82,6 +81,7 @@ services:
             - "traefik.http.routers.reverb.rule=Host(`${REVERB_URL}`)"
             - "traefik.http.routers.reverb.entrypoints=web"
             - "traefik.http.services.reverb.loadbalancer.server.port=8080"
+        command: sh -c "php artisan reverb:start --debug"
     database:
         container_name: database
         volumes:
