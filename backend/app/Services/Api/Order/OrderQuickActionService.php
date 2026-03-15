@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Services\Api\Order;
 
 use App\Enums\OrderStatusType;
+use App\Events\OrderCompleted;
 use App\Exceptions\Api\OrderQuickAction\OrderAlreadyCompletedException;
 use App\Exceptions\Api\OrderStatus\OrderStatusNotFoundException;
 use App\Models\Order;
@@ -28,5 +29,6 @@ class OrderQuickActionService {
         $order->date_completed = now();
 
         $order->saveOrFail();
+        OrderCompleted::dispatch($order);
     }
 }

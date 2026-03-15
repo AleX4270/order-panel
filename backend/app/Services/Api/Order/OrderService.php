@@ -8,6 +8,7 @@ use App\Dtos\Api\Client\ClientResolveDto;
 use App\Dtos\Api\Order\OrderDto;
 use App\Dtos\Api\Order\OrderFilterDto;
 use App\Enums\OrderStatusType;
+use App\Events\OrderCompleted;
 use App\Models\Language;
 use App\Models\Order;
 use App\Models\OrderStatus;
@@ -110,6 +111,8 @@ class OrderService {
     public function update(OrderDto $dto): bool {
         DB::beginTransaction();
         try {
+            $isMarkedAsCompleted = false;
+
             $address = $this->addressService->findOrCreate(AddressResolveDto::fromArray([
                 'address' => $dto->addressDto->address,
                 'postalCode' => $dto->addressDto->postalCode,
@@ -123,16 +126,24 @@ class OrderService {
                 'phoneNumber' => $dto->phoneNumber,
             ]));
 
-            Order::where('id', $dto->id)
-                ->update([
-                    'date_deadline' => $dto->dateDeadline,
-                    'user_modification_id' => Auth::id(),
-                    'priority_id' => $dto->priorityId,
-                    'client_id' => $client->id,
-                    'status_id' => $dto->statusId,
-                    'created_at' => $dto->dateCreation,
-                    'date_completed' => $dto->dateCompleted,
-                ]);
+            $order = Order::findOrFail($dto->id);
+            $completedStatusId = OrderStatus::findOrFail(OrderStatusType::COMPLETED->value)->id;
+
+            if((empty($order->date_completed) && !empty($dto->date_completed))
+                && ($order->status_id !== $completedStatusId && $dto->statusId === $completedStatusId)
+            ) {
+                OrderCompleted::dispatch($order);
+            }
+            
+            $order->update([
+                'date_deadline' => $dto->dateDeadline,
+                'user_modification_id' => Auth::id(),
+                'priority_id' => $dto->priorityId,
+                'client_id' => $client->id,
+                'status_id' => $dto->statusId,
+                'created_at' => $dto->dateCreation,
+                'date_completed' => $dto->dateCompleted,
+            ]);
 
             OrderTranslation::where('order_id', $dto->id)
                 ->update([
@@ -140,6 +151,7 @@ class OrderService {
                 ]);
 
             DB::commit();
+
             return true;
         }
         catch(Exception $e) {
