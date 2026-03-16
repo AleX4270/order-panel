@@ -3,16 +3,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
-{
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+class User extends Authenticatable {
     use HasFactory, Notifiable, HasRoles;
 
     /**
@@ -43,8 +40,7 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
+    protected function casts(): array {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
@@ -57,5 +53,9 @@ class User extends Authenticatable
 
     public function modifiedOrders(): HasMany {
         return $this->hasMany(Order::class, 'user_modification_id');
+    }
+
+    public function receivesBroadcastNotificationsOn(): string {
+        return 'users.' . $this->id;
     }
 }
