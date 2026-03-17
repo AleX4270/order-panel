@@ -3,6 +3,7 @@ import { BaseFilterParams } from "./rest.types";
 import { RoleItem } from "./role.types";
 
 export interface User {
+    id: number;
     username: string;
     language?: LanguageType;
     isAuthenticated: boolean;

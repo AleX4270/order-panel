@@ -171,6 +171,7 @@ export class LoginComponent implements OnInit {
             next: (res) => {
                 if(res.data) {
                     const userData: User = {
+                        id: res.data.id,
                         username: res.data.name,
                         isAuthenticated: true,
                         permissions: res.data.permissions ?? [],

@@ -13,7 +13,7 @@ export function initializeAuth(): Observable<ApiResponse<UserDetailsResponse> | 
     return authService.user().pipe(
         tap(res => {
             if(res.data) {
-                store.dispatch(new LoginUser({ username: res.data.name, isAuthenticated: true }));
+                store.dispatch(new LoginUser({ id: res.data.id, username: res.data.name, isAuthenticated: true }));
             }
             else {
                 store.dispatch(new LogoutUser());
