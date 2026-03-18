@@ -9,6 +9,7 @@ import { UserState } from './shared/store/user/user.state';
 import { LanguageSelectorComponent } from "./shared/components/language-selector/language-selector.component";
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { PromptModalComponent } from './shared/components/prompt-modal/prompt-modal.component';
+import { UserNotificationService } from './shared/services/user-notification/user-notification.service';
 
 @Component({
     selector: 'app-root',
@@ -38,6 +39,7 @@ export class AppComponent implements OnInit {
     private readonly translate = inject(TranslateService);
     private readonly store = inject(Store);
     private readonly ngSelectConfig = inject(NgSelectConfig);
+    private readonly userNotificationService = inject(UserNotificationService);
 
     protected isUserAuthenticated = this.store.selectSignal(UserState.isAuthenticated);
     protected selectedLanguage = this.store.selectSignal(UserState.userLanguage);
@@ -49,6 +51,13 @@ export class AppComponent implements OnInit {
             }
             else {
                 this.translate.use(LanguageType.polish);
+            }
+        });
+
+        effect(() => {
+            const isAuthenticated = this.isUserAuthenticated();
+            if(isAuthenticated) {
+                this.userNotificationService.connectToChannel();
             }
         });
     }

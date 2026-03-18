@@ -14,6 +14,7 @@ import { ToastType } from '../../enums/enums';
 import { User } from '../../types/user.types';
 import { NgTemplateOutlet } from '@angular/common';
 import { UserPermissionService } from '../../services/user-permission/user-permission.service';
+import { UserNotificationService } from '../../services/user-notification/user-notification.service';
 
 @Component({
     selector: 'app-navbar',
@@ -86,6 +87,7 @@ export class NavbarComponent implements OnInit {
     private readonly router = inject(Router);
     private readonly translate = inject(TranslateService);
     private readonly userPermissionService = inject(UserPermissionService);
+    private readonly userNotificationService = inject(UserNotificationService);
 
     protected user: Signal<User | null> = this.store.selectSignal(UserState.userData);
     protected isUserAuthenticated = this.store.selectSignal(UserState.isAuthenticated);
@@ -105,6 +107,7 @@ export class NavbarComponent implements OnInit {
     protected logout(): void {
         this.authService.logout().subscribe({
             next: () => {
+                this.userNotificationService.disconnectFromChannel(); //Race?
                 this.store.dispatch(new LogoutUser);
                 this.router.navigate(['/']).then(() => {
                     this.toast.show(this.translate.instant('logout.success'), ToastType.warning);

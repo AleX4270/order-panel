@@ -78,7 +78,8 @@ services:
             - order-panel-network
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.reverb.rule=Host(`${REVERB_URL}`)"
+            # - "traefik.http.routers.reverb.rule=Host(`${REVERB_URL}`)"
+            - "traefik.http.routers.reverb.rule=PathPrefix(`/app`)"
             - "traefik.http.routers.reverb.entrypoints=web"
             - "traefik.http.services.reverb.loadbalancer.server.port=8080"
         command: sh -c "php artisan reverb:start --debug"

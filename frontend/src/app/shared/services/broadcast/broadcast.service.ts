@@ -1,7 +1,12 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ChannelType } from '../../types/broadcast.types';
 import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 import { environment } from '../../../../environments/environment';
+import { firstValueFrom } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
+(window as any).Pusher = Pusher;
 
 @Injectable({
   providedIn: 'root',
@@ -19,10 +24,10 @@ export class BroadcastService {
             key: environment.echoConfig.key,
             wsHost: environment.echoConfig.wsHost,
             wsPort: environment.echoConfig.wsPort,
-            wssPort: environment.echoConfig.wssPort,
-            forceTls: environment.echoConfig.forceTls,
-            enabledTransports: ['ws', 'wss'],
-            //todo: custom ? authorizer: 
+            // wssPort: environment.echoConfig.wssPort,
+            forceTLS: environment.echoConfig.forceTls,
+            enabledTransports: ['ws'],
+            //todo: custom ? authorizer:
         });
     }
 

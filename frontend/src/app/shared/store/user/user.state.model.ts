@@ -1,11 +1,16 @@
 import { LanguageType } from "../../enums/enums";
-import { User } from "../../types/user.types";
 
-export interface UserStateModel extends User {}
+export interface UserStateModel {
+    id: number | null;
+    username: string | null;
+    language: LanguageType;
+    isAuthenticated: boolean;
+    permissions: string[];
+}
 
 export const initialUserState: UserStateModel = {
-    id: 0,
-    username: '',
+    id: null,
+    username: null,
     language: LanguageType.polish,
     isAuthenticated: false,
     permissions: [],

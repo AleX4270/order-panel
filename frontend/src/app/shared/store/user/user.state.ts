@@ -54,11 +54,22 @@ export class UserState {
 
     @Selector([UserState])
     static userData(state: UserStateModel): User {
-        return state;
+        return {
+            id: state.id,
+            username: state.username,
+            language: state.language,
+            isAuthenticated: state.isAuthenticated,
+            permissions: state.permissions,
+        } as User;
     }
 
     @Selector([UserState])
     static permissions(state: UserStateModel): string[] {
         return state.permissions ?? [];
+    }
+
+    @Selector([UserState])
+    static userId(state: UserStateModel): number | null {
+        return state.id;
     }
 }
