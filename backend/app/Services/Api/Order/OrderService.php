@@ -127,7 +127,7 @@ class OrderService {
             ]));
 
             $order = Order::findOrFail($dto->id);
-            $completedStatusId = OrderStatus::findOrFail(OrderStatusType::COMPLETED->value)->id;
+            $completedStatusId = OrderStatus::where('symbol', OrderStatusType::COMPLETED->value)->first()->id;
 
             if((empty($order->date_completed) && !empty($dto->date_completed))
                 && ($order->status_id !== $completedStatusId && $dto->statusId === $completedStatusId)

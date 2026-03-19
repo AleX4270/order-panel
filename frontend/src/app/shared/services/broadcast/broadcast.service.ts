@@ -31,7 +31,7 @@ export class BroadcastService {
         });
     }
 
-    public listenToChannel<T>(name: string, type: ChannelType, handler: (data: T) => void) {
+    public listenToChannel<T>(name: string, type: ChannelType, handler: (eventName: string, data: T) => void) {
         if(type === ChannelType.public) {
             this.driver.channel(name)
                 .listenToAll(handler);

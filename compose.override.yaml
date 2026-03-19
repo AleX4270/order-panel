@@ -48,7 +48,7 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.backend.entrypoints=web"
-            - "traefik.http.routers.backend.rule=PathPrefix(`/api`)"
+            - "traefik.http.routers.backend.rule=PathPrefix(`/api`) || PathPrefix(`/broadcasting`)"
     queue:
         container_name: queue
         build:

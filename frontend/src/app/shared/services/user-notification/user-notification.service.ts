@@ -26,7 +26,7 @@ export class UserNotificationService {
             return;
         }
 
-        this.broadcastService.listenToChannel<Notification>(this.userChannel(), ChannelType.private, (data: Notification) => this.onNotificationReceived(data));
+        this.broadcastService.listenToChannel<Notification>(this.userChannel(), ChannelType.private, (_eventName, data) => this.onNotificationReceived(data));
     }
 
     public disconnectFromChannel(): void {
@@ -39,7 +39,7 @@ export class UserNotificationService {
     }
 
     public onNotificationReceived(data: Notification): void {
-        console.log(data.message);
+        console.log(data);
         // TODO: Finish
     }
 }

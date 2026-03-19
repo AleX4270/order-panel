@@ -1,0 +1,4 @@
+tls:
+    certificates:
+        - certFile: /certs/orderpanel.local+1.pem
+          keyFile: /certs/orderpanel.local+1-key.pem

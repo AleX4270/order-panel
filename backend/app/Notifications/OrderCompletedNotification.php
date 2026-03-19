@@ -37,7 +37,11 @@ class OrderCompletedNotification extends Notification {
 
     public function toBroadcast(object $notifiable): BroadcastMessage {
         return new BroadcastMessage([
-            'orderId' => $this->order->id,
+            'id' => 1234,
+            'message' => 'This is a test notification msg',
+            'context' => [
+                'and this is context',
+            ]
         ]);
     }
 
