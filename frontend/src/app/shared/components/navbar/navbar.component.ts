@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnInit, Signal } from '@angular/core';
 import { SmallFooterComponent } from "../small-footer/small-footer.component";
 import { Store } from '@ngxs/store';
 import { UserState } from '../../store/user/user.state';
@@ -15,10 +15,11 @@ import { User } from '../../types/user.types';
 import { NgTemplateOutlet } from '@angular/common';
 import { UserPermissionService } from '../../services/user-permission/user-permission.service';
 import { UserNotificationService } from '../../services/user-notification/user-notification.service';
+import { NotificationIconComponent } from "../notification-icon/notification-icon.component";
 
 @Component({
     selector: 'app-navbar',
-    imports: [SmallFooterComponent, DropdownComponent, TranslatePipe, RouterLink, RouterLinkActive, NgTemplateOutlet],
+    imports: [SmallFooterComponent, DropdownComponent, TranslatePipe, RouterLink, RouterLinkActive, NgTemplateOutlet, NotificationIconComponent],
     template: `
         <ng-template #navLinks>
             @for(navElement of navbarElementList; track navElement) {
@@ -72,14 +73,17 @@ import { UserNotificationService } from '../../services/user-notification/user-n
                     }
                 </ul>
             </div>
-            <div class="navbar-end">
+            <div class="navbar-end flex items-center gap-2">
+                @if(isUserAuthenticated()) {
+                    <app-notification-icon/>
+                }
                 <app-small-footer/>
             </div>
         </nav>
     `,
     host: { class: 'block' },
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, AfterViewInit {
     private readonly localDataService = inject(LocalDataService);
     private readonly authService = inject(AuthService);
     private readonly store = inject(Store);
@@ -88,6 +92,7 @@ export class NavbarComponent implements OnInit {
     private readonly translate = inject(TranslateService);
     private readonly userPermissionService = inject(UserPermissionService);
     private readonly userNotificationService = inject(UserNotificationService);
+    private readonly elementRef = inject(ElementRef);
 
     protected user: Signal<User | null> = this.store.selectSignal(UserState.userData);
     protected isUserAuthenticated = this.store.selectSignal(UserState.isAuthenticated);
@@ -102,6 +107,11 @@ export class NavbarComponent implements OnInit {
                 console.error(err);
             }
         });
+    }
+
+    ngAfterViewInit(): void {
+        const height = this.elementRef.nativeElement.offsetHeight;
+        document.documentElement.style.setProperty('--navbar-height', `${height}px`);
     }
 
     protected logout(): void {

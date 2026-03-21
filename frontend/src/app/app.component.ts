@@ -10,16 +10,18 @@ import { LanguageSelectorComponent } from "./shared/components/language-selector
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { PromptModalComponent } from './shared/components/prompt-modal/prompt-modal.component';
 import { UserNotificationService } from './shared/services/user-notification/user-notification.service';
+import { NotificationDrawerComponent } from "./shared/components/notification-drawer/notification-drawer.component";
 
 @Component({
     selector: 'app-root',
     imports: [
-        RouterOutlet,
-        ToastDisplayerComponent,
-        NavbarComponent,
-        LanguageSelectorComponent,
-        PromptModalComponent,
-    ],
+    RouterOutlet,
+    ToastDisplayerComponent,
+    NavbarComponent,
+    LanguageSelectorComponent,
+    PromptModalComponent,
+    NotificationDrawerComponent
+],
     template: `
         @if(isUserAuthenticated()) {
             <app-navbar class="sticky top-0 z-50"/>
@@ -27,10 +29,12 @@ import { UserNotificationService } from './shared/services/user-notification/use
         <main class="w-full px-2 sm:px-6 lg:px-20" [class.pt-7]="isUserAuthenticated()">
             <app-toast-displayer/>
             <app-prompt-modal />
-            <router-outlet></router-outlet>
-            @if(!isUserAuthenticated()) {
-                <app-language-selector class="fixed bottom-0 left-0 w-full px-3 py-2" />
-            }
+            <app-notification-drawer>
+                <router-outlet></router-outlet>
+                @if(!isUserAuthenticated()) {
+                    <app-language-selector class="fixed bottom-0 left-0 w-full px-3 py-2" />
+                }
+            </app-notification-drawer>
         </main>
     `,
     styles: [``]

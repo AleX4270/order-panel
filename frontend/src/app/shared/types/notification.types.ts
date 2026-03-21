@@ -1,5 +1,6 @@
 export interface Notification {
     id: string;
+    title: string;
     message: string;
-    context?: any;
+    readAt: string | null;
 }

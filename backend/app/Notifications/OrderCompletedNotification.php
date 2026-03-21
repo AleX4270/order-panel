@@ -8,16 +8,26 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Str;
+use NotificationData;
 
 class OrderCompletedNotification extends Notification {
     use Queueable;
+
+    private NotificationData $data;
 
     /**
      * Create a new notification instance.
      */
     public function __construct(
         public Order $order,
-    ) {}
+    ) {
+        $this->data = new NotificationData(
+            id: Str::random(16),
+            title: 'Title',
+            message: 'Message',
+        );
+    }
 
     /**
      * Get the notification's delivery channels.
@@ -25,7 +35,7 @@ class OrderCompletedNotification extends Notification {
      * @return array<int, string>
      */
     public function via(object $notifiable): array {
-        return ['mail', 'broadcast'];
+        return ['mail', 'broadcast', 'database'];
     }
 
     /**
@@ -36,13 +46,7 @@ class OrderCompletedNotification extends Notification {
     }
 
     public function toBroadcast(object $notifiable): BroadcastMessage {
-        return new BroadcastMessage([
-            'id' => 1234,
-            'message' => 'This is a test notification msg',
-            'context' => [
-                'and this is context',
-            ]
-        ]);
+        return new BroadcastMessage($this->data->toArray());
     }
 
     /**
@@ -50,9 +54,7 @@ class OrderCompletedNotification extends Notification {
      *
      * @return array<string, mixed>
      */
-    // public function toArray(object $notifiable): array {
-    //     return [
-    //         'orderId' => $this->order->id,
-    //     ];
-    // }
+    public function toArray(object $notifiable): array {
+        return $this->data->toArray();
+    }
 }

@@ -17,8 +17,35 @@ export class UserNotificationService {
     private readonly userId = this.store.selectSignal(UserState.userId);
     private readonly userChannel = computed(() => this.USER_CHANNEL_PREFIX + '.' + this.userId());
 
-    private _notifications: WritableSignal<Notification[]> = signal<Notification[]>([]);
+    private _notifications: WritableSignal<Notification[]> = signal<Notification[]>([
+        {
+            id: '1',
+            title: 'Zlecenie #1 ukończone',
+            message: 'Zlecenie o numerze #1 zostało oznaczone jako ukończone',
+            readAt: null,
+        },
+        {
+            id: '1',
+            title: 'Zlecenie #1 ukończone',
+            message: 'Zlecenie o numerze #1 zostało oznaczone jako ukończone',
+            readAt: null,
+        },
+        {
+            id: '1',
+            title: 'Zlecenie #1 ukończone',
+            message: 'Zlecenie o numerze #1 zostało oznaczone jako ukończone',
+            readAt: null,
+        },
+        {
+            id: '1',
+            title: 'Zlecenie #1 ukończone',
+            message: 'Zlecenie o numerze #1 zostało oznaczone jako ukończone',
+            readAt: '1',
+        },
+    ]);
+
     public readonly notifications: Signal<Notification[]> = this._notifications.asReadonly();
+    public readonly newNotificationsCount: Signal<number> = computed(() => this._notifications().filter((notification) => notification.readAt === null).length);
 
     public connectToChannel(): void {
         if(this.userId() === null) {

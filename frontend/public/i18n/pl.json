@@ -205,5 +205,8 @@
     "userDeletePromptModal": {
         "title": "Potwierdzenie usunięcia użytkownika",
         "message": "Czy potwierdzasz usunięcie wybranego użytkownika?"
+    },
+    "notificationDrawer": {
+        "title": "Powiadomienia"
     }
 }
