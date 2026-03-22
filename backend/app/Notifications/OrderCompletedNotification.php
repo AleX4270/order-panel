@@ -36,7 +36,9 @@ class OrderCompletedNotification extends Notification {
      * @return array<int, string>
      */
     public function via(object $notifiable): array {
-        return ['mail', 'broadcast', 'database'];
+        //! Temporarily disable the mail channel
+        // return ['mail', 'broadcast', 'database'];
+        return ['broadcast', 'database'];
     }
 
     /**
