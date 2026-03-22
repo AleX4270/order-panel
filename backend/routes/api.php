@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\City\CityController;
 use App\Http\Controllers\Api\Country\CountryController;
+use App\Http\Controllers\Api\Notification\NotificationController;
 use App\Http\Controllers\Api\Order\OrderController;
 use App\Http\Controllers\Api\Order\OrderQuickActionController;
 use App\Http\Controllers\Api\Priority\PriorityController;
@@ -58,5 +59,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [UserController::class, 'store']);
         Route::put('/', [UserController::class, 'update']);
         Route::delete('/{id}', [UserController::class, 'delete']);
+    });
+
+    Route::prefix('notifications')->group(function() {
+        Route::get('/', [NotificationController::class, 'index']);
     });
 });

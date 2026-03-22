@@ -4,6 +4,7 @@ import { Store } from '@ngxs/store';
 import { UserState } from '../../store/user/user.state';
 import { ChannelType } from '../../types/broadcast.types';
 import { Notification } from '../../types/notification.types';
+import { NotificationService } from '../api/notification/notification.service';
 
 @Injectable({
     providedIn: 'root',
@@ -11,38 +12,25 @@ import { Notification } from '../../types/notification.types';
 export class UserNotificationService {
     private readonly USER_CHANNEL_PREFIX = 'users';
 
+    private readonly notificationService = inject(NotificationService);
     private readonly broadcastService = inject(BroadcastService);
     private readonly store = inject(Store);
 
     private readonly userId = this.store.selectSignal(UserState.userId);
     private readonly userChannel = computed(() => this.USER_CHANNEL_PREFIX + '.' + this.userId());
 
-    private _notifications: WritableSignal<Notification[]> = signal<Notification[]>([
-        {
-            id: '1',
-            title: 'Zlecenie #1 ukończone',
-            message: 'Zlecenie o numerze #1 zostało oznaczone jako ukończone',
-            readAt: null,
-        },
-        {
-            id: '1',
-            title: 'Zlecenie #1 ukończone',
-            message: 'Zlecenie o numerze #1 zostało oznaczone jako ukończone',
-            readAt: null,
-        },
-        {
-            id: '1',
-            title: 'Zlecenie #1 ukończone',
-            message: 'Zlecenie o numerze #1 zostało oznaczone jako ukończone',
-            readAt: null,
-        },
-        {
-            id: '1',
-            title: 'Zlecenie #1 ukończone',
-            message: 'Zlecenie o numerze #1 zostało oznaczone jako ukończone',
-            readAt: '1',
-        },
-    ]);
+    private _notifications: WritableSignal<Notification[]> = signal<Notification[]>([]);
+
+    // private _notifications: WritableSignal<Notification[]> = signal<Notification[]>([
+    //     {
+    //         id: '1',
+    //         title: 'Test',
+    //         message: 'Message',
+    //         createdAt: '2026-03-22T11:42:02.859219Z',
+    //         type: 'type',
+    //         readAt: null,
+    //     }
+    // ]);
 
     public readonly notifications: Signal<Notification[]> = this._notifications.asReadonly();
     public readonly newNotificationsCount: Signal<number> = computed(() => this._notifications().filter((notification) => notification.readAt === null).length);
@@ -52,6 +40,9 @@ export class UserNotificationService {
             console.error('Cannot connect to the user\'s notification channel. User ID is unknown');
             return;
         }
+
+        // TEMP
+        this.loadExistingNotifications();
 
         this.broadcastService.listenToChannel<Notification>(this.userChannel(), ChannelType.private, (_eventName, data) => this.onNotificationReceived(data));
     }
@@ -67,6 +58,26 @@ export class UserNotificationService {
 
     public onNotificationReceived(data: Notification): void {
         console.log(data);
-        // TODO: Finish
+        this._notifications.update((notifications) => [
+            data,
+            ...notifications
+        ]);
+    }
+
+    private loadExistingNotifications(): void {
+        const userId = this.userId();
+        
+        if(userId === null) {
+            return;
+        }
+
+        this.notificationService.index({ userId: userId }).subscribe({
+            next: (res) => {
+                console.log(res);      
+            },
+            error: (err) => {
+                console.error(err);
+            }
+        });
     }
 }

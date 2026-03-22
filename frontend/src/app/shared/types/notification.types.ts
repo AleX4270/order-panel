@@ -3,4 +3,10 @@ export interface Notification {
     title: string;
     message: string;
     readAt: string | null;
+    createdAt: string;
+    type: string;
+}
+
+export interface NotificationFilterParams {
+    userId: number;
 }

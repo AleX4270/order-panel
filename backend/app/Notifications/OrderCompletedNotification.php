@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Dtos\NotificationData;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-use NotificationData;
 
 class OrderCompletedNotification extends Notification {
     use Queueable;
@@ -23,9 +24,9 @@ class OrderCompletedNotification extends Notification {
         public Order $order,
     ) {
         $this->data = new NotificationData(
-            id: Str::random(16),
-            title: 'Title',
-            message: 'Message',
+            title: __('notifications.orderCompletedTitle', ['orderId' => $this->order->id]),
+            message: __('notifications.orderCompletedMessage', ['orderId' => $this->order->id]),
+            createdAt: Carbon::now()->toISOString(),
         );
     }
 

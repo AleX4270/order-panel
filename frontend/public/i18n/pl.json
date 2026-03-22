@@ -207,6 +207,7 @@
         "message": "Czy potwierdzasz usunięcie wybranego użytkownika?"
     },
     "notificationDrawer": {
-        "title": "Powiadomienia"
+        "title": "Powiadomienia",
+        "noNotifications": "Brak powiadomień"
     }
 }
