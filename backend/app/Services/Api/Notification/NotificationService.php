@@ -5,6 +5,7 @@ namespace App\Services\Api\Notification;
 
 use App\Dtos\Api\Notification\NotificationFilterDto;
 use App\Models\User;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Collection;
 
 class NotificationService {
@@ -12,6 +13,17 @@ class NotificationService {
 
     public function index(NotificationFilterDto $dto): Collection {
         $user = User::findOrFail($dto->userId);
-        return $user->notifications;
+        
+        if($dto->onlyUnread) {
+            return $user->unreadNotifications;
+        }
+        else {
+            return $user->notifications;
+        }
+    }
+
+    public function markAsRead(string $id): void {
+        $notification = DatabaseNotification::findOrFail($id);
+        $notification->markAsRead();
     }
 }

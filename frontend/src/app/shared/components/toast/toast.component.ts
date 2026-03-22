@@ -9,7 +9,7 @@ import { ToastType } from '../../enums/enums';
         CommonModule
     ],
     template: `
-        <div role="alert" class="alert alert-soft"
+        <div role="alert" class="alert"
             [ngClass]="{
                 'alert-info': toastData().type === toastType.info,
                 'alert-success': toastData().type === toastType.success,

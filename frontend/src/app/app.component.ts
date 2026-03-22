@@ -61,6 +61,7 @@ export class AppComponent implements OnInit {
         effect(() => {
             const isAuthenticated = this.isUserAuthenticated();
             if(isAuthenticated) {
+                this.userNotificationService.loadUnreadNotifications();
                 this.userNotificationService.connectToChannel();
             }
         });

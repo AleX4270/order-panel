@@ -10,9 +10,16 @@ class NotificationFilterRequest extends FormRequest {
         return true;
     }
 
+    public function prepareForValidation(): void {
+        $this->merge([
+           'onlyUnread' => filter_var($this->input('onlyUnread'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE),
+        ]);
+    }
+
     public function rules(): array {
         return [
             'userId' => ['required', 'integer'],
+            'onlyUnread' => ['nullable', 'boolean'],
         ];
     }
 

@@ -209,5 +209,8 @@
     "notificationDrawer": {
         "title": "Powiadomienia",
         "noNotifications": "Brak powiadomień"
+    },
+    "notification": {
+        "newNotificationReceived": "Otrzymano nowe powiadomienie"
     }
 }

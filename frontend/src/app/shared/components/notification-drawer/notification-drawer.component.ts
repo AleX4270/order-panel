@@ -16,12 +16,13 @@ import { NotificationComponent } from '../notification/notification.component';
             <div class="drawer-content">
                 <ng-content></ng-content>
             </div>
-            <div class="drawer-side opacity-95">
+            <div class="drawer-side">
                 <div class="bg-base-100 min-h-full w-100 p-4">
                     <h1 class="font-semibold text-xl mb-5 mt-2">{{'notificationDrawer.title' | translate}}</h1>
-                    <div class="flex flex-col items-center gap-4">
+                    <div class="flex flex-col items-center gap-4 w-full">
                         @for(notification of userNotificationService.notifications(); track notification) {
-                            <app-notification 
+                            <app-notification
+                                class="w-full"
                                 [notification]="notification"
                             />
                         }

@@ -100,7 +100,7 @@ import { Permission } from '../../shared/enums/permission.enum';
                             </div>
                         </td>
                         <td>
-                            <app-tile [type]="getPriorityTileType(item.prioritySymbol)" [isSoft]="true" [isOutlined]="true">
+                            <app-tile [type]="getPriorityTileType(item.prioritySymbol)" [isSoft]="false" [isOutlined]="false">
                                 <span>{{ item.priorityName }}</span>
                             </app-tile>
                         </td>
