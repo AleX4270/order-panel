@@ -1,4 +1,4 @@
-FROM php:8.4-apache as base
+FROM php:8.4-apache AS base
 
 WORKDIR /var/www/html
 
@@ -21,11 +21,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 COPY backend/composer.json backend/composer.lock ./
 
-FROM base as local
+FROM base AS local
 
 RUN composer install --no-interaction --no-scripts
 
-FROM base as production
+FROM base AS production
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 

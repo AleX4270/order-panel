@@ -8,7 +8,7 @@ export const csrfInterceptor: HttpInterceptorFn = (req, next) => {
 
     const xsrfToken = cookieService.get('XSRF-TOKEN');
 
-    if(xsrfToken && req.url.startsWith(environment.apiUrl)) {
+    if(xsrfToken && (req.url.startsWith(environment.apiUrl) || req.url.startsWith(environment.echoConfig.authEndpoint))) {
         req = req.clone({
             withCredentials: true,
             headers: req.headers.set('X-XSRF-TOKEN', decodeURIComponent(xsrfToken))

@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class BroadcastService {
+    private readonly http = inject(HttpClient);
     private driver!: Echo<'reverb'>;
 
     constructor() {
@@ -24,10 +25,30 @@ export class BroadcastService {
             key: environment.echoConfig.key,
             wsHost: environment.echoConfig.wsHost,
             wsPort: environment.echoConfig.wsPort,
-            // wssPort: environment.echoConfig.wssPort,
+            wssPort: environment.echoConfig.wssPort,
             forceTLS: environment.echoConfig.forceTls,
-            enabledTransports: ['ws'],
-            //todo: custom ? authorizer:
+            enabledTransports: ['ws', 'wss'],
+            authorizer: (channel, options) => {
+                return {
+                    authorize: (socketId, callback: Function) => {
+                        firstValueFrom(this.http.post(environment.echoConfig.authEndpoint, {
+                            socket_id: socketId,
+                            channel_name: channel.name
+                        }, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                            },
+                        }))
+                        .then(response => {
+                            callback(false, response);
+                        })
+                        .catch(error => {
+                            callback(true, error);
+                        })
+                    }
+                };
+            },
         });
     }
 

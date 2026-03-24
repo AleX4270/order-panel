@@ -7,5 +7,6 @@ export const environment = {
         wsPort: 80,
         wssPort: 443,
         forceTls: false,
+        authEndpoint: 'http://localhost/broadcasting/auth'
     }
 };
