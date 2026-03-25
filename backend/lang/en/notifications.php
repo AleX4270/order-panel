@@ -2,6 +2,6 @@
 
 return [
     //Order completed
-    'orderCompletedTitle' => "Order #:orderId completed",
+    'orderCompletedTitle' => "Order completed",
     'orderCompletedMessage' => "Order #:orderId has been marked as completed"
 ];

@@ -2,6 +2,6 @@
 
 return [
     //Order completed
-    'orderCompletedTitle' => "Zlecenie #:orderId ukończone",
+    'orderCompletedTitle' => "Zlecenie ukończone",
     'orderCompletedMessage' => "Zlecenie o numerze #:orderId zostało oznaczone jako ukończone"
 ];
