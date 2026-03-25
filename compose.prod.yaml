@@ -63,6 +63,18 @@ services:
             - "traefik.http.routers.${APP_NAMESPACE}-reverb.tls.certResolver=le"
             - "traefik.http.services.${APP_NAMESPACE}-reverb.loadbalancer.server.port=8080"
         command: sh -c "php artisan reverb:start"
+    scheduler:
+        image: ghcr.io/alex4270/order-panel-backend:${BACKEND_TAG}
+        restart: unless-stopped
+        env_file: .env.production
+        volumes:
+            - backend-storage:/var/www/html/storage/app
+            - backend-logs:/var/www/html/storage/logs
+        depends_on:
+            - database
+        networks:
+            - order-panel-network
+        command: sh -c "php artisan schedule:work"
 volumes:
     backend-storage:
         name: ${APP_NAMESPACE}-backend-storage

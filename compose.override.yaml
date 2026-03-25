@@ -78,11 +78,25 @@ services:
             - order-panel-network
         labels:
             - "traefik.enable=true"
-            # - "traefik.http.routers.reverb.rule=Host(`${REVERB_URL}`)"
             - "traefik.http.routers.reverb.rule=PathPrefix(`/app`)"
             - "traefik.http.routers.reverb.entrypoints=web"
             - "traefik.http.services.reverb.loadbalancer.server.port=8080"
         command: sh -c "php artisan reverb:start --debug"
+    scheduler:
+        container_name: scheduler
+        build:
+            context: .
+            dockerfile: docker/backend/Dockerfile
+            target: local
+        restart: unless-stopped
+        volumes:
+            - ./backend:/var/www/html:rw
+            - backend-vendor:/var/www/html/vendor
+        depends_on:
+            - database
+        networks:
+            - order-panel-network
+        command: sh -c "php artisan schedule:work"
     database:
         container_name: database
         volumes:
