@@ -5,57 +5,42 @@ namespace App\Notifications;
 
 use App\Dtos\NotificationData;
 use App\Models\Order;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Carbon;
 
-class OrderCompletedNotification extends Notification {
+class IncomingOrderDeadlineNotification extends Notification implements ShouldQueue {
     use Queueable;
 
     private NotificationData $data;
 
-    /**
-     * Create a new notification instance.
-     */
     public function __construct(
         public Order $order,
     ) {
         $this->data = new NotificationData(
-            title: __('notifications.orderCompletedTitle'),
-            message: __('notifications.orderCompletedMessage', ['orderId' => $this->order->id]),
+            title: __('notifications.orderIncomingDeadlineTitle'),
+            message: __('notifications.orderIncomingDeadlineMessage', ['orderId' => $this->order->id, 'date' => Carbon::parse($this->order->date_deadline)->format('d-m-Y')]),
             createdAt: Carbon::now()->toISOString(),
         );
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
     public function via(object $notifiable): array {
         //! Temporarily disable the mail channel
         // return ['mail', 'broadcast', 'database'];
         return ['broadcast', 'database'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
     public function toMail(object $notifiable): MailMessage {
-        return (new MailMessage)->markdown('mail.order-completed-notification');
+        return (new MailMessage)->markdown('mail.incoming-order-deadline-notification');
     }
 
     public function toBroadcast(object $notifiable): BroadcastMessage {
         return new BroadcastMessage($this->data->toArray());
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(object $notifiable): array {
         return $this->data->toArray();
     }
