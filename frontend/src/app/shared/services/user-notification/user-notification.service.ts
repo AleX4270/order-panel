@@ -58,6 +58,8 @@ export class UserNotificationService {
     }
 
     public markAsRead(id: string): void {
+        this.removeNotification(id);
+
         this.notificationService.markAsRead(id).pipe(
             tap(() => this.loadUnreadNotifications()),
         ).subscribe();
@@ -82,5 +84,10 @@ export class UserNotificationService {
                 console.error(err);
             }
         });
+    }
+
+    private removeNotification(id: string): void {
+        const filteredNotifications = this._notifications().filter((notification) => notification.id !== id);
+        this._notifications.set(filteredNotifications);
     }
 }

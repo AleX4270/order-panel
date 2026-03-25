@@ -39,7 +39,6 @@ export class NotificationComponent {
     public notification = input.required<Notification>();
 
     protected markAsRead(): void {
-        console.log('ol');
         this.userNotificationService.markAsRead(this.notification().id);
     }
 }
