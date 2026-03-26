@@ -4,12 +4,13 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Dtos\NotificationData;
+use App\Mail\IncomingOrderDeadlineMail;
 use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class IncomingOrderDeadlineNotification extends Notification implements ShouldQueue {
@@ -28,13 +29,11 @@ class IncomingOrderDeadlineNotification extends Notification implements ShouldQu
     }
 
     public function via(object $notifiable): array {
-        //! Temporarily disable the mail channel
-        // return ['mail', 'broadcast', 'database'];
-        return ['broadcast', 'database'];
+        return ['mail', 'broadcast', 'database'];
     }
 
-    public function toMail(object $notifiable): MailMessage {
-        return (new MailMessage)->markdown('mail.incoming-order-deadline-notification');
+    public function toMail(object $notifiable): Mailable {
+        return new IncomingOrderDeadlineMail($this->order)->to($notifiable->email);
     }
 
     public function toBroadcast(object $notifiable): BroadcastMessage {

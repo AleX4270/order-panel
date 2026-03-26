@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'internalError' => "Internal error",
+    'allRightsReserved' => 'All rights reserved',
 ];

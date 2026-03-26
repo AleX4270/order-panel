@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Dtos\NotificationData;
+use App\Mail\OrderCompletedMail;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -16,9 +18,6 @@ class OrderCompletedNotification extends Notification {
 
     private NotificationData $data;
 
-    /**
-     * Create a new notification instance.
-     */
     public function __construct(
         public Order $order,
     ) {
@@ -29,33 +28,18 @@ class OrderCompletedNotification extends Notification {
         );
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
     public function via(object $notifiable): array {
-        //! Temporarily disable the mail channel
-        // return ['mail', 'broadcast', 'database'];
-        return ['broadcast', 'database'];
+        return ['mail', 'broadcast', 'database'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): MailMessage {
-        return (new MailMessage)->markdown('mail.order-completed-notification');
+    public function toMail(object $notifiable): Mailable {
+        return new OrderCompletedMail($this->order)->to($notifiable->email);
     }
 
     public function toBroadcast(object $notifiable): BroadcastMessage {
         return new BroadcastMessage($this->data->toArray());
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(object $notifiable): array {
         return $this->data->toArray();
     }

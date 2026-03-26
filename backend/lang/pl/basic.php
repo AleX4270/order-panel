@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'internalError' => "Błąd wewnętrzny",
+    'allRightsReserved' => 'Wszelkie prawa zastrzeżone',
 ];
