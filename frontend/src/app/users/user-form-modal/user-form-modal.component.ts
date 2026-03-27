@@ -14,7 +14,12 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 import { RoleItem } from '../../shared/types/role.types';
 import { RoleService } from '../../shared/services/api/role/role.service';
 import { ButtonComponent } from "../../shared/components/button/button.component";
-import { finalize } from 'rxjs';
+import { finalize, forkJoin } from 'rxjs';
+import { NotificationChannelService } from '../../shared/services/api/notification-channel/notification-channel.service';
+import { NotificationEventService } from '../../shared/services/api/notification-event/notification-event.service';
+import { NotificationChannelItem } from '../../shared/types/notification-channel.types';
+import { NotificationEventItem } from '../../shared/types/notification-event.types';
+import { NotificationSettingsSet } from '../../shared/types/notification.types';
 
 @Component({
     selector: 'app-user-form-modal',
@@ -24,7 +29,7 @@ import { finalize } from 'rxjs';
         <dialog #modalRef class="modal">
             <div class="modal-box max-w-3xl">
                 <div class="header">
-                    <h5 class="text-primary font-semibold text-xl">{{ ("userForm." + (isEditScenario() ? "updateTitle" : "createTitle") | translate) + (isEditScenario() ? ' - #' + this.userId() : '') }}</h5>
+                    <h1 class="text-primary font-semibold text-xl">{{ ("userForm." + (isEditScenario() ? "updateTitle" : "createTitle") | translate) + (isEditScenario() ? ' - #' + this.userId() : '') }}</h1>
                     <form method="dialog">
                         <app-button type="submit" classList="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</app-button>
                     </form>
@@ -131,6 +136,32 @@ import { finalize } from 'rxjs';
                                     <app-input-error-label [control]="form.get('passwordConfirmed')" />
                                 </div>
                             </div>
+
+                            <div class="divider"></div>
+
+                            <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap mt-4">
+                                <h2 class="text-primary font-semibold text-md">{{ "userForm.notificationsSettings" | translate }}</h2>
+                                @for(event of notificationEvents(); track event.id) {
+                                    <div class="w-full flex items-center">
+                                        <h3 class="text-xs font-semibold me-3">{{event.name}}</h3>
+                                        <div class="w-full flex items-center gap-4">
+                                            @for(channel of notificationChannels(); track channel.id) {
+                                                <div>
+                                                    <input
+                                                        type="checkbox"
+                                                        [id]="'event-' + event.id + '-channel-' + channel.id"
+                                                        [name]="'event-' + event.id + '-channel-' + channel.id"
+                                                        class="toggle toggle-sm me-1"
+                                                        (change)="switchNotificationEventChannel($event.target.checked, event.id, channel.id)"
+                                                        [checked]="isChannelChecked(event.id, channel.id)"
+                                                    /> 
+                                                    <label [for]="'event-' + event.id + '-channel-' + channel.id">{{ channel.name }}</label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
                         </form>
                     }
                 </div>
@@ -157,6 +188,8 @@ export class UserFormModalComponent {
     private readonly userService: UserService = inject(UserService);
     private readonly destroyRef: DestroyRef = inject(DestroyRef);
     private readonly roleService: RoleService = inject(RoleService);
+    private readonly notificationChannelService: NotificationChannelService = inject(NotificationChannelService);
+    private readonly notificationEventService: NotificationEventService = inject(NotificationEventService);
 
     protected form!: FormGroup;
     protected userId: WritableSignal<number | null> = signal<number | null>(null);
@@ -164,12 +197,17 @@ export class UserFormModalComponent {
     protected isLoading: WritableSignal<boolean> = signal<boolean>(false);
     protected roles: WritableSignal<RoleItem[]> = signal<RoleItem[]>([]);
     protected isSubmitted: WritableSignal<boolean> = signal<boolean>(false);
+    protected notificationChannels: WritableSignal<NotificationChannelItem[]> = signal<NotificationChannelItem[]>([]);
+    protected notificationEvents: WritableSignal<NotificationEventItem[]> = signal<NotificationEventItem[]>([]);
+
+    private notificationSettingsMap: NotificationSettingsSet = new Map<number, Set<number>>();
 
     protected userSaved = output<void>();
 
     public showForm(userId?: number): void {
         this.isLoading.set(true);
         this.cleanFormMetaData();
+        this.initForm();
 
         if(userId) {
             this.userId.set(userId);
@@ -177,8 +215,25 @@ export class UserFormModalComponent {
             this.loadDetails(userId);
         }
 
-        this.initForm();
-        this.loadRoles();
+        forkJoin({
+            roles: this.roleService.index(),
+            notificationChannels: this.notificationChannelService.index(),
+            notificationEvents: this.notificationEventService.index(),
+        }).subscribe({
+            next: (res) => {
+                this.roles.set(res.roles.data?.items ?? []);
+                this.notificationChannels.set(res.notificationChannels.data ?? []);
+                this.notificationEvents.set(res.notificationEvents.data ?? []);
+
+                this.isLoading.set(false);
+
+                // TODO: Remove debug
+                console.log(this.roles());
+                console.log(this.notificationChannels());
+                console.log(this.notificationEvents());
+            },
+        })
+        
         this.openModal();     
     }
     
@@ -189,7 +244,6 @@ export class UserFormModalComponent {
         }
 
         modal.showModal();
-        this.isLoading.set(false);
     }
 
     protected closeModal(): void {
@@ -207,6 +261,7 @@ export class UserFormModalComponent {
     protected cleanFormMetaData(): void {
         this.userId.set(null);
         this.isEditScenario.set(false);
+        this.notificationSettingsMap.clear();
     }
 
     private initForm(): void {
@@ -218,7 +273,7 @@ export class UserFormModalComponent {
             email: [null, [Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)]],
             password: [null, [validatePasswordStrength()]],
             passwordConfirmed: [null, [validatePasswordMatch()]],
-            roles: [null]
+            roles: [null],
         });
 
         this.registerFormChanges();
@@ -258,6 +313,12 @@ export class UserFormModalComponent {
                     roleSymbols = user.roles.map(role => role.symbol);
                 }
 
+                if(user.notificationSettings && user.notificationSettings.length > 0) {
+                    user.notificationSettings.map((setting) => {
+                        this.notificationSettingsMap.set(setting.eventId, new Set(setting.channelIds));
+                    })
+                }
+
                 this.form.patchValue({
                     id: user.id,
                     firstName: user.firstName,
@@ -270,14 +331,6 @@ export class UserFormModalComponent {
             error: (err) => {
                 console.error(err);
             }
-        });
-    }
-
-    protected loadRoles(): void {
-        this.roleService.index().subscribe({
-            next: (res) => {
-                this.roles.set(res.data?.items ?? []);
-            },
         });
     }
 
@@ -295,6 +348,7 @@ export class UserFormModalComponent {
         this.isSubmitted.set(true);
         const formValues = this.form.value;
 
+        // TODO: Absolutely improve this
         let userParams = {
             username: formValues.username,
             email: formValues.email,
@@ -324,6 +378,11 @@ export class UserFormModalComponent {
             userParams.roles = formValues.roles;
         }
 
+        userParams.notificationSettings = Array.from(this.notificationSettingsMap.entries()).map(([eventId, channelIds]) => ({
+            eventId,
+            channelIds: Array.from(channelIds)
+        }));
+
         const method = this.isEditScenario()
             ? this.userService.update(userParams)
             : this.userService.store(userParams);
@@ -351,5 +410,29 @@ export class UserFormModalComponent {
                 this.closeModal();
             }
         });
+    }
+
+    protected switchNotificationEventChannel(isChecked: boolean, eventId: number, channelId: number): void {
+        if(!this.notificationSettingsMap.has(eventId)) {
+            this.notificationSettingsMap.set(eventId, new Set());
+        }
+
+        let channels = this.notificationSettingsMap.get(eventId);
+
+        if(isChecked) {
+            channels?.add(channelId);
+        }
+        else {
+            channels?.delete(channelId);
+        }
+    }
+
+    protected isChannelChecked(eventId: number, channelId: number): boolean {
+        if(!this.notificationSettingsMap.has(eventId)) {
+            return false;
+        }
+
+        const channels = this.notificationSettingsMap.get(eventId)!;
+        return channels?.has(channelId);
     }
 }

@@ -11,3 +11,10 @@ export interface NotificationFilterParams {
     userId: number;
     onlyUnread: boolean;
 }
+
+export interface NotificationSetting {
+    eventId: number;
+    channelIds: number[];
+}
+
+export type NotificationSettingsSet = Map<number, Set<number>>;

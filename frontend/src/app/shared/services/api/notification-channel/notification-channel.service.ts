@@ -9,7 +9,7 @@ import { NotificationChannelFilterParams, NotificationChannelItem } from '../../
     providedIn: 'root'
 })
 export class NotificationChannelService extends RestService {
-    public list(params?: NotificationChannelFilterParams): Observable<ApiResponse<IndexResponse<NotificationChannelItem>>> {
-        return this.http.get<ApiResponse<IndexResponse<NotificationChannelItem>>>(`${this.apiUrl}/notification-channels${this.getQueryParams(params)}`);
+    public index(params?: NotificationChannelFilterParams): Observable<ApiResponse<NotificationChannelItem[]>> {
+        return this.http.get<ApiResponse<NotificationChannelItem[]>>(`${this.apiUrl}/notification-channels${this.getQueryParams(params)}`);
     }
 }

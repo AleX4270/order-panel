@@ -23,7 +23,8 @@ class UserRequest extends FormRequest {
             'email' => ['required', 'email'],
             'password' => ['sometimes', 'string', 'confirmed:passwordConfirmed', 'regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[#?!@$%^&*\-.,]).{8,}$/',],
             'passwordConfirmed' => ['required_with:password', 'string'],
-            'roles' => ['sometimes', 'array']
+            'roles' => ['sometimes', 'array'],
+            'notificationSettings' => ['required', 'array'],
         ];
     }
 

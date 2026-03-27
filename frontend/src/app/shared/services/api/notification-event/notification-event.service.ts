@@ -9,7 +9,7 @@ import { NotificationEventFilterParams, NotificationEventItem } from '../../../t
     providedIn: 'root'
 })
 export class NotificationEventService extends RestService {
-    public list(params?: NotificationEventFilterParams): Observable<ApiResponse<IndexResponse<NotificationEventItem>>> {
-        return this.http.get<ApiResponse<IndexResponse<NotificationEventItem>>>(`${this.apiUrl}/notification-events${this.getQueryParams(params)}`);
+    public index(params?: NotificationEventFilterParams): Observable<ApiResponse<NotificationEventItem[]>> {
+        return this.http.get<ApiResponse<NotificationEventItem[]>>(`${this.apiUrl}/notification-events${this.getQueryParams(params)}`);
     }
 }

@@ -200,7 +200,8 @@
         "saveErrorMessage": "Nie udało się zapisać użytkownika",
         "saveSuccessMessage": "Pomyślnie zapisano użytkownika",
         "roles": "Role",
-        "rolesPlaceholder": "Wybierz role"
+        "rolesPlaceholder": "Wybierz role",
+        "notificationsSettings": "Ustawienia powiadomień"
     },
     "userDeletePromptModal": {
         "title": "Potwierdzenie usunięcia użytkownika",

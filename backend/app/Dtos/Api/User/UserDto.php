@@ -13,6 +13,7 @@ final readonly class UserDto {
         public ?string $password = null,
         public ?string $passwordConfirmed = null,
         public ?array $roles = null,
+        public array $notificationSettings,
     ) {}
 
     public static function fromArray(array $data): self {
@@ -25,6 +26,7 @@ final readonly class UserDto {
             password: $data['password'] ?? null,
             passwordConfirmed: $data['passwordConfirmed'] ?? null,
             roles: $data['roles'] ?? null,
+            notificationSettings: $data['notificationSettings'] ?? null,
         );
     }
 

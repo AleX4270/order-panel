@@ -32,6 +32,12 @@ class UserRepository {
         ]);
     }
 
+    private function applyNotificationSettingsQuery(Builder $query): Builder {
+        return $query->with([
+            'notificationSettings'
+        ]);
+    }
+
     public function getAll(UserFilterDto $dto): Builder {
         $query = $this->getBaseQuery()
             ->where('u.is_active', 1);
@@ -79,6 +85,7 @@ class UserRepository {
     public function getOne(int $userId): Builder {
         $query = $this->getBaseQuery();
         $this->applyRolesQuery($query);
+        $this->applyNotificationSettingsQuery($query);
 
         $query->where('u.id', $userId);
 

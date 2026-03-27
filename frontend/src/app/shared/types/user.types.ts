@@ -1,4 +1,5 @@
 import { LanguageType } from "../enums/enums";
+import { NotificationSetting, NotificationSettingsSet } from "./notification.types";
 import { BaseFilterParams } from "./rest.types";
 import { RoleItem } from "./role.types";
 
@@ -26,6 +27,7 @@ export interface UserItem {
     dateUpdated: string;
     roles: RoleItem[];
     isInternal: boolean;
+    notificationSettings: NotificationSetting[];
 }
 
 export interface UserParams {
@@ -37,4 +39,5 @@ export interface UserParams {
     password?: string;
     passwordConfirmed?: string;
     roles?: string[];
+    notificationSettings: NotificationSetting[];
 }

@@ -6,6 +6,7 @@ namespace App\Services\Api\User;
 use App\Dtos\Api\User\UserDto;
 use App\Dtos\Api\User\UserFilterDto;
 use App\Models\User;
+use App\Models\UserNotificationSetting;
 use App\Repositories\UserRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
@@ -30,7 +31,7 @@ class UserService {
             $items = $query->get();
         }
 
-        // TODO: Think of a different solution
+        // TODO: Think of a different solution - a resource for sure
         $items = $items->map(function (User $user) {
             return [
                 'id' => $user->id,
@@ -64,6 +65,12 @@ class UserService {
             'dateUpdated' => $user->dateUpdated,
             'roles' => $this->mapRoles($user->roles),
             'isInternal' => $user->isInternal,
+            'notificationSettings' => $user->notificationSettings->groupBy('notification_event_id')->map(function($settings, $eventId) {
+                return [
+                    'eventId' => $eventId,
+                    'channelIds' => $settings->pluck('notification_channel_id')
+                ];
+            })->values(),
         ];
 
         return $data;
@@ -100,6 +107,21 @@ class UserService {
                     foreach($dto->roles as $role) {
                         $user->assignRole($role);
                     }
+                }
+            }
+
+            UserNotificationSetting::where('user_id', $dto->id)->delete();
+            foreach($dto->notificationSettings as $notificationSetting) {
+                if(empty($notificationSetting['channelIds'])) {
+                    continue;
+                }
+
+                foreach($notificationSetting['channelIds'] as $channelId) {
+                    $setting = new UserNotificationSetting();
+                    $setting->user_id = $dto->id;
+                    $setting->notification_event_id = $notificationSetting['eventId'];
+                    $setting->notification_channel_id = $channelId;
+                    $setting->save();
                 }
             }
 
