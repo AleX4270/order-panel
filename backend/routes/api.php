@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\City\CityController;
 use App\Http\Controllers\Api\Country\CountryController;
 use App\Http\Controllers\Api\Notification\NotificationController;
 use App\Http\Controllers\Api\NotificationChannel\NotificationChannelController;
+use App\Http\Controllers\Api\NotificationEvent\NotificationEventController;
 use App\Http\Controllers\Api\Order\OrderController;
 use App\Http\Controllers\Api\Order\OrderQuickActionController;
 use App\Http\Controllers\Api\Priority\PriorityController;
@@ -64,6 +65,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('notification-channels')->group(function() {
         Route::get('/', [NotificationChannelController::class, 'list']);
+    });
+
+    Route::prefix('notification-events')->group(function() {
+        Route::get('/', [NotificationEventController::class, 'list']);
     });
 
     Route::prefix('notifications')->group(function() {
