@@ -8,9 +8,6 @@ use App\Models\Language;
 use Illuminate\Support\Facades\DB;
 
 class CountrySeeder extends Seeder {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void {
         DB::transaction(function() {
             $countries = $this->getCountries();

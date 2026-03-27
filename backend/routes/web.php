@@ -1,0 +1,18 @@
+<?php
+
+use App\Mail\IncomingOrderDeadlineMail;
+use App\Mail\OrderCompletedMail;
+use App\Models\Order;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/api/mail-preview/{template}', function (string $template) {
+    $order = Order::latest()->firstOrFail();
+
+    $mailable = match ($template) {
+        'order-completed' => new OrderCompletedMail($order),
+        'incoming-deadline' => new IncomingOrderDeadlineMail($order),
+        default => abort(404),
+    };
+
+    return $mailable;
+});
