@@ -4,12 +4,15 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Dtos\NotificationData;
+use App\Enums\NotificationChannelType;
+use App\Enums\NotificationEventType;
 use App\Mail\OrderCompletedMail;
+use App\Models\NotificationChannel;
+use App\Models\NotificationEvent;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
 
@@ -29,7 +32,25 @@ class OrderCompletedNotification extends Notification {
     }
 
     public function via(object $notifiable): array {
-        return ['mail', 'broadcast', 'database'];
+        $channels = ['database'];
+
+        $eventId = NotificationEvent::where('symbol', NotificationEventType::ORDER_COMPLETED->value)->first()?->id;
+
+        $userChannelIds = $notifiable->notificationSettings
+            ->where('notification_event_id', $eventId)
+            ->pluck('notification_channel_id');
+
+        $userChannels = NotificationChannel::whereIn('id', $userChannelIds)->pluck('symbol');
+
+        if ($userChannels->contains(NotificationChannelType::BROADCAST->value)) {
+            $channels[] = 'broadcast';
+        }
+
+        if ($userChannels->contains(NotificationChannelType::MAIL->value)) {
+            $channels[] = 'mail';
+        }
+
+        return $channels;
     }
 
     public function toMail(object $notifiable): Mailable {

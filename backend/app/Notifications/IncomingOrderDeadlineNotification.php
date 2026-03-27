@@ -4,7 +4,11 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Dtos\NotificationData;
+use App\Enums\NotificationChannelType;
+use App\Enums\NotificationEventType;
 use App\Mail\IncomingOrderDeadlineMail;
+use App\Models\NotificationChannel;
+use App\Models\NotificationEvent;
 use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -29,7 +33,25 @@ class IncomingOrderDeadlineNotification extends Notification implements ShouldQu
     }
 
     public function via(object $notifiable): array {
-        return ['mail', 'broadcast', 'database'];
+        $channels = ['database'];
+
+        $eventId = NotificationEvent::where('symbol', NotificationEventType::INCOMING_ORDER_DEADLINE->value)->first()?->id;
+
+        $userChannelIds = $notifiable->notificationSettings
+            ->where('notification_event_id', $eventId)
+            ->pluck('notification_channel_id');
+
+        $userChannels = NotificationChannel::whereIn('id', $userChannelIds)->pluck('symbol');
+
+        if ($userChannels->contains(NotificationChannelType::BROADCAST->value)) {
+            $channels[] = 'broadcast';
+        }
+
+        if ($userChannels->contains(NotificationChannelType::MAIL->value)) {
+            $channels[] = 'mail';
+        }
+
+        return $channels;
     }
 
     public function toMail(object $notifiable): Mailable {
