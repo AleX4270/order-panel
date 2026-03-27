@@ -12,7 +12,8 @@ class NotificationChannelService {
         private readonly NotificationChannelRepository $notificationChannelRepository,
     ) {}
 
-    public function list(NotificationChannelFilterDto $dto): Collection {
-        //
+    public function index(NotificationChannelFilterDto $dto): Collection {
+        $query = $this->notificationChannelRepository->getAll($dto);
+        return $query->get();
     }
 }

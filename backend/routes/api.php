@@ -64,11 +64,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::prefix('notification-channels')->group(function() {
-        Route::get('/', [NotificationChannelController::class, 'list']);
+        Route::get('/', [NotificationChannelController::class, 'index']);
     });
 
     Route::prefix('notification-events')->group(function() {
-        Route::get('/', [NotificationEventController::class, 'list']);
+        Route::get('/', [NotificationEventController::class, 'index']);
     });
 
     Route::prefix('notifications')->group(function() {

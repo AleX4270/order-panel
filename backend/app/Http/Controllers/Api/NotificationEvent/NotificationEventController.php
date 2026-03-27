@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\NotificationEvent;
 
 use App\Enums\HttpStatus;
 use App\Http\Requests\Api\NotificationEvent\NotificationEventFilterRequest;
+use App\Http\Resources\NotificationEventResource;
 use App\Http\Responses\Api\ApiResponse;
 use App\Services\Api\NotificationEvent\NotificationEventService;
 
@@ -13,7 +14,13 @@ class NotificationEventController {
         private readonly NotificationEventService $notificationEventService,
     ) {}
 
-    public function list(NotificationEventFilterRequest $request): ApiResponse {
-        //
+    public function index(NotificationEventFilterRequest $request): ApiResponse {
+        $result = $this->notificationEventService->index($request->toDto());
+
+        return new ApiResponse(
+            data: NotificationEventResource::collection($result),
+            status: HttpStatus::OK,
+            message: __('response.success'),
+        );
     }
 }

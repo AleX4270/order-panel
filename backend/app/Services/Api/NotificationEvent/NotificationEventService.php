@@ -12,7 +12,8 @@ class NotificationEventService {
         private readonly NotificationEventRepository $notificationEventRepository,
     ) {}
 
-    public function list(NotificationEventFilterDto $dto): Collection {
-        //
+    public function index(NotificationEventFilterDto $dto): Collection {
+        $query = $this->notificationEventRepository->getAll($dto);
+        return $query->get();
     }
 }
