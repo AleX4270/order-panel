@@ -58,8 +58,8 @@ import { Permission } from '../../shared/enums/permission.enum';
             <div class="flex flex-col">
                 <h2 class="font-medium text-xl">{{ ('orderList.orders' | translate) + ' (' + ordersCount() + ')'}}</h2>
                 <div class="flex flex-col sm:flex-row sm:items-center sm:mt-3">
-                    <span class="text-neutral/45 font-light text-sm">{{'orderList.legend' | translate}}:</span>
-                    <div class="flex gap-2 text-xs mt-2 sm:mt-0 sm:ms-2 font-light">
+                    <span class="text-neutral/45 font-light text-xs">{{'orderList.legend' | translate}}:</span>
+                    <div class="flex flex-col sm:flex-row gap-2 text-xs mt-2 sm:mt-0 sm:ms-2 font-light">
                         <app-color-label colorClass="bg-base-100" [label]="'orderList.inProgress' | translate"></app-color-label>
                         <app-color-label colorClass="bg-error/15" [label]="'orderList.overdue' | translate"></app-color-label>
                         <app-color-label colorClass="bg-neutral/9" [label]="'orderList.completed' | translate"></app-color-label>

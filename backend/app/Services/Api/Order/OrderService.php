@@ -111,8 +111,6 @@ class OrderService {
     public function update(OrderDto $dto): bool {
         DB::beginTransaction();
         try {
-            $isMarkedAsCompleted = false;
-
             $address = $this->addressService->findOrCreate(AddressResolveDto::fromArray([
                 'address' => $dto->addressDto->address,
                 'postalCode' => $dto->addressDto->postalCode,

@@ -9,6 +9,7 @@ use App\Exceptions\Api\OrderQuickAction\OrderAlreadyCompletedException;
 use App\Exceptions\Api\OrderStatus\OrderStatusNotFoundException;
 use App\Models\Order;
 use App\Models\OrderStatus;
+use Illuminate\Support\Facades\Auth;
 
 class OrderQuickActionService {
 
@@ -27,6 +28,7 @@ class OrderQuickActionService {
 
         $order->status_id = $completedStatusId;
         $order->date_completed = now();
+        $order->user_modification_id = Auth::id();
 
         $order->saveOrFail();
         OrderCompleted::dispatch($order);
