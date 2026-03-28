@@ -4,7 +4,7 @@
 html,
 body {
   min-height: 100vh;
-  background-color: var(--color-base-200);
+  background-color: #F5F7FA;
 }
 
 @plugin "daisyui/theme" {
@@ -41,44 +41,6 @@ body {
   --depth: 1;
   --noise: 1;
 }
-
-
-
-
-/* @plugin "daisyui/theme" {
-  name: "light";
-  default: false;
-  prefersdark: false;
-  color-scheme: "light";
-  --color-base-100: oklch(100% 0 0);
-  --color-base-200: oklch(97% 0 0);
-  --color-base-300: oklch(94% 0 0);
-  --color-base-content: oklch(0% 0 0);
-  --color-primary: oklch(62% 0.214 259.815);
-  --color-primary-content: oklch(100% 0 0);
-  --color-secondary: oklch(62% 0.214 259.815);
-  --color-secondary-content: oklch(100% 0 0);
-  --color-accent: oklch(62% 0.214 259.815);
-  --color-accent-content: oklch(100% 0 0);
-  --color-neutral: oklch(0% 0 0);
-  --color-neutral-content: oklch(100% 0 0);
-  --color-info: oklch(77% 0.152 181.912);
-  --color-info-content: oklch(0% 0 0);
-  --color-success: oklch(79% 0.209 151.711);
-  --color-success-content: oklch(0% 0 0);
-  --color-warning: oklch(82% 0.189 84.429);
-  --color-warning-content: oklch(0% 0 0);
-  --color-error: oklch(70% 0.191 22.216);
-  --color-error-content: oklch(0% 0 0);
-  --radius-selector: 2rem;
-  --radius-field: 0.5rem;
-  --radius-box: 0.5rem;
-  --size-selector: 0.21875rem;
-  --size-field: 0.21875rem;
-  --border: 1px;
-  --depth: 0;
-  --noise: 0;
-} */
 
 /* Temp */
 .row-details-container {
