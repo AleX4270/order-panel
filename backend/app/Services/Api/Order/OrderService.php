@@ -140,7 +140,7 @@ class OrderService {
                 'client_id' => $client->id,
                 'status_id' => $dto->statusId,
                 'created_at' => $dto->dateCreation,
-                'date_completed' => $dto->dateCompleted,
+                'date_completed' => $dto->dateCompleted ?? (($dto->statusId == $completedStatusId) ? now() : null),
             ]);
 
             OrderTranslation::where('order_id', $dto->id)
