@@ -21,7 +21,7 @@ class OrderCompletedMail extends Mailable {
 
     public function envelope(): Envelope {
         return new Envelope(
-            subject: __('notifications.orderCompletedTitle', ['orderId' => $this->order->id]),
+            subject: __('mail.orderCompletedSubject', ['orderId' => $this->order->id]),
         );
     }
 
@@ -33,7 +33,7 @@ class OrderCompletedMail extends Mailable {
             markdown: 'mail.order-completed-mail',
             with: [
                 'orderId' => $this->order->id,
-                'url' => config('app.url'),
+                'url' => config('app.frontendUrl'),
                 'dateModification' => Carbon::parse($this->order->updated_at)->format('d-m-Y H:m'),
                 'username' => $user->name,
                 'address' => $address,

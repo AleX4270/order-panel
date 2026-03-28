@@ -20,7 +20,7 @@ class IncomingOrderDeadlineMail extends Mailable {
 
     public function envelope(): Envelope {
         return new Envelope(
-            subject: __('notifications.orderIncomingDeadlineTitle', ['orderId' => $this->order->id]),
+            subject: __('mail.incomingDeadlineSubject', ['orderId' => $this->order->id]),
         );
     }
 
@@ -35,7 +35,7 @@ class IncomingOrderDeadlineMail extends Mailable {
                 'dateDeadline' => Carbon::parse($this->order->date_deadline)->format('d-m-Y'),
                 'address' => $address,
                 'daysLeft' => $daysLeft,
-                'url' => config('app.url'),
+                'url' => config('app.frontendUrl'),
             ]
         );
     }
