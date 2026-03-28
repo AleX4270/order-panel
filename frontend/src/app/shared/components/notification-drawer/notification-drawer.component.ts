@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NotificationDrawerService } from '../../services/notification-drawer/notification-drawer.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserNotificationService } from '../../services/user-notification/user-notification.service';
@@ -17,6 +17,7 @@ import { NotificationComponent } from '../notification/notification.component';
                 <ng-content></ng-content>
             </div>
             <div class="drawer-side">
+                <div aria-label="close sidebar" class="drawer-overlay" (click)="notificationDrawerService.toggle()"></div>
                 <div class="bg-base-100 min-h-full w-100 p-4">
                     <h1 class="font-semibold text-xl mb-5 mt-2">{{'notificationDrawer.title' | translate}}</h1>
                     <div class="flex flex-col items-center gap-4 w-full">

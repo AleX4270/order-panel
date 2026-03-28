@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, OnInit, Signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, inject, OnInit, Signal } from '@angular/core';
 import { SmallFooterComponent } from "../small-footer/small-footer.component";
 import { Store } from '@ngxs/store';
 import { UserState } from '../../store/user/user.state';
@@ -16,6 +16,8 @@ import { NgTemplateOutlet } from '@angular/common';
 import { UserPermissionService } from '../../services/user-permission/user-permission.service';
 import { UserNotificationService } from '../../services/user-notification/user-notification.service';
 import { NotificationIconComponent } from "../notification-icon/notification-icon.component";
+import { NotificationDrawerService } from '../../services/notification-drawer/notification-drawer.service';
+import { finalize } from 'rxjs';
 
 @Component({
     selector: 'app-navbar',
@@ -36,7 +38,7 @@ import { NotificationIconComponent } from "../notification-icon/notification-ico
         <nav class="navbar bg-base-100 shadow-xs">
             <div class="navbar-start">
                 <div class="hidden lg:flex">
-                    <app-dropdown>
+                    <app-dropdown (click)="hideNotificationDrawer()">
                         <ng-template #label><span class="text-primary/80">{{user()?.username}}</span></ng-template>
                         <ng-template #options>
                             <li>
@@ -47,7 +49,7 @@ import { NotificationIconComponent } from "../notification-icon/notification-ico
                         </ng-template>
                     </app-dropdown>
                 </div>
-                <app-dropdown class="lg:hidden">
+                <app-dropdown class="lg:hidden" (click)="hideNotificationDrawer()">
                     <ng-template #label>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
                     </ng-template>
@@ -67,7 +69,7 @@ import { NotificationIconComponent } from "../notification-icon/notification-ico
                 </app-dropdown>
             </div>
             <div class="navbar-center hidden lg:flex">
-                <ul class="menu menu-horizontal">
+                <ul class="menu menu-horizontal" (click)="hideNotificationDrawer()">
                     @if(isUserAuthenticated()) {
                         <ng-container *ngTemplateOutlet="navLinks"></ng-container>
                     }
@@ -93,6 +95,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     private readonly userPermissionService = inject(UserPermissionService);
     private readonly userNotificationService = inject(UserNotificationService);
     private readonly elementRef = inject(ElementRef);
+    private readonly notificationDrawerService = inject(NotificationDrawerService);
 
     protected user: Signal<User | null> = this.store.selectSignal(UserState.userData);
     protected isUserAuthenticated = this.store.selectSignal(UserState.isAuthenticated);
@@ -115,9 +118,12 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     }
 
     protected logout(): void {
-        this.authService.logout().subscribe({
+        this.authService.logout()
+        .pipe(
+            finalize(() => this.userNotificationService.disconnectFromChannel())
+        )
+        .subscribe({
             next: () => {
-                this.userNotificationService.disconnectFromChannel(); //Race?
                 this.store.dispatch(new LogoutUser);
                 this.router.navigate(['/']).then(() => {
                     this.toast.show(this.translate.instant('logout.success'), ToastType.warning);
@@ -131,5 +137,12 @@ export class NavbarComponent implements OnInit, AfterViewInit {
 
     protected hasPermission(permission: string | string[]): boolean {
         return this.userPermissionService.hasEveryPermission(permission);
+    }
+
+    protected hideNotificationDrawer(): void {
+        const drawerState = this.notificationDrawerService.drawerState();
+        if(drawerState) {
+            this.notificationDrawerService.toggle();
+        }
     }
 }
