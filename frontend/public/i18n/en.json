@@ -200,10 +200,18 @@
     "saveErrorMessage": "Failed to save user",
     "saveSuccessMessage": "User saved successfully",
     "roles": "Roles",
-    "rolesPlaceholder": "Select roles"
+    "rolesPlaceholder": "Select roles",
+    "notificationsSettings": "Notification settings"
   },
   "userDeletePromptModal": {
     "title": "User deletion confirmation",
     "message": "Do you confirm deletion of the selected user?"
+  },
+  "notificationDrawer": {
+    "title": "Notifications",
+    "noNotifications": "No notifications"
+  },
+  "notification": {
+    "newNotificationReceived": "New notification received"
   }
 }
