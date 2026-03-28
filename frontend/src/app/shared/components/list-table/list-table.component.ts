@@ -10,7 +10,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     ],
     template: `
         <div class="w-full overflow-x-auto rounded-box shadow-sm bg-base-100">
-            <table class="table w-full">
+            <table class="table w-full [&_td]:border-base-content/17 [&_th]:border-base-content/17">
                 <thead>
                     <tr class="bg-base-100 text-base-content [&_th]:font-light [&_th]:text-xs">
                         <ng-container *ngTemplateOutlet="headers"></ng-container>
