@@ -18,7 +18,7 @@ import { NotificationComponent } from '../notification/notification.component';
             </div>
             <div class="drawer-side">
                 <div aria-label="close sidebar" class="drawer-overlay" (click)="notificationDrawerService.toggle()"></div>
-                <div class="bg-base-100 min-h-full w-100 p-4">
+                <div class="bg-base-100 p-4 min-h-full w-full sm:w-100">
                     <h1 class="font-semibold text-xl mb-5 mt-2">{{'notificationDrawer.title' | translate}}</h1>
                     <div class="flex flex-col items-center gap-4 w-full">
                         @for(notification of userNotificationService.notifications(); track notification) {
