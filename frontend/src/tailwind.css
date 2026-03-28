@@ -4,7 +4,7 @@
 html,
 body {
   min-height: 100vh;
-  background-color: #F5F7FA;
+  background-color: color-mix(in oklch, var(--color-neutral) 2%, transparent);
 }
 
 @plugin "daisyui/theme" {
@@ -42,7 +42,7 @@ body {
   --noise: 1;
 }
 
-/* Temp */
+/*TODO: Temp */
 .row-details-container {
   @apply w-full mt-4 grid grid-cols-3 gap-6;
 }

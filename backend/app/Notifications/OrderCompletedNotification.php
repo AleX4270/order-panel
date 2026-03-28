@@ -32,7 +32,7 @@ class OrderCompletedNotification extends Notification {
     }
 
     public function via(object $notifiable): array {
-        $channels = ['database'];
+        $channels = [];
 
         $eventId = NotificationEvent::where('symbol', NotificationEventType::ORDER_COMPLETED->value)->first()?->id;
 
@@ -44,6 +44,7 @@ class OrderCompletedNotification extends Notification {
 
         if ($userChannels->contains(NotificationChannelType::BROADCAST->value)) {
             $channels[] = 'broadcast';
+            $channels[] = 'database';
         }
 
         if ($userChannels->contains(NotificationChannelType::MAIL->value)) {

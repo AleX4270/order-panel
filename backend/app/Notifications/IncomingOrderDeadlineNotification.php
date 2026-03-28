@@ -33,7 +33,7 @@ class IncomingOrderDeadlineNotification extends Notification implements ShouldQu
     }
 
     public function via(object $notifiable): array {
-        $channels = ['database'];
+        $channels = [];
 
         $eventId = NotificationEvent::where('symbol', NotificationEventType::INCOMING_ORDER_DEADLINE->value)->first()?->id;
 
@@ -45,6 +45,7 @@ class IncomingOrderDeadlineNotification extends Notification implements ShouldQu
 
         if ($userChannels->contains(NotificationChannelType::BROADCAST->value)) {
             $channels[] = 'broadcast';
+            $channels[] = 'database';
         }
 
         if ($userChannels->contains(NotificationChannelType::MAIL->value)) {

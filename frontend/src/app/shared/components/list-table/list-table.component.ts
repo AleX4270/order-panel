@@ -16,7 +16,7 @@ import { TranslatePipe } from '@ngx-translate/core';
                         <ng-container *ngTemplateOutlet="headers"></ng-container>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="[&_tr]:hover:bg-neutral/4">
                     @if(defineTableRowsExternally()) {
                         <!-- TODO: Track by id -->
                         @for (item of data(); track item) {

@@ -87,7 +87,7 @@ import { Permission } from '../../shared/enums/permission.enum';
                         <td>
                             <div class="flex gap-1">
                                 @for(role of item.roles; track role.id) {
-                                    <app-tile [type]="getRoleTileType(role.symbol)" [isSoft]="true" [isOutlined]="true">
+                                    <app-tile [type]="getRoleTileType(role.symbol)" [isSoft]="false" [isOutlined]="false">
                                         {{ role.name }}
                                     </app-tile>
                                 }

@@ -86,7 +86,7 @@ import { Permission } from '../../shared/enums/permission.enum';
 
                 <ng-template #rows let-item>
                     <tr
-                        class="bg-base-100 hover:bg-base-300/70 [&_td]:text-xs p-1"
+                        class="bg-base-100 [&_td]:text-xs p-1"
                         [ngClass]="{
                             'bg-neutral/9': item.statusSymbol === status.completed,
                             'bg-error/15': item.isOverdue && item.statusSymbol !== status.completed
