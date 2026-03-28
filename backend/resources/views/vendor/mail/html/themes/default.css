@@ -80,7 +80,7 @@ img {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 100%;
-    background-color: #fafafa;
+    background-color: #F5F7FA;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -125,7 +125,7 @@ img {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 100%;
-    background-color: #fafafa;
+    background-color: #F5F7FA;
     border-bottom: 1px solid #fafafa;
     border-top: 1px solid #fafafa;
     margin: 0;
@@ -272,7 +272,7 @@ img {
 }
 
 .panel-content {
-    background-color: #fafafa;
+    background-color: #F5F7FA;
     color: #52525b;
     padding: 16px;
 }

@@ -25,10 +25,17 @@ class IncomingOrderDeadlineMail extends Mailable {
     }
 
     public function content(): Content {
+        $address = $this->order->client->address->city->name . ', ' . $this->order->client->address->address;
+        $daysLeft = (int) now()->diffInDays(Carbon::parse($this->order->date_deadline), true);
+
         return new Content(
             markdown: 'mail.incoming-order-deadline-mail',
             with: [
-                'date' => Carbon::parse($this->order->date_deadline)->format('d-m-Y'),
+                'orderId' => $this->order->id,
+                'dateDeadline' => Carbon::parse($this->order->date_deadline)->format('d-m-Y'),
+                'address' => $address,
+                'daysLeft' => $daysLeft,
+                'url' => config('app.url'),
             ]
         );
     }
