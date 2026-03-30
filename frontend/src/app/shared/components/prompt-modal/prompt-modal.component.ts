@@ -2,6 +2,8 @@ import { Component, effect, ElementRef, inject, ViewChild } from '@angular/core'
 import { TranslatePipe } from '@ngx-translate/core';
 import { PromptModalService } from '../../services/prompt-modal/prompt-modal.service';
 import { PromptModalConfig } from '../../types/prompt-modal.types';
+import { debounceTime, Subject } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-prompt-modal',
@@ -35,6 +37,8 @@ import { PromptModalConfig } from '../../types/prompt-modal.types';
 export class PromptModalComponent {
     @ViewChild('modalRef') promptModal!: ElementRef;
 
+    private handleAccept$: Subject<void> = new Subject();
+
     private readonly promptModalService: PromptModalService = inject(PromptModalService);
     protected config: PromptModalConfig | null = null;
 
@@ -50,6 +54,17 @@ export class PromptModalComponent {
                 this.config = null;
             }
         })
+
+        this.handleAccept$.pipe(
+            debounceTime(100),
+            takeUntilDestroyed(),
+        )
+        .subscribe({
+            next: () => {
+                this.config?.handler();
+                this.closeModal();
+            }
+        })
     }
 
     protected openModal(): void {
@@ -62,8 +77,7 @@ export class PromptModalComponent {
     }
 
     protected handleAccept(): void {
-        this.config?.handler();
-        this.closeModal();
+        this.handleAccept$.next();
     }
 
     protected closeModal(): void {
