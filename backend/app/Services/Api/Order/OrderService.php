@@ -127,9 +127,7 @@ class OrderService {
             $order = Order::findOrFail($dto->id);
             $completedStatusId = OrderStatus::where('symbol', OrderStatusType::COMPLETED->value)->first()->id;
 
-            if((empty($order->date_completed) && !empty($dto->dateCompleted))
-                && ($order->status_id !== $completedStatusId && $dto->statusId === $completedStatusId)
-            ) {
+            if($order->status_id !== $completedStatusId && $dto->statusId === $completedStatusId) {
                 OrderCompleted::dispatch($order);
             }
             
