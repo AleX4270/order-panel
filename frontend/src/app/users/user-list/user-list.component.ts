@@ -129,7 +129,7 @@ import { Permission } from '../../shared/enums/permission.enum';
                         </td>
                     </tr>
 
-                    <tr [class.hidden]="!hasVisibleDetails(item.id)">
+                    <tr [class.hidden]="!hasVisibleDetails(item.id)" class="hover:!bg-base-100">
                         <td colspan="7" class="p-0">
                             <div class="p-3">
                                 <div class="w-full">
