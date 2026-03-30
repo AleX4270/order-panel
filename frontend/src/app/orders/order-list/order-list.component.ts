@@ -106,7 +106,7 @@ import { Permission } from '../../shared/enums/permission.enum';
                         </td>
                         <td><span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span></td>
                         <td><span>{{ item.dateDeadline | date:'dd-MM-yyyy'}}</span></td>
-                        <td class="text-base-content/60 font-light">{{ item.remarks }}</td>
+                        <td class="text-base-content/80 font-light">{{ item.remarks }}</td>
                         <td>
                             <div class="flex gap-3">
                                 <ng-icon
