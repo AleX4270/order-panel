@@ -127,9 +127,7 @@ class OrderService {
             $order = Order::findOrFail($dto->id);
             $completedStatusId = OrderStatus::where('symbol', OrderStatusType::COMPLETED->value)->first()->id;
 
-            if($order->status_id !== $completedStatusId && $dto->statusId === $completedStatusId) {
-                OrderCompleted::dispatch($order);
-            }
+            $isOrderCompleted = $order->status_id !== $completedStatusId && $dto->statusId === $completedStatusId;
             
             $order->update([
                 'date_deadline' => $dto->dateDeadline,
@@ -147,6 +145,10 @@ class OrderService {
                 ]);
 
             DB::commit();
+
+            if($isOrderCompleted) {
+                OrderCompleted::dispatch($order);
+            }
 
             return true;
         }
