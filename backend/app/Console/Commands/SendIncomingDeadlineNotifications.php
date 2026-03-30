@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Enums\NotificationEventType;
+use App\Enums\OrderStatusType;
 use App\Models\NotificationEvent;
 use App\Models\Order;
+use App\Models\OrderStatus;
 use App\Models\User;
 use App\Notifications\IncomingOrderDeadlineNotification;
 use Carbon\Carbon;
@@ -22,7 +24,12 @@ class SendIncomingDeadlineNotifications extends Command {
         })
         ->get();
 
-        $orders = Order::query()->whereDate('date_deadline', Carbon::now()->addDays(7)->toDateString())->get();
+        $orderCompletedStatusId = OrderStatus::where('symbol', OrderStatusType::COMPLETED->value)->first()->id;
+
+        $orders = Order::query()
+            ->whereDate('date_deadline', Carbon::now()->addDays(7)->toDateString())
+            ->where('status_id', '<>', $orderCompletedStatusId)
+            ->get();
 
         foreach($orders as $order) {
             Notification::send($users, new IncomingOrderDeadlineNotification($order));
