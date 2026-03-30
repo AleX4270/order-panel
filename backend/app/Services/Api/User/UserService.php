@@ -92,12 +92,10 @@ class UserService {
 
             if($dto->isNewUser()) {
                 $user = User::create($userData);
-                $userId = $user->id;
             }
             else {
                 $user = User::where('id', $dto->id)->first();
                 $user->update($userData);
-                $userId = $dto->id;
             }
 
             if(!$user->is_internal) {
@@ -118,7 +116,7 @@ class UserService {
 
                 foreach($notificationSetting['channelIds'] as $channelId) {
                     $setting = new UserNotificationSetting();
-                    $setting->user_id = $dto->id;
+                    $setting->user_id = $user->id;
                     $setting->notification_event_id = $notificationSetting['eventId'];
                     $setting->notification_channel_id = $channelId;
                     $setting->save();
@@ -126,7 +124,7 @@ class UserService {
             }
 
             DB::commit();
-            return $userId;
+            return $user->id;
         }
         catch(Exception $e) {
             Log::error($e);

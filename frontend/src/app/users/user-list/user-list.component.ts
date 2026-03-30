@@ -79,7 +79,7 @@ import { Permission } from '../../shared/enums/permission.enum';
                             <div class="flex flex-col">
                                 <span>{{ item.name }}</span>
                                 @if(item.firstName || item.lastName) {
-                                    <span class="text-base-content/50">{{ (item.firstName ?? '') + (item.lastName ? (' ' + item.lastName) : '') }}</span>
+                                    <span class="text-base-content/70 font-light">{{ (item.firstName ?? '') + (item.lastName ? (' ' + item.lastName) : '') }}</span>
                                 }
                             </div>
                         </td>
