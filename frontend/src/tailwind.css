@@ -4,7 +4,6 @@
 html,
 body {
   min-height: 100vh;
-  background-color: color-mix(in oklch, var(--color-neutral) 2%, transparent);
 }
 
 @plugin "daisyui/theme" {

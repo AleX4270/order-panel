@@ -37,7 +37,11 @@ import { NotificationDrawerComponent } from "./shared/components/notification-dr
             </app-notification-drawer>
         </main>
     `,
-    styles: [``]
+    styles: [`
+        main {
+            background-color: color-mix(in oklch, var(--color-neutral) 2%, transparent);
+        }    
+    `]
 })
 export class AppComponent implements OnInit {
     private readonly translate = inject(TranslateService);
