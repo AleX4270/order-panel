@@ -7,6 +7,7 @@ import { Component, input } from '@angular/core';
     template: `
         <div 
             class="card card-border bg-base-100 w-full shadow-sm"
+            [class.h-full]="isFullHeight()"
         >
             <div class="card-body">
                 @if(title()) {
@@ -16,8 +17,9 @@ import { Component, input } from '@angular/core';
                     [class.flex]="isContentCentered()"
                     [class.items-center]="isContentCentered()"
                     [class.justify-center]="isContentCentered()"
+                    [class.h-full]="isFullHeight()"
                 >
-                    <ng-content/>
+                    <ng-content></ng-content>
                 </div>
             </div>
         </div>
@@ -26,6 +28,7 @@ import { Component, input } from '@angular/core';
 })
 export class CardComponent {
     public isContentCentered = input<boolean>(false);
+    public isFullHeight = input<boolean>(false);
     public title = input<string | null>(null);
 
     public overflowType = input<'hidden' | 'visible' | 'scroll'>('hidden');

@@ -24,6 +24,7 @@ import { TileType } from '../../shared/types/tile.types';
 import { ButtonComponent } from "../../shared/components/button/button.component";
 import { HasPermissionDirective } from '../../shared/directives/has-permission.directive';
 import { Permission } from '../../shared/enums/permission.enum';
+import { OrderMapComponent } from "../../shared/components/order-map/order-map.component";
 
 @Component({
     selector: 'app-order-list',
@@ -41,6 +42,7 @@ import { Permission } from '../../shared/enums/permission.enum';
     NgClass,
     ButtonComponent,
     HasPermissionDirective,
+    OrderMapComponent
 ],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan, faCircleCheck})],
     template: `
@@ -54,188 +56,196 @@ import { Permission } from '../../shared/enums/permission.enum';
             </app-card>
         </div>
 
-        <div class="w-full mt-5 flex justify-between items-end">
-            <div class="flex flex-col">
-                <h2 class="font-medium text-xl">{{ ('orderList.orders' | translate) + ' (' + ordersCount() + ')'}}</h2>
-                <div class="flex flex-col sm:flex-row sm:items-center sm:mt-3">
-                    <span class="text-neutral/45 font-light text-xs">{{'orderList.legend' | translate}}:</span>
-                    <div class="flex flex-col sm:flex-row gap-2 text-xs mt-2 sm:mt-0 sm:ms-2 font-light">
-                        <app-color-label colorClass="bg-base-100" [label]="'orderList.inProgress' | translate"></app-color-label>
-                        <app-color-label colorClass="bg-error/15" [label]="'orderList.overdue' | translate"></app-color-label>
-                        <app-color-label colorClass="bg-neutral/9" [label]="'orderList.completed' | translate"></app-color-label>
+        <div class="flex gap-3">
+            <div class="w-1/2 mt-5">
+                <app-order-map></app-order-map>
+            </div>
+
+            <div class="w-1/2 mt-5">
+                <div class="w-full flex justify-between items-end">
+                    <div class="flex flex-col">
+                        <h2 class="font-medium text-xl">{{ ('orderList.orders' | translate) + ' (' + ordersCount() + ')'}}</h2>
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:mt-3">
+                            <span class="text-neutral/45 font-light text-xs">{{'orderList.legend' | translate}}:</span>
+                            <div class="flex flex-col sm:flex-row gap-2 text-xs mt-2 sm:mt-0 sm:ms-2 font-light">
+                                <app-color-label colorClass="bg-base-100" [label]="'orderList.inProgress' | translate"></app-color-label>
+                                <app-color-label colorClass="bg-error/15" [label]="'orderList.overdue' | translate"></app-color-label>
+                                <app-color-label colorClass="bg-neutral/9" [label]="'orderList.completed' | translate"></app-color-label>
+                            </div>
+                        </div>
                     </div>
+                    <app-button *hasPermission="permission.orders_create" classList="btn btn-sm btn-primary md:btn-md" (click)="showOrderFormModal()">{{'orderList.addNewOrder' | translate}}</app-button>
+                </div>
+
+                <div class="w-full mt-2">
+                    <app-list-table
+                        [defineTableRowsExternally]="true"
+                        [data]="orders()"
+                    >
+                        <ng-template #headers>
+                            <th class="cursor-pointer" (click)="onOrderSortChange('orderNumber')">{{'orderListTable.orderNo' | translate}}</th>
+                            <th class="cursor-pointer" (click)="onOrderSortChange('address')">{{'orderListTable.address' | translate}}</th>
+                            <th class="cursor-pointer" (click)="onOrderSortChange('priority')">{{'orderListTable.priority' | translate}}</th>
+                            <th class="cursor-pointer" (click)="onOrderSortChange('dateCreated')">{{'orderListTable.dateCreated' | translate}}</th>
+                            <th class="cursor-pointer" (click)="onOrderSortChange('dateDeadline')">{{'orderListTable.dateDeadline' | translate}}</th>
+                            <th class="cursor-pointer" (click)="onOrderSortChange('remarks')">{{'orderListTable.remarks' | translate}}</th>
+                            <th>{{'orderListTable.actions' | translate}}</th>
+                        </ng-template>
+
+                        <ng-template #rows let-item>
+                            <tr
+                                class="bg-base-100 [&_td]:text-xs p-1"
+                                [ngClass]="{
+                                    'bg-neutral/9': item.statusSymbol === status.completed,
+                                    'bg-error/15': item.isOverdue && item.statusSymbol !== status.completed
+                                }"
+                            >
+                                <td class="font-normal"><span>{{ '#' + item.id }}</span></td>
+                                <td>
+                                    <div class="flex flex-col">
+                                        <span class="text-xs">{{item.cityName}}</span>
+                                        <span class="text-base-content/70 font-light mt-1">{{item.address}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <app-tile [type]="getPriorityTileType(item.prioritySymbol)" [isSoft]="false" [isOutlined]="false">
+                                        <span>{{ item.priorityName }}</span>
+                                    </app-tile>
+                                </td>
+                                <td><span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span></td>
+                                <td><span>{{ item.dateDeadline | date:'dd-MM-yyyy'}}</span></td>
+                                <td class="text-base-content/80 font-light">{{ item.remarks }}</td>
+                                <td>
+                                    <div class="flex gap-3">
+                                        <ng-icon
+                                            *hasPermission="permission.orders_show"
+                                            class="item-pressable"
+                                            name="faEye"
+                                            size="18px"
+                                            (click)="toggleItemDetailsExpansion(item.id)"
+                                        ></ng-icon>
+
+                                        @if(item.statusSymbol !== status.completed) {
+                                            <ng-icon
+                                                *hasPermission="permission.orders_mark_as_completed"
+                                                class="item-pressable [&>svg]:fill-success"
+                                                name="faCircleCheck"
+                                                size="17px"
+                                                (click)="showOrderCompletePromptModal(item.id)"
+                                            ></ng-icon>
+                                        }
+
+                                        <ng-icon
+                                            *hasPermission="permission.orders_update"
+                                            class="item-pressable [&>svg]:fill-primary"
+                                            name="faPenToSquare"
+                                            size="18px"
+                                            (click)="showOrderFormModal(item.id)"
+                                        ></ng-icon>
+
+                                        <ng-icon
+                                            *hasPermission="permission.orders_delete"
+                                            class="item-pressable [&>svg]:fill-error"
+                                            name="faTrashCan"
+                                            size="18px"
+                                            (click)="showOrderDeletePromptModal(item.id)"
+                                        ></ng-icon>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- TODO: This needs to be a standalone component -->
+                            <tr [class.hidden]="!hasVisibleDetails(item.id)" class="hover:!bg-base-100">
+                                <td colspan="7" class="p-0">
+                                    <div class="p-3">
+                                        <div class="w-full">
+                                            <h6 class="text-primary text-sm">{{ 'orderDetails.header' | translate}}</h6>
+                                        </div>
+
+                                        <div class="row-details-container">
+                                            <div class="row-details-box">
+                                                <span class="row-details-label">{{ 'orderDetails.orderNo' | translate}}</span>
+                                                <div class="row-details-value">
+                                                    <span>{{ '#' + item.id }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="row-details-box">
+                                                <span class="row-details-label">{{ 'orderDetails.address' | translate}}</span>
+                                                <div class="row-details-value">
+                                                    <span>{{ item.address + ', ' + (item.postalCode ? (item.postalCode + ', ') : '') + item.cityName }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="row-details-box">
+                                                <span class="row-details-label">{{ 'orderDetails.phoneNumber' | translate}}</span>
+                                                <div class="row-details-value">
+                                                    <span>{{ item.phoneNumber }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row-details-container">
+                                            <div class="row-details-box">
+                                                <span class="row-details-label">{{ 'orderDetails.priority' | translate}}</span>
+                                                <div class="row-details-value">
+                                                    <app-tile [type]="getPriorityTileType(item.prioritySymbol)">
+                                                        {{ item.priorityName }}
+                                                    </app-tile>
+                                                </div>
+                                            </div>
+                                            <div class="row-details-box">
+                                                <span class="row-details-label">{{ 'orderDetails.status' | translate}}</span>
+                                                <div class="row-details-value">
+                                                    <app-tile [type]="getStatusTileType(item.statusSymbol)">
+                                                        {{ item.statusName }}
+                                                    </app-tile>
+                                                </div>
+                                            </div>
+                                            <div class="row-details-box">
+                                                <span class="row-details-label">{{ 'orderDetails.isOverdue' | translate}}</span>
+                                                <div class="row-details-value">
+                                                    <app-tile [type]="item.isOverdue ? 'error' : 'success'">
+                                                        {{ (item.isOverdue ? 'basic.yes' : 'basic.no') | translate}}
+                                                    </app-tile>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row-details-container">
+                                            <div class="row-details-box">
+                                                <span class="row-details-label">{{ 'orderDetails.dateCreated' | translate}}</span>
+                                                <div class="row-details-value">
+                                                    <span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="row-details-box">
+                                                <span class="row-details-label">{{ 'orderDetails.dateDeadline' | translate}}</span>
+                                                <div class="row-details-value">
+                                                    <span>{{ item.dateDeadline | date:'dd-MM-yyyy' }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="row-details-box">
+                                                <span class="row-details-label">{{ 'orderDetails.dateCompleted' | translate}}</span>
+                                                <div class="row-details-value">
+                                                    <span>{{ (item.dateCompleted | date:'dd-MM-yyyy') ?? '-' }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row-details-container">
+                                            <div class="row-details-box">
+                                                <span class="row-details-label">{{ 'orderDetails.remarks' | translate}}</span>
+                                                <div class="row-details-value">
+                                                    <span class="text-muted">{{ item.remarks ?? '-' }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </app-list-table>
                 </div>
             </div>
-            <app-button *hasPermission="permission.orders_create" classList="btn btn-sm btn-primary md:btn-md" (click)="showOrderFormModal()">{{'orderList.addNewOrder' | translate}}</app-button>
-        </div>
-
-        <div class="w-full mt-2">
-            <app-list-table
-                [defineTableRowsExternally]="true"
-                [data]="orders()"
-            >
-                <ng-template #headers>
-                    <th class="cursor-pointer" (click)="onOrderSortChange('orderNumber')">{{'orderListTable.orderNo' | translate}}</th>
-                    <th class="cursor-pointer" (click)="onOrderSortChange('address')">{{'orderListTable.address' | translate}}</th>
-                    <th class="cursor-pointer" (click)="onOrderSortChange('priority')">{{'orderListTable.priority' | translate}}</th>
-                    <th class="cursor-pointer" (click)="onOrderSortChange('dateCreated')">{{'orderListTable.dateCreated' | translate}}</th>
-                    <th class="cursor-pointer" (click)="onOrderSortChange('dateDeadline')">{{'orderListTable.dateDeadline' | translate}}</th>
-                    <th class="cursor-pointer" (click)="onOrderSortChange('remarks')">{{'orderListTable.remarks' | translate}}</th>
-                    <th>{{'orderListTable.actions' | translate}}</th>
-                </ng-template>
-
-                <ng-template #rows let-item>
-                    <tr
-                        class="bg-base-100 [&_td]:text-xs p-1"
-                        [ngClass]="{
-                            'bg-neutral/9': item.statusSymbol === status.completed,
-                            'bg-error/15': item.isOverdue && item.statusSymbol !== status.completed
-                        }"
-                    >
-                        <td class="font-normal"><span>{{ '#' + item.id }}</span></td>
-                        <td>
-                            <div class="flex flex-col">
-                                <span class="text-xs">{{item.cityName}}</span>
-                                <span class="text-base-content/70 font-light mt-1">{{item.address}}</span>
-                            </div>
-                        </td>
-                        <td>
-                            <app-tile [type]="getPriorityTileType(item.prioritySymbol)" [isSoft]="false" [isOutlined]="false">
-                                <span>{{ item.priorityName }}</span>
-                            </app-tile>
-                        </td>
-                        <td><span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span></td>
-                        <td><span>{{ item.dateDeadline | date:'dd-MM-yyyy'}}</span></td>
-                        <td class="text-base-content/80 font-light">{{ item.remarks }}</td>
-                        <td>
-                            <div class="flex gap-3">
-                                <ng-icon
-                                    *hasPermission="permission.orders_show"
-                                    class="item-pressable"
-                                    name="faEye"
-                                    size="18px"
-                                    (click)="toggleItemDetailsExpansion(item.id)"
-                                ></ng-icon>
-
-                                @if(item.statusSymbol !== status.completed) {
-                                    <ng-icon
-                                        *hasPermission="permission.orders_mark_as_completed"
-                                        class="item-pressable [&>svg]:fill-success"
-                                        name="faCircleCheck"
-                                        size="17px"
-                                        (click)="showOrderCompletePromptModal(item.id)"
-                                    ></ng-icon>
-                                }
-
-                                <ng-icon
-                                    *hasPermission="permission.orders_update"
-                                    class="item-pressable [&>svg]:fill-primary"
-                                    name="faPenToSquare"
-                                    size="18px"
-                                    (click)="showOrderFormModal(item.id)"
-                                ></ng-icon>
-
-                                <ng-icon
-                                    *hasPermission="permission.orders_delete"
-                                    class="item-pressable [&>svg]:fill-error"
-                                    name="faTrashCan"
-                                    size="18px"
-                                    (click)="showOrderDeletePromptModal(item.id)"
-                                ></ng-icon>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- TODO: This needs to be a standalone component -->
-                    <tr [class.hidden]="!hasVisibleDetails(item.id)" class="hover:!bg-base-100">
-                        <td colspan="7" class="p-0">
-                            <div class="p-3">
-                                <div class="w-full">
-                                    <h6 class="text-primary text-sm">{{ 'orderDetails.header' | translate}}</h6>
-                                </div>
-
-                                <div class="row-details-container">
-                                    <div class="row-details-box">
-                                        <span class="row-details-label">{{ 'orderDetails.orderNo' | translate}}</span>
-                                        <div class="row-details-value">
-                                            <span>{{ '#' + item.id }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="row-details-box">
-                                        <span class="row-details-label">{{ 'orderDetails.address' | translate}}</span>
-                                        <div class="row-details-value">
-                                            <span>{{ item.address + ', ' + (item.postalCode ? (item.postalCode + ', ') : '') + item.cityName }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="row-details-box">
-                                        <span class="row-details-label">{{ 'orderDetails.phoneNumber' | translate}}</span>
-                                        <div class="row-details-value">
-                                            <span>{{ item.phoneNumber }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row-details-container">
-                                    <div class="row-details-box">
-                                        <span class="row-details-label">{{ 'orderDetails.priority' | translate}}</span>
-                                        <div class="row-details-value">
-                                            <app-tile [type]="getPriorityTileType(item.prioritySymbol)">
-                                                {{ item.priorityName }}
-                                            </app-tile>
-                                        </div>
-                                    </div>
-                                    <div class="row-details-box">
-                                        <span class="row-details-label">{{ 'orderDetails.status' | translate}}</span>
-                                        <div class="row-details-value">
-                                            <app-tile [type]="getStatusTileType(item.statusSymbol)">
-                                                {{ item.statusName }}
-                                            </app-tile>
-                                        </div>
-                                    </div>
-                                    <div class="row-details-box">
-                                        <span class="row-details-label">{{ 'orderDetails.isOverdue' | translate}}</span>
-                                        <div class="row-details-value">
-                                            <app-tile [type]="item.isOverdue ? 'error' : 'success'">
-                                                {{ (item.isOverdue ? 'basic.yes' : 'basic.no') | translate}}
-                                            </app-tile>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row-details-container">
-                                    <div class="row-details-box">
-                                        <span class="row-details-label">{{ 'orderDetails.dateCreated' | translate}}</span>
-                                        <div class="row-details-value">
-                                            <span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="row-details-box">
-                                        <span class="row-details-label">{{ 'orderDetails.dateDeadline' | translate}}</span>
-                                        <div class="row-details-value">
-                                            <span>{{ item.dateDeadline | date:'dd-MM-yyyy' }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="row-details-box">
-                                        <span class="row-details-label">{{ 'orderDetails.dateCompleted' | translate}}</span>
-                                        <div class="row-details-value">
-                                            <span>{{ (item.dateCompleted | date:'dd-MM-yyyy') ?? '-' }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row-details-container">
-                                    <div class="row-details-box">
-                                        <span class="row-details-label">{{ 'orderDetails.remarks' | translate}}</span>
-                                        <div class="row-details-value">
-                                            <span class="text-muted">{{ item.remarks ?? '-' }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
-            </app-list-table>
         </div>
 
         <div class="w-full mt-9 mb-6">
