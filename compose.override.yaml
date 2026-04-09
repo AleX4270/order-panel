@@ -100,9 +100,9 @@ services:
     database:
         container_name: database
         volumes:
-            - ./docker/database/init-testing-database.sh:/docker-entrypoint-initdb.d/init-testing-database.sh
+            - ./docker/database/initdb-test-database.sh:/docker-entrypoint-initdb.d/02-test-database.sh
         ports:
-         - "5432:5432"
+            - "5432:5432"
         environment:
             - POSTGRES_HOST_AUTH_METHOD=trust
 
