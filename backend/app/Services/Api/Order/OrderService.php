@@ -16,6 +16,7 @@ use App\Models\OrderTranslation;
 use App\Repositories\OrderRepository;
 use App\Services\Api\Address\AddressService;
 use App\Services\Api\Client\ClientService;
+use App\Services\Nominatim\GeocodingService;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,7 @@ class OrderService {
         private readonly AddressService $addressService,
         private readonly ClientService $clientService,
         private readonly OrderRepository $orderRepository,
+        private readonly GeocodingService $geocodingService,
     ) {}
 
     public function index(OrderFilterDto $dto): Collection {
@@ -74,6 +76,8 @@ class OrderService {
                 'provinceId' => $dto->addressDto->provinceId,
             ]));
 
+            $coordinates = $this->geocodingService->getCoordinates($address);
+
             $client = $this->clientService->findOrCreate(ClientResolveDto::fromArray([
                 'address' => $address,
                 'phoneNumber' => $dto->phoneNumber,
@@ -88,6 +92,7 @@ class OrderService {
                 'client_id' => $client->id,
                 'status_id' => $dto->statusId,
                 'created_at' => $dto->dateCreation,
+                'coordinates' => 'tutaj value',
             ]);
 
             OrderTranslation::create([

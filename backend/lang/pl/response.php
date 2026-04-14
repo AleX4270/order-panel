@@ -10,6 +10,8 @@ return [
     'notFound' => "Nie znaleziono zasobu",
 
     // Orders
-
     'orderAlreadyCompleted' => "Zlecenie już jest oznaczone jako ukończone",
+
+    //Geocoding
+    'coordinatesNotFound' => "Nie udało się pobrać współrzędnych dla podanego adresu zlecenia",
 ];

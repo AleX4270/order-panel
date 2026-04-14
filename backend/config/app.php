@@ -54,6 +54,7 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
     'frontendUrl' => env('FRONTEND_URL', 'http://localhost'),
+    'nominatimApiUrl' => env('NOMINATIM_API_URL', 'https://nominatim.openstreetmap.org/search'),
 
     /*
     |--------------------------------------------------------------------------
