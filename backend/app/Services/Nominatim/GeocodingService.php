@@ -3,23 +3,24 @@ declare(strict_types=1);
 
 namespace App\Services\Nominatim;
 
+use App\Dtos\Api\Address\AddressDto;
 use App\Exceptions\Nominatim\Geocoding\CoordinatesNotFoundException;
-use App\Models\Address;
 use Illuminate\Support\Facades\Http;
-use Coordinates;
+use App\ValueObjects\Coordinates;
+use Exception;
 
 class GeocodingService {
-    public function getCoordinates(Address $address): Coordinates {
+    public function getCoordinates(AddressDto $address): Coordinates {
         $baseUrl = config('app.nominatimApiUrl');
         $queryParams = [
             'street' => $address->address,
-            'city' => $address->city->name,
-            'country' => $address->city->province->country->symbol,
+            'city' => $address->cityName,
+            'country' => $address->countrySymbol,
             'format' => 'json'
         ];
 
-        if(!empty($address->postal_code)) {
-            $queryParams['postalcode'] = $address->postal_code;
+        if(!empty($address->postalCode)) {
+            $queryParams['postalcode'] = $address->postalCode;
         }
 
         $response = Http::get($baseUrl, $queryParams);
@@ -29,9 +30,13 @@ class GeocodingService {
 
         $data = $response->json();
 
+        if(empty($data) || empty($data[0])) {
+            throw new Exception();
+        }
+
         return new Coordinates(
-            latitude: (float)$data['lat'],
-            longitude: (float)$data['lon'],
+            latitude: (float)$data[0]['lat'],
+            longitude: (float)$data[0]['lon'],
         );
     }
 }

@@ -5,21 +5,26 @@ namespace App\Services\Api\Address;
 
 use App\Dtos\Api\Address\AddressDto;
 use App\Dtos\Api\Address\AddressResolveDto;
-use App\Dtos\Api\City\CityDto;
 use App\Dtos\Api\City\CityResolveDto;
 use App\Models\Address;
+use App\Models\Province;
 use App\Services\Api\City\CityService;
+use App\Services\Nominatim\GeocodingService;
 
 class AddressService {
     public function __construct(
         private readonly CityService $cityService,
+        private readonly GeocodingService $geocodingService,
     ) {}
 
     public function store(AddressDto $dto): Address {
+        $coordinates = $this->geocodingService->getCoordinates($dto);
+
         $result = Address::create([
             'city_id' => $dto->cityId,
             'address' => $dto->address,
             'postal_code' => $dto->postalCode,
+            'coordinates' => $coordinates,
         ]);
 
         return $result;
@@ -33,8 +38,7 @@ class AddressService {
         ]));
 
         $address = Address::whereLike('address', $dto->address)
-        
-        ->where('city_id', $city->id);
+            ->where('city_id', $city->id);
 
         if(!empty($dto->postalCode)) {
             $address->whereLike('postal_code', $dto->postalCode);
@@ -52,6 +56,7 @@ class AddressService {
             'cityId' => $city->id,
             'cityName' => $dto->cityName,
             'provinceId' => $dto->provinceId,
+            'countrySymbol' => Province::findOrFail($dto->provinceId)->country->symbol,
         ]));
     }
 }

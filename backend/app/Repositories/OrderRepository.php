@@ -32,7 +32,8 @@ class OrderRepository {
                 'o.date_deadline as dateDeadline',
                 'cl.phone_number as phoneNumber',
                 'ot.remarks',
-                'o.date_completed as dateCompleted'
+                'o.date_completed as dateCompleted',
+                'a.coordinates',
             ])
             ->join('clients as cl', 'cl.id', '=', 'o.client_id')
             ->join('addresses as a', 'a.id', '=', 'cl.address_id')

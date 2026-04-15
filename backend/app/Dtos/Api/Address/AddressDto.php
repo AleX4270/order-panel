@@ -10,6 +10,7 @@ final readonly class AddressDto {
         public int $cityId,
         public ?string $cityName,
         public int $provinceId,
+        public ?string $countrySymbol,
     ) {}
 
     public static function fromArray(array $data): self {
@@ -20,6 +21,7 @@ final readonly class AddressDto {
             cityId: $data['cityId'],
             cityName: $data['cityName'] ?? null,
             provinceId: $data['provinceId'],
+            countrySymbol: $data['countrySymbol'] ?? null,
         );
     }
 }
