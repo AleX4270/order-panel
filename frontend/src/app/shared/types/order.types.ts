@@ -1,5 +1,6 @@
 import { Priority } from "../enums/priority.enum";
 import { Status } from "../enums/status.enum";
+import { Coordinates } from "./address.types";
 import { BaseFilterParams } from "./rest.types";
 
 export interface OrderFilterParams extends BaseFilterParams {
@@ -31,6 +32,7 @@ export interface OrderItem {
     phoneNumber: string;
     remarks: string;
     isOverdue: boolean;
+    coordinates: Coordinates;
 }
 
 export interface OrderParams {

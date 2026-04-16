@@ -19,7 +19,6 @@ use App\Services\Api\Client\ClientService;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -42,11 +41,6 @@ class OrderService {
             $items = $query->get();
         }
 
-        $items = $items->map(function($item) {
-            $item->isOverdue = Date::parse($item->dateDeadline)->isPast();
-            return $item;
-        });
-
         return collect([
             'items' => $items ?? [],
             'count' => $totalItems,
@@ -55,11 +49,6 @@ class OrderService {
 
     public function show(int $orderId): Order {
         $data = $this->orderRepository->getOne($orderId)->first();
-
-        $data->dateCreated = Date::parse($data->dateCreated)->format('Y-m-d');
-        $data->dateDeadline = Date::parse($data->dateDeadline)->format('Y-m-d');
-        $data->dateCompleted = !empty($data->dateCompleted) ? Date::parse($data->dateCompleted)->format('Y-m-d') : null;
-
         return $data;
     }
 

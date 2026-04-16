@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api\Order;
 use App\Enums\HttpStatus;
 use App\Http\Requests\Api\Order\OrderFilterRequest;
 use App\Http\Requests\Api\Order\OrderRequest;
+use App\Http\Resources\OrderResource;
 use App\Http\Responses\Api\ApiResponse;
 use App\Models\Order;
 use App\Services\Api\Order\OrderService;
@@ -21,7 +22,10 @@ class OrderController {
         $result = $this->orderService->index($request->toDto());
 
         return new ApiResponse(
-            data: $result,
+            data: [
+                'items' => OrderResource::collection($result['items']),
+                'count' => $result['count'],
+            ],
             status: HttpStatus::OK,
             message: __('response.success'),
         );
@@ -42,7 +46,7 @@ class OrderController {
         $result = $this->orderService->show($orderId);
 
         return new ApiResponse(
-            data: $result,
+            data: OrderResource::make($result),
             status: HttpStatus::OK,
             message: __('response.success'),
         );
