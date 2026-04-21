@@ -10,7 +10,8 @@
         "confirm": "Potwierdź",
         "yes": "Tak",
         "no": "Nie",
-        "filters": "Filtry"
+        "filters": "Filtry",
+        "map": "Mapa"
     },
     "error": {
         "incorrect": "Dane nieprawidłowe",
@@ -213,5 +214,9 @@
     },
     "notification": {
         "newNotificationReceived": "Otrzymano nowe powiadomienie"
+    },
+    "orderMapMarker": {
+        "priority": "Priorytet",
+        "dateDeadline": "Termin"
     }
 }

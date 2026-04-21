@@ -48,7 +48,7 @@ import { OrderMapComponent } from "../../shared/components/order-map/order-map.c
     template: `
         <div class="w-full order-list-header">
             <h1 class="font-semibold text-2xl mb-5">{{'orderList.header' | translate}}</h1>
-            <app-card overflowType="visible" [title]="'basic.filters' | translate">
+            <app-card overflowType="visible" [title]="'basic.filters' | translate" [isCollapsible]="true">
                 <app-filters
                     [type]="filterType.orderListFilters"
                     (filtersChange)="onOrderFiltersChange($event)"
@@ -56,12 +56,12 @@ import { OrderMapComponent } from "../../shared/components/order-map/order-map.c
             </app-card>
         </div>
 
-        <div class="flex gap-3">
-            <div class="w-1/2 mt-5">
-                <app-order-map></app-order-map>
+        <div class="flex flex-col min-h-1/2 lg:flex-row gap-3">
+            <div class="mt-5 h-180 lg:w-2/5">
+                <app-order-map [orders]="orders()"></app-order-map>
             </div>
 
-            <div class="w-1/2 mt-5">
+            <div class="mt-5 lg:w-3/5">
                 <div class="w-full flex justify-between items-end">
                     <div class="flex flex-col">
                         <h2 class="font-medium text-xl">{{ ('orderList.orders' | translate) + ' (' + ordersCount() + ')'}}</h2>

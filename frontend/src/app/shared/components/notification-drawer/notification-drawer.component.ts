@@ -12,7 +12,6 @@ import { NotificationComponent } from '../notification/notification.component';
     ],
     template: `
         <div class="drawer drawer-end">
-            <!-- <input [checked]="notificationDrawerService.drawerState()" id="notification-drawer" type="checkbox" class="drawer-toggle" /> -->
             <input #drawerCheckbox id="notification-drawer" type="checkbox" class="drawer-toggle" />
             <div class="drawer-content">
                 <ng-content></ng-content>
@@ -38,7 +37,7 @@ import { NotificationComponent } from '../notification/notification.component';
     `,
     styles: [`
         .drawer-side {
-            top: var(--navbar-height, 0px);
+            top: var(--navbar-offset-height, 0px);
         }
     `]
 })

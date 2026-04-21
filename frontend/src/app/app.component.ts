@@ -23,24 +23,32 @@ import { NotificationDrawerComponent } from "./shared/components/notification-dr
     NotificationDrawerComponent
 ],
     template: `
-        @if(isUserAuthenticated()) {
-            <app-navbar class="sticky top-0 z-50"/>
-        }
-        <main class="w-full px-2 sm:px-6 lg:px-20" [class.pt-7]="isUserAuthenticated()">
-            <app-toast-displayer/>
-            <app-prompt-modal />
-            <app-notification-drawer>
-                <router-outlet></router-outlet>
-                @if(!isUserAuthenticated()) {
-                    <app-language-selector class="fixed bottom-0 left-0 w-full px-3 py-2" />
-                }
-            </app-notification-drawer>
+        <main class="w-full">
+            @if(isUserAuthenticated()) {
+                <app-navbar class="sticky top-0 z-50"/>
+            }
+            <div class="w-full px-2 sm:px-6 lg:px-20 content-box" [class.pt-5]="isUserAuthenticated()">
+                <app-toast-displayer/>
+                <app-prompt-modal />
+                <app-notification-drawer>
+                    <router-outlet></router-outlet>
+                    @if(!isUserAuthenticated()) {
+                        <app-language-selector class="fixed bottom-0 left-0 w-full px-3 py-2" />
+                    }
+                </app-notification-drawer>
+            </div>
         </main>
     `,
     styles: [`
         main {
             background-color: color-mix(in oklch, var(--color-neutral) 2%, transparent);
-        }    
+            // background-color: red;
+            // min-height: 100dvh;
+        }
+
+        .content-box {
+            // min-height: calc(100vh - var(--navbar-height, 0px));
+        }
     `]
 })
 export class AppComponent implements OnInit {

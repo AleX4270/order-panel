@@ -113,8 +113,8 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        const height = this.elementRef.nativeElement.offsetHeight;
-        document.documentElement.style.setProperty('--navbar-height', `${height}px`);
+        document.documentElement.style.setProperty('--navbar-height', `${this.elementRef.nativeElement.height}px`);
+        document.documentElement.style.setProperty('--navbar-offset-height', `${this.elementRef.nativeElement.offsetHeight}px`);
     }
 
     protected logout(): void {
