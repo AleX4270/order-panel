@@ -22,8 +22,8 @@ enum PermissionType: string {
     //Dashboard
     case DASHBOARD_VIEW = 'dashboard.view';
 
-    //Company settings
-    case COMPANY_SETTINGS_MANAGE = 'company_settings.manage';
+    //Company
+    case COMPANY_MANAGE = 'company.manage';
 
     public static function all(): array {
         $permissions = [];

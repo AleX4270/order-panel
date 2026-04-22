@@ -38,7 +38,7 @@ export const routes: Routes = [
     {
         path: 'company-settings',
         component: CompanySettingsComponent,
-        canActivate: [authGuard(Permission.company_settings_manage)],
+        canActivate: [authGuard(Permission.company_manage)],
     },
     {
         path: '**',

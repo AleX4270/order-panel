@@ -12,6 +12,6 @@
     {
         "label": "companySettings",
         "url": "/company-settings",
-        "permissions": ["company_settings.manage"]
+        "permissions": ["company.manage"]
     }
 ]

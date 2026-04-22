@@ -17,6 +17,6 @@ export enum Permission {
     //Dashboard
     dashboard_view = 'dashboard.view',
 
-    //Company settings
-    company_settings_manage = 'company_settings.manage',
+    //Company
+    company_manage = 'company.manage',
 }

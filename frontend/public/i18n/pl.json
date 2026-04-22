@@ -11,7 +11,8 @@
         "yes": "Tak",
         "no": "Nie",
         "filters": "Filtry",
-        "map": "Mapa"
+        "map": "Mapa",
+        "form": "Formularz"
     },
     "error": {
         "incorrect": "Dane nieprawidłowe",
@@ -33,7 +34,7 @@
         "settings": "Ustawienia",
         "users": "Użytkownicy",
         "logout": "Wyloguj",
-        "companySettings": "Ustawienia systemowe"
+        "companySettings": "Dane firmy"
     },
     "form": {
         "error": "Formularz zawiera nieprawidłowe dane"
@@ -219,5 +220,10 @@
     "orderMapMarker": {
         "priority": "Priorytet",
         "dateDeadline": "Termin"
+    },
+    "companySettings": {
+        "header": "Dane firmy",
+        "name": "Nazwa firmy",
+        "headquartersView": "Podgląd siedziby"
     }
 }
