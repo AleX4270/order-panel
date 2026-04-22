@@ -42,7 +42,7 @@ import { Permission } from '../../shared/enums/permission.enum';
     template: `
         <div class="w-full user-list-header">
             <h1 class="font-semibold text-2xl mb-5">{{'userList.header' | translate}}</h1>
-            <app-card overflowType="visible" [title]="'basic.filters' | translate">
+            <app-card overflowType="visible" [title]="'basic.filters' | translate" [isCollapsible]="true">
                 <app-filters 
                     [type]="filterType.userListFilters"
                     (filtersChange)="onUserFiltersChange($event)"

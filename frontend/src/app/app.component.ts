@@ -42,8 +42,8 @@ import { NotificationDrawerComponent } from "./shared/components/notification-dr
     styles: [`
         main {
             background-color: color-mix(in oklch, var(--color-neutral) 2%, transparent);
+            min-height: 100dvh;
             // background-color: red;
-            // min-height: 100dvh;
         }
 
         .content-box {
