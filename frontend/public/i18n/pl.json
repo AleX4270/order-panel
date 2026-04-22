@@ -32,7 +32,8 @@
         "orders": "Zlecenia",
         "settings": "Ustawienia",
         "users": "Użytkownicy",
-        "logout": "Wyloguj"
+        "logout": "Wyloguj",
+        "companySettings": "Ustawienia systemowe"
     },
     "form": {
         "error": "Formularz zawiera nieprawidłowe dane"

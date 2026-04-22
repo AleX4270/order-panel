@@ -8,5 +8,10 @@
         "label": "users",
         "url": "/users",
         "permissions": ["users.view"]
+    },
+    {
+        "label": "companySettings",
+        "url": "/company-settings",
+        "permissions": ["company_settings.manage"]
     }
 ]
