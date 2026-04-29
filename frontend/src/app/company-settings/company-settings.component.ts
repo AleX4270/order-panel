@@ -6,25 +6,27 @@ import { InputErrorLabelComponent } from '../shared/components/input-error-label
 import { AddressSubformComponent } from '../shared/components/address-subform/address-subform.component';
 import { AlertComponent } from '../shared/components/alert/alert.component';
 import { ButtonComponent } from '../shared/components/button/button.component';
+import { CompanyHeadquartersMapComponent } from "../shared/components/company-headquarters-map/company-headquarters-map.component";
 
 @Component({
     selector: 'app-company-settings',
     imports: [
-        TranslatePipe,
-        CardComponent,
-        ReactiveFormsModule,
-        InputErrorLabelComponent,
-        AddressSubformComponent,
-        AlertComponent,
-        ButtonComponent
-    ],
+    TranslatePipe,
+    CardComponent,
+    ReactiveFormsModule,
+    InputErrorLabelComponent,
+    AddressSubformComponent,
+    AlertComponent,
+    ButtonComponent,
+    CompanyHeadquartersMapComponent
+],
     template: `
         <div class="w-full user-list-header">
             <h1 class="font-semibold text-2xl mb-5">{{'companySettings.header' | translate}}</h1>
         </div>
 
-        <div class="flex gap-5 [&_label]:text-xs [&_label]:font-light [&_label]:mb-1">
-            <div class="w-2/5">
+        <div class="flex flex-col lg:flex-row gap-5 [&_label]:text-xs [&_label]:font-light [&_label]:mb-1">
+            <div class="w-full lg:w-2/5">
                 <app-card overflowType="visible">
                     <form [formGroup]="form" class="w-full">
                         <h2 class="font-semibold text-sm">{{"companySettings.basicInfo" | translate}}</h2>
@@ -68,10 +70,8 @@ import { ButtonComponent } from '../shared/components/button/button.component';
                 </app-card>
             </div>
 
-            <div class="w-3/5">
-                <app-card overflowType="visible" [title]="'companySettings.headquartersView' | translate">
-                    test
-                </app-card>
+            <div class="h-135 w-full lg:w-3/5">
+                <app-company-headquarters-map/>
             </div>
         </div>
     `,

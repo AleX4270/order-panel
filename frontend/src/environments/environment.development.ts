@@ -8,5 +8,8 @@ export const environment = {
         wssPort: 443,
         forceTls: false,
         authEndpoint: 'http://localhost/broadcasting/auth'
+    },
+    map: {
+        tileProviderUrl: "https://tiles.openfreemap.org/styles/liberty"
     }
 };
