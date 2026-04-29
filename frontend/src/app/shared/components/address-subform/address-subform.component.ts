@@ -2,7 +2,7 @@ import { Component, DestroyRef, inject, input, OnInit, signal, WritableSignal } 
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { TranslatePipe } from '@ngx-translate/core';
 import { InputErrorLabelComponent } from '../input-error-label/input-error-label.component';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CountryItem } from '../../types/country.types';
 import { ProvinceItem } from '../../types/province.types';
 import { CityItem } from '../../types/city.types';
@@ -19,9 +19,10 @@ import { DEFAULT_COUNTRY_SYMBOL } from '../../../app.constants';
         NgSelectComponent,
         TranslatePipe,
         InputErrorLabelComponent,
+        ReactiveFormsModule,
     ],
     template: `
-        <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap mt-4">
+        <div [formGroup]="form()" class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap mt-4">
             <div class="flex flex-col w-full md:w-1/4">
                 <label for="countryId" class="label">{{ "orderForm.country" | translate }}</label>
                 <ng-select

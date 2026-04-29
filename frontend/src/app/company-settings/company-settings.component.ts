@@ -7,6 +7,8 @@ import { AddressSubformComponent } from '../shared/components/address-subform/ad
 import { AlertComponent } from '../shared/components/alert/alert.component';
 import { ButtonComponent } from '../shared/components/button/button.component';
 import { CompanyHeadquartersMapComponent } from "../shared/components/company-headquarters-map/company-headquarters-map.component";
+import { NgIconComponent, provideIcons } from "@ng-icons/core";
+import { faSolidCircleInfo } from '@ng-icons/font-awesome/solid';
 
 @Component({
     selector: 'app-company-settings',
@@ -18,8 +20,10 @@ import { CompanyHeadquartersMapComponent } from "../shared/components/company-he
     AddressSubformComponent,
     AlertComponent,
     ButtonComponent,
-    CompanyHeadquartersMapComponent
+    CompanyHeadquartersMapComponent,
+    NgIconComponent
 ],
+    providers: [provideIcons({faSolidCircleInfo})],
     template: `
         <div class="w-full user-list-header">
             <h1 class="font-semibold text-2xl mb-5">{{'companySettings.header' | translate}}</h1>
@@ -51,19 +55,18 @@ import { CompanyHeadquartersMapComponent } from "../shared/components/company-he
                         <h2 class="font-semibold text-sm">{{"companySettings.headquarters" | translate}}</h2>
                         <app-address-subform [form]="form" [setDefaultCountry]="false" />
 
-                        <div class="mt-4 flex justify-end">
-                            <app-button type="button" classList="btn btn-soft btn-neutral">{{"basic.find" | translate}}</app-button>
-                        </div>
-
                         <div class="mt-4">
                             <app-alert [isSoft]="true">
+                                <ng-icon
+                                    name="faSolidCircleInfo"
+                                    size="19px"
+                                ></ng-icon>
                                 <span class="text-xs">{{"companySettings.addressHint" | translate}}</span>
                             </app-alert>
                         </div>
 
-                        <div class="divider mb-0"></div>
-
-                        <div class="flex justify-end">
+                        <div class="mt-4 flex justify-end gap-3">
+                            <app-button type="button" classList="btn btn-soft btn-neutral">{{"basic.find" | translate}}</app-button>
                             <app-button type="submit" classList="btn btn-primary">{{"basic.saveChanges" | translate}}</app-button>
                         </div>
                     </form>
