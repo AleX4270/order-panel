@@ -12,7 +12,9 @@
         "no": "Nie",
         "filters": "Filtry",
         "map": "Mapa",
-        "form": "Formularz"
+        "form": "Formularz",
+        "find": "Znajdź",
+        "saveChanges": "Zapisz zmiany"
     },
     "error": {
         "incorrect": "Dane nieprawidłowe",
@@ -224,6 +226,10 @@
     "companySettings": {
         "header": "Dane firmy",
         "name": "Nazwa firmy",
-        "headquartersView": "Podgląd siedziby"
+        "headquartersView": "Podgląd siedziby",
+        "basicInfo": "Informacje podstawowe",
+        "nameHint": "Wyświetlana w nagłówku, powiadomieniach i formularzu kontaktowym",
+        "headquarters": "Siedziba firmy",
+        "addressHint": "Wpisz adres i kliknij Znajdź. Wybrana lokalizacja będzie widoczna na mapie poglądowej."
     }
 }

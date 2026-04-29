@@ -23,10 +23,11 @@ import { ToastType } from '../../shared/enums/enums';
 import { OrderService } from '../../shared/services/api/order/order.service';
 import { OrderItem, OrderParams } from '../../shared/types/order.types';
 import { ButtonComponent } from "../../shared/components/button/button.component";
+import { AddressSubformComponent } from '../../shared/components/address-subform/address-subform.component';
 
 @Component({
     selector: 'app-order-form-modal',
-    imports: [ReactiveFormsModule, NgSelectComponent, InputErrorLabelComponent, TranslatePipe, ButtonComponent],
+    imports: [ReactiveFormsModule, NgSelectComponent, InputErrorLabelComponent, TranslatePipe, ButtonComponent, AddressSubformComponent],
     providers: [DatePipe],
     template: `
         <dialog #modalRef class="modal">
@@ -58,75 +59,7 @@ import { ButtonComponent } from "../../shared/components/button/button.component
                                 <div class="divider"></div>
                             }
                             
-                            <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap mt-4">
-                                <div class="flex flex-col w-full md:w-1/4">
-                                    <label for="countryId" class="label">{{ "orderForm.country" | translate }}</label>
-                                    <ng-select
-                                        formControlName="countryId"
-                                        [items]="countries()"
-                                        bindValue="id"
-                                        bindLabel="name"
-                                        [multiple]="false"
-                                        [placeholder]="'orderForm.countryPlaceholder' | translate"
-                                    />
-                                    <app-input-error-label [control]="form.get('countryId')" />
-                                </div>
-
-                                <div class="flex flex-col w-full md:w-1/3">
-                                    <label for="provinceId" class="label">{{ "orderForm.province" | translate }}</label>
-                                    <ng-select
-                                        formControlName="provinceId"
-                                        [items]="provinces()"
-                                        bindValue="id"
-                                        bindLabel="name"
-                                        [multiple]="false"
-                                        [placeholder]="'orderForm.provincePlaceholder' | translate"
-                                    />
-                                    <app-input-error-label [control]="form.get('provinceId')" />
-                                </div>
-
-                                <div class="flex flex-col w-full md:w-1/3">
-                                    <label for="cityId" class="label">{{ "orderForm.city" | translate }}</label>
-                                    <ng-select 
-                                        formControlName="cityId"
-                                        [items]="cities()"
-                                        bindValue="id"
-                                        bindLabel="name"
-                                        [multiple]="false"
-                                        [placeholder]="'orderForm.cityPlaceholder' | translate"
-                                        [addTagText]="'orderForm.addCity' | translate"
-                                        [addTag]="addNewCity"
-                                        (change)="onCityChange($event)"
-                                    />
-                                    <app-input-error-label [control]="form.get('cityId')" />
-                                </div>
-
-                                <div class="flex flex-col w-full md:w-1/3">
-                                    <label for="postalCode" class="label">{{ "orderForm.postalCode" | translate }}</label>
-                                    <input
-                                        type="text"
-                                        formControlName="postalCode"
-                                        id="postalCode"
-                                        name="postalCode"
-                                        class="input text-xs w-full"
-                                        [placeholder]="'orderForm.postalCodePlaceholder' | translate"
-                                    />
-                                    <app-input-error-label [control]="form.get('postalCode')" />
-                                </div>
-
-                                <div class="flex flex-col w-full md:flex-1">
-                                    <label for="address" class="label">{{ "orderForm.address" | translate }}</label>
-                                    <input
-                                        type="text"
-                                        formControlName="address"
-                                        id="address"
-                                        name="address"
-                                        class="input text-xs w-full"
-                                        [placeholder]="'orderForm.addressPlaceholder' | translate"
-                                    />
-                                    <app-input-error-label [control]="form.get('address')" />
-                                </div>
-                            </div>
+                            <app-address-subform [form]="form" [setDefaultCountry]="!isEditScenario()"/>
 
                             <div class="divider md:hidden"></div>
 
