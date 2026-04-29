@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
+import { Component, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CardComponent } from '../shared/components/card/card.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputErrorLabelComponent } from '../shared/components/input-error-label/input-error-label.component';
@@ -9,6 +9,10 @@ import { ButtonComponent } from '../shared/components/button/button.component';
 import { CompanyHeadquartersMapComponent } from "../shared/components/company-headquarters-map/company-headquarters-map.component";
 import { NgIconComponent, provideIcons } from "@ng-icons/core";
 import { faSolidCircleInfo } from '@ng-icons/font-awesome/solid';
+import { NominatimService } from '../shared/services/nominatim/nominatim.service';
+import { Coordinates } from '../shared/types/address.types';
+import { ToastService } from '../shared/services/toast/toast.service';
+import { ToastType } from '../shared/enums/enums';
 
 @Component({
     selector: 'app-company-settings',
@@ -53,7 +57,7 @@ import { faSolidCircleInfo } from '@ng-icons/font-awesome/solid';
                         <div class="divider mb-0"></div>
 
                         <h2 class="font-semibold text-sm">{{"companySettings.headquarters" | translate}}</h2>
-                        <app-address-subform [form]="form" [setDefaultCountry]="false" />
+                        <app-address-subform #addressForm [form]="form" [setDefaultCountry]="false" />
 
                         <div class="mt-4">
                             <app-alert [isSoft]="true">
@@ -66,7 +70,7 @@ import { faSolidCircleInfo } from '@ng-icons/font-awesome/solid';
                         </div>
 
                         <div class="mt-4 flex justify-end gap-3">
-                            <app-button type="button" classList="btn btn-soft btn-neutral">{{"basic.find" | translate}}</app-button>
+                            <app-button type="button" (click)="getAddressCoordinates()" classList="btn btn-soft btn-neutral">{{"basic.find" | translate}}</app-button>
                             <app-button type="submit" classList="btn btn-primary">{{"basic.saveChanges" | translate}}</app-button>
                         </div>
                     </form>
@@ -74,7 +78,7 @@ import { faSolidCircleInfo } from '@ng-icons/font-awesome/solid';
             </div>
 
             <div class="h-135 w-full lg:w-3/5">
-                <app-company-headquarters-map/>
+                <app-company-headquarters-map [coordinates]="companyCoordinates()" />
             </div>
         </div>
     `,
@@ -82,8 +86,15 @@ import { faSolidCircleInfo } from '@ng-icons/font-awesome/solid';
 })
 export class CompanySettingsComponent implements OnInit {
     private readonly formBuilder = inject(FormBuilder);
+    private readonly nominatimService = inject(NominatimService);
+    private readonly toastService = inject(ToastService);
+    private readonly translateService = inject(TranslateService);
 
     protected form!: FormGroup;
+
+    protected addressFormComponent = viewChild<AddressSubformComponent>('addressForm');
+
+    protected companyCoordinates = signal<Coordinates>({longitude: 16.9252, latitude: 52.4064});
 
     ngOnInit(): void {
         this.initForm();
@@ -100,5 +111,40 @@ export class CompanySettingsComponent implements OnInit {
             postalCode: [null, Validators.maxLength(32)],
             address: [null, [Validators.required, Validators.maxLength(255)]],
         });
+    }
+
+    protected getAddressCoordinates(): void {
+        const address = this.form.get('address')?.value;
+        const cityName = this.addressFormComponent()?.cityName;
+        const countryName = this.addressFormComponent()?.countryName;
+        const postalCode = this.form.get('postalCode')?.value;
+
+        if(!cityName || !countryName || !address) {
+            this.toastService.show(this.translateService.instant('companySettings.geocodingInvalidInputError'), ToastType.danger);
+            return;
+        }
+
+        this.nominatimService.getCoordinates({
+            street: address,
+            city: cityName,
+            country: countryName,
+            postalcode: postalCode ?? '',
+        }).subscribe({
+            next: (res) => {
+                console.log(res);
+                const locations = res ?? [];
+                const mainLocation = locations[0] ?? null;
+
+                if(locations.length < 1 || !mainLocation) {
+                    this.toastService.show(this.translateService.instant('companySettings.geocodingNotFoundError'), ToastType.danger);
+                    return;
+                }
+
+                this.companyCoordinates.set({
+                    longitude: Number(mainLocation.lon),
+                    latitude: Number(mainLocation.lat),
+                });
+            },
+        })
     }
 }

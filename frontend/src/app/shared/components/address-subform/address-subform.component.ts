@@ -107,6 +107,16 @@ export class AddressSubformComponent implements OnInit {
     protected provinces: WritableSignal<ProvinceItem[]> = signal<ProvinceItem[]>([]);
     protected cities: WritableSignal<CityItem[]> = signal<CityItem[]>([]);
 
+    get cityName() {
+        const cityId = this.form().get('cityId')?.value;
+        return this.cities().find((city) => city.id === cityId)?.name; 
+    }
+
+    get countryName() {
+        const countryId = this.form().get('countryId')?.value;
+        return this.countries().find((country) => country.id === countryId)?.name;
+    }
+
     ngOnInit(): void {
         this.registerFormChanges();
         this.loadCountries();

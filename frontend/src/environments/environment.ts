@@ -10,6 +10,7 @@ export const environment = {
         authEndpoint: 'http://localhost/broadcasting/auth'
     },
     map: {
-        tileProviderUrl: "https://tiles.openfreemap.org/styles/liberty"
+        tileProviderUrl: "https://tiles.openfreemap.org/styles/liberty",
+        geocodingApiUrl: "https://nominatim.openstreetmap.org/search"
     }
 };

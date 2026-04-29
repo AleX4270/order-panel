@@ -5,6 +5,7 @@ import { OrderItem } from '../../types/order.types';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Status } from '../../enums/status.enum';
 import { DatePipe } from '@angular/common';
+import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'app-order-map',
@@ -19,9 +20,7 @@ import { DatePipe } from '@angular/common';
     template: `
         <app-card overflowType="visible" [isFullHeight]="true" [isCollapsible]="true" [title]="'basic.map' | translate">
             <mgl-map
-                [mapStyle]="
-                    'https://tiles.openfreemap.org/styles/liberty'
-                "
+                [mapStyle]="environment.map.tileProviderUrl"
                 [zoom]="[8]"
                 [center]="[16.9252, 52.4064]"
                 [canvasContextAttributes]="{preserveDrawingBuffer: true}"
@@ -58,6 +57,8 @@ import { DatePipe } from '@angular/common';
     `],
 })
 export class OrderMapComponent {
+    protected readonly environment = environment;
+
     public orders: InputSignal<OrderItem[]> = input<OrderItem[]>([]);
 
     protected getMarkerColorByStatus(status: Status, isOverdue: boolean): string {

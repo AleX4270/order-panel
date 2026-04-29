@@ -230,6 +230,8 @@
         "basicInfo": "Informacje podstawowe",
         "nameHint": "Wyświetlana w nagłówku, powiadomieniach i formularzu kontaktowym",
         "headquarters": "Siedziba firmy",
-        "addressHint": "Wpisz adres i kliknij Znajdź. Wybrana lokalizacja będzie widoczna na mapie poglądowej."
+        "addressHint": "Wpisz adres i kliknij Znajdź. Wybrana lokalizacja będzie widoczna na mapie poglądowej.",
+        "geocodingInvalidInputError": "Nie można uzyskać współrzędnych — sprawdź poprawność wpisanego adresu",
+        "geocodingNotFoundError": "Nie udało się pobrać współrzędnych dla podanego adresu"
     }
 }
