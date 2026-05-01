@@ -22,7 +22,7 @@ import { Coordinates } from '../../types/address.types';
                 [canvasContextAttributes]="{preserveDrawingBuffer: true}"
                 [cooperativeGestures]="true"
             >
-                <mgl-marker #orderMarker [lngLat]="[coordinates().longitude, coordinates().latitude]" [scale]="0.8"></mgl-marker>
+                <mgl-marker #orderMarker [lngLat]="[coordinates().longitude, coordinates().latitude]" [scale]="0.8" [color]="'var(--color-error)'"></mgl-marker>
             </mgl-map>
         </app-card>
     `,

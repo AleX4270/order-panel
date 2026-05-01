@@ -19,6 +19,10 @@ class Address extends Model {
         'coordinates',
     ];
 
+    public function companies(): HasMany {
+        return $this->hasMany(Company::class, 'address_id');
+    }
+
     public function clients(): HasMany {
         return $this->hasMany(Client::class, 'address_id');
     }
