@@ -17,6 +17,7 @@ import { CompanyService } from '../shared/services/api/company/company.service';
 import { CompanyItem, CompanyParams } from '../shared/types/company.types';
 import { finalize, skip, throttleTime } from 'rxjs';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { DEFAULT_COORDINATES } from '../shared/constants/map.const';
 
 @Component({
     selector: 'app-company-settings',
@@ -101,7 +102,7 @@ export class CompanySettingsComponent implements OnInit {
 
     protected addressFormComponent = viewChild<AddressSubformComponent>('addressForm');
 
-    protected companyCoordinates = signal<Coordinates>({longitude: 16.9252, latitude: 52.4064});
+    protected companyCoordinates = signal<Coordinates>(DEFAULT_COORDINATES);
     protected isSubmitted = signal<boolean>(false);
     protected coordinatesSearchTrigger = signal<boolean>(false);
 

@@ -4,6 +4,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { MapComponent, MarkerComponent } from '@maplibre/ngx-maplibre-gl';
 import { environment } from '../../../../environments/environment';
 import { Coordinates } from '../../types/address.types';
+import { DEFAULT_COORDINATES } from '../../constants/map.const';
 
 @Component({
     selector: 'app-company-headquarters-map',
@@ -36,5 +37,5 @@ import { Coordinates } from '../../types/address.types';
 export class CompanyHeadquartersMapComponent {
     protected readonly environment = environment;
 
-    public coordinates = input<Coordinates>({longitude: 16.9252, latitude: 52.4064});
+    public coordinates = input<Coordinates>(DEFAULT_COORDINATES);
 }

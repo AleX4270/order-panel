@@ -25,6 +25,10 @@ import { ButtonComponent } from "../../shared/components/button/button.component
 import { HasPermissionDirective } from '../../shared/directives/has-permission.directive';
 import { Permission } from '../../shared/enums/permission.enum';
 import { OrderMapComponent } from "../../shared/components/order-map/order-map.component";
+import { CompanyService } from '../../shared/services/api/company/company.service';
+import { CompanyItem } from '../../shared/types/company.types';
+import { DEFAULT_COORDINATES } from '../../shared/constants/map.const';
+import { Coordinates } from '../../shared/types/address.types';
 
 @Component({
     selector: 'app-order-list',
@@ -58,7 +62,7 @@ import { OrderMapComponent } from "../../shared/components/order-map/order-map.c
 
         <div class="flex flex-col min-h-1/2 lg:flex-row gap-3">
             <div class="mt-5 h-180 lg:w-2/5">
-                <app-order-map [orders]="orders()"></app-order-map>
+                <app-order-map [orders]="orders()" [coordinates]="companyCoordinates()"></app-order-map>
             </div>
 
             <div class="mt-5 lg:w-3/5">
@@ -265,6 +269,7 @@ export class OrderListComponent implements OnInit {
     private readonly promptModalService = inject(PromptModalService);
     private readonly translateService = inject(TranslateService);
     private readonly toastService = inject(ToastService);
+    private readonly companyService = inject(CompanyService);
 
     protected readonly filterType = FilterType;
     protected readonly status = Status;
@@ -275,6 +280,7 @@ export class OrderListComponent implements OnInit {
 
     protected orders: WritableSignal<OrderItem[]> = signal<OrderItem[]>([]);
     protected ordersCount: WritableSignal<number> = signal<number>(0);
+    protected companyCoordinates = signal<Coordinates>(DEFAULT_COORDINATES);
 
     protected orderFilterValues: Partial<Record<string, string | number[] | null>> = {};
     protected orderPaginationValues: PaginationItem | null = null;
@@ -282,6 +288,7 @@ export class OrderListComponent implements OnInit {
 
     ngOnInit(): void {
         this.loadOrders();
+        this.loadCompanyDetails();
     }
 
     protected hasVisibleDetails(itemId: number): boolean {
@@ -410,6 +417,25 @@ export class OrderListComponent implements OnInit {
                 console.error(err);
             },
         });
+    }
+
+    private loadCompanyDetails(): void {
+        this.companyService.show().subscribe({
+            next: (res) => {
+                const company: CompanyItem | null = res.data;
+
+                if(!company) {
+                    this.toastService.show(this.translateService.instant('orderList.companyDetailsLoadError'), ToastType.danger);
+                    return;
+                }
+
+                this.companyCoordinates.set(company.coordinates);
+            },
+            error: (err) => {
+                console.error(err);
+                this.toastService.show(this.translateService.instant('orderList.companyDetailsLoadError'), ToastType.danger);
+            }
+        })
     }
 
     protected onOrderFiltersChange(filterValues: Partial<Record<string, string | number[] | null>>): void {

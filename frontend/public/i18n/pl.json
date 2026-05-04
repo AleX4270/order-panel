@@ -77,7 +77,8 @@
         "deleteError": "Nie udało się usunąć zlecenia",
         "orders": "Zlecenia",
         "markAsCompletedSuccess": "Pomyślnie oznaczono zlecenie jako ukończone",
-        "markAsCompletedError": "Nie udało się oznaczyć zlecenia jako ukończone"
+        "markAsCompletedError": "Nie udało się oznaczyć zlecenia jako ukończone",
+        "companyDetailsLoadError": "Nie udało się pobrać danych firmy"
     },
     "orderListTable": {
         "orderNo": "Numer zlecenia",

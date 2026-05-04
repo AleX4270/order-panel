@@ -1,4 +1,4 @@
-import { Component, input, InputSignal, signal, WritableSignal } from '@angular/core';
+import { Component, input, InputSignal } from '@angular/core';
 import { MapComponent, MarkerComponent, PopupComponent } from '@maplibre/ngx-maplibre-gl';
 import { CardComponent } from '../card/card.component';
 import { OrderItem } from '../../types/order.types';
@@ -6,6 +6,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Status } from '../../enums/status.enum';
 import { DatePipe } from '@angular/common';
 import { environment } from '../../../../environments/environment';
+import { Coordinates } from '../../types/address.types';
+import { DEFAULT_COORDINATES } from '../../constants/map.const';
 
 @Component({
     selector: 'app-order-map',
@@ -21,10 +23,11 @@ import { environment } from '../../../../environments/environment';
         <app-card overflowType="visible" [isFullHeight]="true" [isCollapsible]="true" [title]="'basic.map' | translate">
             <mgl-map
                 [mapStyle]="environment.map.tileProviderUrl"
-                [zoom]="[8]"
-                [center]="[16.9252, 52.4064]"
+                [zoom]="[7]"
+                [center]="[coordinates().longitude, coordinates().latitude]"
                 [canvasContextAttributes]="{preserveDrawingBuffer: true}"
                 [cooperativeGestures]="true"
+                movingMethod="jumpTo"
             >
                 @for(order of orders(); track order.id) {
                     <mgl-marker #orderMarker [lngLat]="[order.coordinates.longitude, order.coordinates.latitude]" [scale]="0.8" [color]="getMarkerColorByStatus(order.statusSymbol, order.isOverdue)"></mgl-marker>
@@ -60,6 +63,7 @@ export class OrderMapComponent {
     protected readonly environment = environment;
 
     public orders: InputSignal<OrderItem[]> = input<OrderItem[]>([]);
+    public coordinates = input<Coordinates>(DEFAULT_COORDINATES);
 
     protected getMarkerColorByStatus(status: Status, isOverdue: boolean): string {
         if(isOverdue && status !== Status.completed) {
