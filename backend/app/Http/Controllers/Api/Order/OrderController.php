@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api\Order;
 use App\Enums\HttpStatus;
 use App\Http\Requests\Api\Order\OrderFilterRequest;
 use App\Http\Requests\Api\Order\OrderRequest;
-use App\Http\Resources\OrderResource;
+use App\Http\Resources\Api\Order\OrderResource;
 use App\Http\Responses\Api\ApiResponse;
 use App\Models\Order;
 use App\Services\Api\Order\OrderService;

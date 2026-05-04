@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\City\CityController;
+use App\Http\Controllers\Api\Company\CompanyController;
 use App\Http\Controllers\Api\Country\CountryController;
 use App\Http\Controllers\Api\Notification\NotificationController;
 use App\Http\Controllers\Api\NotificationChannel\NotificationChannelController;
@@ -74,5 +75,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('notifications')->group(function() {
         Route::get('/', [NotificationController::class, 'index']);
         Route::post('/mark-as-read', [NotificationController::class, 'markAsRead']);
+    });
+
+    Route::prefix('company')->group(function() {
+        Route::get('/', [CompanyController::class, 'show']);
+        Route::put('/', [CompanyController::class, 'update']);
     });
 });

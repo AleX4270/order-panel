@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
+import { Component, inject, OnInit, signal, viewChild } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CardComponent } from '../shared/components/card/card.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -13,6 +13,10 @@ import { NominatimService } from '../shared/services/nominatim/nominatim.service
 import { Coordinates } from '../shared/types/address.types';
 import { ToastService } from '../shared/services/toast/toast.service';
 import { ToastType } from '../shared/enums/enums';
+import { CompanyService } from '../shared/services/api/company/company.service';
+import { CompanyItem, CompanyParams } from '../shared/types/company.types';
+import { finalize, skip, throttleTime } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-company-settings',
@@ -36,7 +40,7 @@ import { ToastType } from '../shared/enums/enums';
         <div class="flex flex-col lg:flex-row gap-5 [&_label]:text-xs [&_label]:font-light [&_label]:mb-1">
             <div class="w-full lg:w-2/5">
                 <app-card overflowType="visible">
-                    <form [formGroup]="form" class="w-full">
+                    <form [formGroup]="form" (ngSubmit)="save()" class="w-full">
                         <h2 class="font-semibold text-sm">{{"companySettings.basicInfo" | translate}}</h2>
                         <div class="divider m-0"></div>
                         <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap mt-1">
@@ -57,7 +61,9 @@ import { ToastType } from '../shared/enums/enums';
                         <div class="divider mb-0"></div>
 
                         <h2 class="font-semibold text-sm">{{"companySettings.headquarters" | translate}}</h2>
-                        <app-address-subform #addressForm [form]="form" [setDefaultCountry]="false" />
+                        @if(form) {
+                            <app-address-subform #addressForm [form]="form" [setDefaultCountry]="false" />
+                        }
 
                         <div class="mt-4">
                             <app-alert [isSoft]="true">
@@ -70,8 +76,8 @@ import { ToastType } from '../shared/enums/enums';
                         </div>
 
                         <div class="mt-4 flex justify-end gap-3">
-                            <app-button type="button" (click)="getAddressCoordinates()" classList="btn btn-soft btn-neutral">{{"basic.find" | translate}}</app-button>
-                            <app-button type="submit" classList="btn btn-primary">{{"basic.saveChanges" | translate}}</app-button>
+                            <app-button type="button" (click)="triggerCoordinatesSearch()" classList="btn btn-soft btn-neutral">{{"basic.find" | translate}}</app-button>
+                            <app-button type="submit" classList="btn btn-primary" [isDisabled]="!form.dirty">{{"basic.saveChanges" | translate}}</app-button>
                         </div>
                     </form>
                 </app-card>
@@ -89,20 +95,36 @@ export class CompanySettingsComponent implements OnInit {
     private readonly nominatimService = inject(NominatimService);
     private readonly toastService = inject(ToastService);
     private readonly translateService = inject(TranslateService);
+    private readonly companyService = inject(CompanyService);
 
     protected form!: FormGroup;
 
     protected addressFormComponent = viewChild<AddressSubformComponent>('addressForm');
 
     protected companyCoordinates = signal<Coordinates>({longitude: 16.9252, latitude: 52.4064});
+    protected isSubmitted = signal<boolean>(false);
+    protected coordinatesSearchTrigger = signal<boolean>(false);
+
+    constructor() {
+        toObservable(this.coordinatesSearchTrigger).pipe(
+            throttleTime(1000),
+            skip(1),
+        )
+        .subscribe({
+            next: () => {
+                this.getAddressCoordinates();
+            }
+        })
+    }
 
     ngOnInit(): void {
         this.initForm();
+        this.loadDetails();
     }
 
     private initForm(): void {
         this.form = this.formBuilder.group({
-            id: [null, Validators.required],
+            id: [null],
             name: [null, Validators.required],
             countryId: [null, Validators.required],
             provinceId: [null, Validators.required],
@@ -113,7 +135,7 @@ export class CompanySettingsComponent implements OnInit {
         });
     }
 
-    protected getAddressCoordinates(): void {
+    private getAddressCoordinates(): void {
         const address = this.form.get('address')?.value;
         const cityName = this.addressFormComponent()?.cityName;
         const countryName = this.addressFormComponent()?.countryName;
@@ -131,7 +153,6 @@ export class CompanySettingsComponent implements OnInit {
             postalcode: postalCode ?? '',
         }).subscribe({
             next: (res) => {
-                console.log(res);
                 const locations = res ?? [];
                 const mainLocation = locations[0] ?? null;
 
@@ -146,5 +167,90 @@ export class CompanySettingsComponent implements OnInit {
                 });
             },
         })
+    }
+
+    private loadDetails(): void {
+        this.companyService.show().subscribe({
+            next: (res) => {
+                const company: CompanyItem | null = res.data;
+
+                if(!company) {
+                    this.toastService.show(this.translateService.instant('companySettings.loadError'), ToastType.danger);
+                    return;
+                }
+
+                this.companyCoordinates.set(company.coordinates);
+
+                this.form.patchValue({
+                    id: company.id,
+                    name: company.name,
+                    countryId: company.countryId,
+                    provinceId: company.provinceId,
+                    cityId: company.cityId,
+                    postalCode: company.postalCode,
+                    address: company.address
+                });
+            },
+            error: (err) => {
+                console.error(err);
+                this.toastService.show(this.translateService.instant('companySettings.loadError'), ToastType.danger);
+            }
+        })
+    }
+
+    protected save(): void {
+        if(this.isSubmitted()) {
+            return;
+        }
+
+        if(this.form.invalid) {
+            this.form.markAllAsDirty();
+            this.toastService.show(this.translateService.instant('form.error'), ToastType.danger);
+            return;
+        }
+
+        this.isSubmitted.set(true);
+        const formValues = this.form.value;
+
+        const companyParams: CompanyParams = {
+            name: formValues.name,
+            countryId: formValues.countryId,
+            provinceId: formValues.provinceId,
+            cityId: formValues.cityId,
+            address: formValues.address,
+        };
+
+        if(formValues.id) {
+            companyParams.id = formValues.id;
+        }
+
+        if(formValues.cityName) {
+            companyParams.cityName = formValues.cityName;
+        }
+
+        if(formValues.postalCode) {
+            companyParams.postalCode = formValues.postalCode;
+        }
+
+        this.companyService.update(companyParams)
+        .pipe(
+            finalize(() => {
+                this.isSubmitted.set(false);
+                this.form.markAsPristine();
+            })
+        )
+        .subscribe({
+            next: () => {
+                this.toastService.show(this.translateService.instant('companySettings.saveSuccess'), ToastType.success);
+            },
+            error: (err) => {
+                console.error(err);
+                this.toastService.show(this.translateService.instant('companySettings.saveError'), ToastType.danger);
+            }
+        });
+    }
+
+    protected triggerCoordinatesSearch(): void {
+        this.coordinatesSearchTrigger.set(!this.coordinatesSearchTrigger());
     }
 }

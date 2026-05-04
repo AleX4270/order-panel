@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Notification;
 
 use App\Enums\HttpStatus;
 use App\Http\Requests\Api\Notification\NotificationFilterRequest;
-use App\Http\Resources\NotificationResource;
+use App\Http\Resources\Api\Notification\NotificationResource;
 use App\Http\Responses\Api\ApiResponse;
 use App\Services\Api\Notification\NotificationService;
 use Illuminate\Http\Request;

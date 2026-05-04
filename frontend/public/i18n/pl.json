@@ -232,6 +232,9 @@
         "headquarters": "Siedziba firmy",
         "addressHint": "Wpisz adres i kliknij Znajdź. Wybrana lokalizacja będzie widoczna na mapie poglądowej.",
         "geocodingInvalidInputError": "Nie można uzyskać współrzędnych — sprawdź poprawność wpisanego adresu",
-        "geocodingNotFoundError": "Nie udało się pobrać współrzędnych dla podanego adresu"
+        "geocodingNotFoundError": "Nie udało się pobrać współrzędnych dla podanego adresu",
+        "saveSuccess": "Dane firmy zostały zapisane",
+        "saveError": "Nie udało się zapisać danych firmy",
+        "loadError": "Nie udało się pobrać danych firmy"
     }
 }

@@ -248,8 +248,6 @@ export class OrderFormModalComponent {
             this.loadDetails(orderId);
         }
 
-        
-
         this.initForm();
         this.loadFormOptionsData();
         this.openModal();        

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\NotificationEvent;
 
 use App\Enums\HttpStatus;
 use App\Http\Requests\Api\NotificationEvent\NotificationEventFilterRequest;
-use App\Http\Resources\NotificationEventResource;
+use App\Http\Resources\Api\NotificationEvent\NotificationEventResource;
 use App\Http\Responses\Api\ApiResponse;
 use App\Services\Api\NotificationEvent\NotificationEventService;
 
