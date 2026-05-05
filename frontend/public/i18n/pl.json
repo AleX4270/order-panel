@@ -14,7 +14,8 @@
         "map": "Mapa",
         "form": "Formularz",
         "find": "Znajdź",
-        "saveChanges": "Zapisz zmiany"
+        "saveChanges": "Zapisz zmiany",
+        "sessionExpired": "Sesja wygasła. Zaloguj się ponownie"
     },
     "error": {
         "incorrect": "Dane nieprawidłowe",
