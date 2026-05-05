@@ -7,6 +7,9 @@ import { FiltersStrategyFactory } from '../../factories/filters-strategy.factory
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { debounceTime, Subject } from 'rxjs';
+import { ValidationError } from '../../errors/validation.error';
+import { ToastService } from '../../services/toast/toast.service';
+import { ToastType } from '../../enums/enums';
 
 @Component({
     selector: 'app-filters',
@@ -17,7 +20,7 @@ import { debounceTime, Subject } from 'rxjs';
     ],
     template: `
         <div class="w-full flex flex-col gap-y-3 sm:flex-row sm:flex-wrap sm:gap-4 justify-center sm:justify-start items-start">
-            @for(filter of filters(); track filter) {
+            @for(filter of filters(); track filter.key) {
                 @switch(filter.type) {
                     @case ('text') {
                         <div class="w-full sm:max-w-xs mt-3 sm:mt-1">
@@ -29,6 +32,23 @@ import { debounceTime, Subject } from 'rxjs';
                                     [id]="filter.key"
                                     [name]="filter.key"
                                     [placeholder]="(filter.placeholder ?? '') | translate"
+                                    (input)="onFilterValueChange($event.target.value, filter)"
+                                />
+                            </label>
+                        </div>
+                    }
+                    @case ('number') {
+                        <div class="w-full sm:max-w-xs mt-3 sm:mt-1">
+                            <label [for]="filter.key" class="floating-label">
+                                <span>{{ filter.label | translate}}</span>
+                                <input
+                                    class="input placeholder:opacity-50 w-full text-xs"
+                                    type="number"
+                                    [id]="filter.key"
+                                    [name]="filter.key"
+                                    [placeholder]="(filter.placeholder ?? '') | translate"
+                                    (keydown)="allowOnlyNumbers($event)"
+                                    (paste)="preventNonNumericPaste($event)"
                                     (input)="onFilterValueChange($event.target.value, filter)"
                                 />
                             </label>
@@ -86,6 +106,7 @@ import { debounceTime, Subject } from 'rxjs';
     `]
 })
 export class FiltersComponent {
+    private readonly toastService: ToastService = inject(ToastService);
     private readonly strategyFactory: FiltersStrategyFactory = inject(FiltersStrategyFactory);
 
     public type: InputSignal<FilterType> = input.required<FilterType>();
@@ -144,21 +165,32 @@ export class FiltersComponent {
     }
 
     protected onFilterValueChange(value: string | FilterOption[] | null, filter: FilterModel): void {
-        let selectedValue = null;
+        try {
+            let selectedValue = null;
 
-        if(filter.type === 'multi-select' && Array.isArray(value)) {
-            selectedValue = value.map((item) => item.id);
+            if(filter.validate) {
+                filter.validate(value);
+            }
+
+            if(filter.type === 'multi-select' && Array.isArray(value)) {
+                selectedValue = value.map((item) => item.id);
+            }
+            else if(filter.type === 'text') {
+                this.textInput$.next({value: String(value), filter: filter});
+                return;
+            }
+            else {
+                selectedValue = String(value);
+            }
+            
+            this.filterValues[filter.key] = selectedValue;
+            this.emitFilterValues();
         }
-        else if(filter.type === 'text') {
-            this.textInput$.next({value: String(value), filter: filter});
-            return;
+        catch(err) {
+            if(err instanceof ValidationError) {
+                this.toastService.show(err.message, ToastType.danger);
+            }
         }
-        else {
-            selectedValue = String(value);
-        }
-        
-        this.filterValues[filter.key] = selectedValue;
-        this.emitFilterValues();
     }
 
     protected emitFilterValues(): void {
@@ -177,5 +209,22 @@ export class FiltersComponent {
         if(Array.isArray(value) && value.length == 0) return true;
         
         return false;
+    }
+
+    protected preventNonNumericPaste(event: ClipboardEvent): void {
+        const text = event.clipboardData?.getData('text') ?? '';
+        if (!/^\d*\.?\d*$/.test(text)) {
+            event.preventDefault();
+        }
+    }
+
+    protected allowOnlyNumbers(event: KeyboardEvent): void {
+        if(event.ctrlKey || event.metaKey) {
+            return;
+        }
+
+        if (!/[\d]/.test(event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', '.'].includes(event.key)) {
+            event.preventDefault();
+        }
     }
 }

@@ -1,6 +1,6 @@
 import { Observable } from "rxjs";
 
-export type FilterFieldType = 'text' | 'select' | 'multi-select' | 'date';
+export type FilterFieldType = 'text' | 'select' | 'multi-select' | 'date' | 'number';
 
 export interface FilterOption {
     id: number;
@@ -13,4 +13,5 @@ export interface FilterModel {
     type: FilterFieldType;
     placeholder?: string;
     loader?: (term?: string) => Observable<FilterOption[]>;
+    validate?: (value: string | FilterOption[] | null) => boolean;
 }

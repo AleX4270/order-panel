@@ -4,12 +4,15 @@ import { FilterModel, FilterOption } from "../../types/filters.types";
 import { PriorityService } from "../../services/api/priority/priority.service";
 import { map } from "rxjs";
 import { StatusService } from "../../services/api/status/status.service";
+import { ValidationError } from "../../errors/validation.error";
+import { TranslateService } from "@ngx-translate/core";
 
 @Injectable({ providedIn: 'root' })
 export class OrderListFiltersStrategy implements IFiltersStrategy {
     private filters: FilterModel[] = [];
     private readonly priorityService = inject(PriorityService);
     private readonly statusService = inject(StatusService);
+    private readonly translateService = inject(TranslateService);
 
     private initSchema(): void {
         this.filters = [
@@ -51,6 +54,29 @@ export class OrderListFiltersStrategy implements IFiltersStrategy {
                             }) as FilterOption)
                         })
                     );
+                }
+            },
+            {
+                key: 'distanceFromHeadquarters',
+                label: 'orderListFilters.distanceFromHeadquarters',
+                type: 'number',
+                placeholder: 'orderListFilters.distanceFromHeadquarters',
+                validate: (value: string | FilterOption[] | null) => {
+                    if (!value) {
+                        return true;
+                    }
+
+                    const distance = Number(value);
+
+                    if (isNaN(distance)) {
+                        throw new ValidationError(this.translateService.instant('orderListFilters.distanceNotANumberError'));
+                    }
+
+                    if (distance <= 0) {
+                        throw new ValidationError(this.translateService.instant('orderListFilters.distanceZeroError'));
+                    }
+
+                    return true;
                 }
             },
             {
