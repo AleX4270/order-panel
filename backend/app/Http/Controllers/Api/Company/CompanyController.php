@@ -18,8 +18,6 @@ class CompanyController {
     ) {}
 
     public function show(Request $request): ApiResponse {
-        Gate::authorize('show', Company::class);
-
         $result = $this->companyService->show();
 
         return new ApiResponse(
