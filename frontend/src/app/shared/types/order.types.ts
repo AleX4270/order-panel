@@ -33,6 +33,7 @@ export interface OrderItem {
     remarks: string;
     isOverdue: boolean;
     coordinates: Coordinates;
+    distance: number;
 }
 
 export interface OrderParams {

@@ -101,7 +101,7 @@
         "statusPlaceholder": "Wybierz status",
         "dateCreation": "Data dodania",
         "dateDeadline": "Termin realizacji",
-        "distanceFromHeadquarters": "Odległość od siedziby (km)",
+        "distanceFromHeadquarters": "W odległości od siedziby (km)",
         "distanceZeroError": "Dystans nie może wynosić 0",
         "distanceNotANumberError": "Podana wartość nie jest liczbą"
     },
@@ -225,7 +225,8 @@
     },
     "orderMapMarker": {
         "priority": "Priorytet",
-        "dateDeadline": "Termin"
+        "dateDeadline": "Termin",
+        "distance": "Dystans"
     },
     "companySettings": {
         "header": "Dane firmy",

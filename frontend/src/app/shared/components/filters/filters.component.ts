@@ -117,7 +117,7 @@ export class FiltersComponent {
     protected filtersDataMap: WritableSignal<Partial<Record<string, FilterOption[]>>> = signal<Partial<Record<string, FilterOption[]>>>({});
     protected filterValues: Partial<Record<string, string | number[] | null>> = {};
 
-    protected textInput$ = new Subject<{value: string, filter: FilterModel}>();
+    protected manualInput$ = new Subject<{value: string, filter: FilterModel}>();
 
     constructor() {
         effect(() => {
@@ -135,7 +135,7 @@ export class FiltersComponent {
             }
         });
 
-        this.textInput$.pipe(
+        this.manualInput$.pipe(
             debounceTime(500),
         )
         .subscribe(({value, filter}) => {
@@ -175,8 +175,8 @@ export class FiltersComponent {
             if(filter.type === 'multi-select' && Array.isArray(value)) {
                 selectedValue = value.map((item) => item.id);
             }
-            else if(filter.type === 'text') {
-                this.textInput$.next({value: String(value), filter: filter});
+            else if(filter.type === 'text' || filter.type === 'number') {
+                this.manualInput$.next({value: String(value), filter: filter});
                 return;
             }
             else {
@@ -223,7 +223,7 @@ export class FiltersComponent {
             return;
         }
 
-        if (!/[\d]/.test(event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', '.'].includes(event.key)) {
+        if (!/[\d]/.test(event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(event.key)) {
             event.preventDefault();
         }
     }

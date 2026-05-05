@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 use App\Dtos\Api\Order\OrderFilterDto;
 use App\Enums\SortDir;
+use App\Models\Company;
 use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -39,6 +40,7 @@ class OrderRepository {
                     'latitude', ST_Y(a.coordinates::geometry)
                 ) as coordinates"),
             ])
+            ->selectRaw('ST_Distance(?::geography, a.coordinates::geography) as distance', [Company::current()->address->coordinates])
             ->join('clients as cl', 'cl.id', '=', 'o.client_id')
             ->join('addresses as a', 'a.id', '=', 'cl.address_id')
             ->join('cities as c', 'c.id', '=', 'a.city_id')
@@ -79,6 +81,10 @@ class OrderRepository {
                     ->orWhereLike('ot.remarks', '%'.$dto->allFields.'%')
                     ->orWhereLike('o.id', $dto->allFields);
             });
+        }
+
+        if(!empty($dto->distanceFromHeadquarters)) {
+            $query->whereRaw('ST_DWithin(?::geography, a.coordinates::geography, ?)', [Company::current()->address->coordinates, $dto->distanceFromHeadquarters * 1000]);
         }
 
         if(!empty($dto->priorityIds)) {

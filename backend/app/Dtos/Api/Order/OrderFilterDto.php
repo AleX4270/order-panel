@@ -17,6 +17,7 @@ final readonly class OrderFilterDto {
         public ?array $statusIds = null,
         public ?Carbon $dateCreation = null,
         public ?Carbon $dateDeadline = null,
+        public ?int $distanceFromHeadquarters = null,
     ) {}
 
     public static function fromArray(array $data): self {
@@ -30,6 +31,7 @@ final readonly class OrderFilterDto {
             statusIds: $data['statusIds'] ?? null,
             dateCreation: !empty($data['dateCreation']) ? Date::parse($data['dateCreation']) : null,
             dateDeadline: !empty($data['dateDeadline']) ? Date::parse($data['dateDeadline']) : null,
+            distanceFromHeadquarters: $data['distanceFromHeadquarters'] ?? null,
         );
     }
 }

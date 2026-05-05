@@ -32,6 +32,7 @@ class OrderFilterRequest extends FormRequest {
             'statusIds.*' => ['sometimes', 'integer'],
             'dateCreation' => ['nullable', 'string'],
             'dateDeadline' => ['nullable', 'string'],
+            'distanceFromHeadquarters' => ['nullable', 'numeric']
         ];
     }
 

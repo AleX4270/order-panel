@@ -109,6 +109,7 @@ import { Coordinates } from '../../shared/types/address.types';
                                     <div class="flex flex-col">
                                         <span class="text-xs">{{item.cityName}}</span>
                                         <span class="text-base-content/70 font-light mt-1">{{item.address}}</span>
+                                        <span class="text-base-content/50 font-light mt-1">{{item.distance}} km</span>
                                     </div>
                                 </td>
                                 <td>

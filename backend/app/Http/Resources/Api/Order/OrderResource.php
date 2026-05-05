@@ -31,6 +31,7 @@ class OrderResource extends JsonResource {
             'remarks' => $this->remarks,
             'isOverdue' => Date::parse($this->dateDeadline)->isPast(),
             'coordinates' => json_decode($this->coordinates, true),
+            'distance' => number_format($this->distance / 1000, 2),
         ];
     }
 }
