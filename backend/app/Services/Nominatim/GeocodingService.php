@@ -31,7 +31,7 @@ class GeocodingService {
         $data = $response->json();
 
         if(empty($data) || empty($data[0])) {
-            throw new Exception(); //TODO: Add custom exception
+            throw new CoordinatesNotFoundException('Geocoding result data empty');
         }
 
         return new Coordinates(

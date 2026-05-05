@@ -1,4 +1,6 @@
 services:
+    database:
+        image: ghcr.io/alex4270/order-panel-database:latest
     frontend:
         image: ghcr.io/alex4270/order-panel-frontend:${FRONTEND_TAG}
         restart: unless-stopped
