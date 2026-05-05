@@ -29,7 +29,7 @@ import { DEFAULT_COORDINATES } from '../../constants/map.const';
                 [cooperativeGestures]="true"
                 movingMethod="jumpTo"
             >
-                @for(order of orders(); track order.id) {
+                @for(order of orders(); track order) {
                     <mgl-marker #orderMarker [lngLat]="[order.coordinates.longitude, order.coordinates.latitude]" [scale]="0.8" [color]="getMarkerColorByStatus(order.statusSymbol, order.isOverdue)"></mgl-marker>
 
                     <mgl-popup [marker]="orderMarker">
