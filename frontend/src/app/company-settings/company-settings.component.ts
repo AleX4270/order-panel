@@ -77,8 +77,8 @@ import { DEFAULT_COORDINATES } from '../shared/constants/map.const';
                         </div>
 
                         <div class="mt-4 flex justify-end gap-3">
-                            <app-button type="button" (click)="triggerCoordinatesSearch()" classList="btn btn-soft btn-neutral">{{"basic.find" | translate}}</app-button>
-                            <app-button type="submit" classList="btn btn-primary" [isDisabled]="!form.dirty">{{"basic.saveChanges" | translate}}</app-button>
+                            <app-button type="button" (click)="triggerCoordinatesSearch()" classList="btn btn-soft btn-neutral" [isLoading]="isLoadingCoordinates()">{{"basic.find" | translate}}</app-button>
+                            <app-button type="submit" classList="btn btn-primary" [isDisabled]="!form.dirty" [isLoading]="isSubmitted()">{{"basic.saveChanges" | translate}}</app-button>
                         </div>
                     </form>
                 </app-card>
@@ -104,6 +104,7 @@ export class CompanySettingsComponent implements OnInit {
 
     protected companyCoordinates = signal<Coordinates>(DEFAULT_COORDINATES);
     protected isSubmitted = signal<boolean>(false);
+    protected isLoadingCoordinates = signal<boolean>(false);
     protected coordinatesSearchTrigger = signal<boolean>(false);
 
     constructor() {
@@ -137,6 +138,12 @@ export class CompanySettingsComponent implements OnInit {
     }
 
     private getAddressCoordinates(): void {
+        if(this.isLoadingCoordinates()) {
+            return;
+        }
+
+        this.isLoadingCoordinates.set(true);
+
         const address = this.form.get('address')?.value;
         const cityName = this.addressFormComponent()?.cityName;
         const countryName = this.addressFormComponent()?.countryName;
@@ -152,7 +159,11 @@ export class CompanySettingsComponent implements OnInit {
             city: cityName,
             country: countryName,
             postalcode: postalCode ?? '',
-        }).subscribe({
+        })
+        .pipe(
+            finalize(() => this.isLoadingCoordinates.set(false))
+        )
+        .subscribe({
             next: (res) => {
                 const locations = res ?? [];
                 const mainLocation = locations[0] ?? null;

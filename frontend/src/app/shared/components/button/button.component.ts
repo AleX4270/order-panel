@@ -26,6 +26,10 @@ export class ButtonComponent {
     public click = output<Event>();
 
     protected onClick(e: Event): void {
+        if(this.isLoading() || this.isDisabled()) {
+            return;
+        }
+
         e.stopPropagation();
         this.click.emit(e);
     }

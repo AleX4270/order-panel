@@ -20,7 +20,7 @@ import { DEFAULT_COORDINATES } from '../../constants/map.const';
     DatePipe,
 ],
     template: `
-        <app-card overflowType="visible" [isFullHeight]="true" [isCollapsible]="true" [title]="'basic.map' | translate">
+        <app-card overflowType="visible" [isFullHeight]="true" [isCollapsible]="false" [title]="'basic.map' | translate">
             <mgl-map
                 [mapStyle]="environment.map.tileProviderUrl"
                 [zoom]="[7]"
@@ -61,7 +61,8 @@ import { DEFAULT_COORDINATES } from '../../constants/map.const';
         mgl-map {
             width: 100%;
             height: 100%;
-        }    
+            isolation: isolate;
+        }
     `],
 })
 export class OrderMapComponent {

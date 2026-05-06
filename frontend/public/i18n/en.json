@@ -10,7 +10,12 @@
     "confirm": "Confirm",
     "yes": "Yes",
     "no": "No",
-    "filters": "Filters"
+    "filters": "Filters",
+    "map": "Map",
+    "form": "Form",
+    "find": "Find",
+    "saveChanges": "Save changes",
+    "sessionExpired": "Session expired. Please log in again"
   },
   "error": {
     "incorrect": "Invalid data",
@@ -31,7 +36,8 @@
     "orders": "Orders",
     "settings": "Settings",
     "users": "Users",
-    "logout": "Logout"
+    "logout": "Logout",
+    "companySettings": "Company details"
   },
   "form": {
     "error": "The form contains invalid data"
@@ -72,7 +78,8 @@
     "deleteError": "Failed to delete order",
     "orders": "Orders",
     "markAsCompletedSuccess": "Order marked as completed successfully",
-    "markAsCompletedError": "Failed to mark order as completed"
+    "markAsCompletedError": "Failed to mark order as completed",
+    "companyDetailsLoadError": "Failed to load company data"
   },
   "orderListTable": {
     "orderNo": "Order number",
@@ -94,7 +101,10 @@
     "status": "Status",
     "statusPlaceholder": "Select status",
     "dateCreation": "Creation date",
-    "dateDeadline": "Deadline date"
+    "dateDeadline": "Deadline date",
+    "distanceFromHeadquarters": "Distance from headquarters (km)",
+    "distanceZeroError": "Distance cannot be 0",
+    "distanceNotANumberError": "The provided value is not a number"
   },
   "orderForm": {
     "createTitle": "New Order Form",
@@ -213,5 +223,24 @@
   },
   "notification": {
     "newNotificationReceived": "New notification received"
+  },
+  "orderMapMarker": {
+    "priority": "Priority",
+    "dateDeadline": "Deadline",
+    "distance": "Distance"
+  },
+  "companySettings": {
+    "header": "Company details",
+    "name": "Company name",
+    "headquartersView": "Headquarters preview",
+    "basicInfo": "Basic information",
+    "nameHint": "Displayed in the header, notifications, and contact form",
+    "headquarters": "Company headquarters",
+    "addressHint": "Enter the address and click Find. The selected location will be shown on the preview map.",
+    "geocodingInvalidInputError": "Could not retrieve coordinates — please check the address you entered",
+    "geocodingNotFoundError": "Failed to retrieve coordinates for the provided address",
+    "saveSuccess": "Company data saved successfully",
+    "saveError": "Failed to save company data",
+    "loadError": "Failed to load company data"
   }
 }
