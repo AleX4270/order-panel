@@ -43,6 +43,10 @@ class Client extends Model {
         return $this->hasMany(Order::class, 'client_id');
     }
 
+    public function orderRequests(): HasMany {
+        return $this->hasMany(OrderRequest::class, 'client_id');
+    }
+
     public function translations(): HasMany {
         return $this->hasMany(ClientTranslation::class, 'client_id');
     }

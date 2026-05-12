@@ -27,6 +27,10 @@ class Address extends Model {
         return $this->hasMany(Order::class, 'address_id');
     }
 
+    public function orderRequests(): HasMany {
+        return $this->hasMany(OrderRequest::class, 'address_id');
+    }
+
     public function city(): BelongsTo {
         return $this->belongsTo(City::class, 'city_id');
     }
