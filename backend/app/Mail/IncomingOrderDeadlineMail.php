@@ -25,7 +25,7 @@ class IncomingOrderDeadlineMail extends Mailable {
     }
 
     public function content(): Content {
-        $address = $this->order->client->address->city->name . ', ' . $this->order->client->address->address;
+        $address = $this->order->address->city->name . ', ' . $this->order->address->address;
         $daysLeft = (int) now()->diffInDays(Carbon::parse($this->order->date_deadline), true);
 
         return new Content(

@@ -15,7 +15,6 @@ class ClientService {
             'last_name' => $dto->lastName,
             'email' => $dto->email,
             'phone_number' => $dto->phoneNumber,
-            'address_id' => $dto->addressId,
             'is_blocked' => $dto->isBlocked,
             'is_active' => $dto->isActive,
         ]);
@@ -23,10 +22,9 @@ class ClientService {
         return $result;
     }
 
+    // TODO: Think of a solution to distinguish new users from existing ones
     public function findOrCreate(ClientResolveDto $dto): Client {
-        $client = Client::where('address_id', $dto->address->id)
-            ->where('phone_number', $dto->phoneNumber)
-            ->first();
+        $client = Client::where('phone_number', $dto->phoneNumber)->first();
 
         if(!empty($client)) {
             return $client;
@@ -34,7 +32,6 @@ class ClientService {
 
         return $this->store(ClientDto::fromArray([
             'phoneNumber' => $dto->phoneNumber,
-            'addressId' => $dto->address->id,
         ]));
     }
 }

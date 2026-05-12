@@ -23,8 +23,8 @@ class Address extends Model {
         return $this->hasMany(Company::class, 'address_id');
     }
 
-    public function clients(): HasMany {
-        return $this->hasMany(Client::class, 'address_id');
+    public function orders(): HasMany {
+        return $this->hasMany(Order::class, 'address_id');
     }
 
     public function city(): BelongsTo {

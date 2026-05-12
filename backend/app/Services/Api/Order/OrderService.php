@@ -64,7 +64,6 @@ class OrderService {
             ]));
 
             $client = $this->clientService->findOrCreate(ClientResolveDto::fromArray([
-                'address' => $address,
                 'phoneNumber' => $dto->phoneNumber,
             ]));
 
@@ -77,6 +76,7 @@ class OrderService {
                 'client_id' => $client->id,
                 'status_id' => $dto->statusId,
                 'created_at' => $dto->dateCreation,
+                'address_id' => $address->id,
             ]);
 
             OrderTranslation::create([
@@ -109,7 +109,6 @@ class OrderService {
             ]));
 
             $client = $this->clientService->findOrCreate(ClientResolveDto::fromArray([
-                'address' => $address,
                 'phoneNumber' => $dto->phoneNumber,
             ]));
 
@@ -126,6 +125,7 @@ class OrderService {
                 'status_id' => $dto->statusId,
                 'created_at' => $dto->dateCreation,
                 'date_completed' => $dto->dateCompleted ?? (($dto->statusId == $completedStatusId) ? now() : null),
+                'address_id' => $address->id,
             ]);
 
             OrderTranslation::where('order_id', $dto->id)

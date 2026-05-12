@@ -27,7 +27,7 @@ class OrderCompletedMail extends Mailable {
 
     public function content(): Content {
         $user = User::findOrFail($this->order->user_modification_id);
-        $address = $this->order->client->address->city->name . ', ' . $this->order->client->address->address;
+        $address = $this->order->address->city->name . ', ' . $this->order->address->address;
 
         return new Content(
             markdown: 'mail.order-completed-mail',

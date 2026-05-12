@@ -11,7 +11,6 @@ final readonly class ClientDto {
         public ?string $lastName,
         public ?string $email,
         public ?string $phoneNumber,
-        public ?int $addressId,
         public bool $isBlocked,
         public bool $isActive,
     ) {}
@@ -24,7 +23,6 @@ final readonly class ClientDto {
             lastName: $data['lastName'] ?? null,
             email: $data['email'] ?? null,
             phoneNumber: $data['phoneNumber'] ?? null,
-            addressId: $data['addressId'] ?? null,
             isBlocked: $data['isBlocked'] ?? false,
             isActive: $data['isActive'] ?? true,
         );

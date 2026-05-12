@@ -42,7 +42,7 @@ class OrderRepository {
             ])
             ->selectRaw('ST_Distance(?::geography, a.coordinates::geography) as distance', [Company::current()->address->coordinates])
             ->join('clients as cl', 'cl.id', '=', 'o.client_id')
-            ->join('addresses as a', 'a.id', '=', 'cl.address_id')
+            ->join('addresses as a', 'a.id', '=', 'o.address_id')
             ->join('cities as c', 'c.id', '=', 'a.city_id')
             ->join('provinces as p', 'p.id', '=', 'c.province_id')
             ->join('countries as co', 'co.id', '=', 'p.country_id')

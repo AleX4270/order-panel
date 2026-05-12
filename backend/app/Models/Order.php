@@ -27,6 +27,8 @@ class Order extends Model {
         'status_id',
         'is_active',
         'created_at',
+        'updated_at',
+        'address_id',
     ];
 
     protected $casts = [
@@ -59,5 +61,9 @@ class Order extends Model {
 
     public function status(): BelongsTo {
         return $this->belongsTo(OrderStatus::class, 'status_id');
+    }
+
+    public function address(): BelongsTo {
+        return $this->belongsTo(Address::class, 'address_id');
     }
 }
