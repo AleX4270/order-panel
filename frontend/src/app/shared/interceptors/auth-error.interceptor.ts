@@ -11,8 +11,6 @@ import { TranslateService } from '@ngx-translate/core';
 export const authErrorInterceptor: HttpInterceptorFn = (req, next) => {
     const store = inject(Store);
     const router = inject(Router);
-    const toastService = inject(ToastService);
-    const translateService = inject(TranslateService);
 
     return next(req).pipe(
         catchError((error: HttpErrorResponse) => {
@@ -20,7 +18,6 @@ export const authErrorInterceptor: HttpInterceptorFn = (req, next) => {
                 return store.dispatch(new LogoutUser())
                     .pipe(
                         tap(() => {
-                            toastService.show(translateService.instant('basic.sessionExpired'), ToastType.warning);
                             return router.navigate(['/']);
                         }),
                         switchMap(() => throwError(() => error))
