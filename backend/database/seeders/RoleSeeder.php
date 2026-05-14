@@ -55,6 +55,9 @@ class RoleSeeder extends Seeder {
                     PermissionType::ORDERS_UPDATE->value,
                     PermissionType::ORDERS_DELETE->value,
                     PermissionType::ORDERS_MARK_AS_COMPLETED->value,
+                    PermissionType::ORDER_REQUESTS_VIEW->value,
+                    PermissionType::ORDER_REQUESTS_SHOW->value,
+                    PermissionType::ORDER_REQUESTS_MANAGE->value,
                 ],
             ],
             [

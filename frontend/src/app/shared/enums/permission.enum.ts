@@ -7,6 +7,11 @@ export enum Permission {
     orders_delete = 'orders.delete',
     orders_mark_as_completed = 'orders.mark_as_completed',
 
+    //Order Requests
+    order_requests_view = 'order_requests.view',
+    order_requests_show = 'order_requests.show',
+    order_requests_manage = 'order_requests.manage',
+
     //Users
     users_view = 'users.view',
     users_show = 'users.show',

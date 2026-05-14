@@ -12,6 +12,11 @@ enum PermissionType: string {
     case ORDERS_DELETE = 'orders.delete';
     case ORDERS_MARK_AS_COMPLETED = 'orders.mark_as_completed';
 
+    //Order Requests
+    case ORDER_REQUESTS_VIEW = 'order_requests.view';
+    case ORDER_REQUESTS_SHOW = 'order_requests.show';
+    case ORDER_REQUESTS_MANAGE = 'order_requests.manage'; //TODO: Migrate other permissions to manage instead of create / update too.
+
     //Users
     case USERS_VIEW = 'users.view';
     case USERS_SHOW = 'users.show';
