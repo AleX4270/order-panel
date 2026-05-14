@@ -12,12 +12,25 @@ use App\Http\Controllers\Api\Order\OrderController;
 use App\Http\Controllers\Api\Order\OrderQuickActionController;
 use App\Http\Controllers\Api\Priority\PriorityController;
 use App\Http\Controllers\Api\Province\ProvinceController;
+use App\Http\Controllers\Api\OrderRequest\OrderRequestController;
 use App\Http\Controllers\Api\Role\RoleController;
 use App\Http\Controllers\Api\Status\StatusController;
 use App\Http\Controllers\Api\User\UserController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+
+Route::middleware(['throttle:public'])->group(function() {
+    Route::post('/order-request', [OrderRequestController::class, 'store']);
+
+    Route::prefix('countries')->group(function() {
+        Route::get('/', [CountryController::class, 'index']);
+    });
+
+    Route::prefix('provinces')->group(function() {
+        Route::get('/', [ProvinceController::class, 'index']);
+    });
+});
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
@@ -38,14 +51,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('statuses')->group(function() {
         Route::get('/', [StatusController::class, 'index']);
-    });
-
-    Route::prefix('countries')->group(function() {
-        Route::get('/', [CountryController::class, 'index']);
-    });
-
-    Route::prefix('provinces')->group(function() {
-        Route::get('/', [ProvinceController::class, 'index']);
     });
 
     Route::prefix('cities')->group(function() {
