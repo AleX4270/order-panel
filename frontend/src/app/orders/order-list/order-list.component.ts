@@ -55,7 +55,7 @@ import { Coordinates } from '../../shared/types/address.types';
             <app-card overflowType="visible" [title]="'basic.filters' | translate" [isCollapsible]="true">
                 <app-filters
                     [type]="filterType.orderListFilters"
-                    (filtersChange)="onOrderFiltersChange($event)"
+                    (filtersChange)="onFiltersChange($event)"
                 />
             </app-card>
         </div>
@@ -119,14 +119,14 @@ import { Coordinates } from '../../shared/types/address.types';
                                 </td>
                                 <td><span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span></td>
                                 <td><span>{{ item.dateDeadline | date:'dd-MM-yyyy'}}</span></td>
-                                <td class="text-base-content/80 font-light">{{ item.remarks }}</td>
+                                <td class="text-base-content/80 font-light">{{ item.remarks ?? '-' }}</td>
                                 <td>
                                     <div class="flex gap-3">
                                         <ng-icon
                                             *hasPermission="permission.orders_show"
                                             class="item-pressable"
                                             name="faEye"
-                                            size="18px"
+                                            size="19px"
                                             (click)="toggleItemDetailsExpansion(item.id)"
                                         ></ng-icon>
 
@@ -135,7 +135,7 @@ import { Coordinates } from '../../shared/types/address.types';
                                                 *hasPermission="permission.orders_mark_as_completed"
                                                 class="item-pressable [&>svg]:fill-success"
                                                 name="faCircleCheck"
-                                                size="17px"
+                                                size="19px"
                                                 (click)="showOrderCompletePromptModal(item.id)"
                                             ></ng-icon>
                                         }
@@ -144,7 +144,7 @@ import { Coordinates } from '../../shared/types/address.types';
                                             *hasPermission="permission.orders_update"
                                             class="item-pressable [&>svg]:fill-primary"
                                             name="faPenToSquare"
-                                            size="18px"
+                                            size="19px"
                                             (click)="showOrderFormModal(item.id)"
                                         ></ng-icon>
 
@@ -152,7 +152,7 @@ import { Coordinates } from '../../shared/types/address.types';
                                             *hasPermission="permission.orders_delete"
                                             class="item-pressable [&>svg]:fill-error"
                                             name="faTrashCan"
-                                            size="18px"
+                                            size="19px"
                                             (click)="showOrderDeletePromptModal(item.id)"
                                         ></ng-icon>
                                     </div>
@@ -439,7 +439,7 @@ export class OrderListComponent implements OnInit {
         })
     }
 
-    protected onOrderFiltersChange(filterValues: Partial<Record<string, string | number[] | null>>): void {
+    protected onFiltersChange(filterValues: Partial<Record<string, string | number[] | null>>): void {
         this.orderFilterValues = filterValues;
         this.loadOrders();
     }

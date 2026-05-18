@@ -9,6 +9,7 @@ import { OrderListComponent } from './orders/order-list/order-list.component';
 import { UserListComponent } from './users/user-list/user-list.component';
 import { Permission } from './shared/enums/permission.enum';
 import { CompanySettingsComponent } from './company-settings/company-settings.component';
+import { OrderRequestListComponent } from './order-requests/order-request-list/order-request-list.component';
 
 export const routes: Routes = [
     {
@@ -39,6 +40,11 @@ export const routes: Routes = [
         path: 'company-settings',
         component: CompanySettingsComponent,
         canActivate: [authGuard(Permission.company_manage)],
+    },
+    {
+        path: 'order-requests',
+        component: OrderRequestListComponent,
+        canActivate: [authGuard(Permission.order_requests_view)],
     },
     {
         path: '**',

@@ -37,7 +37,8 @@
         "settings": "Ustawienia",
         "users": "Użytkownicy",
         "logout": "Wyloguj",
-        "companySettings": "Dane firmy"
+        "companySettings": "Dane firmy",
+        "orderRequests": "Zapytania usługowe"
     },
     "form": {
         "error": "Formularz zawiera nieprawidłowe dane"
@@ -105,6 +106,10 @@
         "distanceFromHeadquarters": "W odległości od siedziby (km)",
         "distanceZeroError": "Dystans nie może wynosić 0",
         "distanceNotANumberError": "Podana wartość nie jest liczbą"
+    },
+    "orderRequestListFilters": {
+        "allFields": "Wszystkie pola",
+        "allFieldsPlaceholder": "Wyszukaj po wszystkich polach"
     },
     "orderForm": {
         "createTitle": "Formularz tworzenia nowego zlecenia",
@@ -242,5 +247,42 @@
         "saveSuccess": "Dane firmy zostały zapisane",
         "saveError": "Nie udało się zapisać danych firmy",
         "loadError": "Nie udało się pobrać danych firmy"
+    },
+    "orderRequestList": {
+        "header": "Lista Zapytań Usługowych",
+        "acceptSuccess": "Pomyślnie oznaczono zapytanie usługowe jako aktywne zlecenie",
+        "acceptError": "Nie udało się oznaczyć zapytania usługowego jako aktywnego zlecenia",
+        "rejectSuccess": "Pomyślnie odrzucono zapytanie usługowe",
+        "rejectError": "Nie udało się odrzucić zapytania usługowego",
+        "orderRequests": "Zapytania usługowe"
+    },
+    "orderRequestListTable": {
+        "orderRequestNo": "Numer zapytania",
+        "client": "Klient",
+        "address": "Adres",
+        "dateCreated": "Data zgłoszenia",
+        "remarks": "Uwagi",
+        "actions": "Akcje",
+        "details": "Szczegóły",
+        "accept": "Akceptuj",
+        "reject": "Odrzuć"
+    },
+    "orderRequestAcceptPromptModal": {
+        "title": "Potwierdzenie oznaczenia zapytania jako aktywnego zlecenia",
+        "message": "Czy potwierdzasz oznaczenie tego zapytania usługowego jako aktywnego zlecenia?"
+    },
+    "orderRequestRejectPromptModal": {
+        "title": "Potwierdzenie odrzucenia zapytania usługowego",
+        "message": "Czy potwierdzasz odrzucenie tego zapytania usługowego?"
+    },
+    "orderRequestDetails": {
+        "header": "Szczegóły zapytania usługowego",
+        "orderRequestNo": "Numer zapytania",
+        "address": "Adres",
+        "client": "Klient",
+        "phoneNumber": "Numer telefonu",
+        "email": "E-mail",
+        "dateCreated": "Data utworzenia",
+        "remarks": "Uwagi"
     }
 }
