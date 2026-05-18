@@ -9,7 +9,7 @@ import {
 import { SmallFooterComponent } from "../shared/components/small-footer/small-footer.component";
 import { NgIconComponent, provideIcons } from "@ng-icons/core";
 import { faEye, faEyeSlash } from "@ng-icons/font-awesome/regular";
-import { CommonModule } from "@angular/common";
+
 import { Router, RouterModule } from "@angular/router";
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 import { AuthService } from "../shared/services/api/auth/auth.service";
@@ -26,16 +26,15 @@ import { InputErrorLabelComponent } from "../shared/components/input-error-label
 @Component({
     selector: "app-login",
     imports: [
-        WelcomeHeaderComponent,
-        ReactiveFormsModule,
-        SmallFooterComponent,
-        NgIconComponent,
-        CommonModule,
-        RouterModule,
-        TranslatePipe,
-        ButtonComponent,
-        InputErrorLabelComponent
-    ],
+    WelcomeHeaderComponent,
+    ReactiveFormsModule,
+    SmallFooterComponent,
+    NgIconComponent,
+    RouterModule,
+    TranslatePipe,
+    ButtonComponent,
+    InputErrorLabelComponent
+],
     providers: [provideIcons({ faEye, faEyeSlash })],
     template: `
         <div class="min-h-screen flex items-center justify-center px-2 sm:px-4">

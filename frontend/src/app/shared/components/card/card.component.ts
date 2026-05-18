@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, computed, input, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { faSolidChevronDown, faSolidChevronUp } from '@ng-icons/font-awesome/solid';
 
 @Component({
     selector: 'app-card',
-    imports: [CommonModule, NgIcon],
+    imports: [NgIcon],
     providers: [provideIcons({faSolidChevronUp, faSolidChevronDown})],
     template: `
         <div 

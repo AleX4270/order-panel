@@ -3,19 +3,18 @@ import { WelcomeHeaderComponent } from "../shared/components/welcome-header/welc
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SmallFooterComponent } from "../shared/components/small-footer/small-footer.component";
 import { TranslatePipe } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-login',
     imports: [
-        WelcomeHeaderComponent,
-        ReactiveFormsModule,
-        SmallFooterComponent,
-        TranslatePipe,
-        CommonModule,
-        RouterModule
-    ],
+    WelcomeHeaderComponent,
+    ReactiveFormsModule,
+    SmallFooterComponent,
+    TranslatePipe,
+    RouterModule
+],
     template: `
         <div class="row vh-100 d-flex justify-content-center align-items-center">
             <div class="col-3">

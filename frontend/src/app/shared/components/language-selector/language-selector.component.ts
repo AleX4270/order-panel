@@ -5,13 +5,12 @@ import { SetUserLanguage } from '../../store/user/user.actions';
 import { LanguageType } from '../../enums/enums';
 import { UserState } from '../../store/user/user.state';
 import { DropdownDirection } from '../../types/common.types';
-import { CommonModule } from '@angular/common';
+
 import { DropdownComponent } from "../dropdown/dropdown.component";
 
 @Component({
   selector: 'app-language-selector',
   imports: [
-    CommonModule,
     DropdownComponent
 ],
   template: `
@@ -35,7 +34,7 @@ export class LanguageSelectorComponent {
 
     constructor() {
         effect(() => {
-            this.languageList.set(this.translate.getLangs());
+            this.languageList.set([...this.translate.getLangs()]);
         });
     }
 
