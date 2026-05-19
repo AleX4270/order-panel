@@ -1,4 +1,4 @@
-FROM php:8.4-apache AS base
+FROM php:8.5-apache AS base
 
 WORKDIR /var/www/html
 
@@ -8,11 +8,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install \
     pdo_pgsql \
     bcmath \
-    opcache \
     zip \
-    pcntl \
-    && docker-php-ext-configure \
-    pcntl --enable-pcntl
+    pcntl
 
 RUN a2enmod rewrite \
     && sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
