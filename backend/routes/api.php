@@ -38,6 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('order-requests')->group(function() {
         Route::get('/', [OrderRequestController::class, 'index']);
+        Route::delete('/{id}', [OrderRequestController::class, 'delete']);
     });
 
     Route::prefix('orders')->group(function() {

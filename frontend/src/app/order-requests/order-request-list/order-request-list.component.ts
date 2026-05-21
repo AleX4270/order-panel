@@ -287,24 +287,23 @@ export class OrderRequestListComponent implements OnInit {
         // })
     }
 
-    //TODO: Change
     protected rejectOrderRequest(id: number): void {
-        // this.orderService.markAsCompleted(id).subscribe({
-        //     next: () => {
-        //         this.toastService.show(
-        //             this.translateService.instant('orderList.markAsCompletedSuccess'),
-        //             ToastType.success,
-        //         );
-        //         this.loadOrderRequests();
-        //     },
-        //     error: (err) => {
-        //         console.error(err);
-        //         this.toastService.show(
-        //             this.translateService.instant('orderList.markAsCompletedError'),
-        //             ToastType.danger,
-        //         );
-        //     }
-        // })
+        this.orderRequestService.delete(id).subscribe({
+            next: () => {
+                this.toastService.show(
+                    this.translateService.instant('orderRequestList.rejectSuccess'),
+                    ToastType.success,
+                );
+                this.loadOrderRequests();
+            },
+            error: (err) => {
+                console.error(err);
+                this.toastService.show(
+                    this.translateService.instant('orderRequestList.rejectError'),
+                    ToastType.danger,
+                );
+            }
+        })
     }
 
     protected loadOrderRequests(): void {

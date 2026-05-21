@@ -22,4 +22,8 @@ export class OrderRequestService extends RestService {
 
         return this.http.get<ApiResponse<IndexResponse<OrderRequestItem>>>(`${this.apiUrl}/order-requests${this.getQueryParams(paramsCopy)}`);
     }
+
+    public delete(orderRequestId: number): Observable<ApiResponse<void>> {
+        return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/order-requests/${orderRequestId}`);
+    }
 }

@@ -84,4 +84,8 @@ class OrderRequestService {
             throw $e;
         }
     }
+
+    public function delete(int $orderRequestId): void {
+        OrderRequest::where('id', $orderRequestId)->delete();
+    }
 }

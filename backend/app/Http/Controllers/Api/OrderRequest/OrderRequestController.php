@@ -8,7 +8,10 @@ use App\Http\Requests\Api\OrderRequest\OrderRequestFilterRequest;
 use App\Http\Requests\Api\OrderRequest\OrderRequestRequest;
 use App\Http\Resources\Api\OrderRequest\OrderRequestResource;
 use App\Http\Responses\Api\ApiResponse;
+use App\Models\OrderRequest;
 use App\Services\Api\OrderRequest\OrderRequestService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class OrderRequestController {
     public function __construct(
@@ -34,6 +37,26 @@ class OrderRequestController {
         return new ApiResponse(
             status: HttpStatus::CREATED,
             message: __('response.created'),
+        );
+    }
+
+    public function delete(Request $request): ApiResponse {
+        Gate::authorize('delete', OrderRequest::class);
+
+        $orderRequestId = (int)$request->route('id');
+
+        if(empty($orderRequestId)) {
+            return new ApiResponse(
+                status: HttpStatus::BAD_REQUEST,
+                message: __('response.badRequest'),
+            );
+        }
+
+        $this->orderRequestService->delete($orderRequestId);
+
+        return new ApiResponse(
+            status: HttpStatus::OK,
+            message: __('response.deleted'),
         );
     }
 }
