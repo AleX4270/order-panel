@@ -36,6 +36,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
+    Route::prefix('order-requests')->group(function() {
+        Route::get('/', [OrderRequestController::class, 'index']);
+    });
+
     Route::prefix('orders')->group(function() {
         Route::get('/', [OrderController::class, 'index']);
         Route::get('/{id}', [OrderController::class, 'show']);

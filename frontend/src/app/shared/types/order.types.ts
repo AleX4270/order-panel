@@ -9,6 +9,7 @@ export interface OrderFilterParams extends BaseFilterParams {
     statusIds?: number[];
     dateCreation?: string;
     dateDeadline?: string;
+    distanceFromHeadquarters?: number;
 }
 
 export interface OrderItem {

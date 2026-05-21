@@ -26,6 +26,9 @@ import { CompanyService } from '../../shared/services/api/company/company.servic
 import { CompanyItem } from '../../shared/types/company.types';
 import { DEFAULT_COORDINATES } from '../../shared/constants/map.const';
 import { Coordinates } from '../../shared/types/address.types';
+import { OrderRequestFilterParams, OrderRequestItem } from '../../shared/types/order-request.types';
+import { OrderRequestService } from '../../shared/services/api/order-request/order-request.service';
+import { OrderRequestMapComponent } from '../../shared/components/order-request-map/order-request-map.component';
 
 @Component({
     selector: 'app-order-request-list',
@@ -43,7 +46,7 @@ import { Coordinates } from '../../shared/types/address.types';
     NgClass,
     ButtonComponent,
     HasPermissionDirective,
-    OrderMapComponent
+    OrderRequestMapComponent,
 ],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan, faCircleCheck, faCircleXmark})],
     template: `
@@ -59,7 +62,7 @@ import { Coordinates } from '../../shared/types/address.types';
 
         <div class="flex flex-col min-h-1/2 lg:flex-row gap-3">
             <div class="mt-5 h-180 lg:w-2/5">
-                <app-order-map [orders]="orderRequests()" [coordinates]="companyCoordinates()"></app-order-map>
+                <app-order-request-map [orderRequests]="orderRequests()" [coordinates]="companyCoordinates()"></app-order-request-map>
             </div>
 
             <div class="mt-6 lg:w-3/5">
@@ -75,9 +78,9 @@ import { Coordinates } from '../../shared/types/address.types';
                         [data]="orderRequests()"
                     >
                         <ng-template #headers>
-                            <th class="cursor-pointer" (click)="onOrderRequestSortChange('orderNumber')">{{'orderRequestListTable.orderRequestNo' | translate}}</th>
-                            <th class="cursor-pointer" (click)="onOrderRequestSortChange('address')">{{'orderRequestListTable.address' | translate}}</th>
-                            <th class="cursor-pointer" (click)="onOrderRequestSortChange('client')">{{'orderRequestListTable.client' | translate}}</th>
+                            <th class="cursor-pointer" (click)="onOrderRequestSortChange('orderRequestNumber')">{{'orderRequestListTable.orderRequestNo' | translate}}</th>
+                            <th class="cursor-pointer">{{'orderRequestListTable.address' | translate}}</th>
+                            <th class="cursor-pointer">{{'orderRequestListTable.client' | translate}}</th>
                             <th class="cursor-pointer" (click)="onOrderRequestSortChange('dateCreated')">{{'orderRequestListTable.dateCreated' | translate}}</th>
                             <th class="cursor-pointer" (click)="onOrderRequestSortChange('remarks')">{{'orderRequestListTable.remarks' | translate}}</th>
                             <th>{{'orderRequestListTable.actions' | translate}}</th>
@@ -97,9 +100,9 @@ import { Coordinates } from '../../shared/types/address.types';
                                 </td>
                                 <td>
                                     <div class="flex flex-col">
-                                        <span class="text-xs">Jan Nowak</span>
-                                        <span class="text-base-content/70 font-light mt-1">777 888 999</span>
-                                        <span class="text-base-content/50 font-light mt-1">jan.nowak@gmail.com</span>
+                                        <span class="text-xs">{{item.firstName + ' ' + item.lastName}}</span>
+                                        <span class="text-base-content/70 font-light mt-1">{{item.phoneNumber}}</span>
+                                        <span class="text-base-content/50 font-light mt-1">{{item.email}}</span>
                                     </div>
                                 </td>
                                 <td><span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span></td>
@@ -156,7 +159,7 @@ import { Coordinates } from '../../shared/types/address.types';
                                             <div class="row-details-box">
                                                 <span class="row-details-label">{{ 'orderRequestDetails.client' | translate}}</span>
                                                 <div class="row-details-value">
-                                                    <span>Jan Nowak</span>
+                                                    <span>{{item.firstName + ' ' + item.lastName}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -171,7 +174,7 @@ import { Coordinates } from '../../shared/types/address.types';
                                             <div class="row-details-box">
                                                 <span class="row-details-label">{{ 'orderRequestDetails.email' | translate}}</span>
                                                 <div class="row-details-value">
-                                                    <span>jan.nowak@gmail.com</span>
+                                                    <span>{{item.phoneNumber}}</span>
                                                 </div>
                                             </div>
                                             <div class="row-details-box">
@@ -207,8 +210,8 @@ import { Coordinates } from '../../shared/types/address.types';
     `,
     styles: [``]
 })
-export class OrderRequestListComponent implements OnInit {
-    private readonly orderService = inject(OrderService);
+export class OrderRequestListComponent implements OnInit {  
+    private readonly orderRequestService = inject(OrderRequestService);
     private readonly promptModalService = inject(PromptModalService);
     private readonly translateService = inject(TranslateService);
     private readonly toastService = inject(ToastService);
@@ -220,7 +223,7 @@ export class OrderRequestListComponent implements OnInit {
     protected expansionState = ExpansionState;
     protected itemDetailsExpansionState: Partial<Record<number, ExpansionState>> = {};
 
-    protected orderRequests: WritableSignal<OrderItem[]> = signal<OrderItem[]>([]);
+    protected orderRequests: WritableSignal<OrderRequestItem[]> = signal<OrderRequestItem[]>([]);
     protected orderRequestsCount: WritableSignal<number> = signal<number>(0);
     protected companyCoordinates = signal<Coordinates>(DEFAULT_COORDINATES);
 
@@ -266,46 +269,46 @@ export class OrderRequestListComponent implements OnInit {
     }
 
     protected acceptOrderRequest(id: number): void {
-        this.orderService.markAsCompleted(id).subscribe({
-            next: () => {
-                this.toastService.show(
-                    this.translateService.instant('orderList.markAsCompletedSuccess'),
-                    ToastType.success,
-                );
-                this.loadOrderRequests();
-            },
-            error: (err) => {
-                console.error(err);
-                this.toastService.show(
-                    this.translateService.instant('orderList.markAsCompletedError'),
-                    ToastType.danger,
-                );
-            }
-        })
+        // this.orderService.markAsCompleted(id).subscribe({
+        //     next: () => {
+        //         this.toastService.show(
+        //             this.translateService.instant('orderList.markAsCompletedSuccess'),
+        //             ToastType.success,
+        //         );
+        //         this.loadOrderRequests();
+        //     },
+        //     error: (err) => {
+        //         console.error(err);
+        //         this.toastService.show(
+        //             this.translateService.instant('orderList.markAsCompletedError'),
+        //             ToastType.danger,
+        //         );
+        //     }
+        // })
     }
 
     //TODO: Change
     protected rejectOrderRequest(id: number): void {
-        this.orderService.markAsCompleted(id).subscribe({
-            next: () => {
-                this.toastService.show(
-                    this.translateService.instant('orderList.markAsCompletedSuccess'),
-                    ToastType.success,
-                );
-                this.loadOrderRequests();
-            },
-            error: (err) => {
-                console.error(err);
-                this.toastService.show(
-                    this.translateService.instant('orderList.markAsCompletedError'),
-                    ToastType.danger,
-                );
-            }
-        })
+        // this.orderService.markAsCompleted(id).subscribe({
+        //     next: () => {
+        //         this.toastService.show(
+        //             this.translateService.instant('orderList.markAsCompletedSuccess'),
+        //             ToastType.success,
+        //         );
+        //         this.loadOrderRequests();
+        //     },
+        //     error: (err) => {
+        //         console.error(err);
+        //         this.toastService.show(
+        //             this.translateService.instant('orderList.markAsCompletedError'),
+        //             ToastType.danger,
+        //         );
+        //     }
+        // })
     }
 
     protected loadOrderRequests(): void {
-        let params = {} as OrderFilterParams;
+        let params = {} as OrderRequestFilterParams;
 
         if(Object.keys(this.filterValues).length > 0) {
             Object.keys(this.filterValues).forEach((key) => {
@@ -332,7 +335,7 @@ export class OrderRequestListComponent implements OnInit {
             params.sortDir = this.sortValues()?.sortDir;
         }
 
-        this.orderService.index(params).subscribe({
+        this.orderRequestService.index(params).subscribe({
             next: (res) => {
                 this.orderRequests.set(res.data?.items ?? []);
                 this.orderRequestsCount.set(res.data?.count ?? 0);
@@ -349,7 +352,7 @@ export class OrderRequestListComponent implements OnInit {
                 const company: CompanyItem | null = res.data;
 
                 if(!company) {
-                    this.toastService.show(this.translateService.instant('orderList.companyDetailsLoadError'), ToastType.danger);
+                    this.toastService.show(this.translateService.instant('orderRequestList.companyDetailsLoadError'), ToastType.danger);
                     return;
                 }
 
@@ -357,7 +360,7 @@ export class OrderRequestListComponent implements OnInit {
             },
             error: (err) => {
                 console.error(err);
-                this.toastService.show(this.translateService.instant('orderList.companyDetailsLoadError'), ToastType.danger);
+                this.toastService.show(this.translateService.instant('orderRequestList.companyDetailsLoadError'), ToastType.danger);
             }
         })
     }

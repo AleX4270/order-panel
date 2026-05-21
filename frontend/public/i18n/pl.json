@@ -109,7 +109,9 @@
     },
     "orderRequestListFilters": {
         "allFields": "Wszystkie pola",
-        "allFieldsPlaceholder": "Wyszukaj po wszystkich polach"
+        "allFieldsPlaceholder": "Wyszukaj po wszystkich polach",
+        "distanceFromHeadquarters": "W odległości od siedziby (km)",
+        "dateCreation": "Data zgłoszenia"
     },
     "orderForm": {
         "createTitle": "Formularz tworzenia nowego zlecenia",
@@ -254,7 +256,8 @@
         "acceptError": "Nie udało się oznaczyć zapytania usługowego jako aktywnego zlecenia",
         "rejectSuccess": "Pomyślnie odrzucono zapytanie usługowe",
         "rejectError": "Nie udało się odrzucić zapytania usługowego",
-        "orderRequests": "Zapytania usługowe"
+        "orderRequests": "Zapytania usługowe",
+        "companyDetailsLoadError": "Nie udało się pobrać danych firmy"
     },
     "orderRequestListTable": {
         "orderRequestNo": "Numer zapytania",
@@ -284,5 +287,9 @@
         "email": "E-mail",
         "dateCreated": "Data utworzenia",
         "remarks": "Uwagi"
+    },
+    "orderRequestMapMarker": {
+        "distance": "Dystans",
+        "dateCreated": "Data zgłoszenia"
     }
 }
