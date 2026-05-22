@@ -9,6 +9,7 @@ export class RestService {
     protected readonly http = inject(HttpClient);
     protected readonly apiUrl = environment.apiUrl;
 
+    // TODO: Rewrite so it uses angular's http params
     protected getQueryParams(params: Object | null | undefined): string {
         if(params == null || params == undefined) {
             return '';

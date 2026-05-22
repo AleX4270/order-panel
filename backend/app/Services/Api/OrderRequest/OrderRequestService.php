@@ -8,14 +8,24 @@ use App\Dtos\Api\City\CityResolveDto;
 use App\Dtos\Api\Client\ClientDto;
 use App\Dtos\Api\OrderRequest\OrderRequestDto;
 use App\Dtos\Api\OrderRequest\OrderRequestFilterDto;
+use App\Enums\OrderStatusType;
+use App\Enums\PriorityType;
+use App\Models\Language;
+use App\Models\Order;
 use App\Models\OrderRequest;
+use App\Models\OrderStatus;
+use App\Models\OrderTranslation;
+use App\Models\Priority;
 use App\Repositories\OrderRequestRepository;
 use App\Services\Api\Address\AddressService;
 use App\Services\Api\City\CityService;
 use App\Services\Api\Client\ClientService;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class OrderRequestService {
     public function __construct(
@@ -85,7 +95,41 @@ class OrderRequestService {
         }
     }
 
-    public function delete(int $orderRequestId): void {
-        OrderRequest::where('id', $orderRequestId)->delete();
+    public function castToOrder(int $id): int {
+        DB::beginTransaction();
+        try {
+            $orderRequest = OrderRequest::findOrFail($id);
+
+            $order = Order::create([
+                'symbol' => Str::random(16),
+                'date_deadline' => Carbon::now()->addDays(14),
+                'user_creation_id' => Auth::id(),
+                'user_modification_id' => Auth::id(),
+                'priority_id' => Priority::where('symbol', PriorityType::STANDARD->value)->firstOrFail()->id,
+                'client_id' => $orderRequest->client_id,
+                'status_id' => OrderStatus::where('symbol', OrderStatusType::IN_PROGRESS->value)->firstOrFail()->id,
+                'created_at' => Carbon::now(),
+                'address_id' => $orderRequest->address_id,
+            ]);
+
+            OrderTranslation::create([
+                'order_id' => $order->id,
+                'language_id' => Language::where('symbol', app()->getLocale())->firstOrFail()->id,
+                'remarks' => $orderRequest->remarks,
+            ]);
+
+            $this->delete($id);
+
+            DB::commit();
+            return $order->id;
+        }
+        catch(Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    public function delete(int $id): void {
+        OrderRequest::where('id', $id)->delete();
     }
 }

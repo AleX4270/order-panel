@@ -40,6 +40,26 @@ class OrderRequestController {
         );
     }
 
+    public function castToOrder(Request $request): ApiResponse {
+        Gate::authorize('castToOrder', OrderRequest::class);
+
+        $orderRequestId = (int)$request->input('id');
+
+        if(empty($orderRequestId)) {
+            return new ApiResponse(
+                status: HttpStatus::BAD_REQUEST,
+                message: __('response.badRequest'),
+            );
+        }
+
+        $this->orderRequestService->castToOrder($orderRequestId);
+
+        return new ApiResponse(
+            status: HttpStatus::CREATED,
+            message: __('response.created'),
+        );
+    }
+
     public function delete(Request $request): ApiResponse {
         Gate::authorize('delete', OrderRequest::class);
 

@@ -38,6 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('order-requests')->group(function() {
         Route::get('/', [OrderRequestController::class, 'index']);
+        Route::post('/cast-to-order', [OrderRequestController::class, 'castToOrder']);
         Route::delete('/{id}', [OrderRequestController::class, 'delete']);
     });
 

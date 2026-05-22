@@ -11,9 +11,7 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
 import { FiltersComponent } from '../../shared/components/filters/filters.component';
 import { FilterType } from '../../shared/enums/filter-type.enum';
 import { OrderFormModalComponent } from '../../orders/order-form-modal/order-form-modal.component';
-import { OrderService } from '../../shared/services/api/order/order.service';
 import { DatePipe, NgClass } from '@angular/common';
-import { OrderFilterParams, OrderItem } from '../../shared/types/order.types';
 import { PaginationItem } from '../../shared/types/pagination.types';
 import { SortItem } from '../../shared/types/sort.types';
 import { PromptModalService } from '../../shared/services/prompt-modal/prompt-modal.service';
@@ -21,7 +19,6 @@ import { ToastService } from '../../shared/services/toast/toast.service';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { HasPermissionDirective } from '../../shared/directives/has-permission.directive';
 import { Permission } from '../../shared/enums/permission.enum';
-import { OrderMapComponent } from '../../shared/components/order-map/order-map.component';
 import { CompanyService } from '../../shared/services/api/company/company.service';
 import { CompanyItem } from '../../shared/types/company.types';
 import { DEFAULT_COORDINATES } from '../../shared/constants/map.const';
@@ -35,16 +32,11 @@ import { OrderRequestMapComponent } from '../../shared/components/order-request-
     imports: [
     TranslatePipe,
     ListTableComponent,
-    TileComponent,
     NgIcon,
-    ColorLabelComponent,
     CardComponent,
     PaginationComponent,
     FiltersComponent,
-    OrderFormModalComponent,
     DatePipe,
-    NgClass,
-    ButtonComponent,
     HasPermissionDirective,
     OrderRequestMapComponent,
 ],
@@ -269,22 +261,22 @@ export class OrderRequestListComponent implements OnInit {
     }
 
     protected acceptOrderRequest(id: number): void {
-        // this.orderService.markAsCompleted(id).subscribe({
-        //     next: () => {
-        //         this.toastService.show(
-        //             this.translateService.instant('orderList.markAsCompletedSuccess'),
-        //             ToastType.success,
-        //         );
-        //         this.loadOrderRequests();
-        //     },
-        //     error: (err) => {
-        //         console.error(err);
-        //         this.toastService.show(
-        //             this.translateService.instant('orderList.markAsCompletedError'),
-        //             ToastType.danger,
-        //         );
-        //     }
-        // })
+        this.orderRequestService.castToOrder(id).subscribe({
+            next: () => {
+                this.toastService.show(
+                    this.translateService.instant('orderRequestList.acceptSuccess'),
+                    ToastType.success,
+                );
+                this.loadOrderRequests();
+            },
+            error: (err) => {
+                console.error(err);
+                this.toastService.show(
+                    this.translateService.instant('orderRequestList.acceptError'),
+                    ToastType.danger,
+                );
+            }
+        })
     }
 
     protected rejectOrderRequest(id: number): void {

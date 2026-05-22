@@ -23,6 +23,10 @@ export class OrderRequestService extends RestService {
         return this.http.get<ApiResponse<IndexResponse<OrderRequestItem>>>(`${this.apiUrl}/order-requests${this.getQueryParams(paramsCopy)}`);
     }
 
+    public castToOrder(orderRequestId: number): Observable<ApiResponse<void>> {
+        return this.http.post<ApiResponse<void>>(`${this.apiUrl}/order-requests/cast-to-order`, { id: orderRequestId });
+    }
+
     public delete(orderRequestId: number): Observable<ApiResponse<void>> {
         return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/order-requests/${orderRequestId}`);
     }
