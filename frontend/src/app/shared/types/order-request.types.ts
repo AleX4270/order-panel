@@ -22,3 +22,18 @@ export interface OrderRequestItem {
     coordinates: Coordinates;
     distance: number;
 }
+
+export interface OrderRequestParams {
+    firstName: string;
+    lastName: string;
+    alias?: string;
+    email: string;
+    phoneNumber: string;
+    countryId: number;
+    provinceId: number;
+    city: string;
+    postalCode: string;
+    address: string;
+    remarks?: string;
+    isConsentGiven: boolean;
+}

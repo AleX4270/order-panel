@@ -12,6 +12,7 @@ import { ProvinceService } from '../../services/api/province/province.service';
 import { CityService } from '../../services/api/city/city.service';
 import { CountryService } from '../../services/api/country/country.service';
 import { DEFAULT_COUNTRY_SYMBOL } from '../../../app.constants';
+import { IsRequiredPipe } from '../../pipes/is-required.pipe';
 
 @Component({
     selector: 'app-address-subform',
@@ -20,11 +21,12 @@ import { DEFAULT_COUNTRY_SYMBOL } from '../../../app.constants';
         TranslatePipe,
         InputErrorLabelComponent,
         ReactiveFormsModule,
+        IsRequiredPipe,
     ],
     template: `
         <div [formGroup]="form()" class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap mt-4">
             <div class="flex flex-col w-full md:w-1/4">
-                <label for="countryId" class="label">{{ "addressForm.country" | translate }}</label>
+                <label for="countryId" class="label" [class.field-required]="form().get('countryId')">{{ "addressForm.country" | translate }}</label>
                 <ng-select
                     formControlName="countryId"
                     [items]="countries()"
@@ -37,7 +39,7 @@ import { DEFAULT_COUNTRY_SYMBOL } from '../../../app.constants';
             </div>
 
             <div class="flex flex-col w-full md:w-1/3">
-                <label for="provinceId" class="label">{{ "addressForm.province" | translate }}</label>
+                <label for="provinceId" class="label" [class.field-required]="form().get('provinceId')">{{ "addressForm.province" | translate }}</label>
                 <ng-select
                     formControlName="provinceId"
                     [items]="provinces()"
@@ -51,7 +53,7 @@ import { DEFAULT_COUNTRY_SYMBOL } from '../../../app.constants';
 
             <div class="flex flex-col w-full md:w-1/3">
                 @if(allowCitySelection()) {
-                    <label for="cityId" class="label">{{ "addressForm.city" | translate }}</label>
+                    <label for="cityId" class="label" [class.field-required]="form().get('cityId')">{{ "addressForm.city" | translate }}</label>
                     <ng-select 
                         formControlName="cityId"
                         [items]="cities()"
@@ -66,7 +68,7 @@ import { DEFAULT_COUNTRY_SYMBOL } from '../../../app.constants';
                     <app-input-error-label [control]="form().get('cityId')" />
                 }
                 @else {
-                    <label for="city" class="label">{{ "addressForm.city" | translate }}</label>
+                    <label for="city" class="label" [class.field-required]="form().get('city')">{{ "addressForm.city" | translate }}</label>
                     <input
                         type="text"
                         formControlName="city"
@@ -80,7 +82,7 @@ import { DEFAULT_COUNTRY_SYMBOL } from '../../../app.constants';
             </div>
 
             <div class="flex flex-col w-full md:w-1/3">
-                <label for="postalCode" class="label">{{ "addressForm.postalCode" | translate }}</label>
+                <label for="postalCode" class="label" [class.field-required]="form().get('postalCode')">{{ "addressForm.postalCode" | translate }}</label>
                 <input
                     type="text"
                     formControlName="postalCode"
@@ -93,7 +95,7 @@ import { DEFAULT_COUNTRY_SYMBOL } from '../../../app.constants';
             </div>
 
             <div class="flex flex-col w-full md:flex-1">
-                <label for="address" class="label">{{ "addressForm.address" | translate }}</label>
+                <label for="address" class="label" [class.field-required]="form().get('address')">{{ "addressForm.address" | translate }}</label>
                 <input
                     type="text"
                     formControlName="address"

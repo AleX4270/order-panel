@@ -307,3 +307,8 @@
 html {
     scrollbar-gutter: stable;
 }
+
+.field-required::after {
+    content: '*';
+    color: var(--color-error);
+}

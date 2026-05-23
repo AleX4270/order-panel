@@ -296,7 +296,9 @@
         "remarks": "Opis",
         "remarksPlaceholder": "Opowiedz nam więcej o Twoim zapytaniu, abyśmy mogli lepiej dopasować naszą odpowiedź.",
         "submit": "Wyślij",
-        "consentMessage": "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu obsługi niniejszego zapytania usługowego."
+        "consentMessage": "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu obsługi niniejszego zapytania usługowego.",
+        "saveSuccessMessage":"Pomyślnie wysłano zapytanie usługowe",
+        "saveErrorMessage": "Nie udało się wysłać zapytania usługowego"
     },
     "addressForm": {
         "country": "Kraj",

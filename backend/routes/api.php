@@ -21,7 +21,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::middleware(['throttle:public'])->group(function() {
-    Route::post('/order-request', [OrderRequestController::class, 'store']);
+    Route::post('/order-requests', [OrderRequestController::class, 'store']);
 
     Route::prefix('countries')->group(function() {
         Route::get('/', [CountryController::class, 'index']);

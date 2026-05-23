@@ -1,10 +1,15 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InputErrorLabelComponent } from '../shared/components/input-error-label/input-error-label.component';
 import { ButtonComponent } from '../shared/components/button/button.component';
 import { SmallFooterComponent } from '../shared/components/small-footer/small-footer.component';
 import { AddressSubformComponent } from '../shared/components/address-subform/address-subform.component';
+import { ToastService } from '../shared/services/toast/toast.service';
+import { ToastType } from '../shared/enums/enums';
+import { OrderRequestService } from '../shared/services/api/order-request/order-request.service';
+import { OrderRequestParams } from '../shared/types/order-request.types';
+import { finalize } from 'rxjs';
 
 @Component({
     selector: 'app-order-request-form',
@@ -30,10 +35,10 @@ import { AddressSubformComponent } from '../shared/components/address-subform/ad
                             {{ "orderRequestForm.description" | translate }}
                         </p>
 
-                        <form [formGroup]="form" (ngSubmit)="null" class="[&_label]:mb-2">
+                        <form [formGroup]="form" (ngSubmit)="save()" class="[&_label]:mb-2">
                             <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
                                 <div class="flex flex-col w-full md:flex-1">
-                                    <label for="firstName" class="label">{{ "orderRequestForm.firstName" | translate }}</label>
+                                    <label for="firstName" class="label field-required">{{ "orderRequestForm.firstName" | translate }}</label>
                                     <input
                                         type="text"
                                         formControlName="firstName"
@@ -46,7 +51,7 @@ import { AddressSubformComponent } from '../shared/components/address-subform/ad
                                 </div>
 
                                 <div class="flex flex-col w-full md:flex-1">
-                                    <label for="lastName" class="label">{{ "orderRequestForm.lastName" | translate }}</label>
+                                    <label for="lastName" class="label field-required">{{ "orderRequestForm.lastName" | translate }}</label>
                                     <input
                                         type="text"
                                         formControlName="lastName"
@@ -61,7 +66,7 @@ import { AddressSubformComponent } from '../shared/components/address-subform/ad
 
                             <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
                                 <div class="flex flex-col w-full md:flex-1">
-                                    <label for="email" class="label">{{ "orderRequestForm.email" | translate }}</label>
+                                    <label for="email" class="label field-required">{{ "orderRequestForm.email" | translate }}</label>
                                     <input
                                         type="email"
                                         formControlName="email"
@@ -74,7 +79,7 @@ import { AddressSubformComponent } from '../shared/components/address-subform/ad
                                 </div>
 
                                 <div class="flex flex-col w-full md:flex-1">
-                                    <label for="phoneNumber" class="label">{{ "orderRequestForm.phoneNumber" | translate }}</label>
+                                    <label for="phoneNumber" class="label field-required">{{ "orderRequestForm.phoneNumber" | translate }}</label>
                                     <input
                                         type="tel"
                                         formControlName="phoneNumber"
@@ -108,11 +113,12 @@ import { AddressSubformComponent } from '../shared/components/address-subform/ad
                                 <div class="flex gap-1 w-full">
                                     <input
                                         type="checkbox"
+                                        formControlName="isConsentGiven"
                                         id="isConsentGiven"
                                         name="isConsentGiven"
                                         class="toggle toggle-sm me-1"
                                     /> 
-                                    <label for="isConsentGiven" class="label">{{ "orderRequestForm.consentMessage" | translate }}</label>
+                                    <label for="isConsentGiven" class="label field-required">{{ "orderRequestForm.consentMessage" | translate }}</label>
                                     <app-input-error-label [control]="form.get('isConsentGiven')" />
                                 </div>
                             </div>
@@ -140,6 +146,9 @@ import { AddressSubformComponent } from '../shared/components/address-subform/ad
 })
 export class OrderRequestFormComponent {
     private formBuilder = inject(FormBuilder);
+    private toastService = inject(ToastService);
+    private translateService = inject(TranslateService);
+    private orderRequestService = inject(OrderRequestService);
 
     protected form: FormGroup = this.formBuilder.group({
         firstName: [null, [Validators.required, Validators.maxLength(128)]],
@@ -157,4 +166,60 @@ export class OrderRequestFormComponent {
     });
 
     protected isSubmitted = signal<boolean>(false);
+
+    public save(): void {
+        if(this.isSubmitted()) {
+            return;
+        }
+
+        if(this.form.invalid) {
+            this.form.markAllAsDirty();
+            this.toastService.show(this.translateService.instant('form.error'), ToastType.danger);
+            return;
+        }
+
+        this.isSubmitted.set(true);
+        const formValues = this.form.value;
+
+        let params: OrderRequestParams = {
+            firstName: formValues.firstName,
+            lastName: formValues.lastName,
+            email: formValues.email,
+            phoneNumber: formValues.phoneNumber,
+            countryId: formValues.countryId,
+            provinceId: formValues.provinceId,
+            city: formValues.city,
+            postalCode: formValues.postalCode,
+            address: formValues.address,
+            isConsentGiven: formValues.isConsentGiven,
+        };
+
+        if(formValues.alias) {
+            params.alias = formValues.alias;
+        }
+
+        if(formValues.remarks) {
+            params.remarks = formValues.remarks;
+        }
+
+        this.orderRequestService.store(params)
+        .pipe(
+            finalize(() => this.isSubmitted.set(false))
+        )
+        .subscribe({
+            next: () => {
+                this.toastService.show(
+                    this.translateService.instant('orderRequestForm.saveSuccessMessage'),
+                    ToastType.success,
+                );
+            },
+            error: (err) => {
+                console.error(err);
+                this.toastService.show(
+                    this.translateService.instant('orderRequestForm.saveErrorMessage'),
+                    ToastType.danger,
+                );
+            },
+        });
+    }
 }
