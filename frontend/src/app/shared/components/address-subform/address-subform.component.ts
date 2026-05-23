@@ -24,69 +24,83 @@ import { DEFAULT_COUNTRY_SYMBOL } from '../../../app.constants';
     template: `
         <div [formGroup]="form()" class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap mt-4">
             <div class="flex flex-col w-full md:w-1/4">
-                <label for="countryId" class="label">{{ "orderForm.country" | translate }}</label>
+                <label for="countryId" class="label">{{ "addressForm.country" | translate }}</label>
                 <ng-select
                     formControlName="countryId"
                     [items]="countries()"
                     bindValue="id"
                     bindLabel="name"
                     [multiple]="false"
-                    [placeholder]="'orderForm.countryPlaceholder' | translate"
+                    [placeholder]="'addressForm.countryPlaceholder' | translate"
                 />
                 <app-input-error-label [control]="form().get('countryId')" />
             </div>
 
             <div class="flex flex-col w-full md:w-1/3">
-                <label for="provinceId" class="label">{{ "orderForm.province" | translate }}</label>
+                <label for="provinceId" class="label">{{ "addressForm.province" | translate }}</label>
                 <ng-select
                     formControlName="provinceId"
                     [items]="provinces()"
                     bindValue="id"
                     bindLabel="name"
                     [multiple]="false"
-                    [placeholder]="'orderForm.provincePlaceholder' | translate"
+                    [placeholder]="'addressForm.provincePlaceholder' | translate"
                 />
                 <app-input-error-label [control]="form().get('provinceId')" />
             </div>
 
             <div class="flex flex-col w-full md:w-1/3">
-                <label for="cityId" class="label">{{ "orderForm.city" | translate }}</label>
-                <ng-select 
-                    formControlName="cityId"
-                    [items]="cities()"
-                    bindValue="id"
-                    bindLabel="name"
-                    [multiple]="false"
-                    [placeholder]="'orderForm.cityPlaceholder' | translate"
-                    [addTagText]="'orderForm.addCity' | translate"
-                    [addTag]="addNewCity"
-                    (change)="onCityChange($event)"
-                />
-                <app-input-error-label [control]="form().get('cityId')" />
+                @if(allowCitySelection()) {
+                    <label for="cityId" class="label">{{ "addressForm.city" | translate }}</label>
+                    <ng-select 
+                        formControlName="cityId"
+                        [items]="cities()"
+                        bindValue="id"
+                        bindLabel="name"
+                        [multiple]="false"
+                        [placeholder]="'addressForm.cityPlaceholder' | translate"
+                        [addTagText]="'addressForm.addCity' | translate"
+                        [addTag]="addNewCity"
+                        (change)="onCityChange($event)"
+                    />
+                    <app-input-error-label [control]="form().get('cityId')" />
+                }
+                @else {
+                    <label for="city" class="label">{{ "addressForm.city" | translate }}</label>
+                    <input
+                        type="text"
+                        formControlName="city"
+                        id="city"
+                        name="city"
+                        class="input text-xs w-full"
+                        [placeholder]="'addressForm.cityTextPlaceholder' | translate"
+                    />
+                    <app-input-error-label [control]="form().get('city')" />
+                }
             </div>
 
             <div class="flex flex-col w-full md:w-1/3">
-                <label for="postalCode" class="label">{{ "orderForm.postalCode" | translate }}</label>
+                <label for="postalCode" class="label">{{ "addressForm.postalCode" | translate }}</label>
                 <input
                     type="text"
                     formControlName="postalCode"
                     id="postalCode"
                     name="postalCode"
                     class="input text-xs w-full"
-                    [placeholder]="'orderForm.postalCodePlaceholder' | translate"
+                    [placeholder]="'addressForm.postalCodePlaceholder' | translate"
                 />
                 <app-input-error-label [control]="form().get('postalCode')" />
             </div>
 
             <div class="flex flex-col w-full md:flex-1">
-                <label for="address" class="label">{{ "orderForm.address" | translate }}</label>
+                <label for="address" class="label">{{ "addressForm.address" | translate }}</label>
                 <input
                     type="text"
                     formControlName="address"
                     id="address"
                     name="address"
                     class="input text-xs w-full"
-                    [placeholder]="'orderForm.addressPlaceholder' | translate"
+                    [placeholder]="'addressForm.addressPlaceholder' | translate"
                 />
                 <app-input-error-label [control]="form().get('address')" />
             </div>
@@ -102,12 +116,17 @@ export class AddressSubformComponent implements OnInit {
 
     public form = input.required<FormGroup>();
     public setDefaultCountry = input.required<boolean>();
+    public allowCitySelection = input<boolean>(true);
 
     protected countries: WritableSignal<CountryItem[]> = signal<CountryItem[]>([]);
     protected provinces: WritableSignal<ProvinceItem[]> = signal<ProvinceItem[]>([]);
     protected cities: WritableSignal<CityItem[]> = signal<CityItem[]>([]);
 
     get cityName() {
+        if(!this.allowCitySelection()) {
+            return null;
+        }
+
         const cityId = this.form().get('cityId')?.value;
         return this.cities().find((city) => city.id === cityId)?.name; 
     }
@@ -137,9 +156,12 @@ export class AddressSubformComponent implements OnInit {
         .subscribe({
             next: (countryId: number | null) => {
                 this.provinces.set([]);
-                this.cities.set([]);
                 provinceField.reset();
-                this.form().get('cityId')?.reset();
+                
+                if(this.allowCitySelection()) {
+                    this.cities.set([]);
+                    this.form().get('cityId')?.reset();
+                }
 
                 if(countryId) {
                     this.loadProvinces(countryId);
@@ -147,20 +169,22 @@ export class AddressSubformComponent implements OnInit {
             }
         });
 
-        provinceField.valueChanges.pipe(
-            distinctUntilChanged(),
-            takeUntilDestroyed(this.destroyRef),
-        )
-        .subscribe({
-            next: (provinceId: number | null) => {
-                this.cities.set([]);
-                this.form().get('cityId')?.reset();
+        if(this.allowCitySelection()) {
+            provinceField.valueChanges.pipe(
+                distinctUntilChanged(),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe({
+                next: (provinceId: number | null) => {
+                    this.cities.set([]);
+                    this.form().get('cityId')?.reset();
 
-                if(provinceId) {
-                    this.loadCities(provinceId);
+                    if(provinceId) {
+                        this.loadCities(provinceId);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     protected loadCountries(): void {

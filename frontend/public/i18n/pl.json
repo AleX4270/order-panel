@@ -124,16 +124,6 @@
         "statusPlaceholder": "Wybierz status",
         "phoneNumber": "Numer telefonu",
         "phoneNumberPlaceholder": "Wprowadź numer telefonu",
-        "country": "Kraj",
-        "countryPlaceholder": "Wybierz kraj",
-        "province": "Województwo",
-        "provincePlaceholder": "Wybierz województwo",
-        "city": "Miasto",
-        "cityPlaceholder": "Wybierz miasto",
-        "postalCode": "Kod pocztowy",
-        "postalCodePlaceholder": "12-345",
-        "address": "Adres",
-        "addressPlaceholder": "Wprowadź adres",
         "dateCreation": "Data utworzenia",
         "dateDeadline": "Termin realizacji",
         "dateCompleted": "Data ukończenia",
@@ -141,7 +131,6 @@
         "remarksPlaceholder": "Wprowadź uwagi",
         "saveErrorMessage": "Nie udało się zapisać zlecenia",
         "saveSuccessMessage": "Pomyślnie zapisano zlecenie",
-        "addCity": "Dodaj miasto"
     },
     "listTable": {
         "noRecordsFound": "Brak wyników"
@@ -291,5 +280,36 @@
     "orderRequestMapMarker": {
         "distance": "Dystans",
         "dateCreated": "Data zgłoszenia"
+    },
+    "orderRequestForm": {
+        "title": "Formularz zapytania usługowego",
+        "contactData": "Dane kontaktowe",
+        "description": "Uzupełnij formularz, a my skontaktujemy się z Tobą",
+        "firstName": "Imię",
+        "firstNamePlaceholder": "Jan",
+        "lastName": "Nazwisko",
+        "lastNamePlaceholder": "Kowalski",
+        "email": "E-mail",
+        "emailPlaceholder": "Wprowadź adres e-mail",
+        "phoneNumber": "Numer telefonu",
+        "phoneNumberPlaceholder":"Wprowadź numer telefonu",
+        "remarks": "Opis",
+        "remarksPlaceholder": "Opowiedz nam więcej o Twoim zapytaniu, abyśmy mogli lepiej dopasować naszą odpowiedź.",
+        "submit": "Wyślij",
+        "consentMessage": "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu obsługi niniejszego zapytania usługowego."
+    },
+    "addressForm": {
+        "country": "Kraj",
+        "countryPlaceholder": "Wybierz kraj",
+        "province": "Województwo",
+        "provincePlaceholder": "Wybierz województwo",
+        "city": "Miasto",
+        "cityPlaceholder": "Wybierz miasto",
+        "addCity": "Dodaj miasto",
+        "cityTextPlaceholder": "Wpisz miasto",
+        "postalCode": "Kod pocztowy",
+        "postalCodePlaceholder": "12-345",
+        "address": "Adres",
+        "addressPlaceholder": "Wprowadź adres"
     }
 }
