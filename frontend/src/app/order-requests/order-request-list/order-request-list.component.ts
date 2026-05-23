@@ -2,21 +2,17 @@ import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ListTableComponent } from '../../shared/components/list-table/list-table.component';
 import { ExpansionState, ToastType } from '../../shared/enums/enums';
-import { TileComponent } from '../../shared/components/tile/tile.component';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { faEye, faPenToSquare, faTrashCan, faCircleCheck, faCircleXmark } from '@ng-icons/font-awesome/regular';
-import { ColorLabelComponent } from '../../shared/components/color-label/color-label.component';
 import { CardComponent } from '../../shared/components/card/card.component';
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 import { FiltersComponent } from '../../shared/components/filters/filters.component';
 import { FilterType } from '../../shared/enums/filter-type.enum';
-import { OrderFormModalComponent } from '../../orders/order-form-modal/order-form-modal.component';
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { PaginationItem } from '../../shared/types/pagination.types';
 import { SortItem } from '../../shared/types/sort.types';
 import { PromptModalService } from '../../shared/services/prompt-modal/prompt-modal.service';
 import { ToastService } from '../../shared/services/toast/toast.service';
-import { ButtonComponent } from '../../shared/components/button/button.component';
 import { HasPermissionDirective } from '../../shared/directives/has-permission.directive';
 import { Permission } from '../../shared/enums/permission.enum';
 import { CompanyService } from '../../shared/services/api/company/company.service';
@@ -26,6 +22,7 @@ import { Coordinates } from '../../shared/types/address.types';
 import { OrderRequestFilterParams, OrderRequestItem } from '../../shared/types/order-request.types';
 import { OrderRequestService } from '../../shared/services/api/order-request/order-request.service';
 import { OrderRequestMapComponent } from '../../shared/components/order-request-map/order-request-map.component';
+import { CastToTelHrefPipe } from '../../shared/pipes/cast-to-tel-href.pipe';
 
 @Component({
     selector: 'app-order-request-list',
@@ -39,6 +36,7 @@ import { OrderRequestMapComponent } from '../../shared/components/order-request-
     DatePipe,
     HasPermissionDirective,
     OrderRequestMapComponent,
+    CastToTelHrefPipe
 ],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan, faCircleCheck, faCircleXmark})],
     template: `
@@ -93,8 +91,8 @@ import { OrderRequestMapComponent } from '../../shared/components/order-request-
                                 <td>
                                     <div class="flex flex-col">
                                         <span class="text-xs">{{item.firstName + ' ' + item.lastName}}</span>
-                                        <span class="text-base-content/70 font-light mt-1">{{item.phoneNumber}}</span>
-                                        <span class="text-base-content/50 font-light mt-1">{{item.email}}</span>
+                                        <a class="text-primary/70 hover:underline mt-1" [href]="item.phoneNumber | castToTelHref">{{item.phoneNumber}}</a>
+                                        <a class="text-primary/50 hover:underline mt-1" [href]="'mailto:' + item.email">{{item.email}}</a>
                                     </div>
                                 </td>
                                 <td><span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span></td>
@@ -160,13 +158,13 @@ import { OrderRequestMapComponent } from '../../shared/components/order-request-
                                             <div class="row-details-box">
                                                 <span class="row-details-label">{{ 'orderRequestDetails.phoneNumber' | translate}}</span>
                                                 <div class="row-details-value">
-                                                    <span>{{ item.phoneNumber }}</span>
+                                                    <a class="text-primary/85 hover:underline" [href]="item.phoneNumber | castToTelHref">{{item.phoneNumber}}</a>
                                                 </div>
                                             </div>
                                             <div class="row-details-box">
                                                 <span class="row-details-label">{{ 'orderRequestDetails.email' | translate}}</span>
                                                 <div class="row-details-value">
-                                                    <span>{{item.phoneNumber}}</span>
+                                                    <a class="text-primary/85 hover:underline" [href]="'mailto:' + item.email">{{item.email}}</a>
                                                 </div>
                                             </div>
                                             <div class="row-details-box">

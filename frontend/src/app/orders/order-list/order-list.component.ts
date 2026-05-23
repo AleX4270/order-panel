@@ -29,6 +29,7 @@ import { CompanyService } from '../../shared/services/api/company/company.servic
 import { CompanyItem } from '../../shared/types/company.types';
 import { DEFAULT_COORDINATES } from '../../shared/constants/map.const';
 import { Coordinates } from '../../shared/types/address.types';
+import { CastToTelHrefPipe } from '../../shared/pipes/cast-to-tel-href.pipe';
 
 @Component({
     selector: 'app-order-list',
@@ -46,7 +47,8 @@ import { Coordinates } from '../../shared/types/address.types';
     NgClass,
     ButtonComponent,
     HasPermissionDirective,
-    OrderMapComponent
+    OrderMapComponent, 
+    CastToTelHrefPipe,
 ],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan, faCircleCheck})],
     template: `
@@ -183,7 +185,7 @@ import { Coordinates } from '../../shared/types/address.types';
                                             <div class="row-details-box">
                                                 <span class="row-details-label">{{ 'orderDetails.phoneNumber' | translate}}</span>
                                                 <div class="row-details-value">
-                                                    <span>{{ item.phoneNumber }}</span>
+                                                    <a class="text-primary/85 hover:underline" [href]="item.phoneNumber | castToTelHref">{{item.phoneNumber}}</a>
                                                 </div>
                                             </div>
                                         </div>
