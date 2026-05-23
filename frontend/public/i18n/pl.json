@@ -130,7 +130,7 @@
         "remarks": "Uwagi",
         "remarksPlaceholder": "Wprowadź uwagi",
         "saveErrorMessage": "Nie udało się zapisać zlecenia",
-        "saveSuccessMessage": "Pomyślnie zapisano zlecenie",
+        "saveSuccessMessage": "Pomyślnie zapisano zlecenie"
     },
     "listTable": {
         "noRecordsFound": "Brak wyników"
