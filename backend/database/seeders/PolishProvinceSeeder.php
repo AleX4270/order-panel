@@ -9,16 +9,17 @@ use App\Models\Province;
 use Illuminate\Support\Facades\DB;
 
 class PolishProvinceSeeder extends Seeder {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void {
         DB::transaction(function() {
             $provinces = $this->getProvinces();
             foreach($provinces as $province) {
                 $countryId = Country::where('symbol', $province['countrySymbol'])->first()?->id;
 
-                Province::insert(
+                Province::updateOrCreate(
+                    [
+                        'country_id' => $countryId,
+                        'name' => $province['name']
+                    ],
                     [
                         'country_id' => $countryId,
                         'name' => $province['name']
