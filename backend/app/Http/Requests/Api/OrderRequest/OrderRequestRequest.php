@@ -30,6 +30,7 @@ class OrderRequestRequest extends FormRequest {
             'address' => ['required', 'string', 'max:255'],
             'remarks' => ['nullable', 'string', 'max:2000'],
             'isConsentGiven' => ['required', 'accepted'],
+            'citizenship' => ['prohibited']
         ];
     }
 

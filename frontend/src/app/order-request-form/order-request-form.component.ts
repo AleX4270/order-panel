@@ -120,6 +120,16 @@ import { finalize } from 'rxjs';
                                     /> 
                                     <label for="isConsentGiven" class="text-wrap label field-required">{{ "orderRequestForm.consentMessage" | translate }}</label>
                                     <app-input-error-label [control]="form.get('isConsentGiven')" />
+
+                                    <input
+                                        formControlName="citizenship"
+                                        id="citizenship"
+                                        name="citizenship"
+                                        class="absolute left-[-9999px] opacity-0 h-0 w-0"
+                                        autocomplete="off"
+                                        tabindex="-1"
+                                        aria-hidden="true"
+                                    />
                                 </div>
                             </div>
 
@@ -163,6 +173,7 @@ export class OrderRequestFormComponent {
         address: [null, [Validators.required, Validators.maxLength(255)]],
         remarks: [null, [Validators.maxLength(2000)]],
         isConsentGiven: [null, Validators.requiredTrue],
+        citizenship: [null],
     });
 
     protected isSubmitted = signal<boolean>(false);
@@ -200,6 +211,10 @@ export class OrderRequestFormComponent {
 
         if(formValues.remarks) {
             params.remarks = formValues.remarks;
+        }
+
+        if(formValues.citizenship) {
+            params.citizenship = formValues.citizenship;
         }
 
         this.orderRequestService.store(params)

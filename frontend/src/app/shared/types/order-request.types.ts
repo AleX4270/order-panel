@@ -36,4 +36,5 @@ export interface OrderRequestParams {
     address: string;
     remarks?: string;
     isConsentGiven: boolean;
+    citizenship?: string;
 }
