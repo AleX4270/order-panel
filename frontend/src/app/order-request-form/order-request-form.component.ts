@@ -22,8 +22,8 @@ import { finalize } from 'rxjs';
         AddressSubformComponent,
     ],
     template: `
-        <div class="min-h-screen flex items-center justify-center px-2 sm:px-4">
-            <div class="min-w-md">
+        <div class="min-h-screen flex items-center justify-center">
+            <div class="w-full md:max-w-5xl">
                 <div class="w-full flex justify-center pb-5">
                     <h1 class="text-primary font-bold text-3xl">{{"orderRequestForm.title" | translate}}</h1>
                 </div>
@@ -64,7 +64,7 @@ import { finalize } from 'rxjs';
                                 </div>
                             </div>
 
-                            <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
+                            <div class="w-full flex flex-col items-center gap-y-3 mt-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
                                 <div class="flex flex-col w-full md:flex-1">
                                     <label for="email" class="label field-required">{{ "orderRequestForm.email" | translate }}</label>
                                     <input
@@ -94,7 +94,7 @@ import { finalize } from 'rxjs';
 
                             <app-address-subform [form]="form" [setDefaultCountry]="true" [allowCitySelection]="false"/>
 
-                            <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
+                            <div class="w-full flex flex-col items-center gap-y-3 mt-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
                                 <div class="flex flex-col w-full">
                                     <label for="remarks" class="label">{{ "orderRequestForm.remarks" | translate }}</label>
                                     <textarea
@@ -109,7 +109,7 @@ import { finalize } from 'rxjs';
                                 </div>
                             </div>
 
-                            <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap md:mt-5">
+                            <div class="w-full flex flex-col items-center gap-y-3 mt-5 md:flex-row md:gap-3 md:flex-wrap">
                                 <div class="flex gap-1 w-full">
                                     <input
                                         type="checkbox"
@@ -118,7 +118,7 @@ import { finalize } from 'rxjs';
                                         name="isConsentGiven"
                                         class="toggle toggle-sm me-1"
                                     /> 
-                                    <label for="isConsentGiven" class="label field-required">{{ "orderRequestForm.consentMessage" | translate }}</label>
+                                    <label for="isConsentGiven" class="text-wrap label field-required">{{ "orderRequestForm.consentMessage" | translate }}</label>
                                     <app-input-error-label [control]="form.get('isConsentGiven')" />
                                 </div>
                             </div>
@@ -136,7 +136,7 @@ import { finalize } from 'rxjs';
                     </div>
                 </div>
 
-                <div class="mt-3">
+                <div class="mt-3 mb-3 md:mb-0">
                     <app-small-footer />
                 </div>
             </div>
@@ -215,10 +215,7 @@ export class OrderRequestFormComponent {
             },
             error: (err) => {
                 console.error(err);
-                this.toastService.show(
-                    this.translateService.instant('orderRequestForm.saveErrorMessage'),
-                    ToastType.danger,
-                );
+                this.toastService.show(err.error.message, ToastType.danger);
             },
         });
     }

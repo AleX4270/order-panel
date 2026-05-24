@@ -13,5 +13,5 @@ return [
     'orderAlreadyCompleted' => "Zlecenie już jest oznaczone jako ukończone",
 
     //Geocoding
-    'coordinatesNotFound' => "Nie udało się pobrać współrzędnych dla podanego adresu zlecenia",
+    'coordinatesNotFound' => "Nie udało się pobrać współrzędnych dla podanego adresu",
 ];
