@@ -20,7 +20,7 @@ class OrderRequestCreatedMail extends Mailable {
 
     public function envelope(): Envelope {
         return new Envelope(
-            subject: __('mail.orderCompletedSubject', ['orderRequestId' => $this->orderRequest->id]),
+            subject: __('mail.orderRequestCreatedSubject'),
         );
     }
 
