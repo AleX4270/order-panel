@@ -23,133 +23,151 @@ import { finalize } from 'rxjs';
     ],
     template: `
         <div class="min-h-screen flex items-center justify-center">
-            <div class="w-full md:max-w-5xl">
-                <div class="w-full flex justify-center pb-5">
-                    <h1 class="text-primary font-bold text-3xl">{{"orderRequestForm.title" | translate}}</h1>
-                </div>
+            @if(formScenario() === 'active') {
+                <div class="w-full md:max-w-5xl">
+                    <div class="w-full flex justify-center pb-5">
+                        <h1 class="text-primary font-bold text-3xl">{{"orderRequestForm.title" | translate}}</h1>
+                    </div>
 
-                <div class="card bg-base-100 sm:p-1 sm:shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title text-xl">{{ "orderRequestForm.contactData" | translate }}</h5>
-                        <p class="text-base-content/50 mt-1">
-                            {{ "orderRequestForm.description" | translate }}
-                        </p>
+                    <div class="card bg-base-100 sm:p-1 sm:shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-xl">{{ "orderRequestForm.contactData" | translate }}</h5>
+                            <p class="text-base-content/50 mt-1">
+                                {{ "orderRequestForm.description" | translate }}
+                            </p>
 
-                        <form [formGroup]="form" (ngSubmit)="save()" class="[&_label]:mb-2">
-                            <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
-                                <div class="flex flex-col w-full md:flex-1">
-                                    <label for="firstName" class="label field-required">{{ "orderRequestForm.firstName" | translate }}</label>
-                                    <input
-                                        type="text"
-                                        formControlName="firstName"
-                                        id="firstName"
-                                        name="firstName"
-                                        class="input text-xs w-full"
-                                        [placeholder]="'orderRequestForm.firstNamePlaceholder' | translate"
-                                    />
-                                    <app-input-error-label [control]="form.get('firstName')" />
+                            <form [formGroup]="form" (ngSubmit)="save()" class="[&_label]:mb-2">
+                                <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
+                                    <div class="flex flex-col w-full md:flex-1">
+                                        <label for="firstName" class="label field-required">{{ "orderRequestForm.firstName" | translate }}</label>
+                                        <input
+                                            type="text"
+                                            formControlName="firstName"
+                                            id="firstName"
+                                            name="firstName"
+                                            class="input text-xs w-full"
+                                            [placeholder]="'orderRequestForm.firstNamePlaceholder' | translate"
+                                        />
+                                        <app-input-error-label [control]="form.get('firstName')" />
+                                    </div>
+
+                                    <div class="flex flex-col w-full md:flex-1">
+                                        <label for="lastName" class="label field-required">{{ "orderRequestForm.lastName" | translate }}</label>
+                                        <input
+                                            type="text"
+                                            formControlName="lastName"
+                                            id="lastName"
+                                            name="lastName"
+                                            class="input text-xs w-full"
+                                            [placeholder]="'orderRequestForm.lastNamePlaceholder' | translate"
+                                        />
+                                        <app-input-error-label [control]="form.get('lastName')" />
+                                    </div>
                                 </div>
 
-                                <div class="flex flex-col w-full md:flex-1">
-                                    <label for="lastName" class="label field-required">{{ "orderRequestForm.lastName" | translate }}</label>
-                                    <input
-                                        type="text"
-                                        formControlName="lastName"
-                                        id="lastName"
-                                        name="lastName"
-                                        class="input text-xs w-full"
-                                        [placeholder]="'orderRequestForm.lastNamePlaceholder' | translate"
-                                    />
-                                    <app-input-error-label [control]="form.get('lastName')" />
+                                <div class="w-full flex flex-col items-center gap-y-3 mt-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
+                                    <div class="flex flex-col w-full md:flex-1">
+                                        <label for="email" class="label field-required">{{ "orderRequestForm.email" | translate }}</label>
+                                        <input
+                                            type="email"
+                                            formControlName="email"
+                                            id="email"
+                                            name="email"
+                                            class="input text-xs w-full"
+                                            [placeholder]="'orderRequestForm.emailPlaceholder' | translate"
+                                        />
+                                        <app-input-error-label [control]="form.get('email')" />
+                                    </div>
+
+                                    <div class="flex flex-col w-full md:flex-1">
+                                        <label for="phoneNumber" class="label field-required">{{ "orderRequestForm.phoneNumber" | translate }}</label>
+                                        <input
+                                            type="tel"
+                                            formControlName="phoneNumber"
+                                            id="phoneNumber"
+                                            name="phoneNumber"
+                                            class="input text-xs w-full"
+                                            [placeholder]="'orderRequestForm.phoneNumberPlaceholder' | translate"
+                                        />
+                                        <app-input-error-label [control]="form.get('phoneNumber')" />
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="w-full flex flex-col items-center gap-y-3 mt-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
-                                <div class="flex flex-col w-full md:flex-1">
-                                    <label for="email" class="label field-required">{{ "orderRequestForm.email" | translate }}</label>
-                                    <input
-                                        type="email"
-                                        formControlName="email"
-                                        id="email"
-                                        name="email"
-                                        class="input text-xs w-full"
-                                        [placeholder]="'orderRequestForm.emailPlaceholder' | translate"
-                                    />
-                                    <app-input-error-label [control]="form.get('email')" />
+                                <app-address-subform [form]="form" [setDefaultCountry]="true" [allowCitySelection]="false"/>
+
+                                <div class="w-full flex flex-col items-center gap-y-3 mt-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
+                                    <div class="flex flex-col w-full">
+                                        <label for="remarks" class="label">{{ "orderRequestForm.remarks" | translate }}</label>
+                                        <textarea
+                                            id="remarks"
+                                            name="remarks"
+                                            rows="4"
+                                            formControlName="remarks"
+                                            class="textarea mt-2 text-xs w-full"
+                                            [placeholder]="'orderRequestForm.remarksPlaceholder' | translate"
+                                        ></textarea>
+                                        <app-input-error-label [control]="form.get('remarks')" />
+                                    </div>
                                 </div>
 
-                                <div class="flex flex-col w-full md:flex-1">
-                                    <label for="phoneNumber" class="label field-required">{{ "orderRequestForm.phoneNumber" | translate }}</label>
-                                    <input
-                                        type="tel"
-                                        formControlName="phoneNumber"
-                                        id="phoneNumber"
-                                        name="phoneNumber"
-                                        class="input text-xs w-full"
-                                        [placeholder]="'orderRequestForm.phoneNumberPlaceholder' | translate"
-                                    />
-                                    <app-input-error-label [control]="form.get('phoneNumber')" />
+                                <div class="w-full flex flex-col items-center gap-y-3 mt-5 md:flex-row md:gap-3 md:flex-wrap">
+                                    <div class="flex gap-1 w-full">
+                                        <input
+                                            type="checkbox"
+                                            formControlName="isConsentGiven"
+                                            id="isConsentGiven"
+                                            name="isConsentGiven"
+                                            class="toggle toggle-sm me-1"
+                                        /> 
+                                        <label for="isConsentGiven" class="text-wrap label field-required">{{ "orderRequestForm.consentMessage" | translate }}</label>
+                                        <app-input-error-label [control]="form.get('isConsentGiven')" />
+
+                                        <input
+                                            formControlName="citizenship"
+                                            id="citizenship"
+                                            name="citizenship"
+                                            class="absolute left-[-9999px] opacity-0 h-0 w-0"
+                                            autocomplete="off"
+                                            tabindex="-1"
+                                            aria-hidden="true"
+                                        />
+                                    </div>
                                 </div>
-                            </div>
 
-                            <app-address-subform [form]="form" [setDefaultCountry]="true" [allowCitySelection]="false"/>
-
-                            <div class="w-full flex flex-col items-center gap-y-3 mt-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
-                                <div class="flex flex-col w-full">
-                                    <label for="remarks" class="label">{{ "orderRequestForm.remarks" | translate }}</label>
-                                    <textarea
-                                        id="remarks"
-                                        name="remarks"
-                                        rows="4"
-                                        formControlName="remarks"
-                                        class="textarea mt-2 text-xs w-full"
-                                        [placeholder]="'orderRequestForm.remarksPlaceholder' | translate"
-                                    ></textarea>
-                                    <app-input-error-label [control]="form.get('remarks')" />
+                                <div class="card-actions w-full">
+                                    <app-button
+                                        class="w-full"
+                                        classList="w-full btn btn-primary mt-10"
+                                        type="submit"
+                                        [isDisabled]="!form.get('isConsentGiven')?.value"
+                                        [isLoading]="isSubmitted()"
+                                    >{{'orderRequestForm.submit' | translate}}</app-button>
                                 </div>
-                            </div>
+                            </form>
+                        </div>
+                    </div>
 
-                            <div class="w-full flex flex-col items-center gap-y-3 mt-5 md:flex-row md:gap-3 md:flex-wrap">
-                                <div class="flex gap-1 w-full">
-                                    <input
-                                        type="checkbox"
-                                        formControlName="isConsentGiven"
-                                        id="isConsentGiven"
-                                        name="isConsentGiven"
-                                        class="toggle toggle-sm me-1"
-                                    /> 
-                                    <label for="isConsentGiven" class="text-wrap label field-required">{{ "orderRequestForm.consentMessage" | translate }}</label>
-                                    <app-input-error-label [control]="form.get('isConsentGiven')" />
-
-                                    <input
-                                        formControlName="citizenship"
-                                        id="citizenship"
-                                        name="citizenship"
-                                        class="absolute left-[-9999px] opacity-0 h-0 w-0"
-                                        autocomplete="off"
-                                        tabindex="-1"
-                                        aria-hidden="true"
-                                    />
-                                </div>
-                            </div>
-
-                            <div class="card-actions w-full">
-                                <app-button
-                                    class="w-full"
-                                    classList="w-full btn btn-primary mt-10"
-                                    type="submit"
-                                    [isDisabled]="!form.get('isConsentGiven')?.value"
-                                    [isLoading]="isSubmitted()"
-                                >{{'orderRequestForm.submit' | translate}}</app-button>
-                            </div>
-                        </form>
+                    <div class="mt-3 mb-3 md:mb-0">
+                        <app-small-footer />
                     </div>
                 </div>
-
-                <div class="mt-3 mb-3 md:mb-0">
-                    <app-small-footer />
+            }
+            @else {
+                <div class="w-full md:max-w-xl">
+                    <div class="card bg-base-100 sm:p-1 sm:shadow-sm">
+                        <div class="card-body flex justify-center items-center">
+                            <h5 class="card-title text-2xl text-primary">{{ "orderRequestForm.orderRequestSent" | translate }}</h5>
+                            <p class="text-base-content/50 mt-1">
+                                {{ "orderRequestForm.orderRequestSubmitted" | translate }}
+                            </p>
+                            <app-button
+                                classList="w-full btn btn-soft mt-5"
+                                (click)="showForm()"
+                            >{{'basic.return' | translate}}</app-button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
     `,
     styles: [``],
@@ -177,6 +195,7 @@ export class OrderRequestFormComponent {
     });
 
     protected isSubmitted = signal<boolean>(false);
+    protected formScenario = signal<'active' | 'submitted'>('active');
 
     public save(): void {
         if(this.isSubmitted()) {
@@ -223,15 +242,16 @@ export class OrderRequestFormComponent {
         )
         .subscribe({
             next: () => {
-                this.toastService.show(
-                    this.translateService.instant('orderRequestForm.saveSuccessMessage'),
-                    ToastType.success,
-                );
+                this.formScenario.set('submitted');
             },
             error: (err) => {
                 console.error(err);
                 this.toastService.show(err.error.message, ToastType.danger);
             },
         });
+    }
+
+    protected showForm(): void {
+        this.formScenario.set('active');
     }
 }
