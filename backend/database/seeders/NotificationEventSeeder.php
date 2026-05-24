@@ -52,6 +52,13 @@ class NotificationEventSeeder extends Seeder {
                     'en' => 'Upcoming order deadline',
                 ]
             ],
+            [
+                'symbol' => 'order_request_created',
+                'translations' => [
+                    'pl' => 'Otrzymanie nowego zapytania usługowego',
+                    'en' => 'Receiving a new order request',
+                ]
+            ],
         ];
     }
 }

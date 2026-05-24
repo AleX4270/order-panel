@@ -10,6 +10,7 @@ use App\Dtos\Api\OrderRequest\OrderRequestDto;
 use App\Dtos\Api\OrderRequest\OrderRequestFilterDto;
 use App\Enums\OrderStatusType;
 use App\Enums\PriorityType;
+use App\Events\OrderRequestCreated;
 use App\Models\Language;
 use App\Models\Order;
 use App\Models\OrderRequest;
@@ -85,8 +86,7 @@ class OrderRequestService {
                 'consent_given_at' => now(),
             ]);
 
-            // TODO: Broadcast a notification
-
+            OrderRequestCreated::dispatch($orderRequest);
             DB::commit();
         }
         catch(Exception $e) {

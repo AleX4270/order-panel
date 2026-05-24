@@ -6,4 +6,5 @@ namespace App\Enums;
 enum NotificationEventType: string {
     case ORDER_COMPLETED = 'order_completed';
     case INCOMING_ORDER_DEADLINE = 'incoming_order_deadline';
+    case ORDER_REQUEST_CREATED = 'order_request_created';
 }
