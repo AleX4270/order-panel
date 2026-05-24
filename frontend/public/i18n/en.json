@@ -37,7 +37,8 @@
     "settings": "Settings",
     "users": "Users",
     "logout": "Logout",
-    "companySettings": "Company details"
+    "companySettings": "Company details",
+    "orderRequests": "Order requests"
   },
   "form": {
     "error": "The form contains invalid data"
@@ -106,6 +107,12 @@
     "distanceZeroError": "Distance cannot be 0",
     "distanceNotANumberError": "The provided value is not a number"
   },
+  "orderRequestListFilters": {
+    "allFields": "All fields",
+    "allFieldsPlaceholder": "Enter a phrase",
+    "distanceFromHeadquarters": "Distance from headquarters (km)",
+    "dateCreation": "Submission date"
+  },
   "orderForm": {
     "createTitle": "New Order Form",
     "updateTitle": "Order Form",
@@ -117,24 +124,13 @@
     "statusPlaceholder": "Select status",
     "phoneNumber": "Phone number",
     "phoneNumberPlaceholder": "Enter phone number",
-    "country": "Country",
-    "countryPlaceholder": "Select country",
-    "province": "Province",
-    "provincePlaceholder": "Select province",
-    "city": "City",
-    "cityPlaceholder": "Select city",
-    "postalCode": "Postal code",
-    "postalCodePlaceholder": "12-345",
-    "address": "Address",
-    "addressPlaceholder": "Enter address",
     "dateCreation": "Creation date",
     "dateDeadline": "Deadline date",
     "dateCompleted": "Completion date",
     "remarks": "Remarks",
     "remarksPlaceholder": "Enter remarks",
     "saveErrorMessage": "Failed to save order",
-    "saveSuccessMessage": "Order saved successfully",
-    "addCity": "Add city"
+    "saveSuccessMessage": "Order saved successfully"
   },
   "listTable": {
     "noRecordsFound": "No records found"
@@ -242,5 +238,81 @@
     "saveSuccess": "Company data saved successfully",
     "saveError": "Failed to save company data",
     "loadError": "Failed to load company data"
+  },
+  "orderRequestList": {
+    "header": "Order Request List",
+    "acceptSuccess": "Order request successfully marked as an active order",
+    "acceptError": "Failed to mark order request as an active order",
+    "rejectSuccess": "Order request rejected successfully",
+    "rejectError": "Failed to reject order request",
+    "orderRequests": "Order requests",
+    "companyDetailsLoadError": "Failed to load company data"
+  },
+  "orderRequestListTable": {
+    "orderRequestNo": "Request number",
+    "client": "Client",
+    "address": "Address",
+    "dateCreated": "Submission date",
+    "remarks": "Remarks",
+    "actions": "Actions",
+    "details": "Details",
+    "accept": "Accept",
+    "reject": "Reject"
+  },
+  "orderRequestAcceptPromptModal": {
+    "title": "Confirmation of marking order request as an active order",
+    "message": "Do you confirm marking this order request as an active order?"
+  },
+  "orderRequestRejectPromptModal": {
+    "title": "Order request rejection confirmation",
+    "message": "Do you confirm rejecting this order request?"
+  },
+  "orderRequestDetails": {
+    "header": "Order request details",
+    "orderRequestNo": "Request number",
+    "address": "Address",
+    "client": "Client",
+    "phoneNumber": "Phone number",
+    "email": "Email",
+    "dateCreated": "Creation date",
+    "remarks": "Remarks"
+  },
+  "orderRequestMapMarker": {
+    "distance": "Distance",
+    "dateCreated": "Submission date"
+  },
+  "orderRequestForm": {
+    "title": "Order request form",
+    "contactData": "Contact details",
+    "description": "Fill out the form and we will get in touch with you.",
+    "firstName": "First name",
+    "firstNamePlaceholder": "John",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "Smith",
+    "email": "Email",
+    "emailPlaceholder": "Your email address",
+    "phoneNumber": "Phone number",
+    "phoneNumberPlaceholder": "Your phone number",
+    "remarks": "Description",
+    "remarksPlaceholder": "Tell us more about your request so we can better tailor our response.",
+    "submit": "Send",
+    "consentMessage": "I consent to the processing of my personal data for the purpose of handling this order request.",
+    "saveErrorMessage": "Failed to send order request",
+    "orderRequestSent": "Your request has been sent!",
+    "orderRequestSubmitted": "We have received your order request. We have started processing it and will get back to you as soon as possible."
+  },
+  "addressForm": {
+    "country": "Country",
+    "countryPlaceholder": "Select country",
+    "province": "Province",
+    "provincePlaceholder": "Select province",
+    "city": "City",
+    "cityPlaceholder": "Select city",
+    "addCity": "Add city",
+    "cityTextPlaceholder": "Enter city",
+    "postalCode": "Postal code",
+    "postalCodePlaceholder": "12-345",
+    "address": "Address",
+    "addressPlaceholder": "Enter address"
   }
 }
