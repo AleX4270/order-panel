@@ -7,7 +7,8 @@ return [
     'deleted' => 'Deleted',
     'unauthorized' => 'Unauthorized request',
     'internalError' => "Internal error",
-    'notFound' => "Not found",
+    'notFound' => 'Not found',
+    'tooManyAttempts' => 'Too many attempts. Please try again later.',
 
     // Orders
     'orderAlreadyCompleted' => "The order is already marked as completed",

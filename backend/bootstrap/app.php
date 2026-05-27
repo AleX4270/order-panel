@@ -1,8 +1,11 @@
 <?php
 
+use App\Enums\HttpStatus;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,4 +21,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->statefulApi();
     })
-    ->withExceptions(function (Exceptions $exceptions) {})->create();
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->render(function(ThrottleRequestsException $e, Request $request) {
+            if($request->expectsJson()) {
+                return response()->json([
+                    'message' => __('response.tooManyAttempts'),
+                ], HttpStatus::TOO_MANY_REQUESTS->value, $e->getHeaders());
+            }
+        });
+    })->create();
