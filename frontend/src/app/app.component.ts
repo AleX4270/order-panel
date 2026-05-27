@@ -1,5 +1,5 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageType } from './shared/enums/enums';
 import { ToastDisplayerComponent } from './shared/components/toast-displayer/toast-displayer.component';
@@ -11,6 +11,9 @@ import { NgSelectConfig } from '@ng-select/ng-select';
 import { PromptModalComponent } from './shared/components/prompt-modal/prompt-modal.component';
 import { UserNotificationService } from './shared/services/user-notification/user-notification.service';
 import { NotificationDrawerComponent } from "./shared/components/notification-drawer/notification-drawer.component";
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter, map, startWith } from 'rxjs';
+import { NAVBAR_EXCLUDED_PAGES } from './app.constants';
 
 @Component({
     selector: 'app-root',
@@ -24,10 +27,10 @@ import { NotificationDrawerComponent } from "./shared/components/notification-dr
 ],
     template: `
         <main class="w-full">
-            @if(isUserAuthenticated()) {
+            @if(isNavbarVisible()) {
                 <app-navbar class="sticky top-0 z-50"/>
             }
-            <div class="w-full px-2 sm:px-6 lg:px-20 content-box" [class.pt-5]="isUserAuthenticated()">
+            <div class="w-full px-2 sm:px-6 lg:px-20 content-box" [class.pt-5]="isNavbarVisible()">
                 <app-toast-displayer/>
                 <app-prompt-modal />
                 <app-notification-drawer>
@@ -43,11 +46,6 @@ import { NotificationDrawerComponent } from "./shared/components/notification-dr
         main {
             background-color: color-mix(in oklch, var(--color-neutral) 2%, transparent);
             min-height: 100dvh;
-            // background-color: red;
-        }
-
-        .content-box {
-            // min-height: calc(100vh - var(--navbar-height, 0px));
         }
     `]
 })
@@ -56,9 +54,29 @@ export class AppComponent implements OnInit {
     private readonly store = inject(Store);
     private readonly ngSelectConfig = inject(NgSelectConfig);
     private readonly userNotificationService = inject(UserNotificationService);
+    private readonly router = inject(Router);
+
+    protected currentRoute = toSignal(
+        this.router.events.pipe(
+            filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+            map(e => e.urlAfterRedirects),
+        ),
+        { initialValue: this.router.url },
+    );
 
     protected isUserAuthenticated = this.store.selectSignal(UserState.isAuthenticated);
     protected selectedLanguage = this.store.selectSignal(UserState.userLanguage);
+
+    protected isNavbarVisible = computed(() => {
+        const isUserAuthenticated = this.isUserAuthenticated();
+        const currentRoute = this.currentRoute();
+
+        if(currentRoute && NAVBAR_EXCLUDED_PAGES.includes(currentRoute)) {
+            return false;
+        }
+
+        return isUserAuthenticated;
+    });
 
     constructor() {
         effect(() => {

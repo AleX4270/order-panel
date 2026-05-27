@@ -13,3 +13,7 @@ export const PAGINATION_PAGE_SIZE: number = 10;
 export const DEFAULT_COUNTRY_SYMBOL: Country = Country.pl;
 export const DEFAULT_PRIORITY_SYMBOL: Priority = Priority.standard;
 export const DEFAULT_STATUS_SYMBOL: Status = Status.in_progress;
+
+export const NAVBAR_EXCLUDED_PAGES = [
+    '/order-request-form',
+];
