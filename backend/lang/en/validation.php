@@ -163,6 +163,8 @@ return [
     'ulid' => 'The :attribute field must be a valid ULID.',
     'uuid' => 'The :attribute field must be a valid UUID.',
     'passwordTooWeak' => 'Password does not meet requirements. It should contain at least 8 characters, one uppercase letter, one lowercase letter, one digit, and one special character.',
+    'duplicatedName' => 'This username is already assigned to an existing user',
+    'duplicatedEmail' => 'This e-mail address is already assigned to an existing user',
 
     /*
     |--------------------------------------------------------------------------

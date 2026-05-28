@@ -13,7 +13,7 @@ final readonly class UserDto {
         public ?string $password = null,
         public ?string $passwordConfirmed = null,
         public ?array $roles = null,
-        public array $notificationSettings,
+        public ?array $notificationSettings = null,
     ) {}
 
     public static function fromArray(array $data): self {

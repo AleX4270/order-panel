@@ -24,7 +24,7 @@ class UserRequest extends FormRequest {
             'password' => ['sometimes', 'string', 'confirmed:passwordConfirmed', 'regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[#?!@$%^&*\-.,]).{8,}$/',],
             'passwordConfirmed' => ['required_with:password', 'string'],
             'roles' => ['sometimes', 'array'],
-            'notificationSettings' => ['required', 'array'],
+            'notificationSettings' => ['nullable', 'array'],
         ];
     }
 
@@ -54,11 +54,11 @@ class UserRequest extends FormRequest {
         }
 
         if($matchingNameUser->exists()) {
-            $validator->errors()->add('name', __('messages.duplicatedName'));
+            $validator->errors()->add('name', __('validation.duplicatedName'));
         }
 
         if($matchingEmailUser->exists()) {
-            $validator->errors()->add('email', __('messages.duplicatedEmail'));
+            $validator->errors()->add('email', __('validation.duplicatedEmail'));
         }
     }
 

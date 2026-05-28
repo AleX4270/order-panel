@@ -163,6 +163,8 @@ return [
     'ulid'                 => 'Pole :attribute musi być prawidłowym ULID.',
     'uuid'                 => 'Pole :attribute musi być prawidłowym UUID.',
     'passwordTooWeak' => 'Hasło nie spełnia wymagań. Powinno ono zawierać m.in 8 znaków, jedną dużą literę, jedną małą literę, jedną cyfrę oraz znak specjalny',
+    'duplicatedName' => 'Ta nazwa użytkownika jest już przypisana do istniejącego użytkownika',
+    'duplicatedEmail' => 'Ten adres e-mail jest już przypisany do istniejącego użytkownika',
 
     /*
     |--------------------------------------------------------------------------
