@@ -155,7 +155,7 @@ import { NotificationSettingsSet } from '../../shared/types/notification.types';
                                                         (change)="switchNotificationEventChannel($event.target.checked, event.id, channel.id)"
                                                         [checked]="isChannelChecked(event.id, channel.id)"
                                                     /> 
-                                                    <label [for]="'event-' + event.id + '-channel-' + channel.id">{{ channel.name }}</label>
+                                                    <label [for]="'event-' + event.id + '-channel-' + channel.id" class="cursor-pointer">{{ channel.name }}</label>
                                                 </div>
                                             }
                                         </div>
