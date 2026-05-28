@@ -21,7 +21,7 @@ class UserRequest extends FormRequest {
             'lastName' => ['sometimes', 'string'],
             'username' => ['required', 'string'],
             'email' => ['required', 'email'],
-            'password' => ['sometimes', 'string', 'confirmed:passwordConfirmed', 'regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[#?!@$%^&*\-.,]).{8,}$/',],
+            'password' => ['required_without:id', 'string', 'confirmed:passwordConfirmed', 'regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[#?!@$%^&*\-.,]).{8,}$/',],
             'passwordConfirmed' => ['required_with:password', 'string'],
             'roles' => ['sometimes', 'array'],
             'notificationSettings' => ['nullable', 'array'],
