@@ -10,11 +10,11 @@ export function validatePasswordMatch(): ValidatorFn {
         const password = parent.get('password')?.value;
         const passwordConfirmed = control.value;
 
-        if(password == null) {
-            return null;
-        }
-
-        if(password !== passwordConfirmed) {
+        if(
+            ((password != null && password != '')
+            || (passwordConfirmed != null && passwordConfirmed != ''))
+            && (password !== passwordConfirmed)
+        ) {
             return { passwordMismatch: true };
         }
 
