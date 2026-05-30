@@ -55,15 +55,15 @@ class OrderRequestRepository {
 
         if(!empty($dto->allFields)) {
             $query->where(function($query) use($dto) {
-                $query->whereLike('a.address', '%'.$dto->allFields.'%')
-                    ->orWhereLike('a.postal_code', '%'.$dto->allFields.'%')
-                    ->orWhereLike('c.name', '%'.$dto->allFields.'%')
-                    ->orWhereLike('cl.first_name', '%'.$dto->allFields.'%')
-                    ->orWhereLike('cl.last_name', '%'.$dto->allFields.'%')
-                    ->orWhereLike('cl.email', '%'.$dto->allFields.'%')
-                    ->orWhereLike('cl.phone_number', '%'.$dto->allFields.'%')
-                    ->orWhereLike('orq.remarks', '%'.$dto->allFields.'%')
-                    ->orWhereLike('orq.id', $dto->allFields);
+                $term = '%'.$dto->allFields.'%';
+                $query->whereLike('a.address', $term)
+                    ->orWhereLike('a.postal_code', $term)
+                    ->orWhereLike('c.name', $term)
+                    ->orWhereLike('cl.email', $term)
+                    ->orWhereLike('cl.phone_number', $term)
+                    ->orWhereLike('orq.remarks', $term)
+                    ->orWhereLike('orq.id', $term)
+                    ->orWhereRaw("CONCAT(cl.first_name, ' ', cl.last_name) ILIKE ?", [$term]);
             });
         }
 

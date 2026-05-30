@@ -46,11 +46,11 @@ class UserRepository {
 
         if(!empty($dto->allFields)) {
             $query->where(function($query) use($dto) {
-                $query->whereLike('u.name', '%'.$dto->allFields.'%')
-                    ->orWhereLike('u.first_name', '%'.$dto->allFields.'%')
-                    ->orWhereLike('u.last_name', '%'.$dto->allFields.'%')
-                    ->orWhereLike('u.email', '%'.$dto->allFields.'%')
-                    ->orWhereLike('u.id', $dto->allFields);
+                $term = '%'.$dto->allFields.'%';
+                $query->whereLike('u.name', $term)
+                    ->orWhereLike('u.email', $term)
+                    ->orWhereLike('u.id', $term)
+                    ->orWhereRaw("CONCAT(u.first_name, ' ', u.last_name) ILIKE ?", [$term]);
             });
         }
 
