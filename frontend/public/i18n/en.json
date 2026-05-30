@@ -221,8 +221,6 @@
     "newNotificationReceived": "New notification received"
   },
   "orderMapMarker": {
-    "priority": "Priority",
-    "dateDeadline": "Deadline",
     "distance": "Distance"
   },
   "companySettings": {
@@ -278,8 +276,7 @@
     "remarks": "Remarks"
   },
   "orderRequestMapMarker": {
-    "distance": "Distance",
-    "dateCreated": "Submission date"
+    "distance": "Distance"
   },
   "orderRequestForm": {
     "title": "Order request form",
