@@ -25,3 +25,6 @@ push-frontend:
 
 push-frontend-dev:
 	docker push ghcr.io/alex4270/order-panel-frontend:dev
+
+deploy-dev:
+	make build-backend-dev && make build-frontend-dev && make push-backend-dev && make push-frontend-dev

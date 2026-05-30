@@ -7,17 +7,11 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { validateOrderDateRange } from '../../shared/validators/order-date-range.validator';
 import { PriorityItem } from '../../shared/types/priority.types';
 import { StatusItem } from '../../shared/types/status.types';
-import { CountryItem } from '../../shared/types/country.types';
-import { ProvinceItem } from '../../shared/types/province.types';
-import { CityItem } from '../../shared/types/city.types';
 import { PriorityService } from '../../shared/services/api/priority/priority.service';
 import { StatusService } from '../../shared/services/api/status/status.service';
-import { CountryService } from '../../shared/services/api/country/country.service';
-import { distinctUntilChanged, finalize, forkJoin, map, tap } from 'rxjs';
+import { finalize, forkJoin, map, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DEFAULT_COUNTRY_SYMBOL, DEFAULT_PRIORITY_SYMBOL, DEFAULT_STATUS_SYMBOL } from '../../app.constants';
-import { ProvinceService } from '../../shared/services/api/province/province.service';
-import { CityService } from '../../shared/services/api/city/city.service';
+import { DEFAULT_PRIORITY_SYMBOL, DEFAULT_STATUS_SYMBOL } from '../../app.constants';
 import { ToastService } from '../../shared/services/toast/toast.service';
 import { ToastType } from '../../shared/enums/enums';
 import { OrderService } from '../../shared/services/api/order/order.service';
@@ -192,9 +186,6 @@ export class OrderFormModalComponent {
     private readonly datePipe: DatePipe = inject(DatePipe);
     private readonly priorityService: PriorityService = inject(PriorityService);
     private readonly statusService: StatusService = inject(StatusService);
-    private readonly countryService: CountryService = inject(CountryService);
-    private readonly provinceService: ProvinceService = inject(ProvinceService);
-    private readonly cityService: CityService = inject(CityService);
     private readonly orderService: OrderService = inject(OrderService);
 
     protected form!: FormGroup;
@@ -205,28 +196,8 @@ export class OrderFormModalComponent {
 
     protected priorities: WritableSignal<PriorityItem[]> = signal<PriorityItem[]>([]);
     protected statuses: WritableSignal<StatusItem[]> = signal<StatusItem[]>([]);
-    protected countries: WritableSignal<CountryItem[]> = signal<CountryItem[]>([]);
-    protected provinces: WritableSignal<ProvinceItem[]> = signal<ProvinceItem[]>([]);
-    protected cities: WritableSignal<CityItem[]> = signal<CityItem[]>([]);
 
     protected orderSaved = output<void>();
-
-    protected addNewCity = (name: string): CityItem | null => {
-        const cityName = name.trim();
-        if(!cityName) {
-            return null;
-        }
-
-        const isCityExisting = this.cities().some((city) => city.name.toLowerCase() == cityName.toLowerCase());
-        if(isCityExisting) {
-            return null;
-        }
-
-        const newCity = { id: 0, name: cityName} as CityItem;
-        this.cities.set([...this.cities(), newCity]);
-
-        return newCity;
-    };
 
     protected currentDate: Signal<string | null> = computed(() => {
         return this.datePipe.transform(new Date().toString(), 'yyyy-MM-dd');
@@ -297,49 +268,6 @@ export class OrderFormModalComponent {
         },{
             validators: [validateOrderDateRange()],
         });
-
-        this.registerFormChanges();
-    }
-
-    private registerFormChanges(): void {
-        const countryField = this.form.get('countryId');
-        const provinceField = this.form.get('provinceId');
-
-        if(!countryField || !provinceField) {
-            return;
-        }
-
-        countryField.valueChanges.pipe(
-            distinctUntilChanged(),
-            takeUntilDestroyed(this.destroyRef),
-        )
-        .subscribe({
-            next: (countryId: number | null) => {
-                this.provinces.set([]);
-                this.cities.set([]);
-                provinceField.reset();
-                this.form.get('cityId')?.reset();
-
-                if(countryId) {
-                    this.loadProvinces(countryId);
-                }
-            }
-        });
-
-        provinceField.valueChanges.pipe(
-            distinctUntilChanged(),
-            takeUntilDestroyed(this.destroyRef),
-        )
-        .subscribe({
-            next: (provinceId: number | null) => {
-                this.cities.set([]);
-                this.form.get('cityId')?.reset();
-
-                if(provinceId) {
-                    this.loadCities(provinceId);
-                }
-            }
-        });
     }
 
     private loadDetails(orderId: number): void {
@@ -378,18 +306,15 @@ export class OrderFormModalComponent {
         forkJoin({
             priorities: this.priorityService.index(),
             statuses: this.statusService.index(),
-            countries: this.countryService.index(),
         })
         .pipe(
-            map(({priorities, statuses, countries}) => ({
+            map(({priorities, statuses}) => ({
                 priorities: priorities.data?.items ?? [],
                 statuses: statuses.data?.items ?? [],
-                countries: countries.data?.items ?? [],
             })),
-            tap(({priorities, statuses, countries}) => {
+            tap(({priorities, statuses}) => {
                 this.priorities.set(priorities);
                 this.statuses.set(statuses);
-                this.countries.set(countries);
                 
                 if(this.priorities()) {
                     const defaultPriority = this.priorities().find((priority) => priority.symbol == DEFAULT_PRIORITY_SYMBOL);
@@ -404,13 +329,6 @@ export class OrderFormModalComponent {
                         this.form.get('statusId')?.setValue(defaultStatus?.id);
                     }
                 }
-
-                if(this.countries()) {
-                    const defaultCountry = this.countries().find((country) => country.symbol == DEFAULT_COUNTRY_SYMBOL);
-                    if(!this.isEditScenario() && defaultCountry?.id) {
-                        this.form.get('countryId')?.setValue(defaultCountry?.id);
-                    }
-                }
             }),
             takeUntilDestroyed(this.destroyRef),
         )
@@ -418,22 +336,6 @@ export class OrderFormModalComponent {
             error: (err) => {
                 console.error(err);
             }
-        });
-    }
-
-    protected loadProvinces(countryId?: number): void {
-        this.provinceService.index(countryId ? { countryId: countryId } : undefined).subscribe({
-            next: (res) => {
-                this.provinces.set(res.data?.items ?? []);
-            },
-        });
-    }
-
-    protected loadCities(provinceId?: number): void {
-        this.cityService.index(provinceId ? { provinceId: provinceId } : undefined).subscribe({
-            next: (res) => {
-                this.cities.set(res.data?.items ?? []);
-            },
         });
     }
 

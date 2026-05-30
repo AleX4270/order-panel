@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, input, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, effect, inject, input, OnInit, signal, WritableSignal } from '@angular/core';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { TranslatePipe } from '@ngx-translate/core';
 import { InputErrorLabelComponent } from '../input-error-label/input-error-label.component';
@@ -6,8 +6,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CountryItem } from '../../types/country.types';
 import { ProvinceItem } from '../../types/province.types';
 import { CityItem } from '../../types/city.types';
-import { distinctUntilChanged } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { distinctUntilChanged, Subscription } from 'rxjs';
 import { ProvinceService } from '../../services/api/province/province.service';
 import { CityService } from '../../services/api/city/city.service';
 import { CountryService } from '../../services/api/country/country.service';
@@ -111,7 +110,6 @@ import { IsRequiredPipe } from '../../pipes/is-required.pipe';
     styles: [``],
 })
 export class AddressSubformComponent implements OnInit {
-    private readonly destroyRef: DestroyRef = inject(DestroyRef);
     private readonly countryService: CountryService = inject(CountryService);
     private readonly provinceService: ProvinceService = inject(ProvinceService);
     private readonly cityService: CityService = inject(CityService);
@@ -138,55 +136,69 @@ export class AddressSubformComponent implements OnInit {
         return this.countries().find((country) => country.id === countryId)?.name;
     }
 
+    constructor() {
+        effect((onCleanup) => {
+            if(this.form()) {
+                const subscription = this.registerFormChanges();
+                onCleanup(() => subscription?.unsubscribe());
+            }
+        });
+    }
+
     ngOnInit(): void {
-        this.registerFormChanges();
         this.loadCountries();
     }
 
-    private registerFormChanges(): void {
+    private registerFormChanges(): Subscription | null {
         const countryField = this.form().get('countryId');
         const provinceField = this.form().get('provinceId');
 
         if(!countryField || !provinceField) {
-            return;
+            return null;
         }
 
-        countryField.valueChanges.pipe(
-            distinctUntilChanged(),
-            takeUntilDestroyed(this.destroyRef),
-        )
-        .subscribe({
-            next: (countryId: number | null) => {
-                this.provinces.set([]);
-                provinceField.reset();
-                
-                if(this.allowCitySelection()) {
-                    this.cities.set([]);
-                    this.form().get('cityId')?.reset();
-                }
+        const subscription = new Subscription();
 
-                if(countryId) {
-                    this.loadProvinces(countryId);
-                }
-            }
-        });
+        subscription.add(
+            countryField.valueChanges.pipe(
+                distinctUntilChanged(),
+            )
+            .subscribe({
+                next: (countryId: number | null) => {
+                    this.provinces.set([]);
+                    provinceField.reset();
 
-        if(this.allowCitySelection()) {
+                    if(this.allowCitySelection()) {
+                        this.cities.set([]);
+                        this.form().get('cityId')?.reset();
+                    }
+
+                    if(countryId) {
+                        this.loadProvinces(countryId);
+                    }
+                }
+            })
+        );
+
+        subscription.add(
             provinceField.valueChanges.pipe(
                 distinctUntilChanged(),
-                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe({
                 next: (provinceId: number | null) => {
-                    this.cities.set([]);
-                    this.form().get('cityId')?.reset();
+                    if(this.allowCitySelection()) {
+                        this.cities.set([]);
+                        this.form().get('cityId')?.reset();
 
-                    if(provinceId) {
-                        this.loadCities(provinceId);
+                        if(provinceId) {
+                            this.loadCities(provinceId);
+                        }
                     }
                 }
-            });
-        }
+            })
+        );
+
+        return subscription;
     }
 
     protected loadCountries(): void {
