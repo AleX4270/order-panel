@@ -18,7 +18,7 @@
     </tr>
     <tr>
         <td style="font-weight: 600; color: #64748b; padding: 10px 16px; background-color: #f8fafc; border-bottom: 1px solid #e2e8f0;">{{ __('mail.description') }}</td>
-        <td style="padding: 10px 16px; border-bottom: 1px solid #e2e8f0;">{{$remarks}}</td>
+        <td style="padding: 10px 16px; border-bottom: 1px solid #e2e8f0; word-break: break-all;">{{$remarks}}</td>
     </tr>
 </table>
 
