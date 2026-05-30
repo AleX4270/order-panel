@@ -15,7 +15,7 @@ class CoordinatesNotFoundException extends RuntimeException {
     public function render(Request $request): ApiResponse {
         return new ApiResponse(
             status: HttpStatus::INTERNAL_SERVER_ERROR,
-            message: __('response.coordinatesNotFound')
+            message: __('response.addressNotFound')
         );
     }
 }

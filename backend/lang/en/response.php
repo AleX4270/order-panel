@@ -14,5 +14,5 @@ return [
     'orderAlreadyCompleted' => "The order is already marked as completed",
 
     //Geocoding
-    'coordinatesNotFound' => "Could not get coordinates for the provided order's address",
+    'addressNotFound' => "Could not find provided address",
 ];
