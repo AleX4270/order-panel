@@ -23,6 +23,7 @@ import { OrderRequestFilterParams, OrderRequestItem } from '../../shared/types/o
 import { OrderRequestService } from '../../shared/services/api/order-request/order-request.service';
 import { OrderRequestMapComponent } from '../../shared/components/order-request-map/order-request-map.component';
 import { CastToTelHrefPipe } from '../../shared/pipes/cast-to-tel-href.pipe';
+import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
 
 @Component({
     selector: 'app-order-request-list',
@@ -36,7 +37,8 @@ import { CastToTelHrefPipe } from '../../shared/pipes/cast-to-tel-href.pipe';
     DatePipe,
     HasPermissionDirective,
     OrderRequestMapComponent,
-    CastToTelHrefPipe
+    CastToTelHrefPipe,
+    TruncatePipe,
 ],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan, faCircleCheck, faCircleXmark})],
     template: `
@@ -96,7 +98,7 @@ import { CastToTelHrefPipe } from '../../shared/pipes/cast-to-tel-href.pipe';
                                     </div>
                                 </td>
                                 <td><span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span></td>
-                                <td class="text-base-content/80 font-light">{{ item.remarks ?? '-' }}</td>
+                                <td class="text-base-content/80 font-light">{{ (item.remarks ?? '-') | truncate:40}}</td>
                                 <td>
                                     <div class="flex gap-3">
                                         <ng-icon
@@ -175,11 +177,11 @@ import { CastToTelHrefPipe } from '../../shared/pipes/cast-to-tel-href.pipe';
                                             </div>
                                         </div>
                                         
-                                        <div class="row-details-container">
+                                        <div class="row-details-container max-w-5xl">
                                             <div class="row-details-box">
                                                 <span class="row-details-label">{{ 'orderRequestDetails.remarks' | translate}}</span>
                                                 <div class="row-details-value">
-                                                    <span class="text-muted">{{ item.remarks ?? '-' }}</span>
+                                                    <span class="text-muted break-all">{{ item.remarks ?? '-' }}</span>
                                                 </div>
                                             </div>
                                         </div>

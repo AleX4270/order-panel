@@ -30,6 +30,7 @@ import { CompanyItem } from '../../shared/types/company.types';
 import { DEFAULT_COORDINATES } from '../../shared/constants/map.const';
 import { Coordinates } from '../../shared/types/address.types';
 import { CastToTelHrefPipe } from '../../shared/pipes/cast-to-tel-href.pipe';
+import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
 
 @Component({
     selector: 'app-order-list',
@@ -49,6 +50,7 @@ import { CastToTelHrefPipe } from '../../shared/pipes/cast-to-tel-href.pipe';
     HasPermissionDirective,
     OrderMapComponent, 
     CastToTelHrefPipe,
+    TruncatePipe,
 ],
     providers: [provideIcons({faEye, faPenToSquare, faTrashCan, faCircleCheck})],
     template: `
@@ -121,7 +123,7 @@ import { CastToTelHrefPipe } from '../../shared/pipes/cast-to-tel-href.pipe';
                                 </td>
                                 <td><span>{{ item.dateCreated | date:'dd-MM-yyyy' }}</span></td>
                                 <td><span>{{ item.dateDeadline | date:'dd-MM-yyyy'}}</span></td>
-                                <td class="text-base-content/80 font-light">{{ item.remarks ?? '-' }}</td>
+                                <td class="text-base-content/80 font-light">{{ (item.remarks ?? '-') | truncate:40 }}</td>
                                 <td>
                                     <div class="flex gap-3">
                                         <ng-icon
@@ -238,11 +240,11 @@ import { CastToTelHrefPipe } from '../../shared/pipes/cast-to-tel-href.pipe';
                                             </div>
                                         </div>
 
-                                        <div class="row-details-container">
+                                        <div class="row-details-container max-w-5xl">
                                             <div class="row-details-box">
                                                 <span class="row-details-label">{{ 'orderDetails.remarks' | translate}}</span>
                                                 <div class="row-details-value">
-                                                    <span class="text-muted">{{ item.remarks ?? '-' }}</span>
+                                                    <span class="text-muted break-all">{{ item.remarks ?? '-' }}</span>
                                                 </div>
                                             </div>
                                         </div>
