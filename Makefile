@@ -28,3 +28,6 @@ push-frontend-dev:
 
 deploy-dev:
 	make build-backend-dev && make build-frontend-dev && make push-backend-dev && make push-frontend-dev
+
+deploy-prod:
+	make build-backend && make build-frontend && make push-backend && make push-frontend
