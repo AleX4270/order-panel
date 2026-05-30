@@ -53,7 +53,7 @@ import { AddressSubformComponent } from '../../shared/components/address-subform
                                 <div class="divider"></div>
                             }
                             
-                            <app-address-subform [form]="form" [setDefaultCountry]="!isEditScenario()"/>
+                            <app-address-subform [form]="form" [setDefaultCountry]="true"/>
 
                             <div class="divider md:hidden"></div>
 

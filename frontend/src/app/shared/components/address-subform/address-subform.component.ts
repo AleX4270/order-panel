@@ -143,6 +143,10 @@ export class AddressSubformComponent implements OnInit {
                 onCleanup(() => subscription?.unsubscribe());
             }
         });
+
+        effect(() => {
+            this.applyDefaultCountry();
+        });
     }
 
     ngOnInit(): void {
@@ -205,15 +209,21 @@ export class AddressSubformComponent implements OnInit {
         this.countryService.index().subscribe({
             next: (res) => {
                 this.countries.set(res.data?.items ?? []);
-
-                if(this.countries()) {
-                    const defaultCountry = this.countries().find((country) => country.symbol == DEFAULT_COUNTRY_SYMBOL);
-                    if(this.setDefaultCountry() && defaultCountry?.id) {
-                        this.form().get('countryId')?.setValue(defaultCountry?.id);
-                    }
-                }
             },
         });
+    }
+
+    private applyDefaultCountry(): void {
+        const countryField = this.form().get('countryId');
+
+        if(!this.setDefaultCountry() || !countryField || countryField.value) {
+            return;
+        }
+
+        const defaultCountry = this.countries().find((country) => country.symbol == DEFAULT_COUNTRY_SYMBOL);
+        if(defaultCountry?.id) {
+            countryField.setValue(defaultCountry.id);
+        }
     }
 
     protected loadProvinces(countryId?: number): void {
