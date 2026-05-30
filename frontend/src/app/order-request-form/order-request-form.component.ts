@@ -252,6 +252,7 @@ export class OrderRequestFormComponent {
     }
 
     protected showForm(): void {
+        this.form.reset();
         this.formScenario.set('active');
     }
 }
