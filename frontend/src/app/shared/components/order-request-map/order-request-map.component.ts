@@ -45,11 +45,6 @@ import { DEFAULT_COORDINATES } from '../../constants/map.const';
                             <span class="font-light">{{'orderMapMarker.distance' | translate}}:&nbsp;</span>
                             <span>{{orderRequest.distance}} km</span>
                         </div>
-
-                        <div>
-                            <span class="font-light">{{'orderRequestMapMarker.dateCreated' | translate}}:&nbsp;</span>
-                            <span>{{orderRequest.dateCreated | date:'dd-MM-yyyy'}}</span>
-                        </div>
                     </mgl-popup>
                 }
             </mgl-map>

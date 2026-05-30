@@ -65,7 +65,7 @@ import { AddressSubformComponent } from '../../shared/components/address-subform
 
                             <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
                                 <div class="flex flex-col w-full md:w-1/4">
-                                    <label for="priorityId" class="label">{{ "orderForm.priority" | translate }}</label>
+                                    <label for="priorityId" class="label field-required">{{ "orderForm.priority" | translate }}</label>
                                     <ng-select 
                                         formControlName="priorityId"
                                         [items]="priorities()"
@@ -78,7 +78,7 @@ import { AddressSubformComponent } from '../../shared/components/address-subform
                                 </div>
 
                                 <div class="flex flex-col w-full md:w-1/4">
-                                    <label for="statusId" class="label">{{ "orderForm.status" | translate }}</label>
+                                    <label for="statusId" class="label field-required">{{ "orderForm.status" | translate }}</label>
                                     <ng-select 
                                         formControlName="statusId"
                                         [items]="statuses()"
@@ -91,7 +91,7 @@ import { AddressSubformComponent } from '../../shared/components/address-subform
                                 </div>
 
                                 <div class="flex flex-col w-full md:flex-1">
-                                    <label for="phoneNumber" class="label">{{ "orderForm.phoneNumber" | translate }}</label>
+                                    <label for="phoneNumber" class="label field-required">{{ "orderForm.phoneNumber" | translate }}</label>
                                     <input
                                         type="tel"
                                         formControlName="phoneNumber"
@@ -108,7 +108,7 @@ import { AddressSubformComponent } from '../../shared/components/address-subform
 
                             <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap md:mt-4">
                                 <div class="flex flex-col w-full md:flex-1">
-                                    <label for="dateCreation" class="label">{{ "orderForm.dateCreation" | translate }}</label>
+                                    <label for="dateCreation" class="label field-required">{{ "orderForm.dateCreation" | translate }}</label>
                                     <input
                                         type="date"
                                         formControlName="dateCreation"
@@ -121,7 +121,7 @@ import { AddressSubformComponent } from '../../shared/components/address-subform
                                 </div>
 
                                 <div class="flex flex-col w-full md:flex-1">
-                                    <label for="dateDeadline" class="label">{{ "orderForm.dateDeadline" | translate }}</label>
+                                    <label for="dateDeadline" class="label field-required">{{ "orderForm.dateDeadline" | translate }}</label>
                                     <input
                                         type="date"
                                         formControlName="dateDeadline"

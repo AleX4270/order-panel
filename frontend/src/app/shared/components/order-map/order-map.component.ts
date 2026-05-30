@@ -39,16 +39,6 @@ import { DEFAULT_COORDINATES } from '../../constants/map.const';
                         </div>
 
                         <div>
-                            <span class="font-light">{{'orderMapMarker.priority' | translate}}:&nbsp;</span>
-                            <span>{{order.priorityName}}</span>
-                        </div>
-
-                        <div>
-                            <span class="font-light">{{'orderMapMarker.dateDeadline' | translate}}:&nbsp;</span>
-                            <span>{{order.dateDeadline | date:'dd-MM-yyyy'}}</span>
-                        </div>
-
-                        <div>
                             <span class="font-light">{{'orderMapMarker.distance' | translate}}:&nbsp;</span>
                             <span>{{order.distance}} km</span>
                         </div>

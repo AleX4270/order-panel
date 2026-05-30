@@ -221,8 +221,6 @@
         "newNotificationReceived": "Otrzymano nowe powiadomienie"
     },
     "orderMapMarker": {
-        "priority": "Priorytet",
-        "dateDeadline": "Termin",
         "distance": "Dystans"
     },
     "companySettings": {
@@ -278,8 +276,7 @@
         "remarks": "Uwagi"
     },
     "orderRequestMapMarker": {
-        "distance": "Dystans",
-        "dateCreated": "Data zgłoszenia"
+        "distance": "Dystans"
     },
     "orderRequestForm": {
         "title": "Formularz zapytania usługowego",

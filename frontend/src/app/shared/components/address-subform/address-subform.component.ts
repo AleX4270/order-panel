@@ -26,7 +26,7 @@ import { IsRequiredPipe } from '../../pipes/is-required.pipe';
     template: `
         <div [formGroup]="form()" class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap mt-4">
             <div class="flex flex-col w-full md:w-1/4">
-                <label for="countryId" class="label" [class.field-required]="form().get('countryId')">{{ "addressForm.country" | translate }}</label>
+                <label for="countryId" class="label" [class.field-required]="form().get('countryId') | isRequired">{{ "addressForm.country" | translate }}</label>
                 <ng-select
                     formControlName="countryId"
                     [items]="countries()"
@@ -39,7 +39,7 @@ import { IsRequiredPipe } from '../../pipes/is-required.pipe';
             </div>
 
             <div class="flex flex-col w-full md:w-1/3">
-                <label for="provinceId" class="label" [class.field-required]="form().get('provinceId')">{{ "addressForm.province" | translate }}</label>
+                <label for="provinceId" class="label" [class.field-required]="form().get('provinceId') | isRequired">{{ "addressForm.province" | translate }}</label>
                 <ng-select
                     formControlName="provinceId"
                     [items]="provinces()"
@@ -53,7 +53,7 @@ import { IsRequiredPipe } from '../../pipes/is-required.pipe';
 
             <div class="flex flex-col w-full md:w-1/3">
                 @if(allowCitySelection()) {
-                    <label for="cityId" class="label" [class.field-required]="form().get('cityId')">{{ "addressForm.city" | translate }}</label>
+                    <label for="cityId" class="label" [class.field-required]="form().get('cityId') | isRequired">{{ "addressForm.city" | translate }}</label>
                     <ng-select 
                         formControlName="cityId"
                         [items]="cities()"
@@ -68,7 +68,7 @@ import { IsRequiredPipe } from '../../pipes/is-required.pipe';
                     <app-input-error-label [control]="form().get('cityId')" />
                 }
                 @else {
-                    <label for="city" class="label" [class.field-required]="form().get('city')">{{ "addressForm.city" | translate }}</label>
+                    <label for="city" class="label" [class.field-required]="form().get('city') | isRequired">{{ "addressForm.city" | translate }}</label>
                     <input
                         type="text"
                         formControlName="city"
@@ -82,7 +82,7 @@ import { IsRequiredPipe } from '../../pipes/is-required.pipe';
             </div>
 
             <div class="flex flex-col w-full md:w-1/3">
-                <label for="postalCode" class="label" [class.field-required]="form().get('postalCode')">{{ "addressForm.postalCode" | translate }}</label>
+                <label for="postalCode" class="label" [class.field-required]="form().get('postalCode') | isRequired">{{ "addressForm.postalCode" | translate }}</label>
                 <input
                     type="text"
                     formControlName="postalCode"
@@ -95,7 +95,7 @@ import { IsRequiredPipe } from '../../pipes/is-required.pipe';
             </div>
 
             <div class="flex flex-col w-full md:flex-1">
-                <label for="address" class="label" [class.field-required]="form().get('address')">{{ "addressForm.address" | translate }}</label>
+                <label for="address" class="label" [class.field-required]="form().get('address') | isRequired">{{ "addressForm.address" | translate }}</label>
                 <input
                     type="text"
                     formControlName="address"

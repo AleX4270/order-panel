@@ -68,7 +68,7 @@ import { NotificationSettingsSet } from '../../shared/types/notification.types';
 
                             <div class="w-full flex flex-col items-center gap-y-3 md:flex-row md:gap-3 md:flex-wrap mt-4">
                                 <div class="w-full flex flex-col flex-1">
-                                    <label for="username" class="required">{{ "userForm.username" | translate }}</label>
+                                    <label for="username" class="field-required">{{ "userForm.username" | translate }}</label>
                                     <input
                                         type="text"
                                         formControlName="username"
@@ -81,7 +81,7 @@ import { NotificationSettingsSet } from '../../shared/types/notification.types';
                                 </div>
 
                                 <div class="w-full flex flex-col flex-1">
-                                    <label for="email" class="required">{{ "userForm.email" | translate }}</label>
+                                    <label for="email" class="field-required">{{ "userForm.email" | translate }}</label>
                                     <input
                                         type="email"
                                         formControlName="email"
