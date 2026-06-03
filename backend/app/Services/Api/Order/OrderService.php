@@ -42,7 +42,7 @@ class OrderService {
         }
 
         return collect([
-            'items' => $items ?? [],
+            'items' => $items,
             'count' => $totalItems,
         ]);
     }

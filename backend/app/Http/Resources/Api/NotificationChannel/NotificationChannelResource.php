@@ -5,7 +5,11 @@ namespace App\Http\Resources\Api\NotificationChannel;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\NotificationChannel;
 
+/**
+ * @mixin NotificationChannel
+ */
 class NotificationChannelResource extends JsonResource {
     public function toArray(Request $request): array {
         return [

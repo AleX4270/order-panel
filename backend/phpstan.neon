@@ -3,7 +3,7 @@ includes:
     - vendor/nesbot/carbon/extension.neon
 
 parameters:
-    level: 0
+    level: 1
     paths:
         - database
         - app
