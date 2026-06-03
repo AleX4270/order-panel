@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\Date;
 
 final readonly class OrderDto {
     public function __construct(
-        public ?int $id = null,
         public AddressDto $addressDto,
         public string $phoneNumber,
         public int $priorityId,
         public int $statusId,
         public Carbon $dateCreation,
         public Carbon $dateDeadline,
+        public ?int $id = null,
         public ?Carbon $dateCompleted = null,
         public ?string $remarks = null,
     ) {}
