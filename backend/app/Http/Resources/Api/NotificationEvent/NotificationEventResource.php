@@ -5,7 +5,11 @@ namespace App\Http\Resources\Api\NotificationEvent;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\NotificationEvent;
 
+/**
+ * @mixin NotificationEvent
+ */
 class NotificationEventResource extends JsonResource {
     public function toArray(Request $request): array {
         return [

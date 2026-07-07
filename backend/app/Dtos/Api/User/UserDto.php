@@ -5,11 +5,11 @@ namespace App\Dtos\Api\User;
 
 final readonly class UserDto {
     public function __construct(
+        public string $username,
+        public string $email,
         public ?int $id = null,
         public ?string $firstName = null,
         public ?string $lastName = null,
-        public string $username,
-        public string $email,
         public ?string $password = null,
         public ?string $passwordConfirmed = null,
         public ?array $roles = null,

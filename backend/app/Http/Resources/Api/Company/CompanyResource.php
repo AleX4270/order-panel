@@ -6,7 +6,11 @@ namespace App\Http\Resources\Api\Company;
 use App\ValueObjects\Coordinates;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\Company;
 
+/**
+ * @mixin Company
+ */
 class CompanyResource extends JsonResource {
     public function toArray(Request $request): array {
         return [

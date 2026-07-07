@@ -47,7 +47,7 @@ class UserService {
         });
 
         return collect([
-            'items' => $items ?? [],
+            'items' => $items,
             'count' => $totalItems,
         ]);
     }
