@@ -12,6 +12,7 @@ env:
     IMAGE_OWNER: alex4270
     BACKEND_IMAGE: order-panel-backend
     FRONTEND_IMAGE: order-panel-frontend
+    CONFIG: staging
 
 jobs:
     build-backend:
