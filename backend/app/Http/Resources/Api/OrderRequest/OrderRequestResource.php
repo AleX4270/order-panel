@@ -7,6 +7,21 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Date;
 
+/**
+ * @property int $id
+ * @property string $firstName
+ * @property string $lastName
+ * @property string $email
+ * @property string $phoneNumber
+ * @property string $address
+ * @property string $postalCode
+ * @property string $cityName
+ * @property string $provinceName
+ * @property string $remarks
+ * @property string $dateCreated
+ * @property string $coordinates
+ * @property float $distance
+ */
 class OrderRequestResource extends JsonResource {
     public function toArray(Request $request): array {
         return [
