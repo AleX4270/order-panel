@@ -15,8 +15,8 @@ The project's local environment configuration consists of these fundamental elem
 
 | Component | Technology | Version |
 |-----------|-----------|---------|
-| **Backend** | Laravel | 12 |
-| **Frontend** | Angular | 20 |
+| **Backend** | Laravel | 13 |
+| **Frontend** | Angular | 21 |
 | **Database** | PostgreSQL | 18 |
 
 ---
@@ -49,7 +49,7 @@ docker compose down
 # All services
 docker compose logs -f
 
-# Specific service
+# Specific service (backend)
 docker compose logs -f backend
 ```
 
@@ -61,14 +61,19 @@ All environment variables (such as PostgreSQL credentials) are stored in a dedic
 
 ### Example Structure
 ```env
-# Database
+APP_NAMESPACE=app-local
+
 POSTGRES_PASSWORD=example_password
 POSTGRES_USER=example_user
 POSTGRES_DB=example_db
+
+FRONTEND_URL=app.local
+BACKEND_URL=api.app.local
+REVERB_URL=ws.app.local
 ```
 
 > ⚠️ **Security Note:**  
-> This approach is subject to change. Future iterations will use dedicated secrets management for improved security.
+> Environment variables are stored as GitHub Secrets and are being copied to the deployment server during the deployment process.
 
 ---
 

@@ -13,13 +13,7 @@ npm start
 
 ## Tests
 
-Unit tests run with [Jest](https://jestjs.io):
-
-```bash
-npm test            # single run
-npm run test:watch  # watch mode
-npm run test:coverage
-```
+To be implemented with a satisfactory coverage.
 
 ## Building
 

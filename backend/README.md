@@ -6,19 +6,15 @@ Uses Laravel Sanctum for authentication and Laravel Reverb for WebSocket broadca
 
 ## Development
 
-In the Docker setup the backend runs automatically at `http://localhost:8000`. Run artisan commands inside the container:
+In the Docker setup the backend runs automatically at `http://localhost:8000`. 
+
+You can run artisan commands inside the container:
 
 ```bash
 docker compose exec backend php artisan migrate
 ```
 
 ## Tests & static analysis
-
-Tests are written with [PEST](https://pestphp.com):
-
-```bash
-php artisan test
-```
 
 Static analysis runs with [PHPStan](https://phpstan.org):
 
