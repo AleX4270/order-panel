@@ -18,7 +18,6 @@ use App\Http\Controllers\Api\Status\StatusController;
 use App\Http\Controllers\Api\User\UserController;
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
 
 Route::middleware(['throttle:public'])->group(function() {
     Route::post('/order-requests', [OrderRequestController::class, 'store']);

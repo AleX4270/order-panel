@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Enums\HttpStatus;
 use App\Http\Requests\Api\Auth\LoginRequest;
-use App\Http\Requests\Api\Auth\RegisterRequest;
 use App\Services\Api\Auth\AuthService;
 use Illuminate\Http\Request;
 use App\Http\Responses\Api\ApiResponse;
@@ -37,15 +36,6 @@ class AuthController {
         return new ApiResponse(
             status: HttpStatus::OK,
             data: $result,
-            message: __('response.success')
-        );
-    }
-
-    public function register(RegisterRequest $request): ApiResponse {
-        $this->authService->register($request->validated());
-
-        return new ApiResponse(
-            status: HttpStatus::OK,
             message: __('response.success')
         );
     }
