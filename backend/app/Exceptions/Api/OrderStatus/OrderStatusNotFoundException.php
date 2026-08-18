@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Exceptions\Api\OrderStatus;
 
 use Illuminate\Http\Request;
