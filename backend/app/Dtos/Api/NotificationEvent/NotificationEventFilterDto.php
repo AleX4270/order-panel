@@ -9,7 +9,7 @@ final readonly class NotificationEventFilterDto {
         public ?int $page = null,
         public ?int $pageSize = null,
         public ?string $sortColumn = null,
-        public ?string $sortDir = null,
+        public ?SortDir $sortDir = null,
     ) {}
 
     public static function fromArray(array $data): self {

@@ -9,7 +9,7 @@ final readonly class PriorityFilterDto {
         public ?int $page = null,
         public ?int $pageSize = null,
         public ?string $sortColumn = null,
-        public ?string $sortDir = null,
+        public ?SortDir $sortDir = null,
         public ?string $term = null,
     ) {}
 
