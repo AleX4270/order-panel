@@ -3,45 +3,34 @@ declare(strict_types=1);
 
 namespace App\Services\Api\Auth;
 
-use App\Exceptions\UserAlreadyExistsException;
+use App\Exceptions\Api\Auth\InvalidCredentialsException;
 use Illuminate\Http\Request;
 use App\Http\Requests\Api\Auth\LoginRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Hash;
 
 class AuthService {
     public function getUserData(Request $request): Collection {
         $user = $request->user();
-        // $userPermissions = $user->getAllPermissions()->pluck('name')->toArray();
 
         return collect([
             'id' => $user->id,
             'name' => $user->name,
-            // 'permissions' => $userPermissions,
         ]);
     }
 
-    public function login(LoginRequest $request, array $data): ?Collection {
-        $requestUser = User::where('email', $data['email'])->first();
-        if(empty($requestUser) || empty($requestUser->is_active)) {
-            return null;
-        }
-
-        if(!Auth::attempt($data)) {
-            return null;
+    public function login(LoginRequest $request, array $data): Collection {
+        if(!Auth::attempt([...$data, 'is_active' => true])) {
+            throw new InvalidCredentialsException;
         }
 
         $request->session()->regenerate();
-
         $user = Auth::guard('web')->user();
-        $userPermissions = $user->getAllPermissions()->pluck('name')->toArray();
 
         return collect([
             'id' => $user->id,
             'name' => $user->name,
-            'permissions' => $userPermissions,
+            'permissions' => $user->getAllPermissions()->pluck('name')->toArray(),
         ]);
     }
 

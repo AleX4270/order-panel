@@ -17,9 +17,8 @@ use App\Http\Controllers\Api\Role\RoleController;
 use App\Http\Controllers\Api\Status\StatusController;
 use App\Http\Controllers\Api\User\UserController;
 
-Route::post('/login', [AuthController::class, 'login']);
-
 Route::middleware(['throttle:public'])->group(function() {
+    Route::post('/login', [AuthController::class, 'login']);
     Route::post('/order-requests', [OrderRequestController::class, 'store']);
 
     Route::prefix('countries')->group(function() {

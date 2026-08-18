@@ -26,13 +26,6 @@ class AuthController {
     public function login(LoginRequest $request): ApiResponse {
         $result = $this->authService->login($request, $request->validated());
 
-        if(!$result) {
-            return new ApiResponse(
-                status: HttpStatus::UNAUTHORIZED,
-                message: __('auth.failed')
-            );
-        }
-
         return new ApiResponse(
             status: HttpStatus::OK,
             data: $result,
