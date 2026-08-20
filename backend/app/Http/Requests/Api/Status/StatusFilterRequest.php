@@ -10,12 +10,6 @@ class StatusFilterRequest extends FormRequest {
         return true;
     }
 
-    public function prepareForValidation() {
-        $this->merge([
-            'term' => trim($this->input('term')),
-        ]);
-    }
-
     public function rules(): array {
         return [
             'page' => ['sometimes', 'integer'],

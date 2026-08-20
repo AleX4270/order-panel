@@ -10,12 +10,6 @@ class CityFilterRequest extends FormRequest {
         return true;
     }
 
-    protected function prepareForValidation(): void {
-        $this->merge([
-            'term' => trim($this->term),
-        ]);
-    }
-
     public function rules(): array {
         return [
             'page' => ['sometimes', 'integer'],

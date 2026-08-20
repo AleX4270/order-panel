@@ -11,12 +11,6 @@ class OrderRequestFilterRequest extends FormRequest {
         return $this->user()?->can(PermissionType::ORDER_REQUESTS_VIEW->value);
     }
 
-    public function prepareForValidation(): void {
-        $this->merge([
-            'allFields' => trim($this->input('allFields')),
-        ]);
-    }
-
     public function rules(): array {
         return [
             'page' => ['nullable', 'integer'],

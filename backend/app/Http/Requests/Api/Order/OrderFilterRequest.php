@@ -15,7 +15,6 @@ class OrderFilterRequest extends FormRequest {
         $this->merge([
            'priorityIds' => !empty($this->input('priorityIds')) ? explode(',', $this->input('priorityIds')) : null,
            'statusIds' => !empty($this->input('statusIds')) ? explode(',', $this->input('statusIds')) : null,
-           'allFields' => trim($this->input('allFields')),
         ]);
     }
 
