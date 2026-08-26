@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 set -e
 
-"${psql[@]}" --dbname "$POSTGRES_DB" <<-EOSQL
+PGUSER=${POSTGRES_USER}
+PGDB=${POSTGRES_DB}
+
+psql --dbname "$PGDB" --user "$PGUSER" <<-EOSQL
     CREATE USER order_panel_testing WITH PASSWORD 'Iq621Ao?IP1L';
     CREATE DATABASE order_panel_testing;
     GRANT ALL PRIVILEGES ON DATABASE order_panel_testing TO order_panel_testing;
 EOSQL
 
-"${psql[@]}" --dbname="order_panel_testing" <<-'EOSQL'
+psql --dbname "order_panel_testing" --user "$PGUSER" <<-'EOSQL'
     GRANT ALL ON SCHEMA public TO order_panel_testing;
     CREATE EXTENSION IF NOT EXISTS postgis;
 EOSQL
