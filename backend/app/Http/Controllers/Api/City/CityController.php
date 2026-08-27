@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\City;
 
 use App\Enums\HttpStatus;
 use App\Http\Requests\Api\City\CityFilterRequest;
+use App\Http\Resources\Api\City\CityResource;
 use App\Http\Responses\Api\ApiResponse;
 use App\Services\Api\City\CityService;
 
@@ -17,7 +18,10 @@ class CityController {
         $data = $this->cityService->index($request->toDto());
 
         return new ApiResponse(
-            data: $data,
+            data: [
+                'items' => CityResource::collection($data['items']),
+                'count' => $data['count'],
+            ],
             status: HttpStatus::OK,
             message: __('response.success'),
         );

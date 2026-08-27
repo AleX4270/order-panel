@@ -26,6 +26,7 @@ class CityRepository {
         }
 
         match($dto->sortColumn) {
+            'name' => $query->orderBy('c.name', $dto->sortDir->value),
             default => $query->orderBy('c.id', SortDir::ASC->value),
         };
 

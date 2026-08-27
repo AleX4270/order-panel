@@ -21,10 +21,6 @@ class CityFilterRequest extends FormRequest {
         ];
     }
 
-    public function messages(): array {
-        return [];
-    }
-
     public function toDto(): CityFilterDto {
         return CityFilterDto::fromArray($this->validated());
     }
