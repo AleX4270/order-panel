@@ -24,7 +24,7 @@ class StatusService {
         }
 
         return collect([
-            'items' => $items->map->toCamelCaseKeys() ?? [],
+            'items' => $items,
             'count' => $totalItems
         ]);
     }
