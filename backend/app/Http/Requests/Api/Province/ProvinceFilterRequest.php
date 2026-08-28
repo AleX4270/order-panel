@@ -20,10 +20,6 @@ class ProvinceFilterRequest extends FormRequest {
         ];
     }
 
-    public function messages(): array {
-        return [];
-    }
-
     public function toDto(): ProvinceFilterDto {
         return ProvinceFilterDto::fromArray($this->validated());
     }

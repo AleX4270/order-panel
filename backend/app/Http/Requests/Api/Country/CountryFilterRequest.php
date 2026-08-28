@@ -19,10 +19,6 @@ class CountryFilterRequest extends FormRequest {
         ];
     }
 
-    public function messages(): array {
-        return [];
-    }
-
     public function toDto(): CountryFilterDto {
         return CountryFilterDto::fromArray($this->validated());
     }
