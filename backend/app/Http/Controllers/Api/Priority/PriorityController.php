@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Priority;
 
 use App\Enums\HttpStatus;
 use App\Http\Requests\Api\Priority\PriorityFilterRequest;
+use App\Http\Resources\Api\Priority\PriorityResource;
 use App\Http\Responses\Api\ApiResponse;
 use App\Services\Api\Priority\PriorityService;
 
@@ -17,7 +18,10 @@ class PriorityController {
         $data = $this->priorityService->index($request->toDto());
 
         return new ApiResponse(
-            data: $data,
+            data: [
+                'items' => PriorityResource::collection($data['items']),
+                'count' => $data['count'],
+            ],
             status: HttpStatus::OK,
             message: __('response.success'),
         );
