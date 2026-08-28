@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Province;
 
 use App\Enums\HttpStatus;
 use App\Http\Requests\Api\Province\ProvinceFilterRequest;
+use App\Http\Resources\Api\Province\ProvinceResource;
 use App\Http\Responses\Api\ApiResponse;
 use App\Services\Api\Province\ProvinceService;
 
@@ -17,7 +18,10 @@ class ProvinceController {
         $data = $this->provinceService->index($request->toDto());
 
         return new ApiResponse(
-            data: $data,
+            data: [
+                'items' => ProvinceResource::collection($data['items']),
+                'count' => $data['count'],
+            ],
             status: HttpStatus::OK,
             message: __('response.success'),
         );
