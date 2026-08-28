@@ -9,7 +9,6 @@ class TestingSeeder extends Seeder {
     public function run(): void {
         $this->call([
             LanguageSeeder::class,
-            OrderStatusSeeder::class,
             PermissionSeeder::class,
             RoleSeeder::class,
             AdminUserSeeder::class,
