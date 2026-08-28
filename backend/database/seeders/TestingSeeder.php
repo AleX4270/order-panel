@@ -10,7 +10,6 @@ class TestingSeeder extends Seeder {
         $this->call([
             LanguageSeeder::class,
             OrderStatusSeeder::class,
-            PrioritySeeder::class,
             PermissionSeeder::class,
             RoleSeeder::class,
             AdminUserSeeder::class,
