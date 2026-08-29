@@ -15,4 +15,7 @@ return [
 
     //Geocoding
     'addressNotFound' => "Could not find provided address",
+
+    //Company
+    'companyNotConfigured' => "Company\'s data were not provided",
 ];
