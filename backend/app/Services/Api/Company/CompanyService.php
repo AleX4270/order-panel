@@ -5,9 +5,11 @@ namespace App\Services\Api\Company;
 
 use App\Dtos\Api\Address\AddressResolveDto;
 use App\Dtos\Api\Company\CompanyDto;
+use App\Exceptions\Api\Company\CompanyNotConfigured;
 use App\Models\Company;
 use App\Services\Api\Address\AddressService;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -17,7 +19,12 @@ class CompanyService {
     ) {}
 
     public function show(): Company {
-        return Company::current();        
+        try {
+            return Company::current();
+        }
+        catch(ModelNotFoundException $e) {
+            throw new CompanyNotConfigured();
+        }
     }
 
     public function update(CompanyDto $dto): bool {
