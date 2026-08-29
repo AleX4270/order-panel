@@ -7,10 +7,8 @@ use App\Enums\HttpStatus;
 use App\Http\Requests\Api\Company\CompanyRequest;
 use App\Http\Resources\Api\Company\CompanyResource;
 use App\Http\Responses\Api\ApiResponse;
-use App\Models\Company;
 use App\Services\Api\Company\CompanyService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class CompanyController {
     public function __construct(
