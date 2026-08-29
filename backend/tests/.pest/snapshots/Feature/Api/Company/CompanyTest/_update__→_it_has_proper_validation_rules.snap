@@ -1,0 +1,36 @@
+{
+    "id": [
+        "sometimes",
+        "integer"
+    ],
+    "name": [
+        "required",
+        "string"
+    ],
+    "countryId": [
+        "required",
+        "integer"
+    ],
+    "provinceId": [
+        "required",
+        "integer"
+    ],
+    "cityId": [
+        "required",
+        "integer"
+    ],
+    "cityName": [
+        "sometimes",
+        "string"
+    ],
+    "postalCode": [
+        "sometimes",
+        "string",
+        "max:32"
+    ],
+    "address": [
+        "required",
+        "string",
+        "max:255"
+    ]
+}
