@@ -1,0 +1,36 @@
+{
+    "admin": [
+        "company.manage",
+        "dashboard.view",
+        "order_requests.manage",
+        "order_requests.show",
+        "order_requests.view",
+        "orders.create",
+        "orders.delete",
+        "orders.mark_as_completed",
+        "orders.show",
+        "orders.update",
+        "orders.view",
+        "users.create",
+        "users.delete",
+        "users.show",
+        "users.update",
+        "users.view"
+    ],
+    "manager": [
+        "order_requests.manage",
+        "order_requests.show",
+        "order_requests.view",
+        "orders.create",
+        "orders.delete",
+        "orders.mark_as_completed",
+        "orders.show",
+        "orders.update",
+        "orders.view"
+    ],
+    "worker": [
+        "orders.mark_as_completed",
+        "orders.show",
+        "orders.view"
+    ]
+}
