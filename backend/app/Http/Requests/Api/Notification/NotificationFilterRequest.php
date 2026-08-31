@@ -18,7 +18,6 @@ class NotificationFilterRequest extends FormRequest {
 
     public function rules(): array {
         return [
-            'userId' => ['required', 'integer'],
             'onlyUnread' => ['nullable', 'boolean'],
         ];
     }

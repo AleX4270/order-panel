@@ -5,7 +5,6 @@ import { UserState } from '../../store/user/user.state';
 import { ChannelType } from '../../types/broadcast.types';
 import { Notification } from '../../types/notification.types';
 import { NotificationService } from '../api/notification/notification.service';
-import { tap } from 'rxjs';
 import { ToastService } from '../toast/toast.service';
 import { ToastType } from '../../enums/enums';
 import { TranslateService } from '@ngx-translate/core';
@@ -58,22 +57,19 @@ export class UserNotificationService {
     }
 
     public markAsRead(id: string): void {
-        this.removeNotification(id);
-
-        this.notificationService.markAsRead(id).pipe(
-            tap(() => this.loadUnreadNotifications()),
-        ).subscribe();
+        this.notificationService.markAsRead(id).subscribe({
+            next: () => {
+                this.removeNotification(id);
+                this.loadUnreadNotifications();
+            },
+            error: (err) => {
+                console.error(err);
+            }
+        });
     }
 
     public loadUnreadNotifications(): void {
-        const userId = this.userId();
-        
-        if(userId === null) {
-            console.error('Cannot load the user\'s unread notifications list. User ID is unknown');
-            return;
-        }
-
-        this.notificationService.index({ userId: userId, onlyUnread: true }).subscribe({
+        this.notificationService.index({ onlyUnread: true }).subscribe({
             next: (res) => {
                 const unreadNotifications = res.data;
                 if(unreadNotifications) {

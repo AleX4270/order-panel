@@ -4,16 +4,15 @@ declare(strict_types=1);
 namespace App\Services\Api\Notification;
 
 use App\Dtos\Api\Notification\NotificationFilterDto;
-use App\Models\User;
-use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationService {
     public function __construct() {}
 
     public function index(NotificationFilterDto $dto): Collection {
-        $user = User::findOrFail($dto->userId);
-        
+        $user = Auth::user();
+
         if($dto->onlyUnread) {
             return $user->unreadNotifications;
         }
@@ -23,7 +22,7 @@ class NotificationService {
     }
 
     public function markAsRead(string $id): void {
-        $notification = DatabaseNotification::findOrFail($id);
+        $notification = Auth::user()->notifications()->findOrFail($id);
         $notification->markAsRead();
     }
 }

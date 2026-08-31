@@ -8,7 +8,6 @@ export interface Notification {
 }
 
 export interface NotificationFilterParams {
-    userId: number;
     onlyUnread: boolean;
 }
 
