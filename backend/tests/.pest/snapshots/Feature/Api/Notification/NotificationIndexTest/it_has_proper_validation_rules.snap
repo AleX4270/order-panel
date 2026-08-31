@@ -1,0 +1,6 @@
+{
+    "onlyUnread": [
+        "nullable",
+        "boolean"
+    ]
+}

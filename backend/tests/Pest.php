@@ -11,8 +11,10 @@ pest()->extend(Tests\TestCase::class)
     ->in('Feature');
 
 function actingAsApiUser(PermissionType ...$permissions): TestCase {
-    $user = User::factory()->create();
+    return actingAsUser(User::factory()->create(), ...$permissions);
+}
 
+function actingAsUser(User $user, PermissionType ...$permissions): TestCase {
     if(!empty($permissions)) {
         $user->syncPermissions(array_map(fn($permission) => $permission->value, $permissions));
     }
