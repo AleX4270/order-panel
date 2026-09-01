@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 use App\Http\Requests\Api\Notification\NotificationFilterRequest;
 use App\Models\User;
 use Database\Factories\NotificationFactory;
