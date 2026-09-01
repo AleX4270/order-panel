@@ -30,7 +30,7 @@ class NotificationController {
         $this->notificationService->markAsRead($request->validated('id'));
 
         return new ApiResponse(
-            status: HttpStatus::NO_CONTENT,
+            status: HttpStatus::OK,
             message: __('response.success'),
         );
     }
