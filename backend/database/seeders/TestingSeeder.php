@@ -12,7 +12,6 @@ class TestingSeeder extends Seeder {
             PermissionSeeder::class,
             RoleSeeder::class,
             AdminUserSeeder::class,
-            NotificationChannelSeeder::class,
             NotificationEventSeeder::class,
         ]);
     }
