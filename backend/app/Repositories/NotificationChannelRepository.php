@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 class NotificationChannelRepository {
     public function getAll(NotificationChannelFilterDto $dto): Builder {
         $query = NotificationChannel::query()
+            ->whereHas('translations.language', fn($q) => $q->where('symbol', app()->getLocale()))
             ->with(['translations' => function ($q) {
                 $q->whereHas('language', fn ($q) => $q->where('symbol', app()->getLocale()));
             }]);

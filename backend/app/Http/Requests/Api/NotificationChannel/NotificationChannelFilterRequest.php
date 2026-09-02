@@ -12,8 +12,6 @@ class NotificationChannelFilterRequest extends FormRequest {
 
     public function rules(): array {
         return [
-            'page' => ['sometimes', 'integer'],
-            'pageSize' => ['sometimes', 'integer'],
             'sortColumn' => ['sometimes', 'string'],
             'sortDir' => ['sometimes', 'string'],
         ];
