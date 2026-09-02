@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 class NotificationEventRepository {
     public function getAll(NotificationEventFilterDto $dto): Builder {
         $query = NotificationEvent::query()
+            ->whereHas('translations.language', fn($q) => $q->where('symbol', app()->getLocale()))
             ->with(['translations' => function ($q) {
                 $q->whereHas('language', fn ($q) => $q->where('symbol', app()->getLocale()));
             }]);
