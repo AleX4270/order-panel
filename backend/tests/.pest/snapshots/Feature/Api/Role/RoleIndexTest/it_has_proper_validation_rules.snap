@@ -1,0 +1,18 @@
+{
+    "page": [
+        "sometimes",
+        "integer"
+    ],
+    "pageSize": [
+        "sometimes",
+        "integer"
+    ],
+    "sortColumn": [
+        "sometimes",
+        "string"
+    ],
+    "sortDir": [
+        "sometimes",
+        "string"
+    ]
+}
