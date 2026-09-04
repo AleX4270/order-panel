@@ -16,13 +16,17 @@ RUN a2enmod rewrite \
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-COPY backend/composer.json backend/composer.lock ./
-
 FROM base AS local
+
+RUN pecl install pcov && docker-php-ext-enable pcov
+
+COPY backend/composer.json backend/composer.lock ./
 
 RUN composer install --no-interaction --no-scripts
 
 FROM base AS production
+
+COPY backend/composer.json backend/composer.lock ./
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
