@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Enums\HttpStatus;
 use App\Http\Requests\Api\User\UserFilterRequest;
 use App\Http\Requests\Api\User\UserRequest;
+use App\Http\Resources\Api\User\UserIndexResource;
 use App\Http\Responses\Api\ApiResponse;
 use App\Models\User;
 use App\Services\Api\User\UserService;
@@ -21,7 +22,10 @@ class UserController {
         $result = $this->userService->index($request->toDto());
 
         return new ApiResponse(
-            data: $result,
+            data: [
+                'items' => UserIndexResource::collection($result['items']),
+                'count' => $result['count'],
+            ],
             status: HttpStatus::OK,
             message: __('response.success'),
         );

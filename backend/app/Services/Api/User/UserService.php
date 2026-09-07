@@ -31,21 +31,6 @@ class UserService {
             $items = $query->get();
         }
 
-        // TODO: Think of a different solution - a resource for sure
-        $items = $items->map(function (User $user) {
-            return [
-                'id' => $user->id,
-                'name' => $user->name,
-                'firstName' => $user->firstName,
-                'lastName' => $user->lastName,
-                'email' => $user->email,
-                'dateCreated' => $user->dateCreated,
-                'dateUpdated' => $user->dateUpdated,
-                'roles' => $this->mapRoles($user->roles),
-                'isInternal' => $user->isInternal,
-            ];
-        });
-
         return collect([
             'items' => $items,
             'count' => $totalItems,
