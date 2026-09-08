@@ -6,7 +6,9 @@ namespace App\Http\Controllers\Api\User;
 use App\Enums\HttpStatus;
 use App\Http\Requests\Api\User\UserFilterRequest;
 use App\Http\Requests\Api\User\UserRequest;
+use App\Http\Requests\Api\User\UserShowRequest;
 use App\Http\Resources\Api\User\UserIndexResource;
+use App\Http\Resources\Api\User\UserShowResource;
 use App\Http\Responses\Api\ApiResponse;
 use App\Models\User;
 use App\Services\Api\User\UserService;
@@ -31,22 +33,11 @@ class UserController {
         );
     }
 
-    public function show(Request $request): ApiResponse {
-        Gate::authorize('show', User::class);
-
-        $userId = (int)$request->route('id');
-
-        if(empty($userId)) {
-            return new ApiResponse(
-                status: HttpStatus::BAD_REQUEST,
-                message: __('response.badRequest'),
-            );    
-        }
-
-        $result = $this->userService->show($userId);
+    public function show(UserShowRequest $request): ApiResponse {
+        $user = $this->userService->show($request->getUserId());
 
         return new ApiResponse(
-            data: $result,
+            data: new UserShowResource($user),
             status: HttpStatus::OK,
             message: __('response.success'),
         );
