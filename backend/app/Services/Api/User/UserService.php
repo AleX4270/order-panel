@@ -5,6 +5,7 @@ namespace App\Services\Api\User;
 
 use App\Dtos\Api\User\UserDto;
 use App\Dtos\Api\User\UserFilterDto;
+use App\Exceptions\Api\User\InternalUserCannotBeDeletedException;
 use App\Models\User;
 use App\Models\UserNotificationSetting;
 use App\Repositories\UserRepository;
@@ -98,8 +99,13 @@ class UserService {
     }
 
     public function delete(int $userId): void {
-        User::where('id', $userId)->update([
-            'is_active' => 0,
-        ]);
+        $user = User::findOrFail($userId);
+
+        if($user->is_internal) {
+            throw new InternalUserCannotBeDeletedException();
+        }
+
+        $user->is_active = false;
+        $user->save();
     }
 }

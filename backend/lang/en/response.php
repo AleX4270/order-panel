@@ -18,4 +18,7 @@ return [
 
     //Company
     'companyNotConfigured' => "Company\'s data were not provided",
+
+    //Users
+    'internalUserCannotBeDeleted' => "An internal user cannot be deleted",
 ];

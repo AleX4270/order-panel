@@ -18,4 +18,7 @@ return [
 
     //Company
     'companyNotConfigured' => "Dane firmy nie zostały skonfigurowane",
+
+    //Users
+    'internalUserCannotBeDeleted' => "Nie można usunąć użytkownika systemowego",
 ];

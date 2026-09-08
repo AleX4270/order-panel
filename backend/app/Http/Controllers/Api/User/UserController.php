@@ -4,16 +4,14 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\User;
 
 use App\Enums\HttpStatus;
+use App\Http\Requests\Api\User\UserDeleteRequest;
 use App\Http\Requests\Api\User\UserFilterRequest;
 use App\Http\Requests\Api\User\UserRequest;
 use App\Http\Requests\Api\User\UserShowRequest;
 use App\Http\Resources\Api\User\UserIndexResource;
 use App\Http\Resources\Api\User\UserShowResource;
 use App\Http\Responses\Api\ApiResponse;
-use App\Models\User;
 use App\Services\Api\User\UserService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class UserController {
     public function __construct(
@@ -61,16 +59,8 @@ class UserController {
         );
     }
 
-    public function delete(Request $request) {
-        $userId = (int)$request->route('id');
-        if(empty($userId)) {
-            return new ApiResponse(
-                status: HttpStatus::BAD_REQUEST,
-                message: __('response.badRequest'),
-            );    
-        }
-
-        Gate::authorize('delete', User::findOrFail($userId));
+    public function delete(UserDeleteRequest $request): ApiResponse {
+        $userId = $request->getUserId();
         $this->userService->delete($userId);
 
         return new ApiResponse(
