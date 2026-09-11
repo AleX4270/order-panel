@@ -4,14 +4,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\OrderRequest;
 
 use App\Enums\HttpStatus;
+use App\Http\Requests\Api\OrderRequest\OrderRequestCastToOrderRequest;
+use App\Http\Requests\Api\OrderRequest\OrderRequestDeleteRequest;
 use App\Http\Requests\Api\OrderRequest\OrderRequestFilterRequest;
 use App\Http\Requests\Api\OrderRequest\OrderRequestRequest;
 use App\Http\Resources\Api\OrderRequest\OrderRequestResource;
 use App\Http\Responses\Api\ApiResponse;
-use App\Models\OrderRequest;
 use App\Services\Api\OrderRequest\OrderRequestService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class OrderRequestController {
     public function __construct(
@@ -40,19 +39,8 @@ class OrderRequestController {
         );
     }
 
-    public function castToOrder(Request $request): ApiResponse {
-        Gate::authorize('castToOrder', OrderRequest::class);
-
-        $orderRequestId = (int)$request->input('id');
-
-        if(empty($orderRequestId)) {
-            return new ApiResponse(
-                status: HttpStatus::BAD_REQUEST,
-                message: __('response.badRequest'),
-            );
-        }
-
-        $this->orderRequestService->castToOrder($orderRequestId);
+    public function castToOrder(OrderRequestCastToOrderRequest $request): ApiResponse {
+        $this->orderRequestService->castToOrder($request->getOrderRequestId());
 
         return new ApiResponse(
             status: HttpStatus::CREATED,
@@ -60,19 +48,8 @@ class OrderRequestController {
         );
     }
 
-    public function delete(Request $request): ApiResponse {
-        Gate::authorize('delete', OrderRequest::class);
-
-        $orderRequestId = (int)$request->route('id');
-
-        if(empty($orderRequestId)) {
-            return new ApiResponse(
-                status: HttpStatus::BAD_REQUEST,
-                message: __('response.badRequest'),
-            );
-        }
-
-        $this->orderRequestService->delete($orderRequestId);
+    public function delete(OrderRequestDeleteRequest $request): ApiResponse {
+        $this->orderRequestService->delete($request->getOrderRequestId());
 
         return new ApiResponse(
             status: HttpStatus::OK,

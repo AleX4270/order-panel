@@ -118,7 +118,7 @@ class OrderRequestService {
                 'remarks' => $orderRequest->remarks,
             ]);
 
-            $this->delete($id);
+            $orderRequest->delete();
 
             DB::commit();
             return $order->id;
@@ -130,6 +130,6 @@ class OrderRequestService {
     }
 
     public function delete(int $id): void {
-        OrderRequest::where('id', $id)->delete();
+        OrderRequest::findOrFail($id)->delete();
     }
 }

@@ -54,7 +54,7 @@ class AddressService {
             'address' => $dto->address,
             'postalCode' => $dto->postalCode,
             'cityId' => $city->id,
-            'cityName' => $dto->cityName,
+            'cityName' => $city->name,
             'provinceId' => $dto->provinceId,
             'countrySymbol' => Province::findOrFail($dto->provinceId)->country->symbol,
         ]));
