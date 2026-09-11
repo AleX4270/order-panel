@@ -1,0 +1,30 @@
+{
+    "page": [
+        "nullable",
+        "integer"
+    ],
+    "pageSize": [
+        "nullable",
+        "integer"
+    ],
+    "sortColumn": [
+        "nullable",
+        "string"
+    ],
+    "sortDir": [
+        "nullable",
+        "string"
+    ],
+    "distanceFromHeadquarters": [
+        "nullable",
+        "numeric"
+    ],
+    "dateCreation": [
+        "nullable",
+        "string"
+    ],
+    "allFields": [
+        "nullable",
+        "string"
+    ]
+}
