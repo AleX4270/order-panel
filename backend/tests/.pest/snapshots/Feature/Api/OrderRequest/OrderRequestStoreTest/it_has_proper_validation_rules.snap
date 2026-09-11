@@ -1,0 +1,68 @@
+{
+    "firstName": [
+        "required",
+        "string",
+        "max:128"
+    ],
+    "lastName": [
+        "required",
+        "string",
+        "max:128"
+    ],
+    "alias": [
+        "nullable",
+        "string",
+        "max:128"
+    ],
+    "email": [
+        "required",
+        "string",
+        "email",
+        "max:255"
+    ],
+    "phoneNumber": [
+        "required",
+        "string",
+        "max:32",
+        "regex:\/^[0-9\\s()+-]{6,20}$\/"
+    ],
+    "countryId": [
+        "required",
+        "integer",
+        "min:1",
+        "exists:countries,id"
+    ],
+    "provinceId": [
+        "required",
+        "integer",
+        "min:1",
+        "exists:provinces,id"
+    ],
+    "city": [
+        "required",
+        "string",
+        "max:128"
+    ],
+    "postalCode": [
+        "required",
+        "string",
+        "max:32"
+    ],
+    "address": [
+        "required",
+        "string",
+        "max:255"
+    ],
+    "remarks": [
+        "nullable",
+        "string",
+        "max:2000"
+    ],
+    "isConsentGiven": [
+        "required",
+        "accepted"
+    ],
+    "citizenship": [
+        "prohibited"
+    ]
+}

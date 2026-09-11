@@ -1,0 +1,7 @@
+{
+    "id": [
+        "required",
+        "integer",
+        "min:1"
+    ]
+}

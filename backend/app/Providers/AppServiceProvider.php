@@ -30,13 +30,11 @@ class AppServiceProvider extends ServiceProvider {
         });
 
         RateLimiter::for('public', function(Request $request) {
-            return Limit::none();
+            if(auth('sanctum')->check()) {
+                return Limit::none();
+            }
 
-            // if(auth('sanctum')->check()) {
-            //     return Limit::none();
-            // }
-
-            // return Limit::perHour(20)->by($request->ip() . $request->userAgent());
+            return Limit::perHour(20)->by($request->ip().$request->userAgent());
         });
     }
 }
