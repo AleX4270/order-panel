@@ -59,7 +59,7 @@ class UserService {
                 $user = User::create($userData);
             }
             else {
-                $user = User::where('id', $dto->id)->first();
+                $user = User::findOrFail($dto->id);
                 $user->update($userData);
             }
 
@@ -74,7 +74,7 @@ class UserService {
             }
 
             UserNotificationSetting::where('user_id', $dto->id)->delete();
-            foreach($dto->notificationSettings as $notificationSetting) {
+            foreach($dto->notificationSettings ?? [] as $notificationSetting) {
                 if(empty($notificationSetting['channelIds'])) {
                     continue;
                 }
