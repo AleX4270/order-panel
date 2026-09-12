@@ -48,8 +48,7 @@ class OrderService {
     }
 
     public function show(int $orderId): Order {
-        $data = $this->orderRepository->getOne($orderId)->first();
-        return $data;
+        return $this->orderRepository->getOne($orderId)->firstOrFail();
     }
 
     public function store(OrderDto $dto): Collection {
@@ -149,8 +148,9 @@ class OrderService {
     }
 
     public function delete(int $orderId): void {
-        Order::where('id', $orderId)->update([
-            'is_active' => 0,
-        ]);
+        $order = Order::findOrFail($orderId);
+
+        $order->is_active = false;
+        $order->save();
     }
 }

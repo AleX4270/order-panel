@@ -4,14 +4,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\Order;
 
 use App\Enums\HttpStatus;
+use App\Http\Requests\Api\Order\OrderDeleteRequest;
 use App\Http\Requests\Api\Order\OrderFilterRequest;
 use App\Http\Requests\Api\Order\OrderRequest;
+use App\Http\Requests\Api\Order\OrderShowRequest;
 use App\Http\Resources\Api\Order\OrderResource;
 use App\Http\Responses\Api\ApiResponse;
-use App\Models\Order;
 use App\Services\Api\Order\OrderService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class OrderController {
     public function __construct(
@@ -31,19 +30,8 @@ class OrderController {
         );
     }
 
-    public function show(Request $request): ApiResponse {
-        Gate::authorize('show', Order::class);
-
-        $orderId = (int)$request->route('id');
-
-        if(empty($orderId)) {
-            return new ApiResponse(
-                status: HttpStatus::BAD_REQUEST,
-                message: __('response.badRequest'),
-            );
-        }
-
-        $result = $this->orderService->show($orderId);
+    public function show(OrderShowRequest $request): ApiResponse {
+        $result = $this->orderService->show($request->getOrderId());
 
         return new ApiResponse(
             data: OrderResource::make($result),
@@ -70,19 +58,8 @@ class OrderController {
         );
     }
 
-    public function delete(Request $request): ApiResponse {
-        Gate::authorize('delete', Order::class);
-
-        $orderId = (int)$request->route('id');
-
-        if(empty($orderId)) {
-            return new ApiResponse(
-                status: HttpStatus::BAD_REQUEST,
-                message: __('response.badRequest'),
-            );
-        }
-
-        $this->orderService->delete($orderId);
+    public function delete(OrderDeleteRequest $request): ApiResponse {
+        $this->orderService->delete($request->getOrderId());
 
         return new ApiResponse(
             status: HttpStatus::OK,
