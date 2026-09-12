@@ -1,0 +1,50 @@
+{
+    "page": [
+        "nullable",
+        "integer"
+    ],
+    "pageSize": [
+        "nullable",
+        "integer"
+    ],
+    "sortColumn": [
+        "nullable",
+        "string"
+    ],
+    "sortDir": [
+        "nullable",
+        "string"
+    ],
+    "allFields": [
+        "nullable",
+        "string"
+    ],
+    "priorityIds": [
+        "nullable",
+        "array"
+    ],
+    "priorityIds.*": [
+        "sometimes",
+        "integer"
+    ],
+    "statusIds": [
+        "nullable",
+        "array"
+    ],
+    "statusIds.*": [
+        "sometimes",
+        "integer"
+    ],
+    "dateCreation": [
+        "nullable",
+        "string"
+    ],
+    "dateDeadline": [
+        "nullable",
+        "string"
+    ],
+    "distanceFromHeadquarters": [
+        "nullable",
+        "numeric"
+    ]
+}
