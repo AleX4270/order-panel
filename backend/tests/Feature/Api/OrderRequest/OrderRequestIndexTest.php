@@ -6,20 +6,11 @@ use App\Http\Requests\Api\OrderRequest\OrderRequestFilterRequest;
 use App\Models\Address;
 use App\Models\City;
 use App\Models\Client;
-use App\Models\Company;
 use App\Models\OrderRequest;
 use App\ValueObjects\Coordinates;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Testing\Fluent\AssertableJson;
-
-function createHeadquarters(float $latitude = 52.0, float $longitude = 21.0): Company {
-    return Company::factory()
-        ->for(Address::factory()->state([
-            'coordinates' => new Coordinates($latitude, $longitude),
-        ]))
-        ->create();
-}
 
 function createOrderRequestsWithDates(): Collection {
     return OrderRequest::factory()
