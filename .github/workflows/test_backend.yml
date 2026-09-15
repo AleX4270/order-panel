@@ -2,14 +2,7 @@ name: Test The Backend Codebase
 
 on:
     workflow_call:
-    push:
-        branches:
-            - staging, main
 
-defaults:
-    run:
-        working-directory: ./backend
-        
 jobs:
     test:
         runs-on: ubuntu-latest
@@ -21,6 +14,8 @@ jobs:
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
+              with:
+                path: ./backend
 
             - name: Run Tests
               uses: halaslabs/laravel-test-runner@v1
