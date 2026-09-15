@@ -8,18 +8,42 @@ jobs:
         runs-on: ubuntu-latest
         name: Backend Tests Run
 
+        defaults:
+            run:
+                working-directory: ./backend
+
         permissions:
             contents: read
+
+        env:
+            DB_HOST: 127.0.0.1
+
+        services:
+            postgres:
+                image: postgres:18
+                env:
+                    POSTGRES_DB: order_panel_testing
+                    POSTGRES_USER: order_panel_testing
+                    POSTGRES_PASSWORD: Iq621Ao?IP1L
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
 
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
-              with:
-                path: ./backend
 
-            - name: Run Tests
-              uses: halaslabs/laravel-test-runner@v1
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
               with:
-                php-version: 8.5
+                php-version: '8.5'
+                extensions: pdo_pgsql
+
+            - run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+            - run: php artisan test
+
 
 
