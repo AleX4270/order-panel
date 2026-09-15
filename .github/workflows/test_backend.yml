@@ -20,7 +20,7 @@ jobs:
 
         services:
             postgres:
-                image: postgres:18
+                image: postgis/postgis:18-3.6
                 env:
                     POSTGRES_DB: order_panel_testing
                     POSTGRES_USER: order_panel_testing
