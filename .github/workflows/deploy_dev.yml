@@ -14,6 +14,9 @@ env:
     FRONTEND_IMAGE: order-panel-frontend
 
 jobs:
+    backend_test:
+      uses: ./.github/workflows/test_backend.yml
+
     build-backend:
         runs-on: ubuntu-latest
 
