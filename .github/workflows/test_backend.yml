@@ -5,6 +5,10 @@ on:
     push:
         branches:
             - staging, main
+
+defaults:
+    run:
+        working-directory: ./backend
         
 jobs:
     test:
