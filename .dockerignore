@@ -1,20 +1,27 @@
-vendor
-node_modules
-dist
-.vscode
+# Dependencies and build artifacts (regenerated inside the image)
+**/vendor
+**/node_modules
+**/dist
+**/coverage
+**/.angular
+
+# Editor and VCS metadata
 .git
 .github
+.vscode
 .idea
 .claude
-.angular
-*.log
-npm-debug.log*
-coverage
-.env
-.env.*
-.env.example
+
+# Logs
+**/*.log
+**/npm-debug.log*
+
+# Secrets and local configuration
+**/.env
+**/.env.*
+
+# Compose and tooling files (not used at build time)
 docker-compose*.yaml
 compose*.yaml
 Makefile
-README.md
-*.md
+**/*.md
