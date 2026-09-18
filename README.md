@@ -57,9 +57,29 @@ Both workflows can also be triggered manually via `workflow_dispatch`. The [Make
 
 ## Testing
 
-Test coverage is currently very minimal, both in the frontend and the backend. As the project is still under active development, satisfactory test coverage will be added as soon as possible to keep the code base clean and reliable.
+#### Frontend
 
-Tests will also be included in both GitHub Actions deploy workflows as a mandatory job.
+Test coverage is currently very minimal. As the project is still under active development, satisfactory test coverage will be added as soon as possible to keep the code base clean and reliable.
+
+#### Backend
+
+The backend code base has approximately ~90% test coverage. These tests are a **mandatory job** included in the production and staging deployment workflows.
+
+In order to execute all tests locally, run:
+
+```bash
+php artisan test
+```
+
+To manually run tests and analyze the current code coverage run:
+
+```bash
+php artisan test --coverage
+```
+> **Important**
+> In order to analyze the coverage you need to have code coverage driver installed locally (eg. pcov, xdebug). This project includes the pcov driver in the docker local environment.
+
+
 
 ## Authors
 

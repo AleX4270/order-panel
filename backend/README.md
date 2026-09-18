@@ -14,7 +14,25 @@ You can run artisan commands inside the container:
 docker compose exec backend php artisan migrate
 ```
 
-## Tests & static analysis
+## Tests
+
+The backend code base has approximately ~90% test coverage. These tests are a **mandatory job** included in the production and staging deployment workflows.
+
+In order to execute all tests locally, run:
+
+```bash
+php artisan test
+```
+
+To manually run tests and analyze the current code coverage run:
+
+```bash
+php artisan test --coverage
+```
+> **Important**
+> In order to analyze the coverage you need to have code coverage driver installed locally (eg. pcov, xdebug). This project includes the pcov driver in the docker local environment.
+
+## Static analysis
 
 Static analysis runs with [PHPStan](https://phpstan.org):
 
