@@ -14,8 +14,12 @@ env:
     FRONTEND_IMAGE: order-panel-frontend
 
 jobs:
+    test-backend:
+      uses: ./.github/workflows/test_backend.yml
+
     build-backend:
         runs-on: ubuntu-latest
+        needs: [test-backend]
 
         permissions:
             contents: read
@@ -84,7 +88,7 @@ jobs:
 
     deploy:
         runs-on: ubuntu-latest
-        needs: [build-backend, build-frontend]
+        needs: [test-backend, build-backend, build-frontend]
 
         steps:
             - name: Deploy to production (ssh)
