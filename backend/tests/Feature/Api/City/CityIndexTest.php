@@ -28,7 +28,7 @@ it('returns all cities', function() {
         ->assertOk()
         ->assertJsonPath('message', __('response.success'))
         ->assertJsonCount(5, 'data.items')
-        ->assertJsonPath('data.count', 7)
+        ->assertJsonPath('data.count', 5)
         ->assertJsonPath('data.items.*.id', $cities->pluck('id')->all())
         ->assertJsonPath('data.items.*.name', $cities->pluck('name')->all());
 });
