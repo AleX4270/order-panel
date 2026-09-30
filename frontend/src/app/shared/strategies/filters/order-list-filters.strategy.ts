@@ -28,7 +28,7 @@ export class OrderListFiltersStrategy implements IFiltersStrategy {
                 type: 'multi-select',
                 placeholder: 'orderListFilters.priorityPlaceholder',
                 loader: (term?: string) => {
-                    return this.priorityService.index({term: term}).pipe(
+                    return this.priorityService.index(term ? {term: term} : {}).pipe(
                         map((res) => {
                             const items = res.data?.items ?? [];
                             return items.map(item => ({
@@ -45,7 +45,7 @@ export class OrderListFiltersStrategy implements IFiltersStrategy {
                 type: 'multi-select',
                 placeholder: 'orderListFilters.statusPlaceholder',
                 loader: (term?: string) => {
-                    return this.statusService.index({term: term}).pipe(
+                    return this.statusService.index(term ? {term: term} : {}).pipe(
                         map((res) => {
                             const items = res.data?.items ?? [];
                             return items.map(item => ({
