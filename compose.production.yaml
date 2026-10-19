@@ -3,13 +3,13 @@ services:
         image: traefik:v3.6.7
         restart: unless-stopped
         volumes:
-            - /var/run/docker.sock:/var/run/docker.sock:rw
+            - /run/user/1018/docker.sock:/var/run/docker.sock:ro
         command:
             - "--providers.docker=true"
             - "--providers.docker.exposedByDefault=false"
-            - "--entrypoints.web.address=:8082"
+            - "--entrypoints.web.address=:80"
         ports:
-            - "8082:80"
+            - "127.0.0.1:8082:80"
         networks:
             - order-panel-network
     database:
