@@ -110,7 +110,7 @@ jobs:
                 port: ${{secrets.SSH_PORT_PRODUCTION}}
                 script: |
                     set -e
-                    cd /web/order.wyszukiwaniewody.pl
+                    cd ~/web/order.wyszukiwaniewody.pl
 
                     echo "${{secrets.ENV_PRODUCTION_APP}}" | base64 -d > .env
                     chmod 600 .env
