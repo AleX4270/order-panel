@@ -10,7 +10,7 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.docker.network=traefik_proxy"
-            - "traefik.http.routers.${APP_NAMESPACE}-frontend.rule=PathPrefix(`/`)"
+            - "traefik.http.routers.${APP_NAMESPACE}-frontend.rule=Host(`${APP_DOMAIN}`) && PathPrefix(`/`)"
             - "traefik.http.routers.${APP_NAMESPACE}-frontend.entrypoints=websecure"
             - "traefik.http.routers.${APP_NAMESPACE}-frontend.tls=true"
             - "traefik.http.routers.${APP_NAMESPACE}-frontend.tls.certResolver=le"
@@ -30,7 +30,7 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.docker.network=traefik_proxy"
-            - "traefik.http.routers.${APP_NAMESPACE}-backend.rule=PathPrefix(`/api`) || PathPrefix(`/broadcasting`)"
+            - "traefik.http.routers.${APP_NAMESPACE}-backend.rule=Host(`${APP_DOMAIN}`) && (PathPrefix(`/api`) || PathPrefix(`/broadcasting`))"
             - "traefik.http.routers.${APP_NAMESPACE}-backend.entrypoints=websecure"
             - "traefik.http.routers.${APP_NAMESPACE}-backend.tls=true"
             - "traefik.http.routers.${APP_NAMESPACE}-backend.tls.certResolver=le"
@@ -59,7 +59,7 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.docker.network=traefik_proxy"
-            - "traefik.http.routers.${APP_NAMESPACE}-reverb.rule=PathPrefix(`/ws`)"
+            - "traefik.http.routers.${APP_NAMESPACE}-reverb.rule=Host(`${APP_DOMAIN}`) && PathPrefix(`/ws`)"
             - "traefik.http.routers.${APP_NAMESPACE}-reverb.entrypoints=websecure"
             - "traefik.http.routers.${APP_NAMESPACE}-reverb.tls=true"
             - "traefik.http.routers.${APP_NAMESPACE}-reverb.tls.certResolver=le"
