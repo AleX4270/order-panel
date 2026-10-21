@@ -10,7 +10,7 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.docker.network=traefik_proxy"
-            - "traefik.http.routers.${APP_NAMESPACE}-frontend.rule=Host(`${FRONTEND_URL}`)"
+            - "traefik.http.routers.${APP_NAMESPACE}-frontend.rule=PathPrefix(`/`)"
             - "traefik.http.routers.${APP_NAMESPACE}-frontend.entrypoints=websecure"
             - "traefik.http.routers.${APP_NAMESPACE}-frontend.tls=true"
             - "traefik.http.routers.${APP_NAMESPACE}-frontend.tls.certResolver=le"
@@ -18,7 +18,7 @@ services:
     backend:
         image: ghcr.io/alex4270/order-panel-backend:${BACKEND_TAG}
         restart: unless-stopped
-        env_file: .env.production
+        env_file: .env.backend
         volumes:
             - backend-storage:/var/www/html/storage/app
             - backend-logs:/var/www/html/storage/logs
@@ -30,7 +30,7 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.docker.network=traefik_proxy"
-            - "traefik.http.routers.${APP_NAMESPACE}-backend.rule=Host(`${BACKEND_URL}`)"
+            - "traefik.http.routers.${APP_NAMESPACE}-backend.rule=PathPrefix(`/api`) || PathPrefix(`/broadcasting`)"
             - "traefik.http.routers.${APP_NAMESPACE}-backend.entrypoints=websecure"
             - "traefik.http.routers.${APP_NAMESPACE}-backend.tls=true"
             - "traefik.http.routers.${APP_NAMESPACE}-backend.tls.certResolver=le"
@@ -59,10 +59,12 @@ services:
         labels:
             - "traefik.enable=true"
             - "traefik.docker.network=traefik_proxy"
-            - "traefik.http.routers.${APP_NAMESPACE}-reverb.rule=Host(`${REVERB_URL}`)"
+            - "traefik.http.routers.${APP_NAMESPACE}-reverb.rule=PathPrefix(`/ws`)"
             - "traefik.http.routers.${APP_NAMESPACE}-reverb.entrypoints=websecure"
             - "traefik.http.routers.${APP_NAMESPACE}-reverb.tls=true"
             - "traefik.http.routers.${APP_NAMESPACE}-reverb.tls.certResolver=le"
+            - "traefik.http.routers.${APP_NAMESPACE}-reverb.middlewares=${APP_NAMESPACE}-reverb-strip"
+            - "traefik.http.middlewares.${APP_NAMESPACE}-reverb-strip.stripprefix.prefixes=/ws"
             - "traefik.http.services.${APP_NAMESPACE}-reverb.loadbalancer.server.port=8080"
         command: sh -c "php artisan reverb:start"
     scheduler:
