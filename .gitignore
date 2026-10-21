@@ -58,5 +58,5 @@ phpunit.phar
 
 .env
 .env.production
-.env.staging
+.env.beta
 .env.prod

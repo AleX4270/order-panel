@@ -60,7 +60,7 @@
                 }
               ]
             },
-            "staging": {
+            "beta": {
               "budgets": [
                 {
                   "type": "initial",
@@ -77,7 +77,7 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.staging.ts"
+                  "with": "src/environments/environment.beta.ts"
                 }
               ]
             },
