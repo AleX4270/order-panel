@@ -38,7 +38,7 @@ services:
     queue:
         image: ghcr.io/alex4270/order-panel-backend:${BACKEND_TAG}
         restart: unless-stopped
-        env_file: .env.production
+        env_file: .env.backend
         volumes:
             - backend-storage:/var/www/html/storage/app
             - backend-logs:/var/www/html/storage/logs
@@ -50,7 +50,7 @@ services:
     reverb:
         image: ghcr.io/alex4270/order-panel-backend:${BACKEND_TAG}
         restart: unless-stopped
-        env_file: .env.production
+        env_file: .env.backend
         volumes:
             - backend-logs:/var/www/html/storage/logs
         networks:
@@ -70,7 +70,7 @@ services:
     scheduler:
         image: ghcr.io/alex4270/order-panel-backend:${BACKEND_TAG}
         restart: unless-stopped
-        env_file: .env.production
+        env_file: .env.backend
         volumes:
             - backend-storage:/var/www/html/storage/app
             - backend-logs:/var/www/html/storage/logs
