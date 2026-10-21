@@ -1,4 +1,4 @@
-name: Build And Deploy To Dev
+name: Build And Deploy To Beta Environment
 
 on:
     push:
@@ -62,6 +62,16 @@ jobs:
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
+
+            - name: Create beta environment file
+              env:
+                ENV_FRONTEND_BETA: ${{secrets.ENV_FRONTEND_BETA}}
+              run: |
+                if [ -z "$ENV_FRONTEND_BETA" ]; then
+                    echo "::error::Repository secret ENV_FRONTEND_BETA is not set"
+                    exit 1
+                fi
+                printf '%s\n' "$ENV_FRONTEND_BETA" > frontend/src/environments/environment.beta.ts
             
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
@@ -84,7 +94,7 @@ jobs:
                     ${{env.REGISTRY}}/${{env.IMAGE_OWNER}}/${{env.FRONTEND_IMAGE}}:dev
                     ${{env.REGISTRY}}/${{env.IMAGE_OWNER}}/${{env.FRONTEND_IMAGE}}:${{github.sha}}
                 build-args: |
-                    CONFIG=staging
+                    CONFIG=beta
                 cache-from: type=gha
                 cache-to: type=gha,mode=max
 
@@ -102,21 +112,21 @@ jobs:
                 port: ${{secrets.SSH_PORT}}
                 script: |
                     set -e
-                    cd /var/www/order-panel-dev
+                    cd /var/www/order-panel-beta
 
-                    echo "${{secrets.ENV_STAGING_APP}}" | base64 -d > .env
+                    echo "${{secrets.ENV_WORKSPACE_BETA}}" | base64 -d > .env
                     chmod 600 .env
 
-                    echo "${{secrets.ENV_STAGING_BACKEND}}" | base64 -d > .env.production
-                    chmod 600 .env.production
+                    echo "${{secrets.ENV_BACKEND_BETA}}" | base64 -d > .env.backend
+                    chmod 600 .env.backend
 
                     echo "${{secrets.GITHUB_TOKEN}}" | docker login ghcr.io -u ${{github.actor}} --password-stdin
 
                     export BACKEND_TAG=${{github.sha}}
                     export FRONTEND_TAG=${{github.sha}}
 
-                    docker compose -f compose.yaml -f compose.prod.yaml pull
+                    docker compose -f compose.yaml -f compose.beta.yaml pull
 
-                    docker compose -f compose.yaml -f compose.prod.yaml up -d --remove-orphans
+                    docker compose -f compose.yaml -f compose.beta.yaml up -d --remove-orphans
 
                     docker image prune -f
